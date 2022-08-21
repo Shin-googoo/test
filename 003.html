@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 class="test">hello</h1>
+    <script>
+      // var, let, const
+      // 실무에서는 const를 많이 사용하고
+      // let은 필요한 경우에 사용하시면 됩니다
+      // var은 권하지 않습니다.
+
+      //error
+      // const 파이 = 3.14;
+      // 파이 = 100;
+
+      let x = 10;
+      x = 100;
+
+      //사칙연산
+      //+, -, *, %, ++
+      console.log(10 % 3);
+
+      //논리연산
+      // &, |, !
+      console.log(true && false);
+
+      for (let i = 0; i < 100; i++) {
+        if (i % 3 == 0 && i % 5 == 0) {
+          console.log(i);
+        }
+      }
+
+      for (let i = 0; i < 100; i++) {
+        if (i % 3 == 0 || i % 5 == 0) {
+          console.log(i);
+        }
+      }
+
+      // 비교연산
+      // >, >=, <, <=, ==(타입확인 x), !=, ===(타입까지같다)
+      if(1 =='1')
+      //반복문
+      let i = 1;
+      while (i < 10) {
+        console.log(i);
+        i++;
+      }
+
+      console.log("--------------------");
+
+      for (let i = 0; i < 10; i++) {
+        console.log(i);
+      }
+
+      console.log("--------------------");
+
+      for (const key in ["hello", "world"]) {
+        console.log(key);
+      }
+
+      for (const key in {'1':'hello', '2':'world'}){
+        console.log(key)
+      }
+
+      for (const key in {'one': '하나', 'two': '둘'}){
+        console.log(key)
+      }
+
+      console.log("--------------------");
+
+      for (const iterator of ['hello', 'world']){
+        console.log(iterator)
+      }
+
+      for (const iterator of ['hello', 'world']) {
+        console.log(iterator)
+      }
+      //순회가 가능하다? 이터러블 하다?
+      //enumerable: true이어야 하며
+      //next()로 다음 갑슬 호출할 수 있어야 합니다.
+      //이것을 확인할 수 있는 매서드
+
+      //조건문
+      if(true){
+        if(false) {
+          console.log('one')
+        }
+        console.log('two')
+      }
+
+      if (10 > 3) {
+        console.log('hello')
+      }
+      // 함수
+      // 1. 아키텍쳐를 파악하기가 용이
+      // 2. 코드의 재사용성을 높이고 가독성을 높힘
+
+      //파선아실
+      function one(x, y){ //선언할 때 파라미터
+        retrun x + y
+      }
+
+      // 함수실행
+      console.log(one(10, 20)) // 실행할 때 아규먼트
+      //DOM
+
+      let body = document.body
+      let 제목 document.createElement('h1')
+      제목.setAttribute('class', 'one')
+      제목.textContent = 'hello world'
+      body.appendChild(제목)
+
+      let 내용 document.createElement('ㅔ')
+      내용.setAttribute('class', 'two')
+      내용.textContent = 'lorem'
+      body.appendChild(내용)
+
+      //기존요소
+      let test = document.querySelector('.test')
+      test.innerHTML = '안녕?'
+    </script>
+  </body>
+</html>
