@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>justify-content</title>
+    <link rel="stylesheet" href="reset.css" />
+    <style>
+      .container {
+        background: cornsilk;
+      }
+      .container {
+        display: flex;
+        /* flex-wrap: wrap; */
+        /* justify-content: space-between; */
+        /* justify-content: space-around; */
+        /* justify-content: space-evenly; */
+      }
+      /* .no-flexbox .item {
+        display: inline-block;
+        width: 20%;
+      } */
+    </style>
+    <script src="modernizr.js"></script>
+    <script>
+      console.log(modernizr.touchevents);
+
+      if (modernizr.touchevents) {
+        //지원하면
+      } else {
+        //지원 안 하면
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">aaaaassgasdgsdvcxvaaaaa</div>
+      <div class="item">bbbsswav xcz bbbbbbb</div>
+      <div class="item">ccccccdfvcxvxvcxcvcccccc</div>
+    </div>
+  </body>
+</html>
