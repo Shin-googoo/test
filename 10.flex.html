@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>flex</title>
+    <link rel="stylesheet" href="reset.css" />
+    <style>
+      .container {
+        display: flex;
+        background: cornsilk;
+        height: 400px;
+        .item {
+          /* flex-grow: 1; */
+          flex: 1 1 auto;
+          /* grow, shrink, basis */
+        }
+      }
+      .item:nth-child(1) {
+        flex: 1 1 auto;
+        /* 주의할 점은, flex: 1; 이런 식으로 flex-basis를 생략해서 쓰면 flex-basis의 값은 0이 됩니다. */
+        /* flex-grow: 1; */
+      }
+      .item:nth-child(2) {
+        flex: 2;
+        /* flex-grow: 2; */
+      }
+      .item:nth-child(3) {
+        flex: 1;
+        /* flex-grow: 1; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">aaaaaaaaaaaaaaaaaaaaaa</div>
+      <div class="item">bbbbbb</div>
+      <div class="item">ccccccccccccccccccccc</div>
+    </div>
+  </body>
+</html>
