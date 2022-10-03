@@ -1,0 +1,64 @@
+/* #cb5a73 */
+/* #68bcda */
+/* #e1a85a */
+/* #4d9688 */
+
+body {
+	line-height: 1.4;
+}
+img {
+	max-width: 100%;
+}
+.gap {
+	padding: 30px;
+}
+.article-image {
+	width: 100%;
+}
+.header {
+	background: #cb5a73;
+}
+.main-article {
+	text-align: justify;
+	background: #68bcda;
+}
+.ad {
+	background: #e1a85a;
+}
+.footer {
+	background: #4d9688;
+}
+.page-title {
+	text-align: center;
+}
+
+/* 미디어 쿼리 media queries */
+@media (min-width: 600px) {
+	html {
+		/* font-size: 30px; */
+	}
+	.content-container {
+		font-size: 0;
+	}
+	.main-article {
+		display: inline-block;
+		vertical-align: top;
+		width: 60%;
+		font-size: 1rem; /* root em */
+	}
+	.ad {
+		display: inline-block;
+		vertical-align: top;
+		width: 40%;
+		font-size: 1rem;
+	}
+}
+
+@media (min-width: 800px) {
+	.article-image {
+		float: left;
+		width: auto;
+		/* max-width: 100%; */
+		margin-right: 30px;
+	}
+}

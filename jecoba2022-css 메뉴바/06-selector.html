@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+		}
+		header {
+			background-color: red;
+		}
+		p {
+			color: red;
+		}
+		.special-text {
+			font-size: 24px;
+			color: mediumpurple;
+		}
+		section > .special-text {
+			/* font-size: 16px; */
+			font-size: 1rem;
+		}
+		.page-header {
+			border: 10px solid green;
+		}
+		.info-list li {
+			color: pink;
+		}
+		/* nth-child(n) => 태그 종류 안가리고 무조건 순서대로 지정 */
+		/* nth-of-type(n) => 해당 태그끼리만 순서 지정 */
+		/* p:nth-child(3) */
+		/* p:nth-of-type(3) */
+	</style>
+</head>
+<body>
+	<article>
+		<header class="page-header">
+			<h1>안녕하세요!</h1>
+		</header>
+		<section>
+			<h2>섹션 1</h2>
+			<p>Lorem ipsum dolor sit amet.</p>
+			<p class="special-text">Special Lorem ipsum dolor sit amet.</p>
+			<p>Lorem ipsum dolor sit amet.</p>
+			<div>
+				<p class="special-text">div 안에 있는 문단</p>
+			</div>
+		</section>
+		<section>
+			<h2>섹션 2</h2>
+			<p class="special-text">Lorem ipsum dolor sit amet.</p>
+			<p>Lorem ipsum dolor sit amet.</p>
+			<p>Lorem ipsum dolor sit amet.</p>
+			<ul class="info-list">
+				<li class="info-list__item">1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+		</section>
+		<p class="special-text">
+			섹션의 형제 문단	
+		</p>
+	</article>
+</body>
+</html>
