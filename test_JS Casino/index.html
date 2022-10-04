@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casino</title>
+</head>
+
+<body>
+  <h1>Random Number Game</h1>
+  <h2>Generate a numver between 0 and 
+    <span class="maxNum"></span>
+  </h2>
+  <form class="gameForm">
+    <input class="rangeInput" type="range" min="0" max="200">
+  </form>
+  <div class="numBox">
+    Guess the number:&nbsp;
+    <form class="numForm">
+      <input class="inputNum" type="number" style="width: 50px">
+      <button>play!</button>
+    </form>
+  </div>
+  <div class="paintChose"></div>
+  <h4 class="paintResult"></h4>
+
+  <script src="app.js"></script>
+</body>
+</html>
