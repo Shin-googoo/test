@@ -1,0 +1,14 @@
+<table>
+    <tr>
+        <td>제목</td>
+        <td>내용</td>
+        <td>생성날짜</td>
+    </tr>
+    {% for data in blogs %}
+    <tr>
+        <td><a href="/blog/{{data.pk}}">{{data.title}}</a></td>
+        <td>{{data.contents}}</td>
+        <td>{{data.created_at}}</td>       
+    </tr>
+    {% endfor %}  
+</table>

@@ -1,0 +1,37 @@
+<ul>
+    {% for data in one %}
+        <li>{{data}}</li>
+    {% endfor %}  
+</ul>
+
+{% filter force_escape|lower %}
+    <p>Hello World</p>
+{% endfilter %}
+
+{% for key, value in five.items %}
+    <p>{{ key }}: {{ value }}</p>
+{% endfor %}
+
+<ul>
+    {% for data in one %}
+        <li>{{forloop.counter}} : {{data}}</li>
+    {% endfor %}  
+</ul>
+
+<ul>
+    {% for data in one %}
+        <li>{{forloop.counter0}} : {{data}}</li>
+    {% endfor %}  
+</ul>
+
+<!-- {% if four %} -->
+    <p>one</p>
+{% elif four %}
+    <p>two</p>
+{% else %}
+    <p>three</p>
+{% endif %}
+
+{# {% if four %}#}
+{#     <p>one</p>#}
+{# {% endif %}#}
