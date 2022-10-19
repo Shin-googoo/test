@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>온라인 서식</title>
+</head>
+<body>
+<h2>폼1</h2>
+<h3>로그인</h3>
+<p>R.POINT 통합 회원은 리베서비스를 하나의 ID로 이용할 수 있습니다.</p>
+<form>
+  <fieldset>
+    <legend>로그인 정보입력</legend>
+      <label for="txt_id">아이디</label>
+      <input type="text" placeholder="아이디 또는 이메일을 입력해주세요." id="txt_id">
+      
+      <label for="txt_pass">비밀번호</label><input type="text" placeholder="비밀번호를 입력해주세요." id="txt_pass">
+      <button>로그인</button>
+    </fieldset>
+  </form>  
+<a href="">아이디찾기</a>
+<a href="">비밀번호찾기</a>
+<a href="">가입하기</a>
+<br><br><br><br><br><br>
+  <form action="" method="">
+    <fieldset>
+      <legend>온라인서식의 제목</legend>
+      <ul>
+        <li><input type="text">한줄 글상자</li>
+        <li><input type="text" readonly>읽기전용</li>
+        <!--커서는 생기지만 글씨작성x-->
+        <li><input type="text" disabled>수정불가</li>
+        <!--커서조차 생성x-->
+        <li><input type="text" value="아이디를 입력하세요">한줄 글상자</li>
+        <!--미리 텍스트를 띄울 수 있다.-->
+        <li><input type="password">비밀번호입력</li>
+        <li><input type="password" placeholder="비밀번호를 입력하세요">비밀번호입력</li>
+        <!--미리 텍스트를 적어 안내의 역할을 한다.-->
+        <li>
+          <input type="radio" name="person" id="radio1"><label for="radio1">남자</label> 
+          <input type="radio" name="person" id="radio2"><label for="radio2">여자</label> 
+          <!--id값은 영어 또는 영어+숫자만 사용가능하며 특수문자는 - 또는 _만 가능합니다. 
+          같은 페이지에 값은 id값은 올수 없다. ex) radio1,2로 나눔
+          label을 넣어줌으로써 글씨 클릭으로도 체크가 가능해진다.-->
+        </li>
+        <li>
+          <input type="radio" name="area" id="radio3"><label for="radio3">서울</label>
+          <input type="radio" name="area" id="radio4"><label for="radio4">부산</label>
+          <input type="radio" name="area" id="radio5"><label for="radio5">대전</label>
+        </li>
+        <li>
+          <input type="checkbox" id="eat1"><label for="eat1">물회</label>
+          <input type="checkbox" id="eat2"><label for="eat2">짜장면</label>
+          <input type="checkbox" id="eat3"><label for="eat3">자연별곡</label>
+          <input type="checkbox" id="eat4"><label for="eat4">치킨</label>
+        </li>
+        <li>
+          <input type="file">첨부파일
+        </li>
+        <li>
+          <input type="url">도메인입력
+        </li>
+        <li><input type="email">이메일입력</li>
+        <li><input type="number">숫자전용 입력</li>
+        <li><input type="tel">전화번호입력</li>
+        <li><input type="search">검색어 입력</li>
+        <li><input type="date">날짜선택 달력</li>
+        <li><input type="button">범용버튼</li>
+        <li><input type="submit">실행버튼</li>
+        <li><input type="reset">초기화 취소 버튼</li>
+        <li><button>범용버튼</button></li> <!---->
+        <li><button type="button">범용버튼</button></li>
+        <li>
+          <select>
+            <option>선택하세요.</option>
+            <option>010</option>
+            <option>016</option>
+            <option>017만약에 글씨가 길어진다면?만약에 글씨가 길어진다면?만약에 글씨가 길어진다면?</option>
+          </select>
+        </li>
+        <li>
+          <textarea>다중 글쓰기</textarea>
+        </li>
+      </ul>
+    </fieldset>
+  </form>
+
+<a href=""> - 이동을 뜻한다.
+<button> - 기능을 뜻한다.
+</body>
+</html>
