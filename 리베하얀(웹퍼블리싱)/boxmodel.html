@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>boxmodel</title>
+</head>
+<body>
+<style>
+  section{box-sizing: border-box; margin:30px; width: 100px; border: 3px solid #000; height: 100px; background:tomato;}
+</style>
+<!--padding과 border은 박스 크기에 영향을 준다.-->
+<!--margin은 박스 크기에 영향을 주지 않는다.-->
+<section>박스모델</section>
+
+  <br><br>  <br><br>  <br><br>  <br><br>  <br><br>
+<style>
+  div { 
+    padding: 40px 20px 10px 5px;
+    margin: 10px;
+    border: 1px solid red; 
+
+    width: 100px; height: 100px; background-color: skyblue;
+    }
+    p {
+      border-top: 2px dotted #000;
+      border-right: 3px dashed blue;
+      border-bottom:10px double rgba(0,0,0,0.5);
+      border-left: 1px solid purple;
+      width:100px; height: 100px;
+    }
+</style>
+
+<!-- border: 1px solid red;
+          선의 굵기, 종류, 색상-->
+텍스트
+<div>텍스트</div>
+<p>박스</p>
+텍스트
+
+</body>
+</html>
