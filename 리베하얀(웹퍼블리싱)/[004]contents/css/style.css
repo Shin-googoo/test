@@ -1,0 +1,62 @@
+table {width: 100%; border-collapse: collapse; border-spacing: 0;}
+table caption {display: none;}
+.table_type1 {border-top: 2px solid #12a3cc; font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif}
+.table_type1 thead tr {border-bottom: 1px solid #b2b2b2;}
+.table_type1 thead th {height:45px; font-size: 13px; color: #494949; font-weight: 400;}
+.table_type1 tbody tr {border-bottom: 1px solid #e2e2e2;}
+.table_type1 tbody td {padding:17px 0 15px; font-size: 13px; color: #717171; text-align: center;}
+.table_type1 tbody td a { color: #323232;}
+/* a요소같은 경우 직접 선택해 요소를 줘야한다.*/
+.table_type1 tbody .name {color: #323232;}
+.table_type1 tbody .left {text-align: left;}
+.table_type1 tbody .left img {vertical-align: -3px;}
+
+
+
+.table_type2 {font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif}
+.table_type2 thead tr {border-top: 1px solid #000; background-color: #f2f2f2; height: 44px; }
+.table_type2 thead tr th {font-weight: 400;}
+.table_type2 tbody tr {border-bottom:1px solid #ccc; height:46px; }
+.table_type2 tbody tr th {font-weight:400;}
+.table_type2 tbody tr td a {padding: 0 0 0 163px; color:#333; text-decoration: none;}
+.table_type2 tbody tr td { color:#999;}
+.table_type2 tbody tr .text_align {padding:0 76px 0 0; text-align: right;}
+.table_type2 tbody .text_red {color:#e51837;}
+
+
+
+.table_type5 { border-top: 2px solid #333; font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif}
+.table_type5 thead tr {background-color: #f8f8f8; border-bottom: 1px solid #c7c7c7;}
+.table_type5 thead th {height: 64px; font-size: 15px; font-weight: 400;}
+.table_type5 thead .border_right { border-right: 1px solid #c7c7c7;}
+.table_type5 tbody tr { border-bottom: 1px solid #c7c7c7;}
+.table_type5 tbody th {background-color: #f8f8f8; border-right: 1px solid #c7c7c7; font-size: 16px; color:#333; font-weight:400;}
+.table_type5 tbody td {padding: 20px 0; font-size: 16px; color:#333; font-weight:400; text-align: center; line-height: 24px;}
+
+
+
+.table_type9 {font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif}
+.table_type9 thead tr {border-top: 2px solid #393d46;
+font-weight:500; height: 57px;}
+.table_type9 tbody tr {border-top: 1px solid #acb0b6;}
+.table_type9 tbody tr th {text-align: center; font-weight: 300; }
+.table_type9 tbody tr .text_center {text-align: center; padding: 19px 0; }
+.table_type9 tbody tr {border-bottom:1px solid #acb0b6;}
+.table_type9 tbody tr td {padding: 15px 0 15px 19px; border-left:1px solid #acb0b6; height: 29px;}
+.table_type9 tbody tr td b {height: 32px;}
+
+
+
+.table_type11 {font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif}
+.table_type11 thead tr {border-top: 2px solid #bd0000; height: 44px;}
+.table_type11 tbody tr {border-top:1px solid #e4e4e4;}
+.table_type11 tbody tr th {border-right:1px solid #e4e4e4;
+background-color: #fafafa; color: #585858; font-weight:400;}
+.table_type11 tbody tr td { border-left:1px solid #e4e4e4;}
+.table_type11 tbody tr .text_right {padding:18px 23px 18px 0; text-align: right; line-height: 25px;}
+.table_type11 tbody tr .text_center {padding:18px 23px 18px 0; text-align: center; line-height: 25px; border-bottom: 1px solid #e4e4e4;}
