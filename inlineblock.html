@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>inline vs block</title>
+</head>
+<body>
+<div>
+  <p></p>
+</div>
+<ul>
+  <li>
+    <table></table>
+    <div></div>
+  </li>
+</ul>
+<!--
+일부 블록요소는 블록요소를 포함할 수 없다.
+<address>,<h1> ~ <h6>,<p> 등은 자식,자손으로 inline요소만 올 수 있다
+ex) <p>
+      <h1></h1> -> X
+    </p>  
+    <h1><p></h1> -> X
+    <h1><div></h1> -> X
+    <h1><table></h1> -> X
+-->
+
+  <style>
+    div, span {border: 1px solid red;}
+  </style>
+<div>block</div>
+<div>block</div>
+<div>block</div>
+<br><br><br><br>
+
+<span>inline</span>
+<span>inline</span>
+<span>inline</span>
+<span>inline</span>
+
+</body>
+</html>
