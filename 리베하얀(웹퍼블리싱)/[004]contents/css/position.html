@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>position</title>
+</head>
+<body>
+  <style>
+    div {
+      position: relative; top:20px;
+  /*
+      y축값 top, bottom -> 둘중 하나만 써야한다.
+      x축값 left, right -> 둘중 하나만 써야한다. 
+  */
+      width:200px; height: 200px; border:3px solid red;
+    }
+  </style>
+  text
+  <div></div>
+  text
+
+  <style>
+    .rel {position:relative; width:300px; height:300px; border:2px solid red;}
+    .abs {position: absolute; right:0; bottom:-10px; width:100px; height:100px; border: 3px solid blue;}
+  </style>
+  <div class="rel">
+    <div class="abs"></div>
+  </div>
+  <!--position:absolute의 부모가 position:relative라면 브라우저가 아닌 부모인 relative에 맞춰 이동한다. -->
+
+  <style>
+    .fixed {position:fixed; right:30px; top:100px; width:50px; height:100px; background:skyblue; z-index: 100;}
+    .sticky {width:100px; height:300px; background:gray; position:sticky; right:300px; top: 20px; }
+  </style>
+  <div class="fixed">넌 고정이야~!</div>
+
+  <div class="sticky">달라붙어라아아아아</div>
+</body>
+</html>

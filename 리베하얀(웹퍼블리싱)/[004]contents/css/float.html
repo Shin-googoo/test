@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>float</title>
+</head>
+<body>
+  
+<style>
+  p {border: 1px solid blue;}
+  .float {padding: 10px; border: 1px solid orange;}
+  .float:after { content:""; display:block; clear:both;}
+  .float div {float: left; border:1px solid red;}
+  .clear { }
+</style>  
+<p>텍스트</p>
+<div class="float">
+  <div>11</div>
+  <div>22</div>
+  <div>33</div>
+</div>
+<p class="clear">텍스트</p>
+
+</body>
+</html>
