@@ -5,6 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>리스트 연습</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   
@@ -43,19 +44,24 @@
       </li> <!--li와 li 사이에는 어떤 것도 들어올 수 없다.-->
       <li>회원가입</li>
     </ul>
+<br><br><br><br>
+
 <h2>리스트1</h2>
-<ul>
-  <li><a href="">전체</a></li>
-  <li><a href="">회원/정보관리</a></li>
-  <li><a href="">상품</a></li>
-  <li><a href="">주문/결제</a></li>
-  <li><a href="">시공/AS</a></li>
-  <li><a href="">포인트/상품권</a></li>
-  <li><a href="">고객후기</a></li>
-  <li><a href="">매장</a></li>
-  <li><a href="">상담예약</a></li>
-  <li><a href="">오류해결</a></li>
-</ul>
+<nav class="tab_type1">
+  <ul>
+    <li><a href="">전체</a></li>
+    <li class="active"><a href="">회원/정보관리</a></li>
+    <li><a href="">상품</a></li>
+    <li><a href="">주문/결제</a></li>
+    <li><a href="">시공/AS</a></li>
+    <li><a href="">포인트/상품권</a></li>
+    <li><a href="">고객후기</a></li>
+    <li><a href="">매장</a></li>
+    <li><a href="">상담예약</a></li>
+    <li><a href="">오류해결</a></li>
+  </ul>
+</nav>
+
 <br><br><br><br>
 <h2>리스트2</h2>
 <ul>
@@ -64,28 +70,51 @@
   <li><a href="">자녀</a></li>
   <li><a href="">보장</a></li>
 </ul>
+
+
 <br><br><br><br>
 <h2>리스트3</h2>
-<h3>유의사항</h3>
-<ul>
-  <li>- 리포인트 또는 리페이 앱을 통해 신청한 고객님께만 적립이 가능합니다.
+<ul class="list_type3">
+  <b>유의사항</b>
+  <li>
+    - 리포인트 또는 리페이 앱을 통해 신청한 고객님께만 적립이 가능합니다.
   </li>
-  <li>- 이벤트 신청을 하더라도 2019.3.1(금) 이전에 리페이 결제 이력이 있는 경우 적립제외됩니다.</li>
-  <li>- 기간 전 기존 리페이 결제 이력이 있는 경우 제외됩니다.</li>
-  <li>- 리페이 생애 첫 결제 이벤트는 제휴사별 중복 적용되지 않으며 첫 결제한 제휴사 조건에 따라, 회원 당 총 1회만 적립 됩니다.</li>
-  <li>- 리페이 첫 결제를 상기 제휴사 외에 다른 곳에서 한 경우 제외됩니다.</li>
-  <li>- 결제 취소 시 포인트 적립이 제외됩니다.</li>
+  <li>
+    - 이벤트 신청을 하더라도 2019.3.1(금) 이전에 리페이 결제 이력이 있는 경우 적립제외됩니다.
+  </li>
+  <li>
+    - 기간 전 기존 리페이 결제 이력이 있는 경우 제외됩니다.
+  </li>
+  <li>
+    - 리페이 생애 첫 결제 이벤트는 제휴사별 중복 적용되지 않으며 첫 결제한 제휴사 조건에 따라, 회원 당 총 1회만 적립 됩니다.
+  </li>
+  <li>
+    - 리페이 첫 결제를 상기 제휴사 외에 다른 곳에서 한 경우 제외됩니다.
+  </li>
+  <li>
+    - 결제 취소 시 포인트 적립이 제외됩니다.
+  </li>
 </ul>
+
+
 <br><br><br><br>
 <h2>리스트4</h2>
-<p>이런분들에게 추천합니다</p>
-<ol>
-  <li><img src="img/ico_num1.png" alt=""><b>직업상담직 공무원 합격</b>목표인 분</li>
-  <li><img src="img/ico_num2.png" alt=""><b>고용지원관련 업무 취업</b>목표인 분</li>
-  <li><img src="img/ico_num3.png" alt=""><b>학점은행제 20학점 인정</b>받고 싶은 분</li>
-  <li><img src="img/ico_num4.png" alt=""><b>직업상담사 2급 자격증을</b>준비하시는 모든 분들</li>
-</ol>
+<div class="list_type4">
+  <p>이런분들에게 추천합니다</p>
+  <ol>
+    <div class="block4_1">
+      <li><img src="img/ico_num1.png" alt=""><b>직업상담직 공무원 합격</b>목표인 분</li>
+      <li><img src="img/ico_num2.png" alt=""><b>고용지원관련 업무 취업</b>목표인 분</li>
+    </div class="block4_2">
+    <div>
+      <li><img src="img/ico_num3.png" alt=""><b>학점은행제 20학점 인정</b>받고 싶은 분</li>
+      <li><img src="img/ico_num4.png" alt=""><b>직업상담사 2급 자격증을</b>준비하시는 모든 분들</li>
+    </div>
+  </ol>
+</div>
 <br><br><br><br>
+
+
 <h2>리스트5</h2>
 <h3>(주)리베하얀 인강 환불 규정</h3>
 <ol>
@@ -167,62 +196,76 @@
 
 <br><br><br><br>
 <h2>리스트7</h2>
-<img src="img/ico_mall_orange.png" alt="">
-<p><b>리베마트 온라인 몰</b></p>
-<ul>
-  <li><b>기간</b>2019.3.1(금)-3.31(일)</li>
-  <li><b>적립일</b>2019.4.19(금)</li>
-  <li><b>대상</b>R.pay 3만원 이상 첫 결제</li>
-  <li><b>혜택</b>3천P적립</li>
-</ul>
-<img src="img/ico_mall_red.png" alt="">
-<p><b>리베마트 온라인 몰/오프라인 매장</b></p>
-<ul>
-  <li><b>기간</b>2019.3.1(금)-3.31(일)</li>
-  <li><b>적립일</b>2019.4.19(금)</li>
-  <li><b>대상</b>R.pay 3만원 이상 첫 결제</li>
-  <li><b>혜택</b>3천P적립</li>
-</ul>
-<img src="img/ico_mall_blue.png" alt="">
-<p><b>리베마트 온라인 몰</b></p>
-<ul>
-  <li><b>기간</b>2019.3.1(금)-3.31(일)</li>
-  <li><b>적립일</b>2019.4.19(금)</li>
-  <li><b>대상</b>R.pay 3만원 이상 첫 결제</li>
-  <li><b>혜택</b>3천P적립</li>
-</ul>
-<img src="img/ico_mall_red.png" alt="">
-<p><b>리베마트 온라인 몰</b></p>
-<ul>
-  <li><b>기간</b>2019.3.1(금)-3.31(일)</li>
-  <li><b>적립일</b>2019.4.19(금)</li>
-  <li><b>대상</b>R.pay 3만원 이상 첫 결제</li>
-  <li><b>혜택</b>3천P적립</li>
-</ul>
-<img src="img/ico_mall_black.png" alt="">
-<p><b>리베마트 온라인 몰</b></p>
-<ul>
-  <li><b>기간</b>2019.3.1(금)-3.31(일)</li>
-  <li><b>적립일</b>2019.4.19(금)</li>
-  <li><b>대상</b>R.pay 3만원 이상 첫 결제</li>
-  <li><b>혜택</b>3천P적립</li>
-</ul>
-<img src="img/ico_mall_red.png" alt="">
-<p><b>리베마트 온라인 몰</b></p>
-<ul>
-  <li><b>기간</b>2019.3.1(금)-3.31(일)</li>
-  <li><b>적립일</b>2019.4.19(금)</li>
-  <li><b>대상</b>R.pay 3만원 이상 첫 결제</li>
-  <li><b>혜택</b>3천P적립</li>
-</ul>
+
+<div class="list_type7">
+  <ul>
+    <li class="float color1">
+      <div></div>
+      <p><span>리베마트</span>온라인 몰</p>
+      <ul class="list">
+        <li><span>기간</span>2019.3.1(금)-3.31(일)</li>
+        <li><strong>적립일</strong>2019.4.19(금)</li>
+        <li><strong>대상</strong>R.pay 3만원 이상 첫 결제</li>
+        <li class="txt_blue"><strong>혜택</strong>3천P적립</li>
+      </ul>
+    </li>
+    <li class="float color2">
+      <div></div>
+      <p><span>리베마트</span>온라인 몰/오프라인 매장</p>
+      <ul class="list">
+        <li><strong>기간</strong>2019.3.1(금)-3.31(일)</li>
+        <li><strong>적립일</strong>2019.4.19(금)</li>
+        <li><strong>대상</strong>R.pay 3만원 이상 첫 결제</li>
+        <li class="txt_blue"><strong>혜택</strong>3천P적립</li>
+      </ul>
+    </li>
+    <li class="float color3">
+      <div></div>
+      <p><span>리베마트</span>온라인 몰</p>
+      <ul class="list">
+        <li><strong>기간</strong>2019.3.1(금)-3.31(일)</li>
+        <li><strong>적립일</strong>2019.4.19(금)</li>
+        <li><strong>대상</strong>R.pay 3만원 이상 첫 결제</li>
+        <li class="txt_blue"><strong>혜택</strong>3천P적립</li>
+      </ul>
+    </li>
+    <li class="float color4">
+      <div></div>
+      <p><span>리베마트</span>온라인 몰</p>
+      <ul class="list">
+        <li><strong>기간</strong>2019.3.1(금)-3.31(일)</li>
+        <li><strong>적립일</strong>2019.4.19(금)</li>
+        <li><strong>대상</strong>R.pay 3만원 이상 첫 결제</li>
+        <li class="txt_blue"><strong>혜택</strong>3천P적립</li>
+      </ul>
+    </li>
+    <li class="float color5">
+      <div></div>
+      <p><span>리베마트</span>온라인 몰</p>
+      <ul class="list">
+        <li><strong>기간</strong>2019.3.1(금)-3.31(일)</li>
+        <li><strong>적립일</strong>2019.4.19(금)</li>
+        <li><strong>대상</strong>R.pay 3만원 이상 첫 결제</li>
+        <li class="txt_blue"><strong>혜택</strong>3천P적립</li>
+      </ul>
+    </li>
+    <li class="float color6">
+      <div></div>
+      <p><span>리베마트</span>온라인 몰</p>
+      <ul class="list">
+        <li><strong>기간</strong>2019.3.1(금)-3.31(일)</li>
+        <li><strong>적립일</strong>2019.4.19(금)</li>
+        <li><strong>대상</strong>R.pay 3만원 이상 첫 결제</li>
+        <li class="txt_blue"><strong>혜택</strong>3천P적립</li>
+      </ul>
+    </li>
+  </ul>
+</div>
 
 <br><br><br><br>
 <h2>리스트8</h2>
 <h3>Offer</h3>
 <p>Find out more</p>
-
-
-
 <ul>
   <li>
     <a href="">
@@ -274,44 +317,45 @@
   
 <br><br><br><br>
 <h2>리스트9</h2>
-<ul>
+<ul class="list_type9">
   <li>
     <img src="img/ico_list9_1.png" alt="">
-    <b>리베경영연구원</b>
-    <p>Rebe Research Institute</p>
+    <strong>리베경영연구원</strong>
+    <div>Rebe Research Institute</div>
+    <b>Creative Think Leader in Steel and Beyond</b>
+    <p>리베경영연구원은 미래를 선도하는 경영모델과 산업분야에 대한 연구 결과를 지속적으로 산출하고 세계 최고 수 
+    준의 연구와 컨설팅 역량을 갖춘 경영 및 철강산업 전문 연구기관입니다. 또한 창의적인 연구방식과 실용적인 연구 
+    결과를 적기에 제공함으로써 최고 경영자의 의사결정을 지원하고 포스코 그룹의 지속성장과 사회 발전에 기여합니 
+    다.</p>
     <a href="">홈페이지 바로가기</a>
-    <div>Creative Think Leader in Steel and Beyond</div>
-    리베경영연구원은 미래를 선도하는 경영모델과 산업분야에 대한 연구 결과를 지속적으로 산출하고 세계 최고 수 <br>
-    준의 연구와 컨설팅 역량을 갖춘 경영 및 철강산업 전문 연구기관입니다. 또한 창의적인 연구방식과 실용적인 연구 <br>
-    결과를 적기에 제공함으로써 최고 경영자의 의사결정을 지원하고 포스코 그룹의 지속성장과 사회 발전에 기여합니 <br>
-    다.
   </li>
   <li>
     <img src="img/ico_list9_2.png" alt="">
-    <b>리베인재창조원</b>
-    <p>Rebe Group University</p>
+    <strong>리베인재창조원</strong>
+    <div>Rebe Group University</div>
+    <b>창의와 혁신의 글로벌 NO.1 HRD 센터</b>
+    <p>`15년2월, 리베인재창조원은 그룹교육기능을 통합한 종합적인 인재육성 기관으로 새롭게 출범하였습니다. 
+    `69년 제철연수원부터 쌓아온 HRD 노하우를 적극 활용하여 그룹 일체감 조성 및 계층별 리더십 배양, 신뢰의 조직 
+    문화 구축에 주력하고 있습니다. 리베 그룹의 미래 가치를 창조하는 인재를 육성한다는 리베인재창조원의 미
+    션에 따라 변화와 혁신을 지원하며 Global Top Tier 수준의 교육전문기관이 되겠습니다.</p>
     <a href="">홈페이지 바로가기</a>
-    <div>창의와 혁신의 글로벌 NO.1 HRD 센터</div>
-    `15년2월, 리베인재창조원은 그룹교육기능을 통합한 종합적인 인재육성 기관으로 새롭게 출범하였습니다. <br>
-    `69년 제철연수원부터 쌓아온 HRD 노하우를 적극 활용하여 그룹 일체감 조성 및 계층별 리더십 배양, 신뢰의 조직 <br>
-    문화 구축에 주력하고 있습니다. 리베 그룹의 미래 가치를 창조하는 인재를 육성한다는 리베인재창조원의 미 <br>
-    션에 따라 변화와 혁신을 지원하며 Global Top Tier 수준의 교육전문기관이 되겠습니다.
   </li>
   <li>
     <img src="img/ico_list9_3.png" alt="">
-    <b>리베공과대학교</b>
-    <p>RebeTECH</p>
-    <a href="">홈페이지 바로가기</a>
-    <div>가치창출대학 POSTECH</div>
-    리베공과대학교는 1986년, 대한민국 최초의연구중심대학으로 문을 열었습니다. 교육, 연구, 산학협동을 통해 국 <br>
-    가와 인류에 봉사하겠다는 건학이념 아래 30여년전 우리 대학사회의 연구 문화에 불씨를 지핀 리베공과대학교는 <br>
+    <strong>리베공과대학교</strong>
+    <div>RebeTECH</div>
+    <b>가치창출대학 POSTECH</b>
+    <p>리베공과대학교는 1986년, 대한민국 최초의연구중심대학으로 문을 열었습니다. 교육, 연구, 산학협동을 통해 국 
+    가와 인류에 봉사하겠다는 건학이념 아래 30여년전 우리 대학사회의 연구 문화에 불씨를 지핀 리베공과대학교는
     도전과 혁신을 거듭하며오늘날 아시아 정상급의 대학으로 자리매김했습니다.
-    우리나라 고등교육계와 과학기술계를 전도하며 짧은 기간 최고 명문대학으로 성장한 리베공과대학교는 또 다른 <br>
-    30년을 준비하며 ‘가치창출대학(Value Creating University)’이라는 새로운 지향점을 향해 나아가고있습니다. <br>
-    리베공과대학교는 ‘튼실한 학부교육’, ‘빼어난 연구’, ‘활발한 창업과 창직’에 힘쓰며 가치창출의 새로운 길을 열어 <br>
-    대한민국의 사회경제적 발전에 직접적으로 기여하겠습니다.  
+    우리나라 고등교육계와 과학기술계를 전도하며 짧은 기간 최고 명문대학으로 성장한 리베공과대학교는 또 다른 
+    30년을 준비하며 ‘가치창출대학(Value Creating University)’이라는 새로운 지향점을 향해 나아가고있습니다.
+    리베공과대학교는 ‘튼실한 학부교육’, ‘빼어난 연구’, ‘활발한 창업과 창직’에 힘쓰며 가치창출의 새로운 길을 열어 
+    대한민국의 사회경제적 발전에 직접적으로 기여하겠습니다.</p>  
+    <a href="">홈페이지 바로가기</a>
   </li>
 </ul>
+
 <br><br><br><br>
 <h2>리스트10</h2>
 <h3>엄닭몰 상품보기</h3>
