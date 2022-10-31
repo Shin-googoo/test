@@ -8,6 +8,7 @@ body { padding:30px;}
 legend {display: none;}
 fieldset {border: none;}
 
+/* 표 1 */
 .table_type1 {border-top: 2px solid #12a3cc; font-family: 'Nanum Gothic', sans-serif;
   font-family: 'Noto Sans KR', sans-serif}
 .table_type1 thead tr {border-bottom: 1px solid #b2b2b2;}
@@ -21,7 +22,7 @@ fieldset {border: none;}
 .table_type1 tbody .left img {vertical-align: -3px;}
 
 
-
+/* 표 2 */
 .table_type2 {font-family: 'Nanum Gothic', sans-serif;
   font-family: 'Noto Sans KR', sans-serif}
 .table_type2 thead tr {border-top: 1px solid #000; background-color: #f2f2f2; height: 44px; }
@@ -34,7 +35,16 @@ fieldset {border: none;}
 .table_type2 tbody .text_red {color:#e51837;}
 
 
+/* 표 4 */
+.table_type4 {border-top:1px solid #767676; 
+  border-bottom:1px solid #767676; font-family: 'Noto Sans KR', sans-serif;}
+.table_type4 {width:720px; height:50px; box-sizing:border-box;}
+.table_type4 tbody tr th {padding:15px 20px; border-bottom:1px solid #eee; background:#f6f6f6; font-size:13px; text-align:left; line-height:50px;box-sizing:border-box;}
+.table_type4 tbody tr td {padding:0 0 0 12px; border-bottom:1px solid #eee; box-sizing:border-box;}
+.table_type4 tbody tr td img {vertical-align:-2px;}
+.table_type4 .border_bottom {border-bottom:1px solid #767676;}
 
+/* 표 5 */
 .table_type5 { border-top: 2px solid #333; font-family: 'Nanum Gothic', sans-serif;
   font-family: 'Noto Sans KR', sans-serif}
 .table_type5 thead tr {background-color: #f8f8f8; border-bottom: 1px solid #c7c7c7;}
@@ -45,7 +55,15 @@ fieldset {border: none;}
 .table_type5 tbody td {padding: 20px 0; font-size: 16px; color:#333; font-weight:400; text-align: center; line-height: 24px;}
 
 
+/* 표 6 */
+.table_type6 {width:1000px; height:622px; border-top:2px solid #000; border-bottom:2px solid #000; box-sizing: border-box; font-family: 'Nanum Gothic', sans-serif;}
+.table_type6 tbody td {border-left:1px solid #000;}
+.table_type6 tbody th {border-bottom:1px solid #ccc; padding:0 0 0 21px; background:#ededed; font-size:15px; text-align:left; line-height:25px;}
+.table_type6 tbody td {padding:20px 0 20px 20px; border-bottom:1px solid #ccc; font-size:15px; line-height:25px;}
+.table_type6 tbody th img {padding:0 3px 0; vertical-align:middle;}
+.table_type6 tbody td img {padding:0 4px 0; vertical-align:middle;}
 
+/* 표 9 */
 .table_type9 {font-family: 'Nanum Gothic', sans-serif;
   font-family: 'Noto Sans KR', sans-serif}
 .table_type9 thead tr {border-top: 2px solid #393d46;
@@ -56,7 +74,7 @@ font-weight:500; height: 57px;}
 .table_type9 tbody tr {border-bottom:1px solid #acb0b6;}
 .table_type9 tbody tr td {padding: 15px 0 15px 19px; border-left:1px solid #acb0b6; height: 29px;}
 .table_type9 tbody tr td b {height: 32px;}
-
+.table_type9 tbody .link_btn {display:inline-block; width:102px; height:23px; border:1px solid #000; text-decoration:none;}
 
 
 /* 표 11 */
@@ -68,6 +86,7 @@ font-weight:500; height: 57px;}
 .table_type11 tbody .text_center {text-align:center;}
 .table_type11 tbody td b {padding:0 5px 0 0; font-size:17px; font-weight:800; color:#333;}
 .table_type11 tbody td span {padding: 0 65px 0 0;}
+
 
 
 /* 리스트 1 */
@@ -126,6 +145,24 @@ font-weight:500; height: 57px;}
 .list_type9 li img {position: absolute; top:30px; left:0;}
 .list_type9 li a {position:absolute; top:40px; right:40px;
 width:176px; height:40px; border: 1px solid #005891; text-decoration: none; text-align: center; line-height:38px; box-sizing:border-box; font-size:15px; color:#005891; font-weight:700;} 
+
+
+/* 리스트 10 */
+.list_type10 {width: 1279px; text-align:center;}
+
+
+/* 리스트 15 */
+.list_type15 {width:1000px; font-family: 'Noto Sans KR', sans-serif;}
+.list_type15 h3 {float:left; padding: 0 0 22px 22px; font-size:25px; color:#121314; font-weight:normal;}
+.list_type15 .btn_board {display:inline-block; border: 1px solid #777; width:120px; height:31px; text-decoration:none; color:#121314; font-size: 16px; text-align:center; line-height:31px;}
+.list_type15 .btn_group {float:right;}
+.list_type15 .faq_list { border-top:2px solid #000; clear:both;}
+.list_type15 .faq_list li {border-bottom: 1px solid #ccc;}
+.list_type15 .faq_list li a {display:block; padding:0 0 0 19px; background:url(../img/btn_down.png) no-repeat right 21px center; line-height:52px; font-size:15px; color:#000; text-decoration:none;}
+.list_type15 .faq_list li img {padding: 0 22px 0 0; vertical-align:middle;}
+.list_type15 .faq_list div {position:relative; padding:15px 15px 15px 76px; background:#e7e7e7; line-height: 22px; color:#555; font-size:16px;}
+.list_type15 .faq_list div .answer {position:absolute; left:20px; top:34px;}
+
 
 
 /* 폼 1 */
