@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>display</title>
+</head>
+<body>
+  <style>
+    .a {display:inline; width: 200px; height:200px; border: 1px solid red;}
+    span {display:block; width: 200px; height:200px; border: 1px solid red};
+    .tab {text-align:center; list-style:none; font-size:0;}
+    .tab li {display:inline-block; font-size:20px;}
+    /* 폰트사이즈를 0을 준다음 li요소에 다시 크기를 주면 1px 띄어지던 현상을 없앨수 있다.*/
+    /*인라인, 인라인블럭 요소가 줄내림 할 경우 1px 공간이 띄어지는 현상 */
+    .bb {font-size:0;}
+    .bb b {font-size:20px;}
+</style>
+  <div class="a">블럭요소</div>
+  <span>인라인요소</span>
+
+  <ul class="tab">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+  <p class="bb">
+    <b>1</b>
+    <b>2</b>
+    <b>3</b>
+    <b>4</b>
+  </p>
+
+  <style>
+.table {display:table; border-collapse: collapse; border-spacing: 0; border: 10px solid red; width:400px; height:200px;}
+.table div {display:table-cell; width:50%; border:2px solid blue; text-align:center; 
+vertical-align:middle;}
+  </style>
+  <div class="table">
+    <div>a<br>123</div>
+    <div>b</div>
+  </div>
+</body>
+</html>

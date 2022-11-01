@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>counter</title>
+</head>
+<body>
+<style>
+  .counter {counter-reset:number;}
+  .counter li:before {content:counter(number); counter-increment:number 1;}
+  /* 부모로부터 숫자가 나열될 건데 li의 before부터 나열*/
+  /* 숫자를 쓰는 공간은 content에 counter을 만들어 준다. */
+</style>
+
+  <ul class="counter">
+    <li>텍스트</li>
+    <li>텍스트</li>
+    <li>텍스트</li>
+    <li>텍스트</li>
+    <li>텍스트</li>
+    <li>텍스트</li>
+  </ul>
+</body>
+</html>

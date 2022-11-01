@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>트랜스폼</title>
+</head>
+<body>
+  <style>
+    body {padding:100px;}
+    li { width:300px; height:300px; margin:20px; border:2px solid red; transition:all .5s; list-style:none;}
+    li:nth-child(1):hover {transform:rotate(360deg);}
+    li:nth-child(2):hover {transform:rotateX(45deg);}
+    li:nth-child(3):hover {transform:rotateY(180deg);}
+    li:nth-child(4):hover {transform:scale(1.5);}
+    li:nth-child(5):hover {transform:scaleX(0.4);}
+    li:nth-child(6):hover {transform:scaleY(1.2);}
+    li:nth-child(7):hover {transform:skew(-20deg, 30deg);}
+    li:nth-child(8):hover {transform:skewX(20deg);}
+    li:nth-child(9):hover {transform:skewY(30deg);}
+    li:nth-child(10):hover {transform:translate(40px, 50px);}
+    li:nth-child(11):hover {transform:translateX(50px);}
+    li:nth-child(12):hover {transform:translateY(50px);}
+    li:nth-child(13):hover {transform:rotate(45deg) scale(1.5) translate(50px, 10px);}
+    .aa {transform-origin: left top;}
+    li:nth-child(14):hover {transform:rotate(45deg); transform-origin: left top;}
+    li:nth-child(15):hover {transform:;}
+    li:nth-child(16):hover {transform:;}
+    li:nth-child(17):hover {transform:;}
+
+    li.trans3d {transform-style: preserve-3d; }
+    li.trans3d div {perspective:1300px;}
+    li.trans3d div p {width:200px; height:200px; border:2px solid blue; transition:all .5s;}
+    li.trans3d div p:hover {transform:rotateX(45deg)}
+  </style>
+<ul>
+  <li>rotate</li>
+  <li>rotateX</li>
+  <li>rotateY</li>
+  <li>scale</li>
+  <li>scaleX</li>
+  <li>scaleY</li>
+  <li>skew</li>
+  <li>skewX</li>
+  <li>skewY</li>
+  <li>translate</li>
+  <li>translateX</li>
+  <li>translateY</li>
+  <li>transform</li>
+  <li class="aa">transform-origin</li>
+  <li class="trans3d">
+    <div>
+      <p></p>
+    </div>
+  </li>
+
+</ul>
+
+</body>
+</html>
