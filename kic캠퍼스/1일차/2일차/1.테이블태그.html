@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>7.테이블태그.html</title>
+ </head>
+ <body>
+
+<center>
+<h1>테이블의 위치를 가운데로</h1>
+<!-- 
+표를 작성 -> border=n(선의 굴기), width,height(표의 크기)
+                픽셀수(숫자), 상대적인 단위(%)
+                align="left,center,right"
+                table heading(th) -> 정가운데 배치, 글자는 굵게
+                tr -> 전체 행에 대한 속성을 부여할 때
+                td -> 특정항목만 부여할 때
+                cellspacing -> 쉘과 쉘사이의 거리(ㅇ)
+                cellpadding -> 쉘과 문자열 사이의 거리(ㅇ)
+-->
+<table border="1" width="70%" height="100%"
+      cellspacing="0px" cellpadding="20px">
+	<tr bgcolor="cccc99"><!-- 행 -->
+		<!--  <td><center><b>월</b></center></td> 열 -->
+    <th>월</th>
+		<th>수</th>
+		<th>금</th>
+	</tr>
+  <tr>
+    <td align="left" bgcolor="yellow">왼쪽</td>
+    <td align="center" bgcolor="green">가운데</td>
+    <td align="right" bgcolor="#3333ff">오른쪽</td>
+  </tr>
+</table>
+</center>
+ </body>
+</html>

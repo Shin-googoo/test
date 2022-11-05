@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7.CSS의 개요 및 특징(1)</title>
+  <style type="text/css">
+    /*
+    embeded 방식
+    2.html문서에서 공통으로 사용하는 색깔,이미지,글꼴 등을 head영역에 선언해서 사용하는 방법
+    스타일 적용태그(=선택자)... {속성명:속성값}
+
+    h4,h3 {font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+          color:red;
+          font-size:27px;
+          }
+    */        
+    
+  </style>
+  <!--
+  3.파일로 자주 사용 되는 스타일시트를 따로 만들어서 불러오기
+  rel - 스타일시트 파일
+  type - 텍스트 형태의 css파일  
+  href - 경로를 포함한 스타일시트 파일명.css
+  -->
+  <link rel="stylesheet" type="text/css" href="test.css">
+</head>
+<body>
+  <header><!-- 전체문서의 타이틀 제목 -->
+    <h3>CSS의 개요 및 특징</h3>
+  </header>
+<section><!-- 본문의 논리적인 단위 -->
+  <header><!-- 소제목 -->
+    <!--
+      1.인라인방식(style속성을 이용)
+      style="속성명:값; 속성명2:값2; ......."
+      특정한 태그에만 스타일을 적용시킬때 사용
+      동일한 태그에 스타일이 적용 되는 경우 우선순위가 높다.
+      (적용이 먼저 된다.(글자체))
+    -->
+    <h4 style="font-family:궁서체; background:yellow; color:red;">스타일시트의 장점</h4>
+  </header>
+  <article>
+    <ol>
+      <li>디자인의 시간이 줄어들 수 있다.</li>
+      <li>문서의 로딩속도가 빨라질 수 있다.</li>
+    </ol>
+  </article>
+
+  <article>
+    <h4 style="font-family:궁서체; background:yellow; color:red;">용어정리</h4>
+    <ol>
+      <li>
+        스타일(style):문서의 글꼴,크기,간격 등의 출력형태(레이아웃)에 영향을 미치는 요소
+      </li>
+      <li>
+        스타일시트(Style Sheet):스타일의 내용만을 별도로 모아서 head태그영역에 선언된 형태
+      </li>
+    </ol>
+  </article>
+</section>
+</body>
+</html>

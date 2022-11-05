@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.입력양식폼.html</title>
+</head>
+<body>
+  <h3>웹프로그래밍을 하기위한 입력양식</h3>
+  <!-- 
+  form(전송폼)
+  method ="데이터를 전송할때 전송방식을 지정할때 사용"(Get or Post)
+    get = 사이트 접속(기본), 사이트 이동(방문) - url창에 정보노출
+    post = 데이터입력(회원가입창,로그인창,게시판의 글쓰기)
+         -> url창에 정보노출X
+  action = "전송되는 페이지이름"(.jsp, .php, .asp)
+         -> 데이터저장       
+  type="text" - 입력을 받는 부분
+  type="password" (암호)
+  name="입력받은 값을 내부적으로 구분하는 키워드(이름)(변수)"
+        자바스크립트
+  -->
+<form method="post" action="register.jsp">
+  이름: <input type="text" name="name" size="10"><br>
+  암호: <input type="password" name="pw" size="10"><br>
+  메일: <input type="" name="email" size="10"><br>
+  <p>
+  <!--
+    성별)(둘중에 하나값을 선택) type="radio" checked속성을 이용해서
+    디폴트지정
+    결제선택: 카카오페이, 카드, 현금....
+  -->
+  <input type="radio" name="gender" checked="checked">남자
+  <input type="radio" name="gender">여자
+  <p>
+  <!--
+    다중선택(동시에 여러개를 선택)
+  -->
+  취미:<input type="checkbox" name="">바둑
+      <input type="checkbox" name="">영화감상
+      <input type="checkbox" name="">야구
+      <p>
+  <!--
+    정해져있는 값 중에서 하나를 선택(select)태그(=목록상자(=콤보박스))
+    항목도 디폴트를 정할 수 있다. 
+    (첫 항목을 지정하고 싶다면 selected속성을 부여한다.)
+  -->      
+  취업희망: <select name="job">
+            <option>웹프로그래머</option>
+            <option selected>빅데이터(파이썬)</option>
+            <option>DB 전문가</option>
+            <option>보안 전문가</option>
+          </select>
+  <p>
+  <!--
+    textarea의 가로 세로 줄 수
+    여러 줄을 입력을 받을때 textarea rows ="행수" cols ="열수"
+    value="버튼의 이름"
+  -->
+  경력사항:<p>
+  <textarea name="career"cols="40" rows="10">
+  </textarea><p>
+  <input type="button" value="회원가입" onclick="alert('회원가입준비중')">
+  <input type="submit" value="회원가입2">
+  <!--자동으로 전송하는기능-->
+  <input type="reset" value="다시입력">
+  <!--자동으로 처음부터 다시 입력을 받고 싶을때 사용-->
+</form>
+</body>
+</html>

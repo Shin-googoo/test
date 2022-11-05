@@ -1,0 +1,9 @@
+/*
+외부에서 자주 사용 되는 스타일 적용문서 - 불러올 용도
+*/
+h4,h3,ol {
+  font-family:돋움체;
+  font-size:14px;
+  color: green;
+  font-weight:bold;
+}

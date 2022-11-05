@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6.video,audio</title>
+</head>
+<body>
+  <!--  
+  video(영상), width,height - 동영상의 넓이, 높이를 지정
+              src - 동영상파일의 경로를 지정(상대경로)
+              poster - 동영상이 화면에 나오지 않을때 대신 표시할  그림을 지정하고 싶을때 사용하는 속성(미리보기 화면)
+  embeded태그  html4    
+          
+  -->
+  <video width="640px" height="368px" controls>
+    <source src="../screen/spring.mp4" type="video/mp4"></source>
+  </video>
+  <p>
+  <video src="../screen/ThankYou.mp4" controls> 
+  </video><p>
+
+    <video src="../screen/ThankYou.mp4" controls
+    poster="../images/poster.jpg"> 
+    </video><p>
+    <!-- 음악파일 -->
+    <img src="../screen/landscape.jpg" alt="">
+    <audio controls>
+      <source src="../screen/old_melody.mp3"></source>
+    </audio>
+</body>
+</html>

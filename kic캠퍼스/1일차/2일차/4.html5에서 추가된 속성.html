@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4.html5에서 추가된 속성</title>
+</head>
+<body>
+  <form name="frm">
+    <fieldset><!--입력받는 부분을 그룹으로 묶어줌-->
+      <legend>로그인창</legend><!--묶어줄 때 타이틀 제목-->
+      이름: <input type="text" name="name" size="10"><br>
+      암호: <input type="password" name="pw" size="10"><br>
+      메일: <input type="text" name="email" size="10"><p>
+      <input type="submit" value="로그인">
+    </fieldset><p>
+<!--
+  유효성검사 - 올바른 값만 받을수 있도록 규칙을 정해주는것
+  1. required - 필수입력(전송버튼을 누렀을때 적용됨) > 반드시 입력!
+  2. placeholder - 툴팁 물자열표시(미리보기 기능)
+                 - 데이터 입력양식을 보여줄때
+  3. autofocus="autofocus" 
+  - 입력받은 값 중에서 특정항목에 커서를 넣고 싶을때 사용
+  input type="email" 이메일 전용박스 - @까지 확인해줌
+-->
+    <fieldset>
+      <legend>html5에 추가된 속성</legend>
+      사용자id: <input type="text" name="id" autofocus="autofocus" size="10" required><br>
+      암호: <input type="password" name="pw" size="10" required><br>
+      이메일: <input type="email" name="email" size="10" required placeholder="test@abc.com"><p>
+      <!--추가-->
+      원하는 주문 갯수를 설정해주세요<br>
+      <!--
+        input type="number"(숫자 입력받을때 사용)
+        min="최소값" max="최대값" step="증가/감소" value="현재값"
+        range - bar을 이용해 움직이는 거리
+      -->
+      <input type="number" min="1" max="20" step="2" value="1" ><br>
+      <input type="range" min="1" max="20" step="2" value="1" ><br>
+      <input type="search"><br>
+      <!-- 검색(입력한 값을 취소시 X를 클릭) -->
+      원하는 색깔을 선택하세요
+      <input type="color"><p> <!--크롬만 가능-->
+      원하는 날짜와 시간을 설정해주세요<br>
+      <input type="date"><br>
+      <input type="time"><br>
+      <input type="submit" value="로그인">
+    </fieldset><p>  
+    
+  </form>
+</body>
+</html>
