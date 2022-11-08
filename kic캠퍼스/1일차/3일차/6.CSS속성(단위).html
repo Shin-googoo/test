@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6.CSS속성(단위)</title>
+  <!--
+  CSS에서 사용하는 단위
+  1.절대단위- cm,mm,pt
+  2.상대단위- px(모니터상의 점의 갯수)
+            100px(해상도에 따라서),%(넓이),em
+
+  기본단위-> px(글자를 기준)-> 1em=100%=16px
+  -->
+<style>
+div#test{
+  font-size:20pt;
+  border:dotted 10px green;/* 선의 종류,굴기,색깔 */
+}
+p#test > p { 
+/* 부모태그 > 자식태그(부모태그 밑에 자식태그가 존재한다면) */
+  font-size:2em;/* 32px */
+  text-decoration:underline;
+  color: red;
+}
+</style>
+</head>
+<body>
+  <div>단위연습</div>
+  <div id="test"><!-- 중첩(=계층적인 구조(Element(태그),Attribute(속성)->)) -->
+    여기는 상위 div
+    <p>여기는 하위 p요소</p>
+    <p>여기는 하위 p요소2</p>
+  </div>
+  <p>여기는 하위 p요소2</p>
+</body>
+</html>

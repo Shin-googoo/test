@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.css의 id선택자</title>
+  <style>
+  /*
+  id선택자 -> 전체문서에서 유일한 값을 부여해서 스타일을 적용시키는 방법
+  형식)태그명#id(임의의 작성한 글자)->선택자
+  1.태그명을 생략해도 스타일 적용이 가능하다.->중복X
+  2.중의적으로 자바스크립트언어에서도 사용(특정태그를 가리키는 예약어)
+
+  text-indent(들여쓰기)
+  */
+  div#x {
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:50pt;
+    font-weight:bold;
+    font-style:oblique;
+    background-color:lime;
+  }
+  h1#y {
+    color:blue;
+    text-indent:200px;
+  }
+  </style>
+</head>
+<body>
+  <h2>id값은 유일한 값이기 때문에 중복허용x</h2>
+  <h1>h1태그</h1><!--기본값(디폴트값)-->
+  <h1 id="y">h1태그(id=y)</h1>
+
+  <div>div태그</div>
+  <div id="x">div태그(id=x)</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8.CSS선택자용(클래스).html</title>
+  <link rel="stylesheet" href="">
+</head>
+<style>
+  /*
+  클래스선택자 - 서로 같은 태그를 구분해서 스타일을 적용시키고 싶을때 사용
+  -> 형식)태그명.클래스명 - 선택자를 구분 가능
+      태그명을 생략하면 모든 태그에 적용되니 유의->.클래스명(임의 단어)
+  같은 태그를 서로 다른 스타일로 적용 -> 항상 맨 마지막이 적용
+
+  font-style:글꼴모양(italic)
+  text-decoration:글꼴장식 - underline,overline(글자위에)
+                          line-through(글자 중간에 선긋기)
+  text-align:수평정렬(left,center,right)
+  vertical-align:수직정렬(top,middle,bottom)
+  */
+  div.a {color:brown; font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-weight:bold;}
+  div.b {font-style:italic; font-family:돋움체; font-size:23pt;}
+  .c {text-align:center; text-decoration:overline;}
+/*
+태그명을 생략하면 특정태그가 아닌 이 클래스선택자를 가진 모든 태그에 적용  */
+</style>
+<body>
+<!-- div(영역을 설정할때 많이 사용 동일한 태그를 사용할 경우) -->  
+<div class="a">DIV태그</div> 
+<div class="b">DIV태그2</div>
+<div >DIV태그3</div>
+<hr>
+<h2>서로 다른 여러개의 태그에 공통의 스타일 적용도 가능</h2>
+<a href="" class="c">A태그(class=c)적용</a><br>
+<i class="c">i태그(class=c)적용</i><br>
+<h1 class="c">h1태그(class=c)적용</h1><br>
+<div class="c">div태그(class=c)적용</div><br>
+<span class="c">span태그(class=c)적용</span><br>
+</body>
+</html>
