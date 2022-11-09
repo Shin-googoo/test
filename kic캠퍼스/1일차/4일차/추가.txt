@@ -1,0 +1,15 @@
+
+
+ var 변수명=값(중복선언이 가능)
+
+ ex) var test="imsi";
+       var test="abc"; (O)
+
+ let 변수명=값=>es6문법(최신 버전의 문법)
+                   (중복선언이 안됨)
+ let test="imsi";
+ let test="abc"; (X)
+
+  test="abc"; (O)
+
+  초급->중급->고급(es6, += =>` `

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5.변수의 개요 및 작성법(2).html</title>
+  <script>
+  //document.write("화면에 출력하는 함수를 이용해서 출력할 때")
+  //형식) var변수명=정장할 값(문자,숫자,논리적인 값)
+  //변수명을 작성할때 특수기호-> $,_만 되고 나머진x(@,#~)
+
+  //var name ="홍길동"; // name변수를 만들어주고 홍길동 값을 저장해라
+  //name="김길동";
+  //형식) var 변수명=prompt("출력할 메세지","디폴트문자열")
+  var name=prompt("당신의 이름을 입력해주세요?","김길동");
+
+  var age =prompt("당신의 나이를 입력!");
+
+  alert(name);
+  alert(age);
+  document.write("body부분에 출력하는 문장<p>");
+  document.write("name변수에 저장된 값은 "+name+" 입니다.<br>"); //+문자연결합
+  document.write("당신의 나이는 "+age+" 살이군요!<br>");
+  </script>
+</head>
+<body><!-- 화면에 출력시켜주는 영역(document)-->
+  <ol>변수(Variable)개요 및 특징
+    <li>입출력 프로그램(입력을 받아서 처리해주는 프로그램)</li>
+    <li>
+    변수-> 사용자로부터 값을 입력(문자,숫자,논리적인 값(참,거짓))을 받아서 저장(메모리에 저장) RAM공간
+    </li>
+    <li>
+    변수명을 줄때 대,소문자를 구분(명사)(name,Name,NAME)
+    -> 주로 소문자위주로 선언(지시)
+    </li>
+    <li>var 변수명(단어)=저장할 값</li>
+    <li>변수의 값은 중간에 변경이 되면 변경된 값을 새로 저장</li>
+  </ol>
+</body>
+</html>

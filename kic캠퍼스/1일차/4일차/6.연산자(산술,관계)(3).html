@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6.연산자(산술,관계)(3)</title>
+  <script>
+  /*
+  연사자-> 연산(=계산)을 하기위한 기호
+
+  1.산술연산자-> +, -, *, /, %(나머지)
+  -> 3(계산이 되는 대상자)+5=8(이항연산자)
+  단항산술연산자-> 5, -5(부호), ++, --(증감연산자)
+
+  2.관계연산자(=비교연산자)-> >,>=,<,<=
+                      4>5 (false), 5>4(true)
+                      5=5(x)  5==5(o),  5!=4(같지 않다. !=)
+  */
+  </script>
+</head>
+<body>
+  <script>
+  document.write("산술,관계연산자 <br>");
+  /*
+  언제 변수를 사용해야 되는지?
+  1)입출력 프로그램을 작성하는 경우-> 변수,몇개?
+  2)계산할 때-> 변수 필요
+  3)현재 프로그램의 상태를 기억시킬 필요가 있을때
+
+    var mouseclick=false;
+
+    if(마우스를 눌렀다면)
+      그림을 그려라
+
+  */
+
+  var res=20+30;
+  document.write("res=>"+res+"<br>"); //50
+
+  //-
+  res=20-30;
+  document.write("res=>"+res+"<br>"); //-10
+
+  //*
+  res=20*30;
+  document.write("res=>"+res+"<br>"); //600
+
+  // /
+  res=20%30;
+  document.write("res=>"+res+"<br>"); //20
+
+  //관계연산자
+  /* var a=10;
+     var b=5; */
+  //변수를 선언할때 var 변수명=값, 병수명2=값....;
+  var a=10,b=5;
+  var c=a>b; //10>5 -> true
+  alert(c); //계산 중간에 확인용으로 많이 사용
+  //주의할 점
+  c=(a==b); //연산자 우선순위때문에 먼저 계산이 되는 대상자액()적용
+  c=(5+3)*7; //56-> 저장되는 값에 따라서 자료형이 자동으로 변경된다.
+  alert(c);  
+</script>
+</body>
+</html>

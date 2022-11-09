@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7.연산자(대입(=배정),논리연산자)(4)</title>
+<!--
+대입(=배정)연산자-> =,+=.-=,*=./= (축약표시)
+자기자신의 변수에 값을 더하거나,빼거나,곱하거나,나눌때 축약해서 표현한 연산자
+ex) a=b+c
+var a=2;
+a=a+2; -> a+=2;
+a=a-2; -> a-=2;
+a=a*2; -> a*=2;
+a=a/2; -> a/=2;
+컴퓨터의 연산속도가 빨라진다.(산술연산자 계산-> 대입연산자) 연산자 2개
+논리연산자->참,거짓을 판별할 수 있는 연산자(true or false)
+and(그리고)        or(또는)둘중의 하나    Not(부정)
+  &&                  ||               !
+
+  T   T T              T  F
+  T   F F              T  F
+  F   T F              T  F
+  F   F F              F  T
+-->
+</head>
+<body>
+  <script>
+    var su1=(2>5)&&(5<7) // F && T==> F
+    document.write("su1=>"+su1+"<br>"); //F
+
+    var su2=(2>5)||(5<7) // F || T==> T
+    document.write("su2=>"+su2+"<br>");
+
+    document.write("(!su2)=>"+(!su2)+"<p>"); //T->F, F->T
+
+    //대입연산자
+    var result=20;
+    //result=result+20; 단순하고 반복적으로 작성하는 구문=> 함수
+    result+=20; // 효율적으로 작성(->소스코드를 줄이는 효과)
+    document.write("result=>"+result+"<br>"); //40
+
+    //-
+    result-=20;
+    document.write("result=>"+result+"<br>"); //40-20=20
+
+    //*
+    result*=20;
+    document.write("result=>"+result+"<br>"); //20*20=400
+
+    // /
+    result/=20;
+    document.write("result=>"+result+"<br>"); //400/20=20
+  </script>
+  <script>
+    var str ="<table border='1'>"
+      str += "<tr>";
+      str += "<td>1</td><td>2</td><td>3</td>";
+      str += "<tr>";
+      str += "</table>";
+      document.write(str);
+  </script>
+</body>
+</html>
