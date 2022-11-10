@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.내장함수(confirm)</title>
+<!--
+형식)var 변수명=confirm("동의를 구하는 메세지");//매개변수 o 반환값o
+
+-->
+</head>
+<body>
+  <script>
+    var result=confirm("정말로 탈퇴하시겠습니까?");
+    //매개변수1,반환값o
+    //alert(result)
+
+    if(result==true)//확인버튼을 눌렀다면 반환값(변수)true,false
+    //인 경우에 true인 경우에는 조건식에서 생략이 가능합니다.
+      alert("당신은 정상적으로 회원탈퇴\n처리되었습니다.");
+    else //입력하지 않았다면
+      alert("회원탈퇴가 취소되었습니다.");
+  </script>
+</body>
+</html>

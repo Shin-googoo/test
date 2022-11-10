@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>과제</title>
+  <script>
+   function toggle(){ 
+    const n=document.f.b_name.value;
+      if (n == "네이버") {
+        document.f.b_name.value = "다음";
+      } else {
+        document.f.b_name.value = "네이버";
+      }
+    }
+  </script>
+</head>
+<body>
+  <form name="f" method="post" action="">
+    <h2>버튼을 클릭하세요!</h2>
+    <input type="button" name="b_name" value="네이버" onclick="toggle()">
+  </form>
+</body>
+</html>

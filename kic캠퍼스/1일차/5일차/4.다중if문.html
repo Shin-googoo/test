@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4.다중if문</title>
+  <!--
+조건식에 따라서 처리할 문장이 하나이상인 경우-> 다중if문
+->너무 길면 실행속도가 느려진다. ex)사다리타기
+
+if(조건식1){ //성적처리
+  수행1
+}else if(조건식2){
+  수행2
+}else if(조건식3){
+  수행3
+}else if(조건식4){
+  수행4
+}else
+  수행n;
+  -->
+</head>
+<body>
+  <script>
+    var qs=prompt("당신이 좋아하는 언어를 선택? 1.자바 2.자바스크립트 3.C언어");
+    //&&(and),||(or)또는
+    //if(id==user_id && pw==user_pw)-책70페이지 
+    //->if문 2개를 하나로
+    if((qs=="자바") || (qs==1))
+      alert("당신은 자바를 좋아하시는 군요");
+    else if((qs=="자바스크립트") || (qs==2))
+      alert("당신은 자바스크립트를 선택했군요");
+    else //else if(qs=="C언어")생략
+      alert(("C언어 선택하셨군요") || (qs==3));  
+  </script>
+</body>
+</html>

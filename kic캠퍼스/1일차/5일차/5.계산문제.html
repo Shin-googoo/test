@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5.계산문제</title>
+  <script>
+    function sum(){
+      //alert("sum()호출됨");
+//형식) window.document.폼의이름(myForm).입력양식항목이름(kor).하위속성명(value)
+    const k=document.myForm.kor.value; //코딩의 간결성
+    const e=document.myForm.eng.value;
+    const m=document.myForm.math.value;
+    const total=Number(k)+Number(e)+Number(m);
+    //웹상에서는 입력받는 값의 기본값->문자열->숫자로 변환(Number("문자열상수"))
+    alert("합계->"+total);
+    //alert(k);
+    }
+  </script>
+</head>
+<body>
+<form name="myForm" method="post" action="cal.jsp">
+  국어:<input type="text" name="kor" placeholder="국어점수" ><p>
+  영어:<input type="text" name="eng" placeholder="영어점수"><p>
+  수학:<input type="text" name="math" placeholder="수학점수"><p>
+<input type="button" value="점수출력" onclick="sum()">
+<input type="reset" value="지우기">
+</form>
+</body>
+</html>

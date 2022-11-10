@@ -1,0 +1,350 @@
+5일차(스크립트의 제어문,함수,이벤트처리)
+
+**함수개요->작성->사용** 
+**이벤트 처리 방법**
+======================
+1.함수의 개요 및 작성,사용법(1).html
+
+
+ <title>1.함수의 개요및 작성법.html</title>
+  <script>
+   /* 함수를 작성하는 문장
+   
+      함수(=function)->어떤 기능을 가진 최소한의 작업단위
+	                         (ex 계산기능,저장기능,출력기능,,,)
+	                        (프로그램을 작성하기위한 최소한의 작업단위 구성요소)
+					ex)프로그램(=회사)==>운영==>사람(직원)(함수)
+		
+		왜 함수를 작성하는가?
+		 단순하고 반복적인 일을 효율적으로 처리하기위해서 작성=>소스코드가 줄여주는 효과
+		 //1.매개변수(함수가 해야할 일)         2.반환값(보고 O or X)
+
+		함수의 종류-->1)내장함수(alert,prompt,,,)      2)사용자정의 함수(=새로 작성)
+                            ->이미 가지고 있는 함수
+
+		형식) function 함수명(=직원이름)(해야할일(변수),,,,,,){//함수선언
+              함수가 처리해야할 일(계산,저장,출력)
+        }
+
+        함수를 기능으로 구분(3종류)(=메서드)
+
+      1.매개변수 X   반환값 X (보고 X) ->단순하고 반복적인 일을 하는 경우
+      2.매개변수 O,  반환값 X  ->데이터를 입력->계산,저장,출력
+	  3.매개변수 O   반환값 O  ->데이터를 입력->계산목적,웹프로그래밍 방식
+
+   */
+   //1.매개변수 X ,반환값 X
+     function print1(){   
+       document.write("단순하고	반복적인 일을 주로 담당<br>");
+	 }
+
+  //2.매개변수 O, 반환값 X
+    function print2(su){ //매개변수->함수가 받아서 처리해야할 값
+       document.write("입력받은 값은=>"+su+"입니다.<br>");//출력
+	}
+   
+   function print3(su,su2){ //매개변수->함수가 받아서 처리해야할 값
+       document.write("su+su2=>"+(su+su2)+"입니다.<br>");//출력
+	}
+  //3.매개변수 O, 반환값 O
+   function print4(su,su2){//10,20
+     var result=su+su2;
+	 //형식) return 계산한 결과값(변수) or 수식(=계산식) or 객체
+	 return result;//함수의 맨 마지막 문장
+   }
+
+  </script>
+ </head>
+ <body>
+  <script>
+   /* 함수를 호출
+      직장상사->직원(업무지시를 내리는 경우)  형식) 함수명();  함수명(매개변수명),함수명(매개변수,,,)
+   */
+   print1();
+   print2(30);//print2라는 함수를 호출하면서 매개변수 30을 전달해준다.(호출)
+   print2("자바스크립트 함수연습");
+   print3(30,40);
+  // 추가 =>형식) 변수명=호출할 함수명(매개변수~)
+  var hap=print4(10,20);
+  document.write("반환값은 값(hap)=>"+hap+"<p>");
+  alert(print4(70,30));//alert함수를 이용해서 반환받은 결과를 바로 출력도 가능
+  </script>
+  <!-- 
+   함수호출=>사용자가 웹상에서 버튼을 누르거나 링크문자열 클릭할때
+   1.버튼클릭->클릭이벤트 발생(click)
+     이벤트(Event)=>운영체제가 인식 가능한 사용자들의 모든 행동양식(키보드,마우스 작업)
+     형식) on이벤트종류명="연결해서 호출할 함수명() or (~)"
+	                           ="자바스크립트 구문;구문2;구문3
+	
+   2.링크문자열을 클릭=>함수호출
+   <a href="#" on이벤트종류명="연결해서 호출할 함수명() or (~)">링크문자열</a>
+  -->
+<input type="button" value="함수호출" onclick="print2(50)">
+<input type="button" value="함수호출2" onclick="alert('이벤트연습')">
+<a href="#" onclick="alert('매개변수전달')">함수호출유형 연습</a>
+ </body>
+</html>
+=============================
+
+2.내장함수(prompt,alert,if문)(2).html
+
+<title>2.내장함수(prompt,alert,if문)(2).html</title>
+  <!-- 
+    문장->순차문=>코딩순서대로 쓰여진대로 실행이 되는 구문
+	         제어문=>어떤 특정한 조건에 따라서 실행O or 실행X 있는 문장
+			       종류=>조건문,선택문,반복문,탈출문
+	형식) if문=>조건(둘중에 하나를 체크)에 따라서 어떻게 실행?
+
+   if(조건식) //변수,수식(계산식->논리,관계,,,)
+     수행1(참)
+
+   if(조건식)
+      수행1(참)
+   else
+      수행2(거짓)
+  -->
+ </head>
+ <body>
+    <script>
+	/*
+        window.alert("경고성 문구를 출력할때 사용");
+		alert("두줄을 나누\n어서 출력\n함"); //문자열\n~문자열2\n(줄바꿈,enter)*/
+		var name=prompt("당신의 이름을 입력하세요?");//매개변수 O,반환값 O
+		//if(조건식=>연산자(==),!=, null(값이 들어가 있지 않은 상태),문자열->" "
+		if(name!="")  //입력을 받았다면
+			alert("당신의 이름은"+name+"이군요");
+		else  //입력을 하지 않은 상태라면
+			alert("이름을 먼저 입력하세요");
+	</script>
+ </body>
+</html>
+============================
+ 3.내장함수(confirm)(3).html
+ 
+ <title> 3.내장함수(confirm)(3).html</title>
+ </head>
+ <body>
+  <script>
+   /*
+     형식) var 변수명=confirm("동의를 구하는 메세지")
+   */
+   var result=confirm("정말로 탈퇴하시겠습니까?");//매개변수 O 반환값 O
+   //alert(result)
+   if(result==true)//확인버튼을 눌렀다면
+		alert("당신은 정상적으로 회원탈퇴\n처리되었습니다.")
+   else
+        alert("회원탈퇴가 취소되었습니다");
+  </script>
+ </body>
+</html>
+
+=========================
+4.다중if(4).html
+
+ qs=="바나나" || qs=="1"  ->qs==1
+ qs=="바나나" || "1" =>수식X (문법X)
+
+========================
+
+ "1" 1의 차이점
+ ==(문자열상수)=>겉은 숫자이지만 내부적으로 문자열인경우
+
+5.계산문제(5).html
+
+사용예)
+
+  if(total >=60)
+    alert("합격")
+  else
+    alert("불합격")
+
+
+ 버튼클릭=>함수호출
+
+입력을 하고 엔터(enter) =>keycode==13
+  =>키코드값(자판기의 코드값으로 어떤 특정키를
+                 눌렀는지 알수 있는 코드값)
+
+ if(keycode==13){
+    sum()//함수호출하라
+}
+
+**자료형(=type)=>문자또는 숫자,논리적인값을 저장하면서
+               얼마만큼의 크기로 저장할지를 알려주는
+                것
+
+자바스크립트는 자료형이 있는데 변수선언할때
+따로 사용X
+
+ var test="홍길동"=> test 자료형 (String)
+ var test=23; ==>test 자료형 (int(숫자))
+
+int,Number
+ 숫자를 처리
+
+===========================
+int (숫자) Number (숫자)=>객체형
+ =>자바에서 Wrapper class에서 자세히 언급
+===========================
+
+<title>5.계산문제(5).html</title>
+  <script>
+       function sum(){
+         // alert("sum함수호출됨"); 호출이 잘되는 지 체크구문
+		 //형식) window.document.폼이름(=form).입력양식항목(kor).하위속성(value)
+		 //input box의 입력=>숫자->"10"=>문자열상수=>문자+문자+문자=>문자
+		 //"10"+"20"+"30"="102030"
+		 //k,e,m=>저장한 값을 저장한 변수
+         var k=document.myForm.kor.value;
+		 var e=document.myForm.eng.value;
+		 var m=document.myForm.mat.value;
+		 //alert(k) Number("10")+Number("20")+Number("30")
+		 var total=Number(k)+Number(e)+Number(m);
+         //"10"->10(문자열->숫자로 변환->Number("문자열상수("65"))=상수(65)
+         // 10->"10"(숫자->문자열로 변환)=>String(65)=>"65"
+		 alert("합계="+total);
+	   }
+  </script>
+ </head>
+ <body>
+  <form name="myForm" method="post" action="cal.jsp">
+    국어:<input type="text" name="kor"  placeholder="국어점수"><br>
+	영어:<input type="text" name="eng"  placeholder="영어점수"><br>
+	수학:<input type="text" name="mat"  placeholder="수학점수"><br>
+    <input type="button" value="점수출력" onclick="sum()">
+	<input type="reset" value="지우기">
+  </form>
+ </body>
+</html>
+=================================
+6.태그의 내용을 변경(6).html
+
+<title>6.태그의 내용을 변경(6).html</title>
+  <script>
+     function change(){
+		 //태그의 id속성->1)스타일 적용(id선택자) 2)특정 태그의 정보를 얻어오는 역할(=객체정보)
+       // alert("change함수호출");
+	   //DOM->화면구현에 관련된 영역->html 읽어들여서 각 태그를 변수(=객체)로 인식해서 저장
+	   //형식) document.getElementById("얻어올 태그의 id값")
+	   var ch=document.getElementById("test2");
+	   alert(ch)//[object HTMLDivElement]<--null(태그정보를 가져오지 못했다는 표시)
+	   alert(ch.innerHTML)//태그정보.innerHTML(태그가지고 있는 내용을 출력)
+	   //변경(=수정)=>태그정보.innerHTML(속성명(변수))=저장할값
+	   ch.innerHTML="화면상에 동적으로 변경되었습니다.";
+	 }
+  </script>
+ </head>
+ <body>
+  <div id="test">자바스크립트의 변수,연산자,제어문(if),함수</div>
+  <div id="test2">DOM의 개요 및 활용</div>
+  <form>
+     <input type="button" value="변경" onclick="change()">
+  </form>
+ </body>
+</html>
+==========================
+7.이벤트종류정리(7).html
+
+<title>7.이벤트종류정리(7).html</title>
+  <!--
+  이벤트=>운영체제가 인식가능한 사용자들의 모든행동양식(키보드,마우스)
+
+  1.click 마우스 클릭(ex 버튼,링크문자열,,,) ->on+이벤트종류명=>onclick=연결시킬함수
+  2.load 제일먼저 문서(html)을 읽어들일때 발생=>onload="함수 or 자바스크립트코드"
+  3.unload ->현재사이트->다른 사이트로 이동=>onunload(IE 적용O,chrome 적용X)
+  4.change->콤보박스에서 특정한 항목을 선택->발생되는 이벤트 onchange
+  5.mouseover->마우스를 갖다대면 발생->onmouseover
+  6.mouseout->특정위치에서 마우스 포인터가 벗어날때 ->onmouseout
+  7.blur->입력하는 경우(input type="text") 커서가 이동할때 발생시키는 이벤트
+     onBlur="~" 커서를 다음 항목에 이동시키기 전에 전의 데이터를 제대로 입력했는지를
+	 체크하고 싶을때 
+	 *** 태그를 구분할때->id,name속성을 두개 다 사용이 가능 **
+  -->
+ </head>
+ <body onload="alert('환영합니다.')" onunload="alert('다음에 또')">
+   <a href="http://www.naver.com"
+        onmouseover="document.img.src='../images/kid2.gif '"
+		onmouseout="document.img.src='../images/kid.gif '">
+       <img src="../images/kid.gif" name="img">
+   </a>
+       <img src="../images/kid3.gif" name="img2">
+ </body>
+</html>
+===============================
+8.배경색을 변경(8).html
+
+  <!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>8.배경색을 변경(8).html</title>
+  <style>
+      div#box{
+           width:200px;
+		   height:200px;
+           background:#ffffff; /* white */
+		   border:2px solid black;
+	  }
+  </style>
+  <script>
+         function setRed(){
+           //배경색에 빨강색을 부여할 태그 정보를 얻어옴->id값
+		   var box=document.getElementById("box");
+		  // alert(box); style(상위속성)="background(하위속성):red"//태그정보.속성명=값
+		  //태그정보.상위속성명.하위속성명=변경할값(저장할값)
+		  box.style.background="#ff0000";//"red"
+		 }
+		 //var 변수명=function(){  //함수명이 없는 함수=>익명함수(이름이 없는 함수)
+                                              //변수명이 함수이름역할을 한다.  변수명()
+         //}
+		 //function setGreen(){ //function 함수명(){
+		var setGreen=function(){
+            var box=document.getElementById("box");
+            box.style.background="#00ff00";//"green"
+		 }
+		 function setBlue(){
+            var box=document.getElementById("box");
+            box.style.background="#0000ff";//"blue"
+		 }
+  </script>
+ </head>
+ <body>
+  <input type="button" value="Red" onclick="setRed()">
+  <input type="button" value="Green" onclick="setGreen()">
+  <input type="button" value="Blue" onclick="setBlue()">
+  <p>
+  <!-- <div id="box" style="background:red"></div> -->
+  <div id="box"></div>
+  <div id="box2"></div>
+ </body>
+</html>
+
+========================
+과제 toggle(1).html 을 작성
+
+
+========================
+**예습***
+
+생활코딩
+
+  *** 배열(Array)의 개요 및 작성법
+
+ www.w3schools.com 검색
+
+  DOM에 대해서 공부->ppt(동적 디자인)
+ createElement()
+ createTextNode()
+createAttribute(name)
+  =>속성생성
+ getAttribute(name)
+ =>속성값을 가져오는 함수,,,
+ ======================
+
+http://hrd.kiccampus.com/
+
+ 각자 로그인
+
+
+
+
