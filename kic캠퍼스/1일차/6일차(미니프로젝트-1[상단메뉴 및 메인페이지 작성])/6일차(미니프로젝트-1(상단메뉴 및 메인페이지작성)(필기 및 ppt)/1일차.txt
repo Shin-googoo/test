@@ -1,0 +1,259 @@
+
+<div><!-- 상단메뉴를 작성하기위해서 영역설정 -->
+       <ul>
+		<li><a href="#">Home</a></li><!-- 메인페이지 -->
+		<li><a href="#">Service</a><!-- li태그에서 ul태그추가 -->
+			<ul>
+				<li><a href="#">HTML5</a></li>
+				<li><a href="#">CSS3</a>
+				</li>
+			</ul>
+		</li>
+		<li><a href="#">About</a></li>
+		<li><a href="#">Contact</a></li>
+       </ul>
+   </div>
+----------------------------------------------------
+droptop.html save as droptop2.html
+
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>드롭다운 상단메뉴(droptop2.html)</title>
+  <link href="./css/droptop2.css" rel="stylesheet">
+ </head>
+ <body>
+   <div><!-- 상단메뉴를 작성하기위해서 영역설정 -->
+       <ul class="dropdownmenu"><!-- .dropdownmenu > li (바로 밑의 li)-->
+		<li><a href="#">Home</a></li><!-- 메인페이지 -->
+		<li><a href="#">Service</a><!-- li태그에서 ul태그추가 -->
+			<ul>
+				<li><a href="#">HTML5</a></li>
+				<li><a href="#">CSS3</a>
+					<ul>
+						<li><a href="#">Menu1</a></li>
+						<li><a href="#">Menu2</a>
+							<ul>
+								<li><a href="#">SubMenu</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li><a href="#">About</a></li>
+		<li><a href="#">Contact</a></li>
+       </ul>
+   </div>
+ </body>
+</html>
+-------------------------------------------------------------
+droptop2.css
+
+/*
+    droptop2.css(스타일 적용)
+*/
+/* 1 레벨 메뉴 */
+.dropdownmenu > li {   /* 부모태그 > 자식태그 (부모태그 밑의 자식태그)영역 */
+   float:left; /* 왼쪽 정렬 */
+   position:relative;  /* home Service About ~ */
+   background:#67b0d1;
+   width:25%; /* 100%중에서 메뉴가 4개이니깐 25% */
+}
+
+.dropdownmenu > li > a {  /* 상단메뉴의 글자 */
+  display:block; /* width,height,개행 */
+  font-size:16px;
+  color:#ffffff;
+  text-align:center;
+  height:60px;
+  line-height:60px; /* 텍스트와 행사이의 간격 */
+}
+
+/*  
+   마우스를 갖다대는 경우->이벤트 발생->onmouseover,onmouseout->hover()사용
+                                스타일적용->hover를 이용한 선택자 ->선택자:hover
+								                                 선택자에 마우스를 갖다대면 ?
+*/
+.dropdownmenu > li:hover{
+   background:#7bbbd7;
+}
+
+/* 상단메뉴에 마우스를 갖다댈때 2레벨 메뉴 출력 */
+.dropdownmenu > li:hover > ul{
+   top:60px;  /* 120px->반정도 */
+   left:0;
+}
+
+/* 2 레벨메뉴 속성을 이용 화면에 안보이게 설정 */
+
+.dropdownmenu ul {
+  position:absolute;
+  top:-9999px; /* 위에 올려서 배치 */
+  z-index:9999; /* 하위메뉴와 동영상이 겹치는 경우 메뉴를 맨 앞에 배치하기위해서 사용 */
+  width:140px;
+  border:1px solid #cccccc;
+}
+
+/*2레벨메뉴의 위치속성,텍스트의 크기,여백설정 */
+.dropdownmenu ul li {
+   position:relative;
+}
+
+.dropdownmenu ul a { /* ul태그 밑에 모든 a 태그(메뉴항목) */
+  display:block;
+  color:#aaaaaa;
+  font-size:12px;
+  line-height:40px;
+  background:#ffffff;
+  padding-left:20px; /* 경계선과 메뉴와의 거리(들여쓰기) */
+}
+
+.dropdownmenu ul a:hover{  /* 2레벨 메뉴에 색깔 (마우스갖다댈때) */
+     color:#ffffff;
+	 background:#67b0d1;
+}
+/* 2단계 메뉴항목을 마우스로 갖다댔을때 li태그 밑에 있는 ul태그설정  */
+.dropdownmenu ul li:hover > ul { 
+   position:absolute;
+   top:0;
+   left:100%;
+}
+
+/* 상단메뉴를 맨 좌측에 고정(위치) */
+body,ul {
+  margin:0;  /* 밖의 여백 */
+  padding:0; /* 안쪽 여백*/
+}
+
+/* 상단메뉴의 항목 링크문자열,마크제거 */
+ul {list-style:none;}
+a {text-decoration:none;}
+
+=============================
+   hmtl5+css3 총정리
+   ===========
+
+   main-0.html=>시멘틱태그를 이용한 전체 레이아웃 설계한 파일
+
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <title>메인페이지(main-0.html)</title>
+ </head>
+ <body>
+    <div><!-- 본문내용 전체를 묶어주는 영역(container) -->
+	   <header><h1>innisfree</h1>
+            <nav></nav><nav></nav><!-- 상단메뉴,로그인 -->
+	   </header>
+	   <header class="hd2"><img src="img/hd2.PNG"  alt="mb"></header>
+	   <div></div>
+        <!-- 소제목이 있는 단락 -->
+        <section class="sc2"><img src="img/sc2.PNG"  alt="sc2"></section>
+		<section class="sc3"><img src="img/sc3.PNG"  alt="sc3"></section>
+		<!-- article 4개를 구체적인 본문내용(베스트 셀러 목록,자세한 항목) -->
+        <article class="at1"></article>
+        <article class="at2"></article>
+		<article class="at3">
+		   <embed src="vd/main_vd.mp4" [width:"450px" height:"300px"]>
+		</article>
+		<article class="at4"><img src="img/vd.PNG"  alt="review"></article>
+		<!--  footer-->
+		<footer class="ft1">
+          <nav class="nv3"></nav>
+		  <nav class="nv4"></nav>
+		</footer>
+	</div>
+ </body>
+</html>
+-------------------------------------------------------------------
+main-0.html save as main-1.html
+
+<nav><!-- 상단메뉴 -->
+				<div><a href="#">SHOPPING </a>
+				    <ul>
+						<li><a href="#" class="a1">유형별 제품</a>
+							<ul class="sub1">
+								<li><a href="#">스킨케어</a></li>
+								<li><a href="#">팩/마스크</a></li>
+								<li><a href="#">페이스 메이크업</a></li>
+								<li><a href="#">컬러 메이크업</a></li>
+								<li><a href="#">클렌징</a></li>
+								<li><a href="#">바디</a></li>
+								<li><a href="#">헤어</a></li>
+								<li><a href="#">방향</a></li>
+								<li><a href="#">베이비</a></li>
+								<li><a href="#">미용소품</a></li>
+								<li><a href="#">남성</a></li>
+							</ul>
+						</li>
+						<li><a href="#">라인별 제품</a></li>
+						<li><a href="#">온라인 전용</a></li>
+						<li><a href="#">온라인 핫딜</a></li>
+				    </ul>
+				</div>
+				<div><a href="#" class="main2">EVENT </a></div>
+				<div><a href="aboutus.html" class="main3">ABOUT US </a></div>
+			</nav>
+------------------------------------------------------------------
+save as main-2.html 작성후
+
+main.css
+=================
+/* pc상태에서 보여주는 스타일시트 화면 (main.css) */
+
+/* 상단메뉴 부분 좌측상단에 고정   */
+* {
+     margin:0; padding:0;
+	 background-color:azure; 
+}
+
+/* 전체 컨테이너 영역(전체 넓이,양쪽여백 설정) */
+.wrap{
+    width:1000px;
+	margin:0 auto; /* 위,아래여백 0 ,좌우여백은 자동배분  */
+}
+
+/* pc상태에서는 넓이 768px보다 크면 보이지 않게 설정하는 요소 */
+.hd2,.sc2,.sc3 {display:none;}
+
+/* 로고
+ left->들여쓰기,top(위에서 아래로 이동한 위치)
+*/
+h1 {
+ float:left;
+ position:relative;
+ left:3%;top:30px; /* 맨처음에 나오는 항목의 위치설정   */
+}
+
+/* 로고를 기준으로 오른쪽으로 배치 */
+.nv1{
+  width:60%;height:50px;
+  border:1px solid black;
+  float:left;
+  position:relative;
+  left:5%;top:30px;
+  z-index:5;/* 동영상과 겹치는 경우 메뉴가 앞에 배치 */
+}
+
+ul {
+   list-style-type:none;
+}
+
+/* 상단메뉴에 마우스를 갖다댈때 색깔 부여 */
+.main1:hover{
+   background-color:mediumpurple;
+   color:white;
+}
+.main2:hover{
+   background-color:mediumpurple;
+   color:white;
+}
+.main3:hover{
+   background-color:mediumpurple;
+   color:white;
+}
+
+=====상단메뉴의 배경색과 글자색 설정하기까지======================
