@@ -1,0 +1,275 @@
+/*
+기능:pc상태에서 보여주는 스타일시트 화면(main,css)
+작성날짜:2022.11.10
+작성자: 신용구
+*/
+/* 상단메뉴 부분 좌측 상단에 고정 */
+* {
+  margin:0; padding:0;
+  background-color: azure; 
+}
+
+/* 전체 컨테이너 영역(전체 넓이, 양쪽여백 설정) */
+.wrap{
+  width:1000px; /* width:70%-> 양쪽여백은 15%+15%=30% */
+  margin:0 auto; /* 위 아래여백0 좌우여백은 자동으로 배분 되라는 옵션 */
+}
+
+/* pc상태에서는 넓이 768px보다 크면 보이지 않게 설정해주는 요소 */
+.hd2,.sc2,.sc3 {display:none;}
+
+/* 로고 
+left(x축)->들여쓰기,top(위에서 아래로 이동한 위치)y축
+*/
+h1 {
+  float:left;
+  position:relative;
+  left:3%;
+  top:30px; /*맨 처음에 나오는 항목의 위치 설정*/
+}
+
+.nv1 {
+  width:60%; height:50px; /* 이미지 위의 선과 맞추기 위해서 */
+  float: left;
+  color: black;/* 영역표시 확인용 */
+  position: relative;
+  left:4%; top:30px; /* y축은 변화x 로고와 나란히 배치하기 위해서 */
+  z-index:5; /* 동영상,이미지와 겹치는 경우 메뉴가 맨앞에 배치 */
+}
+
+ul {
+  list-style:none; /* 메뉴의 마크제거 */
+}
+/* 대상자:hover-> 마우스를 갖다대는 경우(mouseover) 
+  Shoppping,Event,AboutUs 색깔지정(배경색)
+*/
+.main1:hover {
+  background: mediumpurple;
+  color: white;
+}
+.main2:hover {
+  background: mediumpurple;
+  color: white;
+}
+.main3:hover {
+  background: mediumpurple;
+  color: white;
+}
+/*
+nv1 범위 테두리 내에서의 배치결정
+absolute(shopping글자를 배치),
+relative->shopping을 기준해서 인접한 다른 태그를 배치
+*/
+
+.main1 {
+  position:absolute;
+  left:14%; /*로고문자 기준-> 테두리-> 20%정도 오른쪽 이동(x축)*/
+  top:10px; /* 테두리에서의 내려온 거리 */
+}
+.main2 {
+  position:absolute; /* 인접한 태그를 기준으로 relative한다. */
+  left:43%; 
+  top:10px; 
+}
+.main3 {
+  position:absolute; 
+  /* relative주면 Event을 기준으로 오른쪽배치 */
+  right:20%; /* left:67%; */
+  top:10px; 
+}
+/* 서브메뉴를 안나오게 설정-> 
+1)absolute사용 -> top:-9999로 위에 배치
+2)display:none-> block,inline,inline-block
+*/
+.sub {
+  display:none; /*안보이는 부분은 보이게 설정해서 영역확인후 최종설정*/
+  position:absolute;
+  top:40px;
+  left:83px;
+/*영역설정할땐 border속성 줘서 확인!*/
+}
+.sub li, .sub li a {/* 유형별 제품의 항목들의 색깔은 purple */
+  color:purple;
+  z-index:15;
+  text-decoration:none;
+}
+/* 3단계 레벨 메뉴 오른쪽에 배치 */
+.sub1 {
+  display:none;
+  float:right;
+  position:relative; 
+  /* absolute-> 좌표값,top,left:100%을 이용해야한다. */
+}
+
+.nv1 div a {
+  display: inline-block;
+  /* 가로로 정렬되면서(inline),width,height을 줄경우 줄바꿈도 되어야하는 경우 사용한다.*/
+  padding: 5px;
+}
+
+/* nv2설정 */
+.nv2 {
+  width:13%; height:50px; /* nv1과 같은 높이를 유지 */
+  border:1px solid #000;
+  float: right;
+  position:relative; /* nv1이 기준-> 오른쪽 */
+  top:30px; /* nv1과 같은 높이 설정 */
+  right:3%; /* left:?% 계산x */
+}
+/* 상단메뉴2(메뉴항목의 정렬, 여백설정) */
+.nv2 ul>li {
+  float:left; /*왼쪽 기준*/
+  margin-left:10%; /*바깥여백*/
+  margin-top:20px;
+  font-size:11px;
+}
+.nv2 ul li a { /* login,Mypage */
+  display:inline-block;
+  padding:5px;
+}
+.nv2 ul li a:hover {
+  background-color: mediumpurple;
+  color:white;
+}
+.cycle-slideshow {
+  position:relative; /* header1을 기준으로 아래에 배치 */
+  top:100px; /* 상단메뉴를 기준으로 아래로 100px 내림 */
+  z-index:1; /* 겹칠때 기준점 1 */
+}
+.cycle-slideshow img {
+  height:350px; /* 이미지높이 350px */
+}
+/* 3개의 베스트셀러에 대한 영역 */
+.at1 {
+  width:60%; height:250px;
+  border: 1px solid #000;
+  float:left; /* 왼쪽부터 배치 */
+  position:relative; /*이미지를 기준해서 아래에 배치*/
+  left:3%; top:100px; /* 이미지와 테두리의 위치설정 */
+  z-index:3;
+}
+/* d1클래스내부에 있는 figure태그 밑의 image태그 설정 */
+/* 영역설정내부에 또 다른 position을 설정 할 수있다. */
+.d1>figure>img {
+  width:200px; height:200px;  
+  border: 1px solid #000;
+  display:inline-block; /* 가로로 정렬하면 영역설정 */
+  position:absolute; /* 테두리를 기준해서 영역설정 */
+  top:50px; /* 이미지와 이미지의 설명글을 구분(left:0) */
+  z-index:6;
+}
+.d2>figure>img {
+  width:200px; height:200px;  
+  border: 1px solid #000;
+  display:inline-block;
+  position:absolute; 
+  top:50px; left:200px; /*2번째 이미지가 나오는 위치*/
+  z-index:6;
+}
+.d3>figure>img {
+  width:200px; height:200px;  
+  border: 1px solid #000;
+  display:inline-block;
+  position:absolute;
+  top:50px; left:400px; /*3번째 이미지가 나오는 순서*/
+  z-index:6;
+}
+/* 이미지 소개 글자정렬,크기 지정 */
+.fc1 {
+  font-size:11px;
+  float:left; /*왼쪽부터 정렬*/
+  position:relative;
+  left:5px; /*2번째 소개글 이미지가 가려져 왼쪽에서 5px 거리줌*/
+}
+.fc2 {
+  font-size:11px;
+  float:left; 
+  position:relative;
+  left:38px;
+}
+.fc3 {
+  font-size:11px;
+  float:right; 
+  position:relative;
+  right: 48px;
+}
+
+.at2 {
+  width:33%; height:250px;
+  /* .at1과 같은 위치 40%-7%=33% 양쪽 여백이 3.5% */
+  border: 1px solid #000;
+  float:right; /* 오른쪽부터 배치 */
+  position:relative; /*이미지를 기준해서 아래에 배치*/
+  top:100px; /* 이미지와 테두리의 위치설정 */
+  z-index:3;
+}
+.at2>img {
+  width:170px; height:200px;
+  display:inline-block;
+  position:relative;
+  top:20px;
+  z-index:1; /*이미지와 이미지가 겹칠까봐*/
+}
+/* 제품의 설명란을 오른쪽에 배치 */
+#dv1 {
+  display:inline-block;
+  position:relative;
+  top:-30px;
+  left: 0px;
+  z-index: 7;
+}
+/*동영상의 위치,여백 설정*/
+.at3 > embed {
+  position:relative;
+  width:450px; height:300px; /*동영상 크기 그대로*/
+  top:100px; /* 150px(margin-top) */
+  margin:30px; /* margin:30px 주면 정확한 경계선에 도달 */
+}
+
+/*화장품광고 동영상 오른쪽에 배치 -> float:right*/
+.at4 > img {
+  float:right;
+  width:450px; height:300px;
+  position:relative;
+  top:-235px;
+  right:20px; /*오른쪽 경계선을 기준으로 왼쪽으로 20px로 이동*/
+}
+/* footer부분 */
+.ft1 {
+  clear:both; /*위의 설정한 배치속성 초기화 설정*/
+  border:1px solid black;
+  position:relative;
+  height:100px;
+  top: -200px;
+  margin:0 auto; /*양쪽 폭 자동 정렬*/
+}
+.nv3 {
+  position:relative;
+  top: 20px; /*테두리에서의 적절한 거리유지*/
+}
+/*왼쪽-> 오른쪽 정렬, 첫번째 항목은 들여쓰기*/
+.nv3 ul > li {
+  float:left;
+  margin-left:4.3%; /* 소수점도 가능 */
+
+}
+.nv4 {
+  position:relative;
+  top: 40px; /* 2행을 만들기 위해서 */
+}
+.nv4 ul {
+  list-style-type:none;
+}
+
+.nv4 ul > li {
+  float:left;
+  margin-left:4%; /* 소수점도 가능 */
+  font-size:15px;
+}
+
+
+
+
+
+
+

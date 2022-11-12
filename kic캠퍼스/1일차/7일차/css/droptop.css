@@ -1,0 +1,83 @@
+/*
+파일명:droptop.css
+작성자:신용구
+작성일:2022.11.10
+기능:상단메뉴의 스타일시트 적용예제
+*/
+/*1레벨 메뉴*/
+.dropDownMenu > li{ /* 부모태그 > 자식태그(부모태그 밑의 자식태그) */
+  float:left; /*메뉴들을 가로로 왼쪽부터 정렬*/
+  position:relative;
+  /* 기준점을 지정-> 오른쪽,아래 특정위치에 배치(상대적인 좌표값) */
+  background:#67b0d1;
+  width:25%;
+}
+
+.dropDownMenu > li > a{ /* 상단메뉴의 글자부분 */
+  display:block; /* 무조건 한 줄은 점유 다음주로 개행 */
+  font-size:16px; /*글자크기*/
+  color:#fff; /*글자색(흰색)*/
+  text-align:center; /*글자 정가운데*/
+  height: 60px; /*높이*/
+  line-height:60px; /*텍스트 행 사이의 간격에 사용*/
+}
+/* 1레벨 메뉴에 마우스를 올렸을때 배경색 지정(4개 상단메뉴) */
+.dropDownMenu > li:hover { /* a태그:hover */
+background:#7bbbd7;
+}
+
+/* 1레벨 메뉴에 마우스를 올렸을때 하위메뉴의 위치 지정 */
+.dropDownMenu > li:hover > ul {
+  left:0; /*X축으로는 움직이면 안됨*/
+  top:60px;
+}
+
+
+/* 2~4단계 메뉴부터의 속성 */
+.dropDownMenu ul {/* 부모태그 자식태그(자식태그 밑의 손자태그까지 적용) */
+  position:absolute;
+  top:-9999px; /* 위쪽으로 감추기 */
+  z-index:9999; 
+  /* 하위메뉴와 슬라이드쇼와 겹칠때 우선적으로 메뉴를 나오게 설정 */
+  width:140px;
+  border: 1px solid #ccc;
+}
+
+/* 2레벨메뉴의 위치속성 지정(a태그) */
+.dropDownMenu ul li {
+  position:relative;
+}
+
+/* 2레벨 메뉴의 텍스트속성,배경색/여백지정(a태그의 글자들) */
+.dropDownMenu ul a {
+  display:block;
+  color:#aaa;
+  font-size:12px;
+  line-height: 40px;
+  background: #fff;
+  padding-left: 20px; /* 테두리와 메뉴사이의 들여쓰기 */
+}
+/* 2레벨 메뉴에 마우스를 갖다될때 배경색 변경 */
+.dropDownMenu ul a:hover {
+  color:#fff;
+  background: #67b0d1;
+}
+/* 2레벨 메뉴항목을 마우스 갖다될때 li태그 밑에 ul태그 설정 */
+.dropDownMenu ul li:hover > ul { /* 3레벨 이하 */
+position:absolute; /* 정확하게 좌표값을 설정할때 사용 */
+top:0; /* y축 변화없고 그대로 위치 */
+left:100%; /* 2레벨과 3레벨메뉴의 겹치는 시작점 */
+/* 2레벨과 3레벨이 겹치는 경우(0) */
+/* 2레벨과 3레벨이 반 겹치는 경우(50%) */
+/* 100%-> 2레벨의 거리만큼(오른쪽으로 이동) */
+}
+
+
+/* 상단메뉴를 맨 좌측에 고정(위치) */
+body,ul {
+  margin:0; /*밖의 여백*/
+  padding:0; /*안의 여백*/
+}
+
+ul {list-style:none;} /*마크 없애기*/
+a{text-decoration:none;} /*기본적인 밑줄 제거*/
