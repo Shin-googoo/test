@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3.Radio</title>
+  <script>
+    function test() {
+      //1.만약에 1.gif를 선택했다면(=체크했다면)
+      if(document.myform.ok[0].checked==true)
+        alert("1번 그림이 맘에 드시는 군요!");
+      else if(document.myform.ok[1].checked==true)
+        alert("2번 그림이 맘에 드시는 군요!");
+      else if(document.myform.ok[2].checked==true)
+        alert("3번 그림이 맘에 드시는 군요!");
+      else
+        alert("3개의 그림 중 하나는 무조건 선택해야 합니다.");
+    }
+
+  </script>
+</head>
+<body>
+  <form name="myform">
+    맘에 드시는 그림을 선택하세요<p>
+<!--
+  여러개의 항목이지만 하나빡에 선택을 할 수 없는경우
+  -> 배열을 이용(같은 변수명을 사용)
+  ok=new Array("1.gif","2.gif","3.gif");
+              -> ok[0],ok[1],ok[2] or
+  ok=["1.gif","2.gif","3.gif"];            
+-->
+    <input type="radio" name="ok">1.<img src="../images/1.gif" alt=""><p>
+    <input type="radio" name="ok">2.<img src="../images/2.gif" alt=""><p>
+    <input type="radio" name="ok">3.<img src="../images/3.gif" alt=""><p>
+
+    <input type="button" value="확인(결재)" onclick="test()">
+  </form>
+</body>
+</html>

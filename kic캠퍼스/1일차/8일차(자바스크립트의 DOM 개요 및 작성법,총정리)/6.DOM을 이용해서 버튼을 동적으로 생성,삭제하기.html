@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7.DOM을 이용해서 버튼을 동적으로 생성(6,7)</title>
+  <script>
+    //버튼을 누를때마다 생성(메모리)-->적합한 위치에 출력(DOM기술)
+    //      태그를 직접 만들어서--> 화면에 출력
+    //함수 밖에 선언된 변수->전역변수(모든 함수에서 불러 사용)
+    //전체 프로그램에서 사용되는 변수
+    var count=0;
+
+    function appendItem(){
+      //alert("appendItem함수호출");
+      count=count+1; //count+=1-> count++;
+      //alert(count);
+      //1.div태그 생성-> <div></div>,<h1></h1>....
+      //형식) document.createElement(생성할 태그이름)
+      var newItem=document.createElement("div");
+      //alert(newItem);
+      //2.<div id="item_생성한 번호"></div>
+      //2.생성된 태그명.setAttribute(만들 속성명, 속성값)
+      newItem.setAttribute("id","item_"+count);
+      //<div id="item_1"></div>
+      //3.텍스트노드 생성-> 1.createTextNode함수(내용 적을때)
+      //              or innerHTML속성(긴문장을 쓸 경우)
+      //<시작>내용</종료>,<시작></종료=><시작 />축약형
+      var html='새로 추가된 아이템['+count+']'+'<input type="button" value="삭제" '+'onclick="removeItem('+count+')" />';
+      //4.결합-> newItem.innerHTML='저장할 값';
+      newItem.innerHTML=html; 
+      // <div id="item_1">새로 추가~</div>
+      //5.부모태그의 정보 얻어오기
+      var itemListNode=document.getElementById("itemList");
+      //6.부모태그명.appendChild(자식태그명)-> 자식태그 추가
+      itemListNode.appendChild(newItem);
+    }
+// 7번 시작(생성된거 삭제하기)
+    function removeItem(idCount){
+      //삭제시킬 태그 정보
+    var item=document.getElementById("item_"+idCount);
+    //item_1
+    //alert(item);
+    //appendChild<->부모태그명.removeChild(삭제시킬 태그명)
+    //부모태그를 언어오는 방법2-> 자식태그명.parentNode->부모태그
+    //                    -> id를 모를때 사용
+    item.parentNode .removeChild(item);
+    }
+  </script>
+</head>
+<body>
+  <!--
+  정적디자인-> html,css(있는 그대로 보여주는 디자인방법)
+  동적디자인-> 처음에는 없는데 이벤트를 발생시켜서 화면에 보여주는 방법(시각적) ex)버튼을 눌렀을때 (DOM)
+  -->
+  <input type="button" value="추가" onclick="appendItem()">
+  <div id="itemList">
+  <!--
+    <div id="item_1">새로 추가된 아이템1[삭제버튼]</div>
+    <div id="item_2">새로 추가된 아이템2[삭제버튼]</div>
+    <div id="item_3">새로 추가된 아이템3[삭제버튼]</div>
+    ...
+  -->
+  </div>
+</body>
+</html>
