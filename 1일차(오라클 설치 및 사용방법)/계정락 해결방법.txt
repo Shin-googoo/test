@@ -1,0 +1,17 @@
+
+                                 접속계정명/암호
+
+c:\users\kitcoop> sqlplus / as sysdba  ->관리자로 로그인인증X 접속하라
+              ====
+              계정명
+
+ alter user=>create user한후 계정을 수정할때 사용
+
+sql>alter user scott account unlock;  //<->락을 걸어라
+                      락을 풀계정명
+sql>alter user scott identified by tiger;
+                                                새로 부여할 암호명
+sql>exit
+
+==========================
+하신후 다시 오라클 가동시켜서 scott/tiger로 로그인 해보세요
