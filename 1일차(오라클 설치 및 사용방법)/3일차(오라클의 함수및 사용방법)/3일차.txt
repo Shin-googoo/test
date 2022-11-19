@@ -1,0 +1,1046 @@
+3일차(오라클의 함수및 사용방법)
+
+
+<문1>검색하다보면 불편=>동적으로 입력(이름)=>ALLEN->allen
+
+소문자입력->자동으로 대문자로 변경->검색->찾아주는 경우(내장함수)
+                                                      ->기능을 가진 최소 실행 단위
+======================================
+ dual->오라클의 기본적인 테이블로써 일반유저가 사용이 가능한 테이블
+
+ 이름                                      널?      유형
+ ------------------------------------ -------- ----------------------------
+ DUMMY                                           VARCHAR2(1)
+
+->기존의 테이블을 가지고 작업을 해도 된다.
+(기존의 데이터+확인용 결과 섞어서 나옴)=>보기불편
+
+ <span><div> -> 기본적인 다른 기능x-> 스타일이 잘 적용됨
+
+select 함수명() or 함수명(~) from dual
+
+sql> select 24*23*12 from dual;
+
+			            Mysql(Maria db)
+오늘 날짜 출력=> sysdate(오라클) <-> now()
+
+ select sysdate from dual; =>오늘 날짜 구하기
+
+SYSDATE
+--------
+22/11/17
+
+==========================================
+형식) select 함수명(처리해야할 값,,,),함수명2(~)
+        from 테이블명(dual,검색대상테이블)
+
+  문자열,숫자함수,날짜함수,기타함수,,
+
+<문2>직원 14명중에서 사원의 이름의 길이가 5자이상인 직원을 
+검색해서 그 직원의 사번,이름,업무순으로 출력 SQL?
+
+SQL> select length('abcde') from dual;
+
+LENGTH('ABCDE')
+---------------
+              5
+
+1 select length('abcdefg') as length-> 별칭 부여
+2 from dual
+
+  select empno,ename,job
+  from emp
+  where length(ename)>=5;
+
+     EMPNO ENAME      JOB
+---------- ---------- ---------
+      7369 SMITH      CLERK
+      7499 ALLEN      SALESMAN
+      7566 JONES      MANAGER
+      7654 MARTIN     SALESMAN >=5 이상
+      7698 BLAKE      MANAGER
+      7782 CLARK      MANAGER
+      7788 SCOTT      ANALYST
+      7844 TURNER     SALESMAN
+      7876 ADAMS      CLERK
+      7900 JAMES      CLERK
+      7934 MILLER     CLERK
+
+11 개의 행이 선택되었습니다.
+
+ed
+
+  1  select empno,lower(ename) "소문자로 변환" ,upper(job) 대문자로
+  2    from emp
+  3*   where length(ename)>=5
+SQL> /
+
+     EMPNO 소문자로   대문자로
+---------- ---------- ---------
+      7369 smith      CLERK
+      7499 allen      SALESMAN
+      7566 jones      MANAGER
+      7654 martin     SALESMAN
+      7698 blake      MANAGER
+      7782 clark      MANAGER
+      7788 scott      ANALYST
+      7844 turner     SALESMAN
+      7876 adams      CLERK
+      7900 james      CLERK
+      7934 miller     CLERK
+
+11 개의 행이 선택되었습니다.
+
+SQL>
+
+<문3>
+                                                 012345
+  문자열 취급->입력한 문자열의 길이=> 'oracletest' =>'oracle' 분리
+  문자열 취급=>입력순서->1부터 시작 ->다른 언어와의 차이점(ex 자바)
+     substr(대상문자열,시작위치(1부터),뽑아낼 문자열갯수)
+
+ sql>select substr('abcde',1,2) from dual;  //->ab
+       
+SU
+--
+ab
+
+  1* select substr('abcde',3,2) from dual
+SQL> /
+
+SU
+--
+cd
+
+SQL>
+
+	ABCD....VWXYZ
+         <--적음      --크다>
+<문4>
+emp테이블에서 사원이름의 첫글자가 'K'보다 크고(and),
+'Y'자보다 적은 사원을 검색해서 그 찾은 사원의 사번,이름,업무
+순으로 출력하시오(단 이름순으로 정렬할것)=>order by 필드명 정렬할기준
+
+initcap:첫 글자만 대문자
+
+select empno,ename,initcap(ename),job
+from emp
+where substr(ename,1,1) >'K' and substr(ename,1,1) < 'Y'
+order by ename;
+
+select empno,ename,initcap(ename),job
+from emp
+where substr(ename,1,1)> upper('k') and
+substr(ename,1,1)< upper('y') -> 소문자를 대문자로 바꿔줌
+order by ename
+
+     EMPNO ENAME      INITCAP(EN JOB
+---------- ---------- ---------- ---------
+      7654 MARTIN     Martin     SALESMAN
+      7934 MILLER     Miller     CLERK
+      7788 SCOTT      Scott      ANALYST
+      7369 SMITH      Smith      CLERK
+      7844 TURNER     Turner     SALESMAN
+      7521 WARD       Ward       SALESMAN
+
+6 개의 행이 선택되었습니다.
+
+<문5>문자열 검색중에서 특정문자가 어디에 위치?
+형식) instr(대상문자열,찾고자하는 문자열)=>위치번호=>못찾으면 0을 리턴
+       =>indexOf()와 비슷
+
+sql>select ename,instr(ename,'O') from emp;
+                                   ->대문자
+ENAME      INSTR(ENAME,'O')
+---------- ----------------
+SMITH                     0
+ALLEN                     0
+WARD                      0
+JONES                     2
+MARTIN                    0
+BLAKE                     0
+CLARK                     0
+SCOTT                     3
+KING                      0
+TURNER                    0
+ADAMS                     0
+
+ENAME      INSTR(ENAME,'O')
+---------- ----------------
+JAMES                     0
+FORD                      2
+MILLER                    0
+
+14 개의 행이 선택되었습니다.
+
+SQL>
+
+**중첩함수=>함수내부에 또 다른 함수가 있는 형태
+              실행순서는 내부함수부터
+
+    형식) 함수명(함수명())
+                        1
+               2
+  1* select ename,instr(ename,upper('o')) from emp
+SQL> /                        ==========
+
+ENAME      INSTR(ENAME,UPPER('O'))
+---------- -----------------------
+SMITH                            0
+ALLEN                            0
+WARD                             0
+JONES                            2
+MARTIN                           0
+BLAKE                            0
+CLARK                            0
+SCOTT                            3
+KING                             0
+TURNER                           0
+ADAMS                            0
+
+ENAME      INSTR(ENAME,UPPER('O'))
+---------- -----------------------
+JAMES                            0
+FORD                             2
+MILLER                           0
+
+14 개의 행이 선택되었습니다.
+
+날짜에서 특정값을 이용해서 검색할 때
+SQL> select substr(sysdate,1,2) from dual;
+
+SUBS
+----
+22  =>오늘 날짜중에서 년도만 뽑아서 출력하는 경우
+
+SQL> select empno,ename,job from emp
+      where lower(job)='manager'; 소문자로 비교
+      where job=upper('manager'); 대문자로 비교
+
+       영문자는 대소문자를 구분하기때문에 
+       로그인할때 id 대소문자를 구분O
+
+     EMPNO ENAME      JOB
+---------- ---------- ---------
+      7566 JONES      MANAGER
+      7698 BLAKE      MANAGER
+      7782 CLARK      MANAGER
+
+SQL>  '__R'
+=================================
+<문6>숫자함수=>계산,반올림,내림,,,
+
+sql>select round(4567.678),round(4567.678,0), round(4567.678,2),
+                round(4567.678,-2) from dual;
+
+=>반올림 자리수(양수)->소수점 자리수 계산
+    음수->소수점 바로앞의 자리수를 가지고 계산->반이상->반올림
+
+ROUND(4567.678) ROUND(4567.678,0) ROUND(4567.678,2) ROUND(4567.678,-2)
+--------------- ----------------- ----------------- ------------------
+           4568              4568           4567.68            4600
+
+ed  =>trunc
+
+ =>소수점을 잘라내는 함수(=절삭)
+ =>소수점의 자리수에 맞게 잘라내는 함수
+
+TRUNC(4567.678) TRUNC(4567.678,0) TRUNC(4567.678,2) TRUNC(4567.678,-2)
+--------------- ----------------- ----------------- ------------------
+           4567              4567           4567.67               4500
+
+sql>select mod(10,3),sign(100),sign(-100),sign(0) from dual;
+
+mod()함수(나머지 구해주는 함수) sign()=>양수(1),음수(-1),0일때 알려주는 함수
+
+ MOD(10,3)  SIGN(100) SIGN(-100)    SIGN(0)
+---------- ---------- ---------- ----------
+         1          1         -1          0
+
+<문7>sqlplus 명령어 보고서에 관련된 명령어->4장
+
+sql>select * from dept;
+
+DEPTNO(부서번호)            DNAME          LOC
+-----------------------         -------------- -------------
+        10                         ACCOUNTING     NEW YORK
+        20                         RESEARCH       DALLAS
+        30                         SALES          CHICAGO
+        40                         OPERATIONS     BOSTON
+
+형식) col[umn] 적용필드명 format 길이(an(숫자))
+ sql>col dname format a8
+
+SQL> select * from dept;
+
+    DEPTNO DNAME    LOC
+---------- -------- -------------
+        10 ACCOUNTI NEW YORK   
+=>로그인을 하는 동안 유지->해제하지 않은 조건
+
+           NG                       exit->다시 로그인하면=>자동으로 해제
+
+        20 RESEARCH DALLAS
+        30 SALES    CHICAGO
+        40 OPERATIO BOSTON
+           NS
+
+<문8> 컬럼의 특정폭을 조절이 가능한데 설정된 폭을 원래상태로 되돌리기
+         형식)col[umn] 해제시킬 필드명 clear
+
+sql>col dname clear
+sql>select * from dept
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+<문9>가상필드(=계산식)도 설정이 가능
+
+sql>col e_name format a23 -> char(23)
+sql>col e_empno format a15 -> char(15)
+sql>select empno,ename,concat(empno,ename) e_name,
+      concat(ename,empno) e_empno
+      from emp
+      where deptno=&deptno;
+
+SQL> select empno,ename,concat(empno,ename) e_name,
+  2        concat(ename,empno) e_empno
+  3        from emp
+  4        where deptno=&deptno;
+deptno의 값을 입력하십시오: 10
+구   4:       where deptno=&deptno
+신   4:       where deptno=10
+
+     EMPNO ENAME      E_NAME                  E_EMPNO
+---------- ---------- ----------------------- ---------------
+      7782 CLARK      7782CLARK               CLARK7782
+      7839 KING       7839KING                KING7839
+      7934 MILLER     7934MILLER              MILLER7934
+
+SQL> /
+deptno의 값을 입력하십시오: 20
+구   4:       where deptno=&deptno  //->입력메세지를 출력X
+신   4:       where deptno=20
+
+     EMPNO ENAME      E_NAME                  E_EMPNO
+---------- ---------- ----------------------- ---------------
+      7369 SMITH      7369SMITH               SMITH7369
+      7566 JONES      7566JONES               JONES7566
+      7788 SCOTT      7788SCOTT               SCOTT7788
+      7876 ADAMS      7876ADAMS               ADAMS7876
+      7902 FORD       7902FORD                FORD7902
+
+SQL> /
+deptno의 값을 입력하십시오: 30
+구   4:       where deptno=&deptno
+신   4:       where deptno=30
+
+     EMPNO ENAME      E_NAME                  E_EMPNO
+---------- ---------- ----------------------- ---------------
+      7499 ALLEN      7499ALLEN               ALLEN7499
+      7521 WARD       7521WARD                WARD7521
+      7654 MARTIN     7654MARTIN              MARTIN7654
+      7698 BLAKE      7698BLAKE               BLAKE7698
+      7844 TURNER     7844TURNER              TURNER7844
+      7900 JAMES      7900JAMES               JAMES7900
+
+6 개의 행이 선택되었습니다.
+
+<문10> 
+** 오라클의 내장 환경 변수를 설정 변경**=>show user(환경변수명)
+sql>show all
+
+appinfo은 OFF이고 이것을 "SQL*Plus"로 설정합니다
+arraysize 15
+autocommit OFF
+autoprint OFF
+autorecovery OFF
+autotrace OFF
+blockterminator "." (hex 2e)
+btitle OFF 이고 이것은 SELECT 문장 다음에 있는 첫번째 소수의 문자입니다
+cmdsep OFF
+colsep " "
+compatibility version NATIVE
+concat "." (hex 2e)
+copycommit 0
+COPYTYPECHECK는 ON 입니다
+define "&" (hex 26)
+describe DEPTH 1 LINENUM OFF INDENT ON
+echo OFF
+editfile "afiedt.buf"
+embedded OFF
+escape OFF
+escchar OFF
+exitcommit ON
+6 또는 그 이상의 행에 대한 FEEDBACK ON
+flagger OFF
+flush ON
+heading ON
+headsep "|" (hex 7c)
+instance "local"
+linesize 80
+lno 12
+loboffset 1
+logsource ""
+long 80
+longchunksize 80
+markup HTML OFF HEAD "<style type='text/css'> body {font:10pt Arial,Helvetica,sans-serif; color:black; background:White;} p {font:10pt Arial,Helvetica,sans-serif; color:black; background:White;} table,tr,td {font:10pt Arial,Helvetica,sans-serif; color:Black; background:#f7f7e7; padding:0px 0px 0px 0px; margin:0px 0px 0px 0px;} th {font:bold 10pt Arial,Helvetica,sans-serif; color:#336699; background:#cccc99; padding:0px 0px 0px 0px;} h1 {font:16pt Arial,Helvetica,Geneva,sans-serif; color:#336699; background-color:White; border-bottom:1px solid #cccc99; margin-top:0pt; margin-bottom:0pt; padding:0px 0px 0px 0px;-
+} h2 {font:bold 10pt Arial,Helvetica,Geneva,sans-serif; color:#336699; background-color:White; margin-top:4pt; margin-bottom:0pt;} a {font:9pt Arial,Helvetica,sans-serif; color:#663300; background:#ffffff; margin-top:0pt; margin-bottom:0pt; vertical-align:top;}</style><title>SQL*Plus Report</title>" BODY "" TABLE "border='1' width='90%' align='center' summary='Script output'" SPOOL OFF ENTMAP ON PREFORMAT OFF
+newpage 1
+null ""
+numformat ""
+numwidth 10
+pagesize 14
+PAUSE는 OFF
+pno 1
+recsep WRAP
+recsepchar " " (hex 20)
+release 1102000100
+repfooter OFF 이고 이것은 NULL입니다.
+repheader OFF 이고 이것은 NULL입니다.
+securedcol is OFF
+serveroutput OFF
+shiftinout INVISIBLE
+showmode OFF
+spool ON
+sqlblanklines OFF
+sqlcase MIXED
+sqlcode 0
+sqlcontinue "> "
+sqlnumber ON
+sqlpluscompatibility 11.2.0
+sqlprefix "#" (hex 23)
+sqlprompt "SQL> "
+sqlterminator ";" (hex 3b)
+suffix "sql"
+tab ON
+termout ON
+timing OFF
+trimout ON
+trimspool OFF
+ttitle OFF 이고 이것은 SELECT 문장 다음에 있는 첫번째 소수의 문자입니다
+underline "-" (hex 2d)
+USER은 "SCOTT"입니다  =>user의 정보
+verify ON---------------------------------->verify 환경변수
+wrap : 행이 줄바꿈됨
+errorlogging is OFF
+
+SQL> show verify
+verify ON  =======>ON | OFF  or 숫자,문자
+
+환경변수를 변경시키는 방법: set 변경시킬 환경변수명 변경할값
+sql>set verify off
+
+SQL> select empno,ename,concat(empno,ename) e_name,
+  2        concat(ename,empno) e_empno
+  3        from emp
+  4        where deptno=&deptno;
+
+deptno의 값을 입력하십시오: 20
+=====================================>구
+                                                                                       신
+     EMPNO ENAME      E_NAME                  E_EMPNO
+---------- ---------- ----------------------- ---------------
+      7369 SMITH      7369SMITH               SMITH7369
+      7566 JONES      7566JONES               JONES7566
+      7788 SCOTT      7788SCOTT               SCOTT7788
+      7876 ADAMS      7876ADAMS               ADAMS7876
+      7902 FORD       7902FORD                FORD7902
+
+SQL>
+
+<문11>emp테이블에서 사원번호는 반드시 출력하고,
+나머지 필드명은 동적으로 입력받아서 출력하세요
+(단 조건식도 동적으로 입력을 받을것)
+
+형식) where 조건식=>&필드명,  '&필드명' -> 문자열
+
+select  &필드명
+from &테이블명
+where 조건식->&필드명
+-----------------------------------------------------
+sql>select empno, &column_name
+      from emp
+     where &condition;
+
+SQL> select empno, &column_name
+  2        from emp
+  3       where &condition;
+column_name의 값을 입력하십시오: ename,sal,comm
+condition의 값을 입력하십시오: ename like 'D%'
+
+선택된 레코드가 없습니다.
+
+SQL> /
+column_name의 값을 입력하십시오: ename,sal
+condition의 값을 입력하십시오: ename like 'A%'
+
+     EMPNO ENAME             SAL
+---------- ---------- ----------
+      7499 ALLEN            1600
+      7876 ADAMS            1100
+
+SQL> /
+column_name의 값을 입력하십시오: job
+condition의 값을 입력하십시오: job=upper('manager')
+                                lower(job)='manager'
+
+     EMPNO JOB
+---------- ---------
+      7566 MANAGER
+      7698 MANAGER
+      7782 MANAGER
+
+<문12>lpad->특정문자열을 왼쪽으로 기준점설정->지정한 특수기호를 출력
+          rpad,replace함수(변경)
+
+emp테이블에서 ename->lpad(출력할 대상 문자열,자릿수,특수기호)
+사번,이름,급여만 출력(단 부서번호는 20번인 데이터만 출력할것)
+
+sql>select empno,ename,lpad(ename,10,'*'),sal,rpad(sal,10,'#')
+      from emp
+      where deptno=20;
+
+     EMPNO ENAME      LPAD(ENAME,10,'*')          SAL RPAD(SAL,10,'#')
+---------- ---------- -------------------- ---------- --------------------
+      7369 SMITH      *****SMITH                  800 800#######
+      7566 JONES      *****JONES                 2975 2975######
+      7788 SCOTT      *****SCOTT                 3000 3000######
+      7876 ADAMS      *****ADAMS                 1100 1100######
+      7902 FORD       ******FORD                 3000 3000######
+
+**<문13>기존의 데이터를 가공->화면에 출력->그룹함수(select)=>DQL
+       -->DDL(테이블 생성->무결설 제약조건 종류 5가지)=>설계(모델링)
+    ---------------------------------------------------------------------
+    replace(적용필드명,변경전 문자열,변경후 문자열)->emp
+
+ sql>select ename,replace(ename,'A','$') as 변경후이름
+       from emp;    ->실제변경x 가상으로 변경해서 확인하는경우
+                         ->실제변경은 update구문
+
+ENAME      변경후이름
+---------- ----------
+SMITH      SMITH
+ALLEN      $LLEN
+WARD       W$RD
+JONES      JONES
+MARTIN     M$RTIN
+BLAKE      BL$KE
+CLARK      CL$RK
+SCOTT      SCOTT
+KING       KING
+TURNER     TURNER
+ADAMS      $D$MS
+
+ENAME      변경후이름
+---------- ----------
+JAMES      J$MES
+FORD       FORD
+MILLER     MILLER
+
+14 개의 행이 선택되었습니다.
+
+
+SQL> select empno,ename from b_emp
+  2  where ename=upper('test');
+
+     EMPNO ENAME
+---------- ----------
+      7499 TEST
+      7876 TEST
+
+SQL> delete from b_emp where empno in (7499,7876);
+
+2 행이 삭제되었습니다.
+
+
+ trim함수=>trim('aaaa    bbbbb')=>'aaaabbbbb'
+==============================
+ 날짜함수=>계산=>날짜+숫자=>더한 날짜
+                         날짜-숫자=뺀날짜
+                         날짜-날짜=일수
+
+<문14>emp테이블에서 각 사원들의 근무일수(오늘날짜-입사일)->month_ between
+  사원명,입사일,근무일수 순으로 출력(단 부서번호는 10번부서)
+  (근무일수가 제일 많은순으로 정렬->내림차순)
+
+sql>select ename,hiredate,
+      months_between(sysdate,hiredate) 근무일수
+      from emp
+      where deptno=&deptno
+      order by 근무일수 desc;
+
+deptno의 값을 입력하십시오: 10
+
+ENAME      HIREDATE   근무일수
+---------- -------- ----------
+CLARK      81/06/09 456.535134 =>반올림 또는 절삭
+KING       81/11/17  451.27707
+MILLER     82/01/23 449.083521
+
+SQL>ed
+
+deptno의 값을 입력하십시오: 10
+
+ENAME      HIREDATE   근무일수
+---------- -------- ----------
+CLARK      81/06/09        497
+KING       81/11/17        492
+MILLER     82/01/23        490
+
+
+<문15>add_month(날짜,개월수)=>지정 날짜 개월수를 더한 날짜
+
+emp테이블에서 입사일 기준 10개월후의 날짜를 계산
+(단 sal가 2000인 사원들만 출력->이름,급여,10개월후 순으로 출력)
+
+select ename,sal,hiredate,add_months(hiredate,10) "10개월 후"
+from emp
+where sal>=2000;
+
+ENAME             SAL HIREDATE 10개월
+---------- ---------- -------- --------
+JONES            2975 81/04/02 82/02/02
+BLAKE            2850 81/05/01 82/03/01
+CLARK            2450 81/06/09 82/04/09
+SCOTT            3000 87/04/19 88/02/19
+KING             5000 81/11/17 82/09/17
+FORD             3000 81/12/03 82/10/03
+
+6 개의 행이 선택되었습니다.
+
+sql>select add_months(sysdate,5) "5개월 후" from dual;
+
+SQL> select add_months(sysdate,5) "5개월 후" from dual;
+
+5개월 후
+--------
+19/11/25
+
+<문16>next_day(지정한 날짜,'요일')=>지정한 요일에 해당하는 날짜를 구하기
+                                             =>월요일,화요일,,,(내부적으로 숫자인식)
+
+  일(1),월(2),화(3),수(4),목(5),금(6),토(7)
+
+sql>select deptno,ename,hiredate,next_day(hiredate,'화요일')
+      from emp;
+
+SQL> select deptno,ename,hiredate,next_day(hiredate,'화요일'),
+  2  next_day(sysdate,'목요일') from emp;
+
+    DEPTNO ENAME      HIREDATE NEXT_DAY NEXT_DAY
+---------- ---------- -------- -------- --------
+        20 SMITH      80/12/17 80/12/23 22/11/24
+        30 ALLEN      81/02/20 81/02/24 22/11/24
+        30 WARD       81/02/22 81/02/24 22/11/24
+        20 JONES      81/04/02 81/04/07 22/11/24
+        30 MARTIN     81/09/28 81/09/29 22/11/24
+        30 BLAKE      81/05/01 81/05/05 22/11/24
+        10 CLARK      81/06/09 81/06/16 22/11/24
+        20 SCOTT      87/04/19 87/04/21 22/11/24
+        10 KING       81/11/17 81/11/24 22/11/24
+        30 TURNER     81/09/08 81/09/15 22/11/24
+        20 ADAMS      87/05/23 87/05/26 22/11/24
+
+    DEPTNO ENAME      HIREDATE NEXT_DAY NEXT_DAY
+---------- ---------- -------- -------- --------
+        30 JAMES      81/12/03 81/12/08 22/11/24
+        20 FORD       81/12/03 81/12/08 22/11/24
+        10 MILLER     82/01/23 82/01/26 22/11/24
+
+14 개의 행이 선택되었습니다.
+
+DEPTNO ENAME      HIREDATE NEXT_DAY
+---------- ---------- -------- --------
+        20 SMITH       80/12/17 80/12/23 (화)
+        30 ALLEN       81/02/20 81/02/24 (화)
+        30 WARD       81/02/22(일) 81/02/24(화)
+        20 JONES       81/04/02 81/04/07
+        30 MARTIN     81/09/28 81/09/29
+        30 BLAKE       81/05/01 81/05/05
+        10 CLARK       81/06/09 81/06/16
+        20 SCOTT       87/04/19 87/04/21
+        10 KING         81/11/17 81/11/24
+        30 TURNER     81/09/08 81/09/15
+        20 ADAMS      87/05/23 87/05/26
+
+    DEPTNO ENAME      HIREDATE NEXT_DAY
+---------- ---------- -------- --------
+        30 JAMES      81/12/03 81/12/08
+        20 FORD       81/12/03 81/12/08
+        10 MILLER     82/01/23 82/01/26
+
+14 개의 행이 선택되었습니다.
+
+SQL>
+
+   select next_day(sysdate,'화요일') from dual;
+
+NEXT_DAY
+--------
+22/11/22
+
+sql>l(list)
+sql>c/'화요일'/3
+sql>/
+
+SQL> l
+  1* select next_day(sysdate,'화요일') from dual
+SQL> c/'화요일'/3
+  1* select next_day(sysdate,3) from dual
+SQL> /
+
+NEXT_DAY
+--------
+19/07/02
+
+<문 17>last_day(지정한 날짜)=>지정한 날짜의 월의 마지막 날짜를 계산
+           =>윤년,평년으로 자동으로 계산
+
+emp테이블에서 입사한 달의 근무일수를 계산?(5일,토,일->포함)
+근무일수가 많은순으로 정렬?(이름,입사일, 근무일수)
+
+                  1        2                    3
+sql>select ename,hiredate,last_day(hiredate)-hiredate "근무일수"
+      from emp
+     where ename like '_A%'
+     order by 3 desc;
+
+  ENAME      HIREDATE   근무일수
+----------        --------     ----------
+JAMES       81/12/03         28
+WARD       81/02/22          6
+MARTIN     81/09/28          2
+
+ sql>select last_day(sysdate)-sysdate "6월" from dual;
+
+********************************************
+오라클의 변환함수->변환(값이 변경)=>문자=>숫자,숫자->문자,날짜
+
+   to_date->문자->날짜형으로 변환(X)
+   to_number->문자->숫자형으로 변환(X)
+**to_char->날짜,숫자=>문자로 변환(O)->출력양식 지정
+
+********************************************
+**<문18>emp테이블에서 20번부서에 근무하는 사원의 급여앞에 $를 표시하고
+           3자리마다 ,를 표시해서 출력하는 SQL구문을 작성?
+          (사번,이름,급여,출력서식)
+
+      sal->2370-->$2,300  =>to_char(적용대상필드,출력서식)
+             숫자의 자리수를 지정->0 또는 9를 사용
+
+  sql>select empno,ename,sal,to_char(sal,'$999,999')
+        from emp
+        where deptno=&deptno
+        order by sal desc;
+
+SQL> select empno,ename,sal,to_char(sal,'$999,999')
+  2          from emp
+  3          where deptno=&deptno
+  4          order by sal desc;
+deptno의 값을 입력하십시오: 20
+
+     EMPNO ENAME             SAL TO_CHAR(S
+---------- ---------- ---------- ---------
+      7788 SCOTT            3000    $3,000
+      7902 FORD             3000    $3,000
+      7566 JONES            2975    $2,975
+      7876 ADAMS            1100    $1,100
+      7369 SMITH             800      $800
+
+SQL> /
+deptno의 값을 입력하십시오: 10
+
+     EMPNO ENAME             SAL TO_CHAR(S
+---------- ---------- ---------- ---------
+      7839 KING             5000    $5,000
+      7782 CLARK            2450    $2,450
+      7934 MILLER           1300    $1,300
+
+SQL>ed
+
+  1  select empno,ename,sal,to_char(sal,'L999,999')
+  2          from emp                     =$대신 L을 주면?
+  3          where deptno=&deptno
+  4*         order by sal desc
+SQL> /
+deptno의 값을 입력하십시오: 20
+
+     EMPNO ENAME             SAL TO_CHAR(SAL,'L999,
+---------- ---------- ---------- ------------------
+      7788 SCOTT            3000            ￦3,000
+      7902 FORD             3000            ￦3,000
+      7566 JONES            2975            ￦2,975
+      7876 ADAMS            1100            ￦1,100
+      7369 SMITH             800              ￦800
+
+ 숫자,날짜->내가 원하는 출력양식으로 변환해서 출력->to_char()함수가 필요
+
+  sql> select to_char(sysdate,'YYYY/MM/DD, HH24:MI:SS') from dual;
+                                                        하루24시간
+   TO_CHAR(SYSDATE,'YYY
+--------------------
+2019/06/25, 15:13:00
+
+<문19>일반함수=>nvl함수 =>null값을 어떤 특정한 값으로 변환시킬때 사용
+
+   형식) nvl(null값이 포함된 필드명,0(적용시킬값)->emp ->comm(값O,값X)
+
+sql>select ename,sal,comm from emp;
+
+ENAME             SAL       COMM
+---------- ---------- ----------
+SMITH             800
+ALLEN            1600        300
+WARD             1250        500
+JONES            2975
+MARTIN           1250       1400
+BLAKE            2850
+CLARK            2450
+SCOTT            3000
+KING             5000
+TURNER           1500          0
+ADAMS            1100
+
+ENAME             SAL       COMM
+---------- ---------- ----------
+JAMES             950
+FORD             3000
+MILLER           1300
+
+14 개의 행이 선택되었습니다.
+
+SQL>ed
+
+  1* select ename,sal,comm,nvl(comm,0)  from emp
+SQL> /
+
+ENAME             SAL       COMM NVL(COMM,0)
+----------     ----------    ---------- -----------
+SMITH             800                      0 -> 보너스를 받지 않는다.
+ALLEN            1600         300         300
+WARD             1250        500         500
+JONES            2975                      0
+MARTIN          1250       1400        1400
+BLAKE            2850                      0
+CLARK            2450                      0
+SCOTT            3000                      0
+KING             5000                      0
+TURNER          1500          0           0
+ADAMS           1100                      0
+
+ENAME             SAL       COMM NVL(COMM,0)
+---------- ---------- ---------- -----------
+JAMES             950                      0
+FORD             3000                      0
+MILLER           1300                      0
+
+14 개의 행이 선택되었습니다.
+
+SQL>
+<문20> 형식) nvl2(null값을 체크할 필드명,인수1,인수2)
+               =>삼항연산자와 기능이 비슷
+                   null이 아닌경우->인수1을 선택해서 적용
+                   null인 경우----->인수2을 선택해서 적용
+
+ 보너스가 있으면 ->총급여(급여+보너스)
+ 보너스가 없으면 ->총급여(급여만 받는경우)
+===============================
+ ed
+
+  1* select ename,sal,comm,nvl2(comm,comm+sal,sal)  from emp
+SQL> /
+
+ENAME             SAL       COMM NVL2(COMM,COMM+SAL,SAL)
+---------- ---------- ---------- -----------------------
+SMITH             800                                800
+ALLEN            1600        300                    1900
+WARD             1250        500                    1750
+JONES            2975                               2975
+MARTIN           1250       1400                    2650
+BLAKE            2850                               2850
+CLARK            2450                               2450
+SCOTT            3000                               3000
+KING             5000                               5000
+TURNER           1500          0                    1500
+ADAMS            1100                               1100
+
+ENAME             SAL       COMM NVL2(COMM,COMM+SAL,SAL)
+---------- ---------- ---------- -----------------------
+JAMES             950                                950
+FORD             3000                               3000
+MILLER           1300                               1300
+
+14 개의 행이 선택되었습니다.
+
+<문21>부서별로 매출에 따라서 급여를 인상?
+
+          ANALYST ->급여->10%
+          CLERK->급여 15%
+          MANAGER=>급여->20%
+
+공식)=>각각의 조건에 따른 계산식을 적용
+=>Decode함수를 이용
+    case ~ when 구문(=switch ~ case와 유사)
+    => if 조건식 then
+             수행1
+             else if 조건식2 then
+                      수행2;
+             else if 조건식3 then
+                       수행3; 실행속도가 느리다.
+
+ 형식) decode(적용시킬 필드명(job),조건식(분석가,,,매니저),계산값,
+                                              조건식2,계산값2,,,) 디폴트값  별칭
+
+sql>select ename,job,sal,decode(job,'ANALYST', sal*1.1,
+                                                     'CLERK',sal*1.15,          
+                                                   'MANAGER',sal*1.2,sal) "급여인상액"
+      from emp
+      order by sal desc;
+
+ENAME      JOB              SAL 급여인상액
+---------- --------- ---------- ----------
+KING       PRESIDENT       5000       5000
+FORD       ANALYST         3000       3300
+SCOTT      ANALYST         3000       3300
+JONES      MANAGER         2975       3570
+BLAKE      MANAGER         2850       3420
+CLARK      MANAGER         2450       2940
+ALLEN      SALESMAN        1600       1600
+TURNER     SALESMAN        1500       1500
+MILLER     CLERK           1300       1495
+WARD       SALESMAN        1250       1250
+MARTIN     SALESMAN        1250       1250
+
+ENAME      JOB              SAL 급여인상액
+---------- --------- ---------- ----------
+ADAMS      CLERK           1100       1265
+JAMES      CLERK            950     1092.5
+SMITH      CLERK            800        920
+
+14 개의 행이 선택되었습니다.
+
+*********************************** 
+   ppt를 참조
+
+  CASE 표현식(적용필드명) WHEN 조건1 THEN 결과1 
+	WHEN 조건2 THEN 결과2 
+	WHEN 조건3 THEN 결과3 
+	ELSE 결과n 
+  END
+*****************************************
+
+ 그룹함수=>통계 처리 함수
+
+레코드갯수=>count(*) or count(필드명)
+=>필드에 들어가 있는 갯수를 체크해서
+    필드에 null은 배제(갯수에 포함X)
+
+
+count(*)=>null까지 계산에 포함
+-----------------------------------------------
+ select * from 테이블명;
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+SALGRADE                       TABLE
+ZIPCODE                        TABLE
+
+SQL> select count(*) from zipcode;
+
+  COUNT(*)
+----------
+     42619 =>우편번호테이블의 레코드갯수
+
+SQL>
+===================================
+min(필드명)->최소값, max(필드명)=>최대값, avg(필드명)=>평균
+sum(필드명)->합계
+
+emp테이블 확인
+-------------------------------------------------------------
+<문22>
+sql>select count(*),trunc(avg(sal)),max(sal),min(sal),
+      to_char(sum(sal),'$999,999') from emp;
+
+  COUNT(*) TRUNC(AVG(SAL))   MAX(SAL)   MIN(SAL) TO_CHAR(S
+---------- --------------- ---------- ---------- ---------
+        14            2073                 5000        800         $29,025
+
+<문23>그룹함수의 성격?
+ ed
+ 
+  1  select ename,count(*),trunc(avg(sal)),max(sal),min(sal),
+  2*       to_char(sum(sal),'$999,999') from emp
+SQL> /
+select ename,count(*),trunc(avg(sal)),max(sal),min(sal),
+       *
+1행에 오류:
+ORA-00937: 단일 그룹의 그룹 함수가 아닙니다
+
+=>그룹함수=>특징=>일반함수와 그룹함수는 같이 사용할 수가 없다.
+     select ~ from에  일반적으로  필드명과 그룹함수는 같이 사용 X
+----------------------------------------------------------------------------------
+형식) select 
+       from
+       where
+       =====
+        group by 그룹을 지어줄 필드명(ename) ==>팀장들의 모임
+       =====
+       order by
+
+   그룹을 묶어주는것=>같은 성격을 가질 수 있도록 묶어주는 역할
+
+ed
+
+SQL> /
+
+ENAME        COUNT(*) TRUNC(AVG(SAL))   MAX(SAL)   MIN(SAL) TO_CHAR(S
+---------- ---------- --------------- ---------- ---------- ---------
+ALLEN               1            1600       1600       1600    $1,600
+JONES               1            2975       2975       2975    $2,975
+FORD                1            3000       3000       3000    $3,000
+CLARK               1            2450       2450       2450    $2,450
+MILLER              1            1300       1300       1300    $1,300
+SMITH               1             800        800        800      $800
+WARD                1            1250       1250       1250    $1,250
+MARTIN              1            1250       1250       1250    $1,250
+SCOTT               1            3000       3000       3000    $3,000
+TURNER              1            1500       1500       1500    $1,500
+ADAMS               1            1100       1100       1100    $1,100
+
+ENAME        COUNT(*) TRUNC(AVG(SAL))   MAX(SAL)   MIN(SAL) TO_CHAR(S
+---------- ---------- --------------- ---------- ---------- ---------
+BLAKE               1            2850       2850       2850    $2,850
+KING                1            5000       5000       5000    $5,000
+JAMES               1             950        950        950      $950
+
+14 개의 행이 선택되었습니다.
+
+========================================
+ 예습
+
+ 그룹함수->having 조건식? =>하나의 테이블에서 데이터를 가지고 검색하는 방법
+-----------------------------------------------------------------------------
+                                      DDL(테이블생성,제약조건의 종류,5가지의 특징)
+                                      --------------------------------------------
+                                      하나이상의 테이블을 가지고 작업=>조인
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
