@@ -1,0 +1,269 @@
+<과제풀이>
+
+ scott계정으로 로그인
+
+ spool c:\webtest\2.db\print\20190625.txt
+
+1.다음과 같이 출력하시오(emp테이블)
+
+이름       업무            급여 =>별칭
+---------- --------- ----------
+SMITH      CLERK            800
+ALLEN      SALESMAN        1600
+WARD       SALESMAN        1250
+JONES      MANAGER         2975
+MARTIN     SALESMAN        1250
+BLAKE      MANAGER         2850
+CLARK      MANAGER         2450
+SCOTT      ANALYST         3000
+KING       PRESIDENT       5000
+TURNER     SALESMAN        1500
+ADAMS      CLERK           1100
+...
+
+=> select ename as "이름",job as "업 무",sal "급여",sal*12 "연봉"
+      from emp;
+ 
+이름       업 무           급여       연봉
+---------- --------- ---------- ----------
+SMITH      CLERK            800       9600
+ALLEN      SALESMAN        1600      19200
+WARD       SALESMAN        1250      15000
+JONES      MANAGER         2975      35700
+MARTIN     SALESMAN        1250      15000
+BLAKE      MANAGER         2850      34200
+CLARK      MANAGER         2450      29400
+SCOTT      ANALYST         3000      36000
+KING       PRESIDENT       5000      60000
+TURNER     SALESMAN        1500      18000
+ADAMS      CLERK           1100      13200
+
+이름       업 무           급여       연봉
+---------- --------- ---------- ----------
+JAMES      CLERK            950      11400
+FORD       ANALYST         3000      36000
+MILLER     CLERK           1300      15600
+
+14 개의 행이 선택되었습니다.
+
+ 2. Emp테이블의 구조(Schema)를 확인하는 SQL문장?=>필드의갯수,자료형
+                                                                 제약조건확인
+
+  =>내용을 확인->select * from emp;
+
+=> desc emp
+
+
+<문3>@c:\webtest\2.db\print\namesearch.txt
+
+  1   select ename,sal,comm
+  2   from emp
+  3*  where ename=&ename
+SQL> /
+ename의 값을 입력하십시오: allen
+구   3:  where ename=&ename
+신   3:  where ename=allen
+ where ename=allen
+             *
+3행에 오류:
+ORA-00904: "ALLEN": 부적합한 식별자
+
+  1   select ename,sal,comm
+  2   from emp
+  3*  where ename='&ename'
+SQL> /
+ename의 값을 입력하십시오: allen
+구   3:  where ename='&ename'
+신   3:  where ename='allen'
+
+선택된 레코드가 없습니다.
+
+  1   select ename,sal,comm
+  2   from emp
+  3*  where ename=upper('&ename')  
+             --->where lower(ename)='&ename'
+SQL> /
+ename의 값을 입력하십시오: allen
+구   3:  where ename=upper('&ename') =>동적으로 입력받기전 모습
+신   3:  where ename=upper('allen') =>동적으로 입력받은 후 모습
+
+ENAME             SAL       COMM
+---------- ---------- ----------
+ALLEN            1600        300
+
+SQL> /
+ename의 값을 입력하십시오: scott
+구   3:  where ename=upper('&ename')
+신   3:  where ename=upper('scott')
+
+ENAME             SAL       COMM
+---------- ---------- ----------
+SCOTT            3000
+
+
+ 3. 다음과 같이 부서번호를 출력하는 문장? (emp)
+
+  부서번호 =>별칭
+----------
+        10
+        20
+        30
+
+=> select deptno as "부서번호" from emp;
+  부서번호
+----------
+        20
+        30
+        30
+        20
+        30
+        30
+        10
+        20
+        10
+        30
+        20
+
+  부서번호
+----------
+        30
+        20
+        10
+
+  1* select distinct deptno as "부서번호" from emp
+SQL> /
+
+  부서번호
+----------
+        30
+        20
+        10
+
+  1* select distinct deptno as "부서번호" from emp order by 1
+SQL> /
+
+  부서번호
+----------
+        10
+        20
+        30
+
+=======================================
+
+14 개의 행이 선택되었습니다.
+ 4. emp테이블의 이름과 업무를 연결하여 출력하세요.
+    (||)->Employee=>별칭
+
+=> select ename || ' ' || job as Employee from emp;
+
+EMPLOYEE
+--------------------
+SMITH CLERK
+ALLEN SALESMAN
+WARD SALESMAN
+JONES MANAGER
+MARTIN SALESMAN
+BLAKE MANAGER
+CLARK MANAGER
+SCOTT ANALYST
+KING PRESIDENT
+TURNER SALESMAN
+ADAMS CLERK
+
+EMPLOYEE
+--------------------
+JAMES CLERK
+FORD ANALYST
+MILLER CLERK
+
+14 개의 행이 선택되었습니다.
+--------------------------------------------
+5. 다음과 같이 열명(=컬럼명=필드명)의 별칭과 급여가 2500이상인
+    데이터를 찾는 SQL문장은?
+
+     EMPNO ENAME             SAL       연봉
+---------- ---------- ---------- ----------
+      7566 JONES            2975      35700
+      7698 BLAKE            2850      34200
+      7788 SCOTT            3000      36000
+      7839 KING             5000      60000
+      7902 FORD             3000      36000
+
+=> select empno,ename,sal,sal*12 연봉
+     from emp
+     where sal >=2500
+     order by 4 desc;
+
+=>정렬한 결과값 출력
+
+      EMPNO ENAME             SAL       연봉
+---------- ---------- ---------- ----------
+      7839 KING             5000      60000
+      7788 SCOTT            3000      36000
+      7902 FORD             3000      36000
+      7566 JONES            2975      35700
+      7698 BLAKE            2850      34200
+
+
+6.emp테이블에서 사원이름이 Allen이라는 사원을 찾아서 이 사원의
+  이름,급여,보너스 순으로 출력하시오.
+
+ select ename,sal,comm
+ from emp
+ where ename='ALLEN';
+
+ENAME             SAL       COMM
+---------- ---------- ----------
+ALLEN            1600        300
+
+7.위의 6번문제를 파라미터 인수질의로 작성하시오.
+  save로 저장->과제폴더에 저장->namesearch로 저장
+
+
+    select ename,sal,comm
+     from emp
+    where ename=upper('&ename')
+
+
+save c:\webtest\2.db\print\namesearch.txt
+
+@c:\webtest\2.db\print\namesearch.txt
+
+ name?=>allen
+  -------
+ name?=>scott
+
+  EMPNO ENAME             SAL
+---------- ---------- ----------
+      7788 SCOTT            3000
+
+8.emp테이블에서 급여가 1500이상이고 부서번호가 10 또는 30인
+                                  and                       or
+  사원의 이름과 급여를 출력하는 SQL구문을 작성하시오.
+
+ sql구문과 결과와 같이
+
+select ename,sal
+from emp
+where sal>=1500 and (deptno=10 or deptno=30);
+
+ENAME             SAL
+---------- ----------
+ALLEN            1600
+BLAKE            2850
+CLARK            2450
+KING             5000
+TURNER           1500
+
+  1  select ename,sal
+  2  from emp
+  3* where sal>=1500 and deptno in (10,30)
+SQL> /
+
+ENAME             SAL
+---------- ----------
+ALLEN            1600
+BLAKE            2850
+CLARK            2450
+KING             5000
+TURNER         1500

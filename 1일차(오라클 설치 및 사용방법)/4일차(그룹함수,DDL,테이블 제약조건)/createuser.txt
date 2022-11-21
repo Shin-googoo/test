@@ -1,0 +1,23 @@
+conn sys/sys12345 as sysdba
+create user test identified by t1234;
+grant connect,resource to test;
+
+conn test/t1234
+
+create table prtest
+        (id number(2),name varchar2(10));
+
+ insert into prtest values(1,'테스트');
+ insert into prtest values(2,'테스트2');
+ insert into prtest values(3,'임시');
+ insert into prtest values(4,'홍길동');
+ insert into prtest values(5,'테스트22');
+
+create table b_prtest as select * from prtest;
+
+
+ insert into b_prtest values(1,'테스트');
+ insert into b_prtest values(2,'테스트2');
+ insert into b_prtest values(3,'임시');
+ insert into b_prtest values(4,'홍길동');
+ insert into b_prtest values(5,'테스트22');
