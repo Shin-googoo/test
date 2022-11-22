@@ -1,0 +1,1052 @@
+5일차 (조인 개요 및 작성법)
+                                                       on/off 기능
+무결성 제약조건=>제약조건을 추가,삭제=>기능을 잠시 중지(비활성화),
+                                                    기능을 다시 사용가능(활성화)
+
+<문1>데이터 딕셔너리(=데이터사전)=>시스템 테이블(insert,update,delete)
+
+1) user_XXXX ->계정(test)들이 조회->** user_constraints 테이블
+2) dba_XXX ->관리자만 조회가 가능(일반 계정 사용X) ->권한이 없다.
+3) all_XXX ->계정 O, 관리자 O -> 누구나 접근가능
+
+   select * from user_constraints (X)
+
+ ->구조파악 =>desc user_constraints
+-> 표에서 한글이름은 중요~
+
+ 이름                                                 널?               유형
+ -----------------------------------         -------- ----------------------------
+ OWNER                                                          VARCHAR2(30)
+ CONSTRAINT_NAME (제약조건이름)        NOT NULL VARCHAR2(30)
+ CONSTRAINT_TYPE (제약조건의 종류)                     VARCHAR2(1)
+ TABLE_NAME                                     NOT NULL VARCHAR2(30)
+(제약조건이 설정된 테이블 이름)
+ SEARCH_CONDITION                              LONG
+ R_OWNER                                            VARCHAR2(30)
+ R_CONSTRAINT_NAME                                  VARCHAR2(30)
+ DELETE_RULE                                        VARCHAR2(9)
+ STATUS (제약조건 활성화상태)                  VARCHAR2(8)
+ DEFERRABLE                                         VARCHAR2(14)
+ DEFERRED                                           VARCHAR2(9)
+ VALIDATED                                          VARCHAR2(13)
+ GENERATED                                          VARCHAR2(14)
+ BAD                                                VARCHAR2(3)
+ RELY                                               VARCHAR2(4)
+ LAST_CHANGE                                        DATE
+ INDEX_OWNER                                        VARCHAR2(30)
+ INDEX_NAME                                         VARCHAR2(30)
+ INVALID                                            VARCHAR2(7)
+ VIEW_RELATED                                       VARCHAR2(14)
+
+SQL> select constraint_name,constraint_type,table_name,status
+         from user_constraints
+         where  table_name=upper('&table_name');
+
+  conn test/t1234  -> 전의 작업이 이 계정이름으로 작업
+
+CONSTRAINT_NAME                C TABLE_NAME                     STATUS
+------------------------------ - ------------------------------ --------
+B_PRTEST_CK_AGE                C B_PRTEST                       ENABLED
+
+ENABLED=>제약조건이 지금 작동중임을 표시
+DISABLED=>제약조건이 지금 작동 off(임시로 작동중지)
+
+-> 자주 사용될 예정인 SQL은 파일로 저장(관리자 측면)
+
+sql>save c:\webtest\2.db\print\consearch.txt 
+      =>자주 사용되는 SQL저장
+file c:\webtest\2.db\print\consearch.txt(이)가 생성되었습니다
+
+  @c:\webtest\2.db\print\consearch.txt
+
+table_name의 값을 입력하십시오: sawon
+구   3:          where  table_name=upper('&table_name')
+신   3:          where  table_name=upper('sawon')
+
+CONSTRAINT_NAME                C TABLE_NAME                     STATUS
+------------------------------ - ------------------------------ --------
+SYS_C0011060                   C SAWON                          ENABLED
+(오라클이 만들어준 이름)
+SYS_C0011061                   C SAWON                          ENABLED
+SYS_C0011062                   P SAWON                          ENABLED
+SAWON_FK_DEPTNO           R SAWON                          ENABLED
+(=직접 만든 이름)
+
+ex) create table prtest3 (id number primary key,~)
+    ->제약조건은 만들어지는데 제약조건의 이름은 부여하지 않은 경우
+    ->오라클이 sys_XXXXXX로 만들어준다.
+
+  alter table prtest3 add constraint 제약조건 이름 ~
+                                                      SAWON_FK_DEPTNO    
+
+table_name의 값을 입력하십시오: dept
+구   3: where table_name=upper('&table_name')
+신   3: where table_name=upper('dept')
+
+CONSTRAINT_NAME                C TABLE_NAME           STATUS
+------------------------------ - ------------------------------ --------
+SYS_C0011107                   C DEPT                           ENABLED
+SYS_C0011108                   C DEPT                           ENABLED
+SYS_C0011109                   P DEPT                           ENABLED
+
+-> 제약조건은 전부 컬럼레벨에 제약조건을 줬다는 사실을 알 수 있다.
+    create table dept(dptno number primary key,~)
+
+
+<문2>제약조건이 활성화된 상태->임시로 중지->다시 가동
+
+                                               add / drop
+형식)alter table 변경시킬테이블명 disable constraints 
+      비활성화시킬 제약조건이름
+      alter table 변경시킬테이블명 enable constraints  
+      활성화시킬 제약조건이름
+
+ex)B_PRTEST_CK_AGE               C B_PRTEST                       ENABLED
+
+   20~65살 입력O  >=65 입력X
+                                                        테이블명_종류명_필드명
+sql>alter table b_prtest disable constraints B_PRTEST_CK_AGE;
+
+테이블이 변경되었습니다.
+
+SQL> @c:\webtest\2.db\print\consearch.txt
+table_name의 값을 입력하십시오: b_prtest
+구   3:          where  table_name=upper('&table_name')
+신   3:          where  table_name=upper('b_prtest')
+
+CONSTRAINT_NAME                C TABLE_NAME                     STATUS
+------------------------------ - ------------------------------ --------
+B_PRTEST_CK_AGE                C B_PRTEST                       DISABLED
+
+SQL>
+************************************************************************
+foreign key설정->두 테이블 사이의 서로 관련이 있는 필드끼리 설정
+             sawon(deptno) 자식<--------------dept(deptno) 부모 
+                                                               부서번호          
+                                         참조(확인해보고 데이터입력을 결정)
+                  deptno(fk)------------------------->deptno(pk)
+
+1.필드명이 같아도되고 달라도 된다.(default ->같게 이름을 부여)
+                self join(emp 사원번호(empno,mgr(직속상관 사원번호)
+
+2.두개의 연결된 필드는 자료형이 같아야 된다.(number<-->number)
+************************************************************************
+오라클=>간단한 검색(하나의 테이블)=>조인(실무)->서브쿼리->프로젝트
+
+ex) insert into b_prtest values(11,'test21',80,'서울',sysdate);
+     1 개의 행이 만들어졌습니다.
+
+ex) alter table b_prtest enable constraints b_prtest_ck_age
+                                        *
+1행에 오류:
+ORA-02293: (TEST.B_PRTEST_CK_AGE)을 검증할 수 없습니다 - 잘못된 제약을 확인합니다     계정명.제약조건명 =>모순(이미 80세가 들어감)
+ 
+ex) delete from b_prtest where id=11; 
+->엉터리 데이터가 들어가 있다면 제약조건을 줄 수 없기 때문에 삭제 O
+
+1 행이 삭제되었습니다.
+
+SQL> alter table b_prtest enable constraints b_prtest_ck_age;
+테이블이 변경되었습니다.
+
+SQL> insert into b_prtest values(11,'test21',80,'서울',sysdate);
+insert into b_prtest values(11,'test21',80,'서울',sysdate)
+*
+1행에 오류:
+ORA-02290: 체크 제약조건(TEST.B_PRTEST_CK_AGE)이 위배되었습니다
+
+
+******조인************************************************************
+<문3> emp테이블에서 ALLEN이 근무하고 있는 부서명을 알고 싶다.
+                                                         부서필드(dname)(X)
+   조인? =>한개 이상의 테이블을 가지고 검색하는 방법->조인
+
+SQL> conn scott/tiger
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS                          TABLE
+DEPT                             TABLE
+EMP                              TABLE
+SALGRADE                      TABLE
+---------------------------------------
+ZIPCODE                        TABLE
+
+   emp(사원정보)<-->dept(부서->부서번호,부서명,부서위치)
+  
+   empno,ename,deptno,dname,loc 출력하라
+
+형식) select 필드명1,필드명2,,,
+       from 테이블명1(emp),테이블명2(dept),,,
+
+sql>select empno,ename,deptno,dname,loc
+      from emp,dept;
+
+---------------------------------------------------
+SQL> select empno,ename,deptno,dname,loc
+  2        from emp,dept;
+select empno,ename,deptno,dname,loc
+                   *
+1행에 오류:
+ORA-00918: 열(=컬럼=필드)의 정의가 애매합니다
+
+조인하고자하는 테이블에 공통으로 존재하는 필드를 출력
+하고자한다면 =>테이블명.공통필드명
+------------------------------------------------
+ 조인=>두 테이블에서 보고자하는 필드를 단순히 나열한다고 조인이
+          되는것은 아니다.(=cross join) 
+          =>아무 의미가 없다. -> 검색할 가치가 없다.
+
+단점 
+1.중복된 데이터가 많아진다.=>찾고자하는 데이터를 검색하기가 쉽지않다.
+                                              
+            2.56개의 행이 검색
+            emp(14명)*dept(부서 10~40) 4개=56개
+            20,000                30,000=?
+
+=>중복된 데이터를 제거=>내가 찾고자하는 부분의 조건을 줘야된다.
+--------------------------------------------------------------
+**조인의 개요
+=>한 개이상의 테이블을 검색하면서 중복된 데이터가 없게 
+설정하는 검색방법=>원하는 데이터를 검색 **
+
+ed
+------------------------------------------------------------
+
+
+ed
+
+  1  select empno,ename,dept.deptno,dname,loc
+  2*       from emp,dept  ========
+SQL> /
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7369 SMITH              10 ACCOUNTING     NEW YORK
+      7499 ALLEN              10 ACCOUNTING     NEW YORK
+      7521 WARD               10 ACCOUNTING     NEW YORK
+      7566 JONES              10 ACCOUNTING     NEW YORK
+      7654 MARTIN             10 ACCOUNTING     NEW YORK
+      7698 BLAKE              10 ACCOUNTING     NEW YORK
+      7782 CLARK              10 ACCOUNTING     NEW YORK
+      7788 SCOTT              10 ACCOUNTING     NEW YORK
+      7839 KING               10 ACCOUNTING     NEW YORK
+      7844 TURNER             10 ACCOUNTING     NEW YORK
+      7876 ADAMS              10 ACCOUNTING     NEW YORK
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7900 JAMES              10 ACCOUNTING     NEW YORK
+      7902 FORD               10 ACCOUNTING     NEW YORK
+      7934 MILLER             10 ACCOUNTING     NEW YORK
+      7369 SMITH              20 RESEARCH       DALLAS
+      7499 ALLEN              20 RESEARCH       DALLAS
+      7521 WARD               20 RESEARCH       DALLAS
+      7566 JONES              20 RESEARCH       DALLAS
+      7654 MARTIN             20 RESEARCH       DALLAS
+      7698 BLAKE              20 RESEARCH       DALLAS
+      7782 CLARK              20 RESEARCH       DALLAS
+      7788 SCOTT              20 RESEARCH       DALLAS
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7839 KING               20 RESEARCH       DALLAS
+      7844 TURNER             20 RESEARCH       DALLAS
+      7876 ADAMS              20 RESEARCH       DALLAS
+      7900 JAMES              20 RESEARCH       DALLAS
+      7902 FORD               20 RESEARCH       DALLAS
+      7934 MILLER             20 RESEARCH       DALLAS
+      7369 SMITH              30 SALES          CHICAGO
+      7499 ALLEN              30 SALES          CHICAGO
+      7521 WARD               30 SALES          CHICAGO
+      7566 JONES              30 SALES          CHICAGO
+      7654 MARTIN             30 SALES          CHICAGO
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7698 BLAKE              30 SALES          CHICAGO
+      7782 CLARK              30 SALES          CHICAGO
+      7788 SCOTT              30 SALES          CHICAGO
+      7839 KING               30 SALES          CHICAGO
+      7844 TURNER             30 SALES          CHICAGO
+      7876 ADAMS              30 SALES          CHICAGO
+      7900 JAMES              30 SALES          CHICAGO
+      7902 FORD               30 SALES          CHICAGO
+      7934 MILLER             30 SALES          CHICAGO
+      7369 SMITH              40 OPERATIONS     BOSTON
+      7499 ALLEN              40 OPERATIONS     BOSTON
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7521 WARD               40 OPERATIONS     BOSTON
+      7566 JONES              40 OPERATIONS     BOSTON
+      7654 MARTIN             40 OPERATIONS     BOSTON
+      7698 BLAKE              40 OPERATIONS     BOSTON
+      7782 CLARK              40 OPERATIONS     BOSTON
+      7788 SCOTT              40 OPERATIONS     BOSTON
+      7839 KING               40 OPERATIONS     BOSTON
+      7844 TURNER             40 OPERATIONS     BOSTON
+      7876 ADAMS              40 OPERATIONS     BOSTON
+      7900 JAMES              40 OPERATIONS     BOSTON
+      7902 FORD               40 OPERATIONS     BOSTON
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7934 MILLER             40 OPERATIONS     BOSTON
+
+56 개의 행이 선택되었습니다.
+
+<문4>  조인의 종류 ->비교하시오, 두개이상 나영하시오(단답형)
+                             차이점을 비교 설명하시오.(서술형)
+********************************************************************
+1.inner join(default)
+->두 검색하고자하는 테이블의 양이 엇비슷할때 검색하는 방법     
+=>중소기업,대기업에 따라서 데이터의 양은 다를 수 있다.
+                                                         
+
+  형식) select 필드명1,,,테이블명1.공통필드명,,,
+         from 테이블1,테이블2,,,
+         where 조건식(emp.depnto=dept.deptno)
+
+2.outer join ->한쪽의 테이블의 데이터가 많을때 사용하는 방법
+                =>많은쪽의 테이블의 데이터를 무조건 나올 수있게 설정
+                    사각지대를 제거(데이터의 검색대상에 포함)
+*******************************************************************
+SQL>
+
+  1  select empno,ename,dept.deptno,dname,loc
+  2        from emp,dept
+  3* where emp.deptno=dept.deptno
+SQL> /
+
+     EMPNO ENAME          DEPTNO DNAME         LOC
+---------- ---------- ---------- -------------- -------------
+      7369 SMITH              20 RESEARCH         DALLAS
+-> SMITH  사람의 부서번호는 20번 RESEARCH(부서명)-> DALLAS에 존재
+
+      7499 ALLEN              30 SALES             CHICAGO
+      7521 WARD               30 SALES            CHICAGO
+      7566 JONES              20 RESEARCH         DALLAS
+-> JONES는 같은 부서에서 일하는 동료
+
+      7654 MARTIN             30 SALES            CHICAGO
+      7698 BLAKE              30 SALES              CHICAGO
+      7782 CLARK              10 ACCOUNTING       NEW YORK
+      7788 SCOTT              20 RESEARCH         DALLAS
+      7839 KING               10 ACCOUNTING       NEW YORK
+      7844 TURNER             30 SALES             CHICAGO
+      7876 ADAMS              20 RESEARCH       DALLAS
+
+     EMPNO ENAME          DEPTNO DNAME       LOC
+---------- ---------- ---------- -------------- -------------
+      7900 JAMES              30 SALES              CHICAGO
+      7902 FORD               20 RESEARCH         DALLAS
+      7934 MILLER             10 ACCOUNTING       NEW YORK
+
+14 개의 행이 선택되었습니다.
+
+SQL>
+--------------------------------------------------------------------------------
+<문5>
+조인->검색->테이블명->user_constraints
+->오타->테이블 또는 뷰가 존재하지 않는다.(테이블이 없거나 오타)
+>검색속도도 빠르게 오타도 줄이기 위한 방법=>테이블 이름도 별칭이 가능
+=>테이블 이름별칭(=>튜닝이 중요) =>전제조건) 
+지정된 테이블의 레코드수가 굉장히 많은경우      만건이상...
+==============================================
+형식)  select 필드명1,,,별칭1.공통필드명,,,
+        from 테이블1 별칭1,테이블2 별칭2,,,
+        where 조건식(별칭1.depnto=별칭2.deptno)
+                                       pk와 fk의 연결
+ed
+
+  1  select empno,ename,d.deptno,dname,loc
+  2        from emp e,dept d
+  3* where e.deptno=d.deptno
+SQL> /
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7369 SMITH              20 RESEARCH       DALLAS
+      7499 ALLEN              30 SALES          CHICAGO
+      7521 WARD               30 SALES          CHICAGO
+      7566 JONES              20 RESEARCH       DALLAS
+      7654 MARTIN             30 SALES          CHICAGO
+      7698 BLAKE              30 SALES          CHICAGO
+      7782 CLARK              10 ACCOUNTING     NEW YORK
+      7788 SCOTT              20 RESEARCH       DALLAS
+      7839 KING               10 ACCOUNTING     NEW YORK
+      7844 TURNER             30 SALES          CHICAGO
+      7876 ADAMS              20 RESEARCH       DALLAS
+
+     EMPNO ENAME          DEPTNO DNAME          LOC
+---------- ---------- ---------- -------------- -------------
+      7900 JAMES              30 SALES          CHICAGO
+      7902 FORD               20 RESEARCH       DALLAS
+      7934 MILLER             10 ACCOUNTING     NEW YORK
+
+14 개의 행이 선택되었습니다.
+
+조인+원하는 부분을 검색하는 방법
+
+<문6>emp테이블에서 업무가 SALESMAN인 사원의 이름,급여,부서명,근무지를 출력시켜주는 SQL구문?                                          (dept)
+
+    14명+업무가 SALESMAN =>조인+우리가 원하는 데이터를 검색
+    기존의 조인은 가져가면서 원하는 데이터를 추가
+
+ select e.ename,e.sal,d.dname,d.loc
+ from emp e,dept d
+ where e.deptno=d.deptno and e.job='SALESMAN';
+
+ENAME             SAL DNAME          LOC
+---------- ---------- -------------- -------------
+TURNER           1500 SALES           CHICAGO
+MARTIN           1250 SALES           CHICAGO
+WARD             1250 SALES           CHICAGO
+ALLEN             1600 SALES           CHICAGO
+
+-> SALES에 근무하는 직원의 수 4명 부서는 CHICAGO에 위치하고 있다.
+    ALLEN이 부서에서 가장 급여가 많다.
+
+
+<문7>사원의 이름,급여,부서명,근무지 순서로 출력하되
+ sal가 1200이상인 사원만 검색하는 SQL?(단 조건 테이블별칭 사용할것)
+
+ed
+
+  1   select e.ename,e.sal,d.dname,d.loc
+  2   from emp e,dept d
+  3*  where e.deptno=d.deptno and e.sal>=1200
+                                              =============
+
+ENAME             SAL DNAME          LOC
+---------- ---------- -------------- ------------
+ALLEN            1600 SALES          CHICAGO
+WARD             1250 SALES          CHICAGO
+JONES            2975 RESEARCH       DALLAS
+MARTIN           1250 SALES          CHICAGO
+BLAKE            2850 SALES          CHICAGO
+CLARK            2450 ACCOUNTING     NEW YORK
+SCOTT            3000 RESEARCH       DALLAS
+KING             5000 ACCOUNTING     NEW YORK
+TURNER           1500 SALES          CHICAGO
+FORD             3000 RESEARCH       DALLAS
+MILLER           1300 ACCOUNTING     NEW YORK
+11 개의 행이 선택되었습니다.
+
+<문8> 2개->3개까지 검색하는 방법  -> 실무에서는 3개이상
+DB모델링,설계 ->(JSP)
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS(보너스)                          TABLE
+DEPT                                       TABLE
+EMP                                        TABLE
+SALGRADE                                TABLE
+
+sql>desc bonus
+
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ ENAME(사원명)                                              VARCHAR2(10)
+ JOB (업무)                                               VARCHAR2(9)
+ SAL (급여)                                               NUMBER
+ COMM(보너스)                                               NUMBER
+
+sql>select * from bonus;
+-------------------------------------------------------------------------------
+sql>insert into bonus values('SMITH','CLERK',800,null);	
+      insert into bonus values('ALLEN','SALESMAN',1600,300);
+      insert into bonus values('WARD','SALESMAN',1250,500);
+
+SQL> select * from bonus;
+
+ENAME      JOB              SAL       COMM
+---------- --------- ---------- ----------
+SMITH      CLERK            800
+ALLEN      SALESMAN      1600        300
+WARD      SALESMAN     1250        500
+
+ **공식**
+
+1.각 테이블의 pk확인->없을 수도 있지만
+2.업무에 따른 서로 조인하고자하는 테이블의 연관성 있는 필드를 확인
+                                             -------------------------------
+                                             (=두 테이블에서 관련성 있는 필드)
+emp         dept          bonus
+empno     deptno          X
+
+==============================
+ 테이블의 조인수-1=>where 조건식 갯수  =>3-1=2개
+                                                         4-1=3개(where 조건식)
+				       5-1=4개(where 조건식)
+-----------------------------------------------------
+emp    dept
+            deptno(pk)
+                      =>where e.deptno=d.deptno
+deptno(fk)
+---------------------------------------------------
+dept              bonus
+              X
+deptno           ename
+dname           job
+loc                sal
+                   comm
+---------------------------------------------------
+emp           bonus b
+
+ename       ename  =>where e.ename=b.ename
+job             job     =>where e.job=b.job
+sal             sal       =>where e.sal=b.sal 
+comm        comm  =>where e.comm=b.comm
+
+-> 가장 핵심적으로 연관
+---------------------------------------------------------------
+
+ ** emp테이블에서 사번,이름,업무,입사일,급여,보너스를 출력
+     dept->부서명,위치 순서대로 출력
+     emp테이블에서 업무가 SALESMAN인 사원의 정보출력
+   (단 bonus테이블과 같이 연결시켜서 3개의 테이블을 조인해서 작성할것)
+
+형식) select 세개의 테이블의 필드 나열,,,
+       from 테이블명1,테이블명2,테이블명3,,,,
+       where 조건식 and 조건식2 //,,,and 조건식3,,,,
+      
+      select e.empno,e.ename,e.job,e.hiredate,e.sal,e.comm,
+                d.dname,d.loc
+      from emp e,dept d,bonus b
+      where e.deptno=d.deptno and e.ename=b.ename;
+
+     EMPNO ENAME      JOB       HIREDATE        SAL       COMM DNAME
+---------- ---------- --------- -------- ---------- ---------- --------------
+LOC
+-------------
+      7369 SMITH      CLERK     80/12/17        800            RESEARCH
+DALLAS
+
+      7521 WARD       SALESMAN  81/02/22       1250        500 SALES
+CHICAGO
+
+      7499 ALLEN      SALESMAN  81/02/20       1600        300 SALES
+CHICAGO
+
+<문9>
+조인하고자하는 테이블의 일치하는 필드(=연관이 있는 필드)=>검색
+inner join=>일치 O =>일치X ->다른 조건식의 다른연산자를 고려해야 한다. = 사용x
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BONUS(보너스)              TABLE
+DEPT                           TABLE
+EMP                             TABLE
+SALGRADE(급여등급)       TABLE
+
+desc salgrade
+
+ 이름                                      널?      유형
+ ----------------------------------------- -------- -----------
+ GRADE(등급)                                      NUMBER
+ LOSAL(최소급여)                                  NUMBER
+ HISAL(최대급여)                                  NUMBER
+--------------------------------------------------------------
+
+ sql>select * from salgrade;
+
+     GRADE      LOSAL      HISAL
+   ----------   ----------   ----------
+         1        700       1200
+         2       1201       1400
+         3       1401       2000
+         4       2001       3000
+         5       3001       9999  ->5000 (기준,내규에 연봉,급여 )
+
+직접적인 관련이 없다. -> 일치하는 필드가 없다.
+간접적인 필드O
+-------------------------------------------
+  emp e테이블에서 사번,이름,업무,급여출력 등급,최소급여,최대급여
+  salgrade  s                           sal(숫자)
+
+                        >=,<=,between A and B
+
+   부서별로 급여가 많이 받는 사원순으로 정렬하라.(등급이 높은 사람)
+=====================================
+sql>select e.empno,e.ename,e.job,e.sal,s.grade,s.losal,s.hisal
+      from emp e,salgrade s
+      where e.sal between s.losal and s.hisal
+      and e.deptno=&deptno
+      order by s.grade desc;
+
+SQL> select e.empno,e.ename,e.job,e.sal,s.grade,s.losal,s.hisal
+  2        from emp e,salgrade s
+  3        where e.sal between s.losal and s.hisal
+  4        and e.deptno=&deptno
+  5        order by s.grade desc;
+
+deptno의 값을 입력하십시오: 10
+구   4:       and e.deptno=&deptno
+신   4:       and e.deptno=10
+
+     EMPNO ENAME      JOB              SAL      GRADE      LOSAL      HISAL
+---------- ---------- --------- ---------- ---------- ---------- ----------
+      7839 KING       PRESIDENT       5000          5       3001       9999
+      7782 CLARK      MANAGER         2450          4       2001       3000
+      7934 MILLER     CLERK           1300          2       1201       1400
+
+
+deptno의 값을 입력하십시오: 20
+구   4:       and e.deptno=&deptno
+신   4:       and e.deptno=20
+
+     EMPNO ENAME      JOB              SAL      GRADE      LOSAL      HISAL
+---------- ---------- --------- ---------- ---------- ---------- ----------
+      7788 SCOTT      ANALYST         3000          4       2001       3000
+      7902 FORD       ANALYST         3000          4       2001       3000
+      7566 JONES      MANAGER         2975          4       2001       3000
+      7876 ADAMS      CLERK           1100          1        700       1200
+      7369 SMITH      CLERK            800          1        700       1200
+
+ sql>save c:\webtest\2.db\print\gradesearch.txt
+
+inner join(일치하는 필드만 검색)=equi join(동등조인) =>  = 연산자
+                                         Non-equi join(일치하는 필드가 없을경우 
+                                           업무에 따른 다른 조건식의 연산자 사용)
+---------------------------------------------------------------------------------
+<문10> outer join->두 테이블의 검색방법(대(검색부분 누락),소)
+(inner join을  사용하는 경우)
+                          ->대(모든 데이터 검색)-소(일치하는 부분만 검색)
+
+           	left outer join(대,소), right outer join(소, 대)
+
+sql>select * from dept;//emp 14명 e.deptno=d.deptno
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        =========================
+        40 OPERATIONS     BOSTON
+        =========================
+        50
+        60
+       ,,,
+   ======================================
+     오라클에서만 사용이 가능한 조인=>inner join,outer join
+     Ansi Join=>전 세계 표준언어(SQL->join)
+  =======================================
+   emp,dept테이블을 조인하되, dept테이블의 40번부서까지 다 출력이 될 수 있도록 조인?(outer join)
+
+  sql>select e.ename,e.job,d.deptno,d.dname
+        from emp e,dept d
+        where d.deptno=e.deptno(+);//빈행을 만들어 달라
+                     40            X    -> 행을 하나 가상으로 추가        
+
+(+) 주면 outer join 쓴다는 뜻
+	
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+SMITH      CLERK             20 RESEARCH
+ALLEN      SALESMAN          30 SALES
+WARD       SALESMAN          30 SALES
+JONES      MANAGER           20 RESEARCH
+MARTIN     SALESMAN          30 SALES
+BLAKE      MANAGER           30 SALES
+CLARK      MANAGER           10 ACCOUNTING
+SCOTT      ANALYST           20 RESEARCH
+KING       PRESIDENT         10 ACCOUNTING
+TURNER     SALESMAN          30 SALES
+ADAMS      CLERK             20 RESEARCH
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+JAMES      CLERK             30 SALES
+FORD       ANALYST           20 RESEARCH
+MILLER     CLERK             10 ACCOUNTING
+                                      40 OPERATIONS
+14 개의 행이 선택되었습니다.
+
+SQL>
+
+        select e.ename,e.job,d.deptno,d.dname
+        from emp e,dept d
+        where e.deptno(+)=d.deptno; -> 순서를 변경해도 결과는 같다.
+------------------------------------------------------------------
+ left outer join <-->right outer join을 구분하지 않고 사용
+------------------------------------------------------------------
+ 1   select e.ename,e.job,d.deptno,d.dname
+  2          from emp e,dept d
+  3*         where e.deptno(+)=d.deptno(+)
+SQL> /
+        where e.deptno(+)=d.deptno(+)   //(+)은 한쪽만 작성할 수 있다.
+                         *
+3행에 오류:
+ORA-01468: outer-join된 테이블은 1개만 지정할 수 있습니다
+
+
+  일치하지 않은쪽 테이블에 빈행추가(+)
+  (=일치하는 데이터가 없는쪽에)
+
+where e.deptno(+)=d.deptno or
+                 *
+**********************************************************************
+3행에 오류:
+ORA-01719: 포괄 조인 운영 (+)는 OR 또는 IN의 연산수를 허용하지 않습니다
+-> outer join에서의 조건식에서는 or연산자,in연산자 사용 불가
+-> and 조건식 -> 조건식을 여러개 사용 가능
+*********************************************************************
+
+inner join -> and, or -> 둘다 사용 가능
+
+1  select e.ename,e.job,d.deptno,d.dname
+  2  from emp e,dept d
+  3  where e.deptno=d.deptno or
+  4* e.ename like '%A%'
+SQL> /
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+ALLEN      SALESMAN          10 ACCOUNTING
+WARD       SALESMAN          10 ACCOUNTING
+MARTIN     SALESMAN          10 ACCOUNTING
+BLAKE      MANAGER           10 ACCOUNTING
+CLARK      MANAGER           10 ACCOUNTING
+KING       PRESIDENT         10 ACCOUNTING
+ADAMS      CLERK             10 ACCOUNTING
+JAMES      CLERK             10 ACCOUNTING
+MILLER     CLERK             10 ACCOUNTING
+SMITH      CLERK             20 RESEARCH
+ALLEN      SALESMAN          20 RESEARCH
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+WARD       SALESMAN          20 RESEARCH
+JONES      MANAGER           20 RESEARCH
+MARTIN     SALESMAN          20 RESEARCH
+BLAKE      MANAGER           20 RESEARCH
+CLARK      MANAGER           20 RESEARCH
+SCOTT      ANALYST           20 RESEARCH
+ADAMS      CLERK             20 RESEARCH
+JAMES      CLERK             20 RESEARCH
+FORD       ANALYST           20 RESEARCH
+ALLEN      SALESMAN          30 SALES
+WARD       SALESMAN          30 SALES
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+MARTIN     SALESMAN          30 SALES
+BLAKE      MANAGER            30 SALES
+CLARK      MANAGER            30 SALES
+TURNER     SALESMAN          30 SALES
+ADAMS      CLERK                30 SALES
+JAMES      CLERK                 30 SALES
+ALLEN      SALESMAN           40 OPERATIONS
+WARD       SALESMAN          40 OPERATIONS
+MARTIN     SALESMAN          40 OPERATIONS
+BLAKE      MANAGER            40 OPERATIONS
+CLARK      MANAGER            40 OPERATIONS
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+ADAMS      CLERK             40 OPERATIONS
+JAMES      CLERK             40 OPERATIONS
+
+35 개의 행이 선택되었습니다.
+-> A or B -> A,B A,B(둘다 나올 가능성이 있다.)
+
+<문11>
+위의 문10에서 outer join한 문제에서 사원의 이름이 A자 들어간 사원의 정보를 출력 (사번,이름,업무,부번,부서명순으로 출력)(단 outer join을 사용)
+
+ed
+  1   select e.ename,e.job,d.deptno,d.dname
+  2          from emp e,dept d
+  3          where e.deptno(+)=d.deptno and
+  4*         e.ename like '%A%'
+SQL> /
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+ALLEN      SALESMAN          30 SALES
+WARD       SALESMAN          30 SALES
+MARTIN     SALESMAN          30 SALES
+BLAKE      MANAGER           30 SALES
+CLARK      MANAGER           10 ACCOUNTING
+ADAMS      CLERK             20 RESEARCH
+JAMES      CLERK             30 SALES
+
+7 개의 행이 선택되었습니다.
+
+<문12>
+[  self join  ]
+emp테이블에서 empno(사번)에 대한 직속상관 사원번호(mgr) 검색
+              =>자기자신의 테이블을 하나 가상table 만들어서 연결하는 방법
+                   
+                        emp(empno)==>emp(mgr)
+                          w                        m
+
+sql> select w.ename || '의 직속상관은' || m.ename || '입니다.'
+       from emp w, emp m
+       where w.mgr=m.empno;
+
+W.ENAME||'의직속상관은'||M.ENAME||'입니
+----------------------------------------
+FORD의 직속상관은JONES입니다.
+SCOTT의 직속상관은JONES입니다.
+JAMES의 직속상관은BLAKE입니다.
+TURNER의 직속상관은BLAKE입니다.
+MARTIN의 직속상관은BLAKE입니다.
+WARD의 직속상관은BLAKE입니다.
+ALLEN의 직속상관은BLAKE입니다.
+MILLER의 직속상관은CLARK입니다.
+ADAMS의 직속상관은SCOTT입니다.
+CLARK의 직속상관은KING입니다.
+BLAKE의 직속상관은KING입니다.
+
+W.ENAME||'의직속상관은'||M.ENAME||'입니
+----------------------------------------
+JONES의 직속상관은KING입니다.
+SMITH의 직속상관은FORD입니다.
+
+                                      ===========================
+13 개의 행이 선택되었습니다. =>self join=>subQuery와 기능상 비슷
+                                      ===========================
+
+   오라클의 조인
+
+   ANSI 조인=>다른 DB에서도 사용가능
+------------------------------------------------------------------
+<문13>inner join=>오라클=>Ansi 방법
+
+ 오라클
+         select 필드명1,,,테이블명1.공통필드명,,,
+         from 테이블1,테이블2,,,
+         where 조건식(emp.depnto=dept.deptno)
+         ====
+
+Ansi
+ 형식)   select 필드명1,필드명2,, from 테이블명1 (inner) join  테이블명2
+                                                              ======
+                                                              ()는 생략 가능
+          on 테이블명1.필드명=테이블명2.필드명
+          =
+==================================
+sql>   사원명,업무,부서번호,부서명
+        select e.ename,e.job,d.deptno,d.dname
+        from emp e,dept d
+                        ==
+        where e.deptno=d.deptno;
+        ===
+Ansi)
+===================================
+       select e.ename,e.job,d.deptno,d.dname
+        from emp e inner join dept d
+                          ======
+        on e.deptno=d.deptno;
+        ==
+==================================
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+SMITH      CLERK             20 RESEARCH
+ALLEN      SALESMAN          30 SALES
+WARD       SALESMAN          30 SALES
+JONES      MANAGER           20 RESEARCH
+MARTIN     SALESMAN          30 SALES
+BLAKE      MANAGER           30 SALES
+CLARK      MANAGER           10 ACCOUNTING
+SCOTT      ANALYST           20 RESEARCH
+KING       PRESIDENT         10 ACCOUNTING
+TURNER     SALESMAN          30 SALES
+ADAMS      CLERK             20 RESEARCH
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+JAMES      CLERK             30 SALES
+FORD       ANALYST           20 RESEARCH
+MILLER     CLERK             10 ACCOUNTING
+
+14 개의 행이 선택되었습니다.
+************************************************************************
+<문14> Ansi 조인 =>using절 ->연관 있으면서 필드명이 같을때 사용가능
+***********************************************************************
+           select e.ename,e.job,d.deptno,d.dname
+           from emp e inner join dept d
+                          ======
+           on e.deptno=d.deptno;//공통의 필드명이 동일하다.
+           =================>using(두테이블의 공통필드명)
+                                                (필드이름이 같아야 된다.)
+
+ ed
+
+1  select e.ename,e.job,d.deptno,d.dname ->d.deptno(X)
+  2  from emp e inner join dept d
+  3* using(deptno)
+SQL> /
+select e.ename,e.job,d.deptno,d.dname
+                     *
+1행에 오류:
+ORA-25154: USING 절의 열 부분은 식별자를 가질 수 없음
+------------------------------------------------------------------------------
+
+  1  select e.ename,e.job,d.dname  
+//공통의 필드명 =>테이블명.공통의 필드명(X)
+  2          from emp e inner join dept d
+  3*         using(deptno)
+SQL> /
+
+ENAME      JOB       DNAME
+---------- --------- --------------
+SMITH      CLERK     RESEARCH
+ALLEN      SALESMAN  SALES
+WARD       SALESMAN  SALES
+JONES      MANAGER   RESEARCH
+MARTIN     SALESMAN  SALES
+BLAKE      MANAGER   SALES
+CLARK      MANAGER   ACCOUNTING
+SCOTT      ANALYST   RESEARCH
+KING       PRESIDENT ACCOUNTING
+TURNER     SALESMAN  SALES
+ADAMS      CLERK     RESEARCH
+
+ENAME      JOB       DNAME
+---------- --------- --------------
+JAMES      CLERK     SALES
+FORD       ANALYST   RESEARCH
+MILLER     CLERK     ACCOUNTING
+
+14 개의 행이 선택되었습니다.
+
+
+**<문15>오라클에서 outer join->(+)=>Ansi Outer join으로 변경하시오.
+  =>40번 부서를 dept에서 설정?
+
+형식) select 필드명1,필드명2,,from 테이블명1 별칭1 outer join 테이블명2 별칭2 on절                                                    -----------
+=============================
+       select e.ename,e.job,d.deptno,d.dname
+       from emp e,dept d
+       where d.deptno=e.deptno(+);  //오라클의 경우
+
+=============================
+  1  select e.ename,e.job,d.deptno,d.dname
+  2          from dept d left outer join emp e
+                     ====(부서테이블이 왼쪽에 배치)
+  3* on e.deptno=d.deptno
+       ==
+SQL> /
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+SMITH      CLERK             20 RESEARCH
+ALLEN      SALESMAN          30 SALES
+WARD       SALESMAN          30 SALES
+JONES      MANAGER           20 RESEARCH
+MARTIN     SALESMAN          30 SALES
+BLAKE      MANAGER           30 SALES
+CLARK      MANAGER           10 ACCOUNTING
+SCOTT      ANALYST           20 RESEARCH
+KING       PRESIDENT         10 ACCOUNTING
+TURNER     SALESMAN          30 SALES
+ADAMS      CLERK             20 RESEARCH
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+JAMES      CLERK             30 SALES
+FORD       ANALYST         20 RESEARCH
+MILLER     CLERK             10 ACCOUNTING
+                                   40 OPERATIONS ->dept 테이블 전부
+                                                  ->전부(일치하지 않는 데이터까지)
+15 개의 행이 선택되었습니다.
+
+SQL>
+
+ ed
+
+SQL> ed
+file afiedt.buf(이)가 기록되었습니다
+
+  1  select e.ename,e.job,d.deptno,d.dname
+  2          from dept d right outer join emp e
+                                ==============>emp테이블 기준
+              -> 40번 부서는 emp테이블에 일치하는 것이 없기에 출력X
+  3* on e.deptno=d.deptno
+SQL> /
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+MILLER     CLERK             10 ACCOUNTING
+KING       PRESIDENT         10 ACCOUNTING
+CLARK      MANAGER           10 ACCOUNTING
+FORD       ANALYST           20 RESEARCH
+ADAMS      CLERK             20 RESEARCH
+SCOTT      ANALYST           20 RESEARCH
+JONES      MANAGER           20 RESEARCH
+SMITH      CLERK             20 RESEARCH
+JAMES      CLERK             30 SALES
+TURNER     SALESMAN          30 SALES
+BLAKE      MANAGER           30 SALES
+
+ENAME      JOB           DEPTNO DNAME
+---------- --------- ---------- --------------
+MARTIN     SALESMAN          30 SALES
+WARD       SALESMAN          30 SALES
+ALLEN      SALESMAN          30 SALES
+
+14 개의 행이 선택되었습니다.
+
+   =>emp테이블(오른쪽기준) =>emp(10,20,30)모두 출력하고나서
+                                         dept->emp와 일치하는 데이터만 출력
+                                    (40번 부서는 일치하지 않기때문에 안나온다.)
+
+-> SQL 활용(기초 SQL문)
+---------------------------------------------------------------------------
+ ** 예습 **
+앞으로의 진도 =>서브쿼리 개요 및 작성법
+                     뷰
+                     트랜잭션 및 인덱스
+                     오라클의 권한(시스템권한,객체권한)
+                     데이터복원,데이터삭제
+---------------------------------------------------------------------------
+select job,sum(sal)
+from emp
+where job!='MANAGER'
+group by job
+having sum(sal)>5000
+order by sum(sal) desc
+
+<실행결과>
+
+JOB         SUM(SAL)
+--------- ----------
+ANALYST         6000
+SALESMAN       5600
+
+
+select dname,count(*)
+from emp e, dept d
+where e.deptno=d.deptno
+group by dname
+having count(*)>=5
+
+DNAME              인원수
+-------------- ----------
+RESEARCH             5
+SALES                   6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
