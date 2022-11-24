@@ -1,0 +1,771 @@
+6일차(서브쿼리의 개요 및 작성법)
+
+
+ spool c:\webtest\2.db\print\20221122.txt
+
+
+-------------------------------
+->간단한 SQL구문(1~3일차),조인,서브쿼리=>기술면접
+------------------------------
+
+   서브쿼리의 개요 및 서브쿼리의 종류를 기술하시오.(서술형) 이론시험
+
+서브쿼리(subQuery=>SQL문 내부에 또 다른 SQL구문이 존재하는 구문)
+           형식) 중첩함수와 모양이 비슷
+
+          mainQuery=>주쿼리
+---------------------------------------------------------------------
+<문1>emp테이블에서 SCOTT사원이 받는 급여보다 많이 받는 사원을 구해서
+                            ----------------------?(3000)
+          그 사원의 사번,이름,업무,급여순으로 출력하시오.
+
+1) SCOTT사원이 받는 급여? =>서브쿼리
+
+ select sal from emp
+where ename='SCOTT';
+
+       SAL
+----------
+      3000
+
+2) select empno,ename,job,sal
+    from emp
+   where sal > 3000;
+
+     EMPNO ENAME      JOB              SAL
+---------- ---------- --------- ----------
+      7839 KING       PRESIDENT       5000
+
+1)+2)
+
+select empno,ename,job,sal
+    from emp
+   where sal > (select sal from emp
+                      where ename='SCOTT');
+
+<문2>emp테이블에서 가장 입사일이 오래된 사원의 정보를 출력?
+                     -입사일이 가장 적은 사원
+                        min(hiredate) <-->max(hiredate)->가장 최근에 입사
+(이름,입사날짜순으로 출력하시오.)
+
+1) select min(hiredate) from emp;  //입사일이 가장 적은 날짜 출력
+    select sysdate from dual; //오늘 날짜 구하기
+
+    SYSDATE
+    --------
+    22/11/22
+
+MIN(HIRE
+--------
+80/12/17
+
+2)select ename,hiredate from emp
+   where hiredate='80/12/17';
+
+ENAME      HIREDATE
+---------- --------
+SMITH      80/12/17
+
+3)->1)+2)
+
+select ename,hiredate from emp
+   where hiredate=(select min(hiredate) from emp);
+-------------------------------------------------------------
+<문3>emp테이블에서 사원번호가 7521인 사원과 업무가 같고(and)
+                            ----------------------------? SALESMAN
+         급여가 사원번호가 7934인 사원보다 많이 받는 사원을 구해서
+                 ----------------------급여? 1300
+         이 구한사원의 사번,이름,업무,급여순으로 출력하시오.
+
+
+1)사원번호가 7521인 사원의 업무?
+
+  select job from emp where empno=7521;
+
+JOB
+---------          서브쿼리의 종류
+                     --------------
+SALESMAN =>실행결과가 행이 한개이면 =>단일행 서브쿼리
+                    실행결과가 행이 한개이상 =>다중행 서브쿼리
+
+2)사원번호가 7934인 사원의 급여?
+ select sal from emp where empno=7934;
+
+       SAL
+----------
+      1300
+
+1)+2)
+
+select empno,ename,job,sal from emp
+where job='SALESMAN' and sal > 1300;
+
+     EMPNO ENAME      JOB              SAL
+---------- ---------- --------- ----------
+      7499 ALLEN      SALESMAN        1600
+      7844 TURNER   SALESMAN      1500
+
+select empno,ename,job,sal from emp
+where job=(select job from emp where empno=7521) 
+          and 
+         sal > (select sal from emp where empno=7934);
+
+     EMPNO ENAME      JOB              SAL
+---------- ---------- --------- ----------
+      7499 ALLEN      SALESMAN        1600
+      7844 TURNER     SALESMAN        1500
+
+=====서브쿼리의 개요과 종류=================
+ 서브쿼리의 다양한 패턴(=>오라클 페이징 처리기법)
+
+<문4>emp테이블에서 급여의 평균다 적은 사원을 찾아서 그 사원의 이름,업무
+                             ----------> ** 서브쿼리에 그룹함수를 사용할 수가 있다.**
+         급여순으로 출력하시오.
+
+1)급여의 평균?  select avg(sal) from emp;
+
+  AVG(SAL)
+----------
+2073.21429
+
+2) select ename,job,sal from emp
+    where sal < 2073.21429;
+
+1)+2)
+
+   select ename,job,sal from emp
+   where sal < (select avg(sal) from emp);//서브쿼리에 그룹함수사용 O
+                 >   avg->min,max
+--------------------------------------------------------------------------
+ENAME      JOB              SAL
+---------- --------- ----------
+SMITH      CLERK            800
+ALLEN      SALESMAN        1600
+WARD       SALESMAN        1250
+MARTIN     SALESMAN        1250
+TURNER     SALESMAN        1500
+ADAMS      CLERK           1100
+JAMES      CLERK            950
+MILLER     CLERK           1300
+
+8 개의 행이 선택되었습니다.
+
+<문5>emp테이블에서 사원의 급여가 20번 부서의 최소급여보다
+                                             -------------------? 800
+        많이 받는 부서를 부서별로 출력하되
+                             group by deptno
+        (부서번호,최소급여순으로 출력하시오.)  =>서브쿼리에 having조건식도 사용가능
+
+     모든 부서의 최소급여 보다 많이 받는 부서X => 20번 부서의 최소급여보다 
+                                                         그룹의 조건식
+
+ 1) 20번 부서의 최소급여?
+     select min(sal) from emp
+     where deptno=20;
+
+  MIN(SAL)
+----------
+       800
+
+select deptno,min(sal)
+from emp
+group by deptno
+having min(sal) > 800;
+
+    DEPTNO   MIN(SAL)
+---------- ----------
+        30        950
+        10       1300
+
+1)+2)
+------------------------------------------------------------
+select deptno,min(sal)
+from emp
+group by deptno
+having min(sal) > (select min(sal) from emp
+                           where deptno=20);
+
+<문6> 서브쿼리의 종류 ->다중행 서브쿼리 문제
+*************************************
+서브쿼리의 종류  1)단일행 서브쿼리 ->실행결과 행이 한개
+                                  연산자-> >,=,<,<=
+
+                  2)다중행 서브쿼리->실행결과(행이 한개이상)
+                                연산자->in,any,all~
+                                           ====
+**************************************
+
+부서별로 최소급여를 받는 사원의 이름,업무,급여,부서순으로 출력?
+
+1.부서별로 최소급여?
+
+     select min(sal) from emp
+     group by deptno;
+
+  MIN(SAL)
+----------
+       950
+       800
+      1300 =>다중행(실행결과 한개이상의 행이 나오는 것)
+
+2. select ename,job,sal,deptno
+    from emp
+    where sal=(select min(sal) from emp
+                     group by deptno);
+
+ed
+---------------------------------------------------------------
+SQL> select ename,job,sal,deptno
+  2      from emp
+  3      where sal=(select min(sal) from emp
+  4                       group by deptno);
+    where sal=(select min(sal) from emp
+               *
+       >,>=,<,<= (서브쿼리의 결과가 한행일때 사용)
+
+********************************************
+                다중행 연산자를 사용해야 되는데 단일행 연산자를
+                사용했기때문에 발생되는 에레메세지
+*******************************************
+
+3행에 오류:
+ORA-01427: 단일 행 하위 질의에 2개 이상의 행이 리턴되었습니다.
+----------------------------------------------------------------
+  1  select ename,job,sal,deptno
+  2      from emp
+  3      where sal in (select min(sal) from emp
+  4*                        group by deptno)
+SQL> /
+
+            sal=950 or sal=800 or sal=1300
+********************************************
+다중행 서브쿼리=>최종 메인쿼리의 결과 행이 나오는 수와는 상관없다.
+********************************************
+
+ENAME      JOB              SAL     DEPTNO
+---------- --------- ---------- ----------
+SMITH      CLERK            800         20
+JAMES      CLERK            950         30
+MILLER     CLERK           1300         10
+
+*****************************************************
+***<문제7> emp테이블에서 30번부서의 최소급여를 받는 사원보다 많은 급여를
+                                -------------------
+            받는 사원을 구해서 그 사원의 이름,업무,급여,부서번호를 출력하시오.
+           (단 30번부서는 제외한다.)->적용대상이 10,20번 부서
+
+1) 30번부서의 최소급여?
+
+  select min(sal) from emp
+  where deptno=30;
+
+   MIN(SAL)
+----------
+       950  ->겉(물리적으로는 단일행)->내부적(다중행)
+
+2) select ename,job,sal,deptno from emp
+    where deptno!=30 and sal > 950;
+
+1)+2)
+          select ename,job,sal,deptno from emp
+         where deptno!=30 and sal > (select min(sal) from emp
+                                                    where deptno=30);
+                                                           950
+ENAME      JOB              SAL     DEPTNO
+---------- --------- ---------- ----------
+JONES      MANAGER         2975         20
+CLARK      MANAGER         2450         10
+SCOTT      ANALYST         3000         20
+KING       PRESIDENT       5000         10
+ADAMS      CLERK           1100         20
+FORD       ANALYST         3000         20
+MILLER     CLERK           1300         10
+
+7 개의 행이 선택되었습니다.
+**********************************************
+문제자체는 단일행->다중행에서 사용하는 연산자 (any)로 변경이 가능하다.
+ ex) ~ > (서브쿼리(그룹함수))=>~ > any(서브쿼리)로 변경이 가능하다.
+
+ed
+
+
+  1  select ename,job,sal,deptno from emp
+  2           where deptno!=30 and sal > any(select sal from emp
+  3*                                                          where deptno=30)
+
+
+==any를 사용한 경우===
+ENAME      JOB              SAL     DEPTNO
+---------- --------- ---------- ----------
+KING       PRESIDENT       5000         10
+SCOTT      ANALYST         3000         20
+FORD       ANALYST         3000         20
+JONES      MANAGER         2975         20
+CLARK      MANAGER         2450         10
+MILLER     CLERK           1300         10
+ADAMS      CLERK           1100         20
+
+7 개의 행이 선택되었습니다.
+
+    > (select min(sal) from emp
+                  where deptno=30);
+*********************************************
+    > any(select sal from emp   =>그룹함수를 생략
+             where deptno=30)
+   
+   > any (조건식)=>조건식에 해당하는 가장 적은값을 구한뒤(950)
+                         기존에 조건에 만족하는 값을 하나씩 비교해서 큰값순으로
+                         내림차순으로 정렬해주는 기능
+
+<문제8> 30번 부서의 최대급여를 받는 사원보다 적은 급여를 받는 사원의 정보를
+            구하시오.(30번부서는 배제)
+
+1) 30번 부서의 최대급여?
+  select max(sal) from emp
+  where deptno=30;
+
+   MAX(SAL)
+----------
+      2850  =>겉(단일행(물리적))
+
+2) select ename,job,sal,deptno from emp
+    where deptno!=30 and sal < (select max(sal) from emp
+                                                    where deptno=30);
+
+ENAME      JOB              SAL     DEPTNO
+---------- --------- ---------- ----------
+SMITH      CLERK            800         20
+CLARK      MANAGER       2450        10
+ADAMS      CLERK           1100         20
+MILLER     CLERK           1300         10
+
+  < any (조건식) =>최대값을 구해서 그 값보다 적은값을 일일이 비교해서
+                           적은값->큰값순으로 오름차순하라
+**********************************************
+  1  select ename,job,sal,deptno from emp
+  2      where deptno!=30 and sal < any(select sal from emp
+  3*                                                         where deptno=30)
+SQL> /
+
+ENAME      JOB              SAL     DEPTNO
+---------- --------- ---------- ----------
+SMITH      CLERK            800         20
+ADAMS      CLERK           1100         20
+MILLER     CLERK           1300         10
+CLARK      MANAGER      2450         10
+
+SQL>
+
+-------------------------------------------------------------------
+ 정리) 물리적으로 여러개의 행이 나오는 서브쿼리 연산자->in
+        any->비교해서 큰값 또는 적은값으로 정렬하고자 하는경우에 사용(논리적)
+------------------------------------------------------------------
+<문9> 서브쿼리->select구문에서만 사용? (X)
+                     패턴에 따라 다양한 방법으로 사용(insert,update,delete)
+
+ ** 서브쿼리 활용 *** =>페이징 처리기법
+                          http://www.jspstudy.co.kr
+
+  게시판,회원관리=>한 페이지에 모든 데이터를 다 보여줄 수 가 없어서
+                         페이지당 디폴트(10개)~20개씩 데이터를 끊어서 보여주는
+                         기법
+-----------------------------------------------------------------------
+                오라클에서의 페이징기법
+
+일반쿼리 
+
+         ROWNUM?
+
+  sql = "select a.* from " + 
+          "(select ROWNUM as RNUM, b.* from " +
+                "(select * from CDE_CITY order by city_code DESC)" + 
+                                     "b) a " + 
+          "where a.RNUM >= " + start + " and a.RNUM < " + end;
+
+문자열 검색시
+                                              별칭.*  ->select * from 테이블 별칭명
+  sql = "select a.* from " + 
+          "(select ROWNUM as RNUM, b.* from " +
+          "(select * from CDE_CITY order by city_code DESC)" + 
+          "b Where " + keyField + " like '%" + keyValue + "%'" +
+          ") a " + 
+              a=>테이블의 별칭
+          "where a.RNUM >= " + start + " and a.RNUM < " + end;
+
+==============================================
+  ***<문9>업무가 MANAGER인 사원의 이름,업무,부서명,근무지를 출력하시오.=>조인
+                                                emp e      dept d  (inner join)
+
+      조인의 단점=> 테이블의 필드갯수가 많고, 데이터가 많이 들어가 있는경우 =>튜닝(서브쿼리 이용) 
+      **********************************************         검색속도
+
+  sql> select e.ename,e.job,d.dname,d.loc
+         from emp e,dept d     //from 테이블->필드 모두를 메모리에 올림
+                                        // 나중에 조건에 만족하는 필드를 검색->속도가 느려진다.
+         where e.deptno=d.deptno and e.job='MANAGER';
+
+ENAME      JOB       DNAME          LOC
+---------- --------- -------------- -------------
+JONES      MANAGER   RESEARCH       DALLAS
+BLAKE      MANAGER   SALES          CHICAGO
+CLARK      MANAGER   ACCOUNTING     NEW YORK
+
+ed  패턴 ->from (   )  =>인라인 뷰
+         장점=>테이블에 저장된 데이터가 많아도 검색속도가 빠르게 원하는 데이터를 화면에 출력
+         튜닝기법 중의 하나
+**************************************************************
+       패턴1->from ()  
+                 where 조건식=()
+ed
+
+  1  select e.ename,e.job,d.dname,d.loc
+  2           from (
+  3               select ename,job,deptno
+  4               from emp
+  5               where job='MANAGER'
+  6            ) e,dept d
+  7*          where e.deptno=d.deptno
+SQL> /
+
+ENAME      JOB       DNAME          LOC
+---------- --------- -------------- -------------
+JONES      MANAGER   RESEARCH       DALLAS
+BLAKE      MANAGER   SALES          CHICAGO
+CLARK      MANAGER   ACCOUNTING     NEW YORK
+
+SQL>
+
+<문10> 패턴2 =>select ~ from 사이에도 서브쿼리가 나올 수 있다.
+          dept테이블에서 부서위치가 NEW YORK=>중앙,NEW YORK을 제외한 도시근무
+          변두리(해안가) =>부서번호,부서명
+
+sql>  select deptno,dname,(
+                case when deptno in (select deptno from dept
+                                                where loc='NEW YORK')
+                            then '중앙'
+                            else '주변'
+               end
+             ) "부서위치"
+       from dept;
+ 
+    DEPTNO DNAME          부서
+---------- -------------- ----
+        10 ACCOUNTING     중앙
+        20 RESEARCH         주변
+        30 SALES               주변
+        40 OPERATIONS     주변
+
+<문11>서브쿼리에서의 사용시 주의할점=>테이블을 생성할 수 있다.
+
+ 1.create table~
+ 2.백업 테이블 생성=>create table 백업t명 as SQL구문 =>** 형식) 수학의 공식
+                                                           select * from 원본테이블
+                                                           select * from 원본테이블 where 조건식 (조건식)
+                                                           =>필드명=>그대로 복사,데이터도 복사돼서 저장
+  **주의할점**
+   제약조건은 복사X=>백업테이블에서 다시 제약조건을 설정 O (재설정)
+
+------------------------------------------------------------------------------
+ emp테이블에서 부서별로 부서번호,인원수,평균급여,급여합계,최소급여,최대급여를
+ 구한 결과를 emp_deptno 백업테이블로 저장하는 SQL구문을 작성하시오.
+
+  =>통계처리한 결과를 테이블로 저장하고 싶을때 사용
+  =>save =>sql구문이 저장(문자열이 저장)
+
+
+ sql>create table emp_deptno as select deptno,count(*),avg(sal),sum(sal),min(sal),
+       max(sal) from emp                                  ===================
+       group by deptno;                                      계산식에 관련된 필드(=가상필드)=>별칭
+
+SQL> create table emp_deptno as select deptno,count(*),avg(sal),sum(sal),min(sal),
+  2         max(sal) from emp
+  3         group by deptno;
+create table emp_deptno as select deptno,count(*),avg(sal),sum(sal),min(sal),
+                                         *
+1행에 오류:
+ORA-00998: 이 식은 열의 별명과 함께 지정해야 합니다  =>존재하는 필드가 아니기에 필드명을
+                                                                   따로 별칭으로 만들어서 넣어주세요
+
+
+ DEPTNO   COUNT(*)   AVG(SAL)   SUM(SAL)   MIN(SAL)   MAX(SAL)
+---------- ---------- ---------- ---------- ---------- ----------
+        30          6 1566.66667       9400        950       2850
+        20          5       2175      10875        800       3000
+        10          3 2916.66667       8750       1300       5000
+
+
+ed
+
+SQL> r
+  1  create table emp_deptno as select deptno,count(*) e_count ,avg(sal) e_avg ,
+  2      sum(sal) e_sum ,min(sal) e_min, max(sal) e_max  from emp
+  3*     group by deptno
+
+테이블이 생성되었습니다.
+
+SQL> desc emp_deptno
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ DEPTNO                                             NUMBER(2)
+ E_COUNT                                            NUMBER
+ E_AVG                                              NUMBER
+ E_SUM                                              NUMBER
+ E_MIN                                              NUMBER
+ E_MAX                                              NUMBER
+
+sql> select * from emp_deptno; //실제 존재하는 테이블
+
+    DEPTNO    E_COUNT      E_AVG      E_SUM      E_MIN      E_MAX
+---------- ---------- ---------- ---------- ---------- ----------
+        30          6 1566.66667       9400        950       2850
+        20          5       2175      10875        800       3000
+        10          3 2916.66667       8750       1300       5000
+
+**************************************************
+백업테이블=>구조만 복사하고 싶다.(내용X)=>빈폴더,빈파일
+
+ sql> create table b_emp2 as select empno,ename from emp
+        where 1=0; //조건이 거짓 ->
+         //데이터가 없기때문에 ->테이블의 구조(=schema)만 복사(필드만 복사)
+         //내용은 복사가 안되는 이유는 조건식이 거짓이기에 
+
+테이블이 생성되었습니다.
+**************************************************
+
+SQL> select count(*) from b_emp2;  //레코드갯수
+
+  COUNT(*)
+----------
+         0
+
+SQL> desc b_emp2;
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                              NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+
+  DDL,DML,DCL,DQL(=select)
+
+<문12>서브쿼리=>DML을 이용해서 서브쿼리 사용가능하다.
+                     (insert)
+
+형식) insert into 테이블명 values(값1,값2,,,,);
+                       -------(서브쿼리)
+
+sql>create table b_emp3 as select * from emp; //b_emp3 (데이터의 구조와 내용을 복사)
+                                                                      //sql
+  부서번호 40부서에 근무할 직원을 입력?
+
+sql> insert into (select empno,ename,sal,hiredate,job,deptno
+                         from b_emp3 where deptno=40) values
+               (7777,'JANG',4000, to_date('19-07-01','rr-mm-dd'),
+                     'MANAGER',40);
+
+*************************************************************
+SQL> rollback;   //insert 실행취소 ->undo
+                       //DML만 취소 된다.(insert,update,delete)
+
+롤백이 완료되었습니다.
+ desc b_emp3
+insert into b_emp3 values (7777,'JANG',4000,to_date('17-05-08','rr-mm-dd'),'MANAGER',40);
+                                                갯수
+*************************************************************
+select * from b_emp3 where deptno=40;
+
+    EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM
+---------- ---------- --------- ---------- -------- ---------- ----------
+    DEPTNO
+----------
+      7777 JANG       MANAGER              19/07/01       4000
+        40
+
+**<문13>update+subQuery 적용
+
+b_emp3테이블에서 SCOTT의 업무와 급여가 일치하도록 JONES의 업무와
+ 급여를 수정하는 SQL구문을 작성하시오.
+
+   SCOTT
+                                     <-    JONES     MANAGER, 2975
+  ANALYST 3000                     분석가로 이직
+
+형식) update 수정T명
+                   set 변경할필드명=값 ,변경할필드명2=값,,,,
+                  ========================
+                  set (필드명1,필드명2,,)=(서브쿼리를 이용)
+       where 조건식
+
+1) select job,sal from emp
+    where ename=upper('&ename');
+
+SQL> select job,sal from emp
+  2      where ename=upper('&ename');
+ename의 값을 입력하십시오: scott
+구   2:     where ename=upper('&ename')
+신   2:     where ename=upper('scott')
+
+JOB              SAL
+--------- ----------
+ANALYST         3000
+
+SQL> /
+ename의 값을 입력하십시오: jones
+구   2:     where ename=upper('&ename')
+신   2:     where ename=upper('jones')
+
+JOB              SAL
+--------- ----------
+MANAGER         2975
+
+SQL>  update b_emp3
+                 set (job,sal)=(select job,sal from b_emp3
+                                      where ename='SCOTT')
+          where ename='JONES';
+
+1 행이 갱신되었습니다
+
+sql>select job,sal from b_emp3 where ename='JONES';
+
+<문14>delete 구문+subQuery를 사용이 가능?
+
+ 형식)  delete from 테이블명; //모든 데이터 삭제->rollback 하면 복구된다.
+       =>delete * from emp;//(X)
+         delete from 테이블명 where 조건식=(서브쿼리)
+-------------------------------------------------------------------------
+b_emp3의 자료중에서 부서명이 'SALES'인 사원의 정보를 삭제하시오.
+      emp테이블=>부서명X deptno
+    
+1)부서명이 'SALES' 부서번호?
+
+  select deptno from dept
+  where dname='SALES';
+
+    DEPTNO
+----------
+        30
+
+2) delete from b_emp3 where deptno=30;
+
+3)  delete from b_emp3 where deptno=(select deptno from dept
+                                                           where dname='SALES');
+
+14명
+
+SQL> select count(*) from b_emp3;
+
+  COUNT(*)
+----------
+         8
+
+sql>rollback
+
+SQL> rollback;
+
+롤백이 완료되었습니다.
+
+SQL> select count(*) from b_emp3;
+
+  COUNT(*)
+----------
+        14
+
+ 오라클의 구성요소=>테이블,뷰,시컨스,시노님,인덱스,권한종류
+                          =====
+
+<문15>** 뷰의 개요? **
+
+1.가상의 테이블(실제 존재하는 테이블 X)
+   =>실행->테이블 처럼 보임(view)=>vue.js
+
+2.저장공간이 없다.=>간단한 텍스트로 저장
+        =>데이터 사전에서 확인이 가능(user_constraints)
+                                           user_views (뷰에 대한 정보)    
+
+**사용목적  =>1)편리성 때문에 ->복잡한 SQL구문 ->save명령어
+                   2)보안때문에 (민감한 자료 X) =>select(접근권한)
+
+  emp=>
+
+ 이름                                      널?      유형
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+==================================
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+===================================
+ DEPTNO                                             NUMBER(2)
+
+======================
+ 뷰 ->정해진 데이터만 조회가능하도록 설계(보안 때문에)
+======================
+ emp테이블에서 20번부서에 근무하는 사원의 정보를 검색할 수 있는 
+ SQL구문을 뷰로 작성하시오.
+
+형식) create view 뷰이름(v_XXX)
+       as SQL구문;
+       =====DDL =>rollback으로 복원X
+
+실행)=>select * from 뷰이름=>테이블명 대신에
+                              ====
+
+sql> create view v_emp20
+       as select empno,ename,job from b_emp3
+       where deptno=20;
+
+SQL> create view v_emp20
+  2         as select empno,ename,job from b_emp3
+  3         where deptno=20;
+create view v_emp20
+            *
+1행에 오류:
+ORA-01031: 권한이 불충분합니다 
+
+8i,9i=>아무런 제약이 없이 뷰를 작성이 가능
+10g이후 부터는 반드시 관리자로부터 권한을 부여받지 않으면 작성이 안되는것으로 변경=>보안때문에
+
+sql>conn sys/sys12345 as sysdba  //(롤)
+
+권한주기(=부여하기)
+ 형식) grant 권한종류,,,to 계정명,,,=>DCL
+
+계정만들때 뷰를 만드는 권한까지 부여
+
+grant connect,resource,create view to 계정명,계정명2,,,
+                                  ========
+
+sql>grant create view,create synonym to scott,test;
+
+SQL> grant create view,create synonym to scott,test;
+
+권한이 부여되었습니다.
+
+sql> conn scott/tiger
+
+create view v_emp20
+       as select empno,ename,job from b_emp3
+       where deptno=20;
+
+뷰가 생성되었습니다
+
+sql>select * from v_emp20;
+
+     EMPNO ENAME      JOB
+---------- ---------- ---------
+      7369 SMITH      CLERK
+      7566 JONES      MANAGER
+      7788 SCOTT      ANALYST
+      7876 ADAMS      CLERK
+      7902 FORD       ANALYST
+====================================
+
+예습 =>뷰(12장),인라인뷰->수
+           트랜잭션 및 인덱스,시컨스,동의어->목
+           오라클의 권한 및 권한종류->금
+           데이터 복원->월
+------------------------------------------------------------------
+
+
+
