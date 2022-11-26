@@ -1,0 +1,86 @@
+SQL> select e.ename,d.dname,d.deptno
+  2        from emp e,dept d
+  3        where e.deptno(+)=d.deptno and e.ename is null;
+
+ENAME      DNAME              DEPTNO                                            
+---------- -------------- ----------                                            
+           OPERATIONS             40                                            
+
+SQL> select deptno from emp
+  2     where ename='ALLEN';
+
+    DEPTNO                                                                      
+----------                                                                      
+        30                                                                      
+
+SQL> select ename from emp
+  2     where deptno=(select deptno from emp
+  3                            where ename='ALLEN');
+
+ENAME                                                                           
+----------                                                                      
+ALLEN                                                                           
+WARD                                                                            
+MARTIN                                                                          
+BLAKE                                                                           
+TURNER                                                                          
+JAMES                                                                           
+
+6 개의 행이 선택되었습니다.
+
+SQL> select sal from emp
+  2    where ename=upper('&ename');
+ename의 값을 입력하십시오: scott
+구   2:   where ename=upper('&ename')
+신   2:   where ename=upper('scott')
+
+       SAL                                                                      
+----------                                                                      
+      3000                                                                      
+
+SQL> /
+ename의 값을 입력하십시오: martin
+구   2:   where ename=upper('&ename')
+신   2:   where ename=upper('martin')
+
+       SAL                                                                      
+----------                                                                      
+      1250                                                                      
+
+SQL> select empno,ename,sal from emp
+  2  where sal=(select sal from emp
+  3                    where ename=upper('&ename'))
+  4           or
+  5           sal=(select sal from emp
+  6                  where ename=upper('&ename'));
+ename의 값을 입력하십시오: scott
+구   3:                   where ename=upper('&ename'))
+신   3:                   where ename=upper('scott'))
+ename의 값을 입력하십시오: martin
+구   6:                 where ename=upper('&ename'))
+신   6:                 where ename=upper('martin'))
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7521 WARD             1250                                                
+      7654 MARTIN           1250                                                
+      7788 SCOTT            3000                                                
+      7902 FORD             3000                                                
+
+SQL> select max(sal) from emp
+  2    where deptno=30;
+
+  MAX(SAL)                                                                      
+----------                                                                      
+      2850                                                                      
+
+SQL> select empno,ename,sal from emp
+  2     where sal >(select max(sal) from emp
+  3                        where deptno=30);
+
+     EMPNO ENAME             SAL                                                
+---------- ---------- ----------                                                
+      7566 JONES            2975                                                
+      7788 SCOTT            3000                                                
+      7839 KING             5000                                                
+      7902 FORD             3000                                                
