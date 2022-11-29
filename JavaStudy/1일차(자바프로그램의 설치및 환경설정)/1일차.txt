@@ -1,0 +1,417 @@
+1일차(자바의 프로그램 설치 및 환경설정)
+
+회사 버전 (8버전)을 이유 ->8버전이 마지막 버전(유료 X)
+                              ->오라클 사에서 다운로드->회원가입
+
+자바 12버전(X) 9버전부터 유료화 정책
+
+가능한 안정성을 기반하는 버전을 선택=>새로운 버전 X
+                                                개발버전=>버그가 존재가능성 (O)
+
+=>가장 최신버전의 아래버전을 선호(12=>11버전을 설치->유료화X)
+                                               =>8버전을 설치(실무)
+---------------------------------------------------------------
+java.sun.com =>https://www.oracle.com/technetwork/java/index.html
+                        오라클 사->mysql=>maria DB(O)
+                        안드로이드 개발(자바)=>핸드폰=>프로그램 개발(신입X)=>개발자->개발
+                                                                                                (jsp개발자)
+
+자바 설치 시 확인->운영체제 종류 64bit인지 확인할 것.
+                     ->Windows x86
+*************************************
+202.62 MB   jdk-8u211-windows-i586.exe ->32bit 설치
+
+215.29 MB  jdk-8u211-windows-x64.exe =>설치(64bit)
+************************************
+
+*************************************
+JDK(Java Development kit)=>자바 개발 버전
+                                        처음부터 문법에 코딩->컴파일->실행까지
+                                        가능한 버전->bin폴더
+                                         ***************************
+                                         javac.exe(컴파일(컴퓨터언어로 변환))
+                                                                2진수
+                                         java.exe(실행->눈에 보이는 화면)
+                                                                메모리에 올려서 실행
+
+                                         javaw.exe =>이클립스와 연관
+                                         ***************************
+                                         jar.exe =>자바프로그램을 압축할때 필요로
+                                                        실행파일명=>웹상에서 사용
+                                                     (ex winzip,winrar~)
+
+JRE(Java Runtime Environment)->이미 개발이 완료된 자바 프로그램을
+                                                 테스트용으로 실행만 시키는 버전
+
+                                        javac.exe(X) ->컴파일X=>개발을 할수 없는 버전
+                                        java.exe (O) ->실행만
+
+  
+ java.exe<----여러개의 자바와 관련된 파일들이 존재(jre위치)
+***************************************
+ 자바의 설치 경로=>C:\jdk1.8\ =>경로 변경=> 선택의 문제
+                        -------------     (필수 X)
+                      환경변수에 자바의 설치경로를 지정
+
+                        .;C:\jdk1.8\bin 선택->편집버튼 클릭
+================================>.;
+                        JRE경로=>next
+
+c:\Program Files\Java\jre 1.8.0_131 =>자바의 라이브러리 설치 위치
+
+라이브러리=>자바로 개발한 프로그램이 원활하게 실행이 될 수 있도록 도와주는
+                 프로그램
+
+오피스,아래한글,오라클->실행파일(setup.exe)와 같이 연동되는 파일이 존재
+================================
+ c:\jdk 1.8\bin
+
+*******************
+개발 환경 구축하기(순서)
+******************
+1.자바를 설치(SE)=>standard Edition(기초)=>c:\jdk1.8\
+                 EE =>회사(웹프로그래밍할때 사용)->지금은 사용X->톰캣서버(무료)
+
+2.환경변수 path에 자바의 설치경로를 지정하기위해서 필요(등록)->필수X
+
+ 프로그램을 설치=>설치경로를 자동적으로 path환경변수에 등록
+  =>수동으로 path에 경로를 지정
+
+   =>콘솔에서 자바프로그램을 실행시키기위해서 등록(수동 등록)
+
+3.편집기 필요=>1) 콘솔에서 실행->메모장에서 작성->콘솔에서 작업
+                     2) editplus에서 자바를 환경설정->사용
+                     3)이클립스 설치 및 환경설정=>표준
+                             =>패키지(변수,연산자)
+=====================================
+프로그램을 설치->next ->설치를  다 하고 나서 자동적으로 바로가기 아이콘
+                                설치(실행시켜주는 파일(경로포함해서) 등록)      
+                 
+ path=>설치되는 프로그램의 경로 및 실행파일의 위치를 자동으로 등록
+             =>바로가기 아이콘을 만들어준다.
+
+ 자바->바로가기 아이콘X ->자동으로 등록X ->수동으로 등록
+
+********************************************
+C:\Users\kitcoop>javac
+'javac'은(는) 내부 또는 외부 명령, 실행할 수 있는 프로그램, 또는
+배치 파일이 아닙니다.
+
+=>콘솔에서 javac.exe라는 파일이 어디에 있는지 알 수가 없어서
+     찾을 수 없다는 에러메세지->path환경변수에 등록이 안되어있기때문에
+                                       발생되는 에러메세지
+********************************************
+
+ 시스템변수에 등록된 path에 자바의 설치경로및 파일명을 등록
+
+.;C:\jdk1.8\bin;         .현재 폴더위치
+                                .. 상위 폴더 위치
+.;C:\jdk1.8\bin;c:\prog~
+==========
+
+  콘솔에서 .;C:\jdk1.8\bin;  
+             현재폴더를 기준으로 c:\jdk1.8\bin 폴더내부의 모든파일을 
+             콘솔에서 경로의 위치에 상관없이 다 불러다 사용하겠다.
+***********************************************
+
+c:\prog~ ;C:\jdk1.8\bin;  
+             ==========>뒤에 추가하는 경우
+
+C:\Users\kitcoop>javac   =>c:\jdk1.8\bin폴더위치를 인식
+Usage: javac <options> <source files>
+where possible options include:
+  -g                         Generate all debugging info
+  -g:none                    Generate no debugging info
+  -g:{lines,vars,source}     Generate only some debugging info
+  -nowarn                    Generate no warnings
+  -verbose                   Output messages about what the compiler is doing
+  -deprecation               Output source locations where deprecated APIs are used
+  -classpath <path>          Specify where to find user class files and annotation processors
+  -cp <path>                 Specify where to find user class files and annotation processors
+  -sourcepath <path>         Specify where to find input source files
+  -bootclasspath <path>      Override location of bootstrap class files
+  -extdirs <dirs>            Override location of installed extensions
+  -endorseddirs <dirs>       Override location of endorsed standards path
+  -proc:{none,only}          Control whether annotation processing and/or compilation is done.
+  -processor <class1>[,<class2>,<class3>...] Names of the annotation processors to run; bypasses default discovery process
+  -processorpath <path>      Specify where to find annotation processors
+  -parameters                Generate metadata for reflection on method parameters
+  -d <directory>             Specify where to place generated class files
+  -s <directory>             Specify where to place generated source files
+  -h <directory>             Specify where to place generated native header files
+  -implicit:{none,class}     Specify whether or not to generate class files for implicitly referenced files
+  -encoding <encoding>       Specify character encoding used by source files
+  -source <release>          Provide source compatibility with specified release
+  -target <release>          Generate class files for specific VM version
+  -profile <profile>         Check that API used is available in the specified profile
+  -version                   Version information
+  -help                      Print a synopsis of standard options
+  -Akey[=value]              Options to pass to annotation processors
+  -X                         Print a synopsis of nonstandard options
+  -J<flag>                   Pass <flag> directly to the runtime system
+  -Werror                    Terminate compilation if warnings occur
+  @<filename>                Read options and filenames from file
+
+
+C:\Users\kitcoop>java
+사용법: java [-options] class [args...]
+           (클래스 실행)
+   또는  java [-options] -jar jarfile [args...]
+           (jar 파일 실행)
+여기서 options는 다음과 같습니다.
+    -d32          사용 가능한 경우 32비트 데이터 모델을 사용합니다.
+    -d64          사용 가능한 경우 64비트 데이터 모델을 사용합니다.
+    -server       "server" VM을 선택합니다.
+                  기본 VM은 server입니다..
+
+    -cp <디렉토리 및 zip/jar 파일의 클래스 검색 경로>
+    -classpath <디렉토리 및 zip/jar 파일의 클래스 검색 경로>
+                  클래스 파일을 검색할 ;(으)로 구분된 디렉토리,
+                  JAR 아카이브 및 ZIP 아카이브 목록입니다.
+    -D<name>=<value>
+                  시스템 속성을 설정합니다.
+    -verbose:[class|gc|jni]
+                  상세 정보 출력을 사용으로 설정합니다.
+    -version      제품 버전을 인쇄한 후 종료합니다.
+    -version:<value>
+                  경고: 이 기능은 사용되지 않으며
+                  이후 릴리스에서 제거됩니다.
+                  실행할 버전을 지정해야 합니다.
+    -showversion  제품 버전을 인쇄한 후 계속합니다.
+    -jre-restrict-search | -no-jre-restrict-search
+                  경고: 이 기능은 사용되지 않으며
+                  이후 릴리스에서 제거됩니다.
+                  버전 검색에서 사용자 전용 JRE를 포함/제외합니다.
+    -? -help      이 도움말 메시지를 인쇄합니다.
+    -X            비표준 옵션에 대한 도움말을 인쇄합니다.
+    -ea[:<packagename>...|:<classname>]
+    -enableassertions[:<packagename>...|:<classname>]
+                  세분성이 지정된 검증을 사용으로 설정합니다.
+    -da[:<packagename>...|:<classname>]
+    -disableassertions[:<packagename>...|:<classname>]
+                  세분성이 지정된 검증을 사용 안함으로 설정합니다.
+    -esa | -enablesystemassertions
+                  시스템 검증을 사용으로 설정합니다.
+    -dsa | -disablesystemassertions
+                  시스템 검증을 사용 안함으로 설정합니다.
+    -agentlib:<libname>[=<options>]
+                  <libname> 고유 에이전트 라이브러리를 로드합니다(예: -agentlib:hprof).
+                  -agentlib:jdwp=help 및 -agentlib:hprof=help도 참조하십시오.
+    -agentpath:<pathname>[=<options>]
+                  전체 경로명을 사용하여 고유 에이전트 라이브러리를 로드합니다.
+    -javaagent:<jarpath>[=<options>]
+                  Java 프로그래밍 언어 에이전트를 로드합니다. java.lang.instrument를 참조하십시오.
+    -splash:<imagepath>
+                  이미지가 지정된 스플래시 화면을 표시합니다.
+자세한 내용은 http://www.oracle.com/technetwork/java/javase/documentation/index.html을 참조하십시오.
+
+C:\Users\kitcoop>
+
+****자바언어의 특징 ******  2개이상 기술하시오.
+
+1.운영체제에 독립적->모든 운영체제에서 사용이 가능=>설치 가능하다.
+2.객체지향 언어를 지원->chapter 6,chapter7
+                                (추상화,캡슐화,다형성,상속성)
+                                 4가지를 다 지원해주는 경우
+
+3.자바->C언어,C++언어를 모태로 해서 만들어진 언어
+4.자동 메모리 관리
+5.네트워크와 분산처리 지원(ex 채팅)
+6.멀티 쓰레드를 지원
+***************************************
+
+C:\Users\kitcoop>java  -version  =>자바버전을 확인하는 명령어
+                          ---------------
+java version "1.8.0_131"  ->1.8버전이 설치됨을 확인
+Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+
+C:\Users\kitcoop>
+**************************************************
+~.java
+// 한줄 주석->주석(컴퓨터가 인식하지 않은 문자열))
+/*
+1.파일명이 프로그램명과 같다.(=클래스 이름과 같다) HelloTest.java
+2.형식)
+      public class HelloTest {  //프로그램 작성=>회사를 하나 창업
+
+      public static void main(String args[]){ /* 프로그램 시작    */
+       //문법에 맞게 내용을 기술
+     }
+}
+
+3.대소문자 구분해서 작성=>소문자위주로 작업
+4.자바에서의 최소 작업단위=>클래스 단위로 작업
+5.키워드  System.out(표준 출력 장치)=>모니터->미리보기->출력
+            System.out.print("출력문장");//모니터에 출력하라
+            //<->document.write("출력문장"); 자바스크립트 출력물
+            System.in(표준 입력 장치)=>키보드
+            System.in.read(); //키보드를 통해서 읽어들여라
+           
+6.자바의 모든 문장은 끝에 ;으로 끝난다.
+
+public class  프로그램이름(=클래스이름)=한글도 가능한데 안쓴다.
+                  대문자로 시작,중간에 글자가 변경되면 대문자를 쓸것
+                  영문자,숫자,특수기호를 조합해서 작성 -> 첫글자 숫자X
+
+*/
+
+public class HelloTest {  //프로그램 작성=>회사를 하나 창업
+
+      public static void main(String args[]){ /* 프로그램 시작    */
+       //문법에 맞게 내용을 기술
+       System.out.print("Hello Test!!!");
+     }
+}
+
+====================================
+컴파일->2진수로 변환(사람이 문법에 맞게 작성한 파일(소스파일)=>컴퓨터가 알아듣는 말로 변환
+compile                         
+
+           javac 프로그램이름.java
+
+C:\webtest\3.java>~>javac HelloTest.java  =>~.class
+
+
+실행시키는 방법->컴파일된 class파일을 메모리에 로딩(loading)해서 실행
+   =>눈에 보이게 할려면 어떻게 해야되나요?
+                
+                  형식) java 실행시킬 클래스명.class(X)
+C:\webtest\3.java>java HelloTest.class =>.class(확장자쓰면 안된다.)
+
+C:\webtest\3.java>java HelloTest.class
+오류: 기본 클래스 HelloTest.class을(를) 찾거나 로드할 수 없습니다.
+
+C:\webtest\3.java>java HelloTest           =>.class 확장자 생략
+Hello Test!!!===============>최종 실행결과
+--------------------------------------------------------------------
+  
+ *** 실무 =>Eclipse 설치 및 환경설정 ***
+
+ http://www.eclipse.org =>나중에 새로운 버전
+                         가장 최신버전을 다운로드 가능
+
+  eclipse-inst-jre-win64.exe
+ ** eclipse 설치->실행 **
+
+  Eclipse IDE for Java Developers =>Java만 개발
+
+****************************************
+  Eclipse IDE for Enterprise java and Web Developers=>Java+Web
+                                                           환경개발
+*****************************************
+ C:\webtest\3.java =>설치폴더를 지정
+*****************************************
+C:\Users\kitcoop\eclipse-workspace
+    =>default 경로
+
+1.작업영역부터 변경 =>workspace 변경
+                     file ->switch workspace ->other 선택
+                            sou 폴더생성->지정
+                          C:\webtest\3.java\sou 생성->지정
+
+                     =>재가동
+
+  탐색기->링크문자열(프로젝트를 선택할 수 있도록)변경됨
+
+2.자바개발=>Java Project를 먼저 생성=>java perspective
+                                                     열어줄까요?(대화상자)
+                                                      (=window와 동일)
+
+     JavaStudy(프로젝트명)
+     ============
+         |
+          -src=>소스파일만 저장(HelloTest3.java)
+         |                             HelloTest4.java)
+                     저장(ctrl+s)=>자동 컴파일이 일어남
+
+          -bin=>컴파일된 클래스파일들만 따로 저장된
+                폴더(HelloTest3.class)
+               =>탐색기에서만 실행
+
+  오 click=>new ->project=>java project=>JavaStudy
+                                         프로젝트 생성
+
+                src=>new =>class 선택(=>예제 작성)
+                          HelloTest2
+
+                          main 메서드 체크
+==============================================
+
+ 환경설정
+글꼴 설정->windows->preprience 선택
+             General
+                  |
+                  Appearance
+                       -Colors and Fonts
+                               |
+                                -basic
+                                   Text Font =>맨 마지막
+                                   (Verdana->적절한 글꼴
+                                    크기(26)
+==============================================
+패키지=>예제를 작성(자바파일)=>자바파일이 섞여서 관리X
+
+   따로 폴더를 하나 생성=>소스파일을 저장=>패키지를 작성
+                                                        (=탐색기의 폴더)
+==============================================
+비슷한 내용의 다른 예제를 작성
+
+1. 파일을 다른이름으로 저장(Save as)
+-> 파일명은 변경이 가능한데 클래스명은 변경X
+2. 커서는 복사하고자는 파일을 왼쪽 탐색기창에서 선택
+-> Ctrl+C, Ctrl+ V ->파일명도 변경-> 클래스명도 자동으로 변경O
+
+
+
+** 패키지를 작성하는 방법 **(예제 구분하는 방법)
+d:\폴더->파일저장
+패키지->서로 관령이 있는 클래스들을 따로 묶어놓은 것
+===============================>날짜를 폴더이름변경
+1.패키지(=폴더) 먼저 작성 <==예제를 하나씩 넣어주는 방법
+       드래그 & 드롭
+
+  j0914--->j0914.sub으로 이사가고 싶다.
+
+2.이미 패키지를 지정=>예제(클래스를 넣었는데)
+   다른 패키지로 이동 =>클래스의 예제 ->1번 라인
+         =>다른 패키지로 이동하는 방법(소스 코드로 구현)
+
+        package 최상위패키지명.하위패키지...;//패키지 컴파일
+
+3.처음부터 클래스를 만들때 같이 패키지를 만들어서 작성 ->가장좋은 방법
+       HelloTest4.java
+
+=================================
+
+  예습
+  생활코딩 -> 자바용어 정리
+
+ 화
+  chapter 2 변수? 자료형(=데이터 타입)?
+
+  chapter 3 연산자 ->산술연산자,**관계연산자,**논리연산자,**삼항연산자
+                            **증감연산자,**대입연산자
+
+ 수요일
+
+ 연산자2
+ 제어문 기초=>조건문,if,Switch~Case,
+                   반복문?(while)
+
+
+ 목요일=>제어문 정리=>문제 풀이
+             ***for ***  while, do~while
+         =>과제
+
+ 금요일=>제어문2 총정리=> 
+
+  ** chapter 5->클래스?객체?, 객체생성,메서드의 개요 ,작성법 **
+ ===================================
+
+       
+
+
+
+
+
