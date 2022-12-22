@@ -1,0 +1,487 @@
+﻿1일차(웹개발 환경 개요및 구축 및 JSP 작성방법)
+
+**********************************
+ 웹개발을 하기위한 환경을 구축
+**********************************
+
+1.Java가 먼저 설치(JDK 8.0 기준)->path설정->경로 상관없이 자바실행
+2.웹서버를 설치=>1).net  2) php  ***3) jsp(관공서,,,국가) 
+3.이클립스를 설치(웹프로젝트를 구성->예제)
+
+ =>톰캣서버를 설치(9.7MB)->무료
+ =>Resin(유료),웹스피어,웹로직-->설치X
+ =>http://jakarta.apache.org=>http://tomcat.apache.org/
+
+   다운로드=>가장 최신 버전의 바로 밑의 버전을 설치
+=============================
+
+9.0.7 =>버전관리 
+
+•Core: ◦ zip (pgp, sha512) 
+
+ 1)~.zip=>다운로드 받아서 압축풀면 끝=>환경설정을 나중에 해야된다.
+                                            ex) 8080=>포트를 변경
+                                           ->오라클 서버와 충돌방지(포트변경)
+◦ tar.gz (pgp, sha512) 
+◦ 32-bit Windows zip (pgp, sha512) 
+◦ 64-bit Windows zip (pgp, sha512) 
+◦ 32-bit/64-bit Windows Service Installer (pgp, sha512) 
+**********************************************
+  2) ~.exe =>프로그램처럼 설치과정->설치하면서 환경설정을 같이 하자.
+                        (포트 변경)
+***********************************************
+
+•Full documentation: ◦ tar.gz (pgp, sha512) 
+
+•Deployer: ◦ zip (pgp, sha512) 
+◦ tar.gz (pgp, sha512) 
+
+•Extras: ◦ JMX Remote jar (pgp, sha512) 
+◦ Web services jar (pgp, sha512) 
+
+•Embedded: ◦ tar.gz (pgp, sha512) 
+◦ zip (pgp, sha512) 
+
+ 설치과정
+
+1.환영메세지->examples(체크유무)->기본예제도 같이 설치
+                                                체크(선택)
+8005로 변경<---- -1
+*******************************
+   포트번호->8080=>8090로 변경
+
+   관리자계정->admin/1234
+**********************************************
+    C:\Program Files\Java\jre1.8.0_131
+
+   톰캣서버=>자바의 설치위치를 찾아내서 표시
+              X ->자바를 인식못하는 경우
+
+    =>수동등록=>설치=>제대로 작동이 안되면
+    =>Java 설치를 지우고 나서 다시 설치한 후 ->톰캣을 다시 재설치를 권장
+**********************************************
+   c:\programm files\Apache ~
+  설치경로  =>C:\Tomcat 9.0 =>next=>finish
+                   =========
+                   Run Apache Tomcat  ==>체크 해제
+                   Show readme  ====>둘다 체크해제
+
+=======맥os에서 톰캣서버 설치하는 방법=============
+
+https://whitepaek.tistory.com/12
+====================================
+
+  c:\Tomcat 9.0            
+      
+서버를 가동
+Tomcat 9.0 ->bin=>Tomcat9.exe (권장) =>디버깅역할
+                                                     서버의 실행상태 확인
+
+  기본홈페이지를 확인  http://localhost:8090->index.html
+
+                             Tomcat9w.exe (대화상자 형태로 제공)
+                                 서버의 가동유무를 체크하기가 힘들다.
+
+ ******************************
+  tomcat 9.0\lib\servlet-api.jar =>서블릿에 관련된 라이브러리
+                                                 파일명
+  =>인식X ->이클립스에서 외부패키지 파일로 불러올것
+ ******************************************
+ 3.이클립스에서 웹프로젝트를 생성=>예제하기
+
+ ** 이클립스의 웹프로그래밍을 위한 환경설정 **
+
+1.작업영역 변경
+
+파일=>switch workspace ->변경=>C:\webtest\4.jsp\sou
+                                                                ===생성->지정
+
+2.JspStudy =>프로젝트 이름
+
+  중간에 서버를 연결=>이미지 참조할것.
+ 
+3.Context root->JspStudy(프로젝트 이름)
+->Context directory:WebContent(작업영역의 위치)
+                                      /     ->html,css,js,jsp
+                             src/main/webapp(/)
+
+Generate web.xml deployment descriptor
+=>web.xml을 생성->반드시 체크해줄것.
+
+ JspStudy(프로젝트명)
+      |
+       src
+      -src/main/java=>자바파일(=>서블릿)파일이 저장
+      |
+        WebContent(/)
+       -src/main/webapp(/)=>c:/ or d:/ =>index.jsp (메인)
+               |                                          main.jsp
+                                   hello.jsp
+                -sub      
+               |
+                -WEB-INF=>web.xml=>환경설정 파일
+                      |**********************************
+                       -lib=>외부의 패키지파일을 저장시키는 위치
+                                ojdbc6.jar
+                       ***********************************
+windows->Preference
+                 General
+                  colors and fonts
+                    basic->Text Font 선택
+                       verdana
+                      글자크기 알아서 정하세요
+                      (ex 28)
+ web
+      css file=> encoding:utf-8
+      html file=>utf-8
+      jsp file->utf-8
+          한글깨지지 않도록 설정
+
+ Workspace=>Text file Encoding
+                     Other:UTF-8
+
+  =>Apply and Close
+=========================
+ html=>화면디자인
+ jsp(java server page)=>html5+자바코드를 작성할 수있도록
+                                               파일(선언문)
+
+*********************************************
+ MacOS IntelliJ IDEA 사용시 Tomcat 연동 문제
+https://m.blog.naver.com/juanmon/222421013651
+
+--------------------------------------------- 
+** JSP 페이지의 구성요소 4가지 **
+
+1.스크립트릿(Scriptlet)=>웹상에서 자바코드를 사용할 수 있도록
+                                 해주는 영역을 설정
+
+<%
+   String str="홍길동";
+   System.out.println("str=>"+str);
+   out.println("str=>"+str);//웹에출력
+ %>
+
+http://localhost:8090/JspStudy/hello.jsp
+
+http://도메인이름:포트번호/작업프로젝트명/요청할 문서명~.jsp
+                                                                   html
+         192.168.0.38=>상대방의 ip주소=>도메인 등록
+
+http://192.168.0.38:8090/JspStudy/hello.jsp
+====================================
+
+톰캣서버의 콘솔창이 한글이 깨지는 경우에 해결하는 방법
+
+https://blog.itcode.dev/posts/2021/05/22/tomcat-encoding-euckr
+
+*******************************************************
+
+** 배포하는 방법 **
+ 
+ 프로젝트명 오click=>export->war file선택한후
+ 원하는 폴더에 지정=>압축해서 저장
+
+export source files=>자바파일을 포함시킬지 유무(체크)
+Overwrite existing file=>기존의 소스파일에도 새로 추가
+                                    된 내용까지 첨부해서 가져갔겠다.
+
+ 
+ ** 프로젝트 불러오는 경우 **
+
+프로젝트 탐색기->오 click->import ->war file=>경로지정
+                                                                   불러올것.
+                   프로젝트명이 중복되면 못불러오기때문에
+                    이름을 변경할것.
+********************************************
+
+*요청을 한다.(페이지)=>링크문자열을 클릭,버튼을 클릭
+
+디폴트 객체(=내장객체)
+
+request 객체 =>요청을 해주는 객체
+
+response 객체 =>응답을 해주는 객체
+=============================
+
+ JSP===>내부적으로 서블릿으로 변환이 일어난다.
+ hello.jsp->hello.jsp~.java로 변환 =>hello*.java
+**************************************
+ Servlet=>Server Side Applet(애플릿)
+
+            웹상에서 실행이 되는 자바프로그램->main(X)
+**************************************
+
+ 개인 블러그,중소규모 사이트=>JSP(모델1)
+ 포탈사이트,큰 규모의 사이트개발==>모델2(Servlet중심)
+ ==================>스프링(모델2로 설계)
+                                              +알파
+ 서블릿(자바코드 90% +html,css,javascript(10%)
+     초보자
+
+  =>JSP=>html,css,javascript+최소한의 자바코드
+            =>서블릿
+
+*** JSP 구성요소 4가지 ***
+
+
+ Web Programming
+
+****************************************************
+1.Client-side Programming=>html,css,javascript(document.write~)
+                                       =>frontend
+
+2.Server-side Programming=>jsp=>backend
+*****************************************************
+
+1.스크립트릿  =>1)<html>태그와 </html>태그에 아무 위치에 상관없이 배치가 가능
+                    2)자바코드를 사용할 수 있도록 해주는 영역(지역변수 선언,제어문)
+                    3)자바스크립트구문사용X, 표현식도 사용X
+<% 
+   //Scriptlet(스크립트릿)=>자바코드를 사용할 수 있도록 해주는 영역(지역변수 선언,제어문)
+   //주의할점=>자바스크립트구문사용X, 표현식도 사용X
+   String str="이연수";
+   System.out.println("str=>"+str);//콘솔
+   out.println("<h1>"+str+"</h1>");//
+   //document.write("str=>"+str)
+ %>
+
+2.표현식(Expression) =>간단하게 출력문 대용으로 사용=>변수값 출력,메서드 호출=>결과값
+                             =>스크립트릿 안에 사용할 수가 없다.(X)
+  out.println(str);
+
+     <% String str="이연수";%>
+
+ 형식) <%=출력변수명%>  or  <%=객체명.일반메서드명(~)%>
+                                         표현식 안쪽의 메서드명 뒤에는 ;을 쓰면 안된다.
+                                        <%=정적메서드명(~)%>
+
+
+3.선언문(Declaration)=>모양이 scriptlet와 비슷
+
+  <%!         %> =>자바코드를 사용이 가능(정적 멤버 변수선언 처럼 생각)
+                        =>선언된 위치에 상관없이 변수를 불러다 사용이 가능=>멤버변수선언
+                             ** 메서드를 작성이 가능=>정적메서드 느낌
+                                 static을 사용X ->느낌은 static처럼 사용
+                        =>실무에는 제한적으로 사용=>빈즈클래스에서 대신 사용
+                         
+  Window->web browser->chrome선택할것.
+**************************************************************
+        JspStudy
+            |
+             -src/main/webapp->hello.jsp(1)
+                      |
+                       -abc->imsi.jsp(2)->표현식,선언문
+                                 test.jsp(3)->선언문2(메서드 작성할때)
+                                 array.jsp(4)
+                                 comment.jsp(5)
+                      |               input.html
+                       -control->input.jsp(요청)=>iftest.jsp(응답)
+                                     html,css,js=>
+***imsi.jsp***
+<%
+        //int count=3;
+%>
+<meta charset="UTF-8">
+<title>JSP 2번째 예제</title>
+</head>
+<body>
+
+<%
+      //int count=3;
+      for(int i=0;i<count;i++){
+    	  out.println("<h1>JSP테스트"+i+"!<br>");//document.write("<h1>JSP테스트"+i+"!<br>")
+      }
+      out.println("count=>"+count);
+      //태그 사용불가,표현식 사용불가
+      //출력할 변수명:<%=count%>
+%>
+출력할 변수명:<%=count%>
+<%!
+        //위치에 상관없이 변수의 값을 불러다 사용이 가능(변환시 서블릿의 멤버변수로 선언되기때문에)
+      int count=3;  
+%>
+-----------------------------------------------------------------------------
+   ** test.jsp **
+<%!
+    //선언문->jsp 전체에서 불러다 사용할 변수,메서드가 필요로 한경우에 선언->불러다 사용가능
+     String name="홍길동";
+    
+     public String getName(){
+    	 return name;
+     }
+%>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JSP 3번째 예제(표현식활용,선언문의 메서드작성)</title>
+</head>
+<body>
+<%
+    float f=2.3f;
+    int i=Math.round(f);//반올림
+    java.util.Date d=new java.util.Date();
+    out.println("d의 값은=>"+d);//d.toString()
+%>
+<hr><p>
+정수 f의 반올림값은? <%=i %><p>
+현재의 날짜와 시간은? <%=d.toString() %><br>
+name의 값은? <%=name %><p>
+getName()을 호출? <%=getName() %>
+</body>
+</html>
+=================================
+    array.jsp
+
+<table border="1" width="200">
+<%
+      for(int i=0;i< keyword.length;i++){ %>
+    	  <tr>=>태그나오는 위치위에 %>문장을 써준다.
+    	   <td><%=i%></td>
+    	   <td><%=keyword[i]%></td>
+    	 </tr>
+<% } %> =>자바코드가 필요로하는 부분에서 <%
+</table>
+
+===================================
+4.comment(주석)  
+
+  *주석의 개요와 주석의 종류를 아는대로 2개이상 기술하시오.*
+
+ 주석->프로그램의 실행과 상관이 없는 간단한 설명문장
+
+1.눈에 보이는 주석  -><!--    -->=>html주석
+2.눈에 안보이는 주석 -><%--   --%>
+3.자바 주석 =>//  ,  /*  ~  */
+
+** 주석을 사용할시 주의할점 **
+
+1.주석내부에 표현식을 사용이 가능하다.
+2.주석내부의 표현식안에 자바주석을 사용가능하다.
+3.주석내부의 표현식을 잘못 사용하시면 에러유발=>주석이라도 할지라도
+                                                            에러유발
+
+  *** jsp 에러유발 ***
+
+HTTP Status 404=>경로가 잘못되거나 파일명이 틀린경우
+http://localhost:8090/JspStudy/abc/comment2.jsp
+===============================
+
+HTTP Status 500 – Internal Server Error  =>자바의 문법에러유발 (오타발생)
+
+Type Exception Report
+
+Message Unable to compile class for JSP: 
+
+Description The server encountered an unexpected condition that prevented it from fulfilling the request.
+
+Exception
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+*****************************************************
+An error occurred at line: [12] in the jsp file: [/abc/comment.jsp] ->12번째라인
+Syntax error on token ";", ( expected
+*******************************************************
+==========================>프로젝트
+9: <title>Comment 주석</title>
+10: </head>
+11: <!-- 5+3=<%=5+3%> -->
+12: <!-- 9+3=<%=9+3/* 자바주석의 사용이 가능하다.*/%> -->
+13: <!-- 10*3=<%10*3%> --> =>실질적인 에러가 발생이 된부분
+14: <body bgcolor="yellow">
+15:    <h1>JSP 주석을 확인하는 예제</h1>
+
+=============웹프로그래밍(한페이지 이상)==========================
+
+  1.요청을 하는 페이지->화면디자인(html or jsp)=>외부(입력하고 enter,
+                                                               링크문자열 클릭)=>페이지 이동
+   =>투수===>공(전달되는 값)
+
+  2.요청을 받아들여서 응답해주는 페이지(jsp로만 구성)=>자바코드가 포함
+  =>포수
+=======================================
+
+ input.jsp
+
+<meta charset="UTF-8">
+<title>사용자로부터 값을 입력(전송폼)</title>
+</head>
+<body>
+  <h1>이름,색깔을 입력</h1>
+  <form method="post" action="iftest.jsp">
+     이름:<input type="text" name="name"><p>
+    좋아하는 색깔:
+     <select name="color">
+        <option value="blue">파란색</option>
+        <option value="red">붉은색</option>
+        <option value="orange">오렌지색</option>
+        <option value="etc">기타</option>
+     </select><p>
+     <input type="submit" value="보내기">
+  </form>
+</body>
+
+================================
+iftest.jsp
+
+<%!
+     String msg;//전달받은 색깔(영어)=>한글로 바꿔서 출력변수
+%>
+<%
+   //외부에서 전달해주는 변수를 받아서 처리해주는 내장객체->request
+   //형식)String 반환값=request.getParameter("전달받은 매개변수명")
+   request.setCharacterEncoding("utf-8");//한글처리 옵션
+   
+   String name=request.getParameter("name");
+   String color=request.getParameter("color");
+   System.out.println("name=>"+name+",color=>"+color);//null
+   
+   //문자열 비교
+   if(color.equals("blue")){
+	   msg="파란색";
+   }else if(color.equals("red")){
+	   msg="붉은색";
+   }else if(color.equals("orange")){
+	   msg="오렌지색";
+   }else{
+	   color="white";//디폴트
+	   msg="기타색(흰색)";
+   }
+%>
+<body bgcolor="<%=color%>">
+  <%=name %>님이 좋아하는 색깔은?  <%=msg %> 입니다.
+</body>
+</html>
+=========================================
+                                     input2.html=>while.jsp
+   입력받는 부분->control=>input2.jsp    control=>while.jsp
+                                                          매개변수2
+   
+   반복할 문자열을 입력?  a
+   반복할 숫자를 입력? 5
+
+   aaaaa
+==================================
+  ** input2.jsp **
+
+   <h1>문자와 숫자를 입력</h1>
+   <form method="post" action="../abc/while.jsp">
+     반복할 문자열:<input type="text" name="msg" size="20"><p>
+     반복할 숫   자:<input type="text" name="number"><p>
+    <input type="submit" value="전송">
+   </form>
+========================================
+
+과제
+
+** 예습 **
+  
+  서블릿의 개요 및 작성법
+
+********************************
+
+ <a href="history.back()">다시입력</a>
+
+*********************************
+
+
