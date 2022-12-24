@@ -1,0 +1,317 @@
+2일차(지시어의 개요및 작성법,서블릿의 개요,작성법)
+
+===================================
+ ServletTest =>새 프로젝트 생성
+                  =>JSP 구성요소 4가지=>서블릿(ServletTest)
+
+1.스크립트릿
+2.표현식
+3.선언문
+4.주석 or 지시어
+=================================
+// 지시어 (자바코드를 쓰게끔 해줌)
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%> 
+
+지시어->jsp파일의 선언문=>톰캣서버에게 요청을 하는 선언문
+                                                    ==
+          요청은 속성명으로 지정
+
+형식)<%@ page                 language="java"
+               ===지시어 이름       속성명       값
+
+지시어의 종류->1.page 지시어
+                              2.include 지시어
+                              3.taglib 지시어
+
+
+language="java" ->jsp파일에서 사용되는 언어는 자바로 설정(생략 가능)
+
+                      video/mp4(종류)  ->mine type=>서버에 요청할 문서의 종류 지정
+                      img/jpg ->이미지로 보내달라
+
+** contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+요청에 맞는 문서를 보내줄때 text/html
+=>텍스트형태의 html문서로 만들어서 보내주되 한글이 결과에 포함이 되어있다면 
+      한글이깨지지 않은 상태로 보내주세요(초창기에 설정)
+
+
+** pageEncoding="UTF-8" =>한글처리 해달라(신버전)
+
+** import=>외부에서 패키지를 불러올때 사용
+
+<%@ page  contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+                  import="java.util.Date,java.io.*"%> =>import속성 추가 
+                                                                       =>속성값을 ,로 여러개를 나열이 가능
+<%@ page  import="java.sql.*,java.net.*"%> =>새로 여러개의 import속성을 사용
+                                                                        가능
+
+       ->buffer,autoflush=>입출력과 관련=>액션태그와 연관
+
+         errorPage.isErrorPage =>에러페이지를 작성할때 필요
+         =>현재 8.x,9.x에서는 사용X ==>Tomcat 3.2.3일때 사용됐던 속성
+
+ isThreadSafe=true(default)=>홈페이지가 동시 접속이 가능하게 할때 사용하는 속성
+
+ex)isThreadSafe=false =>동시접속 허용(X) ->보통은 쓰지 않는다.
+=>관리자만 접속해서 홈페이지 내용을 수정할때 외부에서 접속불가
+
+<%@page info="현재 홈페이지의 설명문을 작성할때" %> 거의 안쓴다.
+-> <!-- --> 주석기능이 더 간단하다.
+=============================================
+                Applet=>클라이언트에서 실행이 되는 자바프로그램=>현재 사용X
+            **Servlet=>Server Side Applet(애플릿) **
+             
+
+            서버상에서 실행이 되는 자바프로그램->main(X) =>jsp처럼 서버를 가동시키면 된다.
+            =>실행결과를 text/html로 브라우저를 통해서 전송해주는 프로그램
+-------------------------------------------------------------------------------------
+ServletTest =>프로젝트
+    
+javax.servlet.http.HttpServlet
+
+서블릿이 실행시 제일 먼저 호출되는 메서드(init)
+생성자와 같은 역할(서블릿의 초기값을 설정)
+
+===>get으로 접속할때마다 
+웹상에서 get방식으로 접속할때마다 자동으로 호출됨!!
+웹상에서 get방식으로 접속할때마다 자동으로 호출됨!!
+
+
+ 접속할때마다 실행되는 서블릿의 웹주소
+http://localhost:8090/ServletTest/HelloTest
+         도메인       포트번호/프로젝트명/실행될 서블릿클래스이름
+
+http://192.168.0.35:8090/ServletTest/HelloTest
+
+  
+doGet() =>사용자가 get방식으로 접속했을때만 호출
+doPost()=>사용자가 post방식으로 접속했을때만 호출
+service() =>사용자가 get방식 또는 post방식으로 접속했을때 처리해주는 메서드
+
+*****HelloServlet.java ************
+
+/*
+ *  서블릿을 만들 수 있는 조건
+ * 
+ *    servlet-api.jar파일
+ * 1.import javax.servlet.*; 서블릿의 클래스
+ *    import javax.servlet.http.*;//웹상에서의 접속에 관련된 정보
+ *  
+ * 2.반드시 public class로 작성해야 한다.=>외부에서의 접근이 가능하다.(누구나 접속이 가능하게 만들기위해)
+ * 3.반드시 HttpServlet클래스를 상속받아야 된다.=>상속 =>doGet(),doPost() 기능을 부여
+ *     get방식(사이트 접속)->doGet() 자동호출
+ *     post방식으로 요청->doPost() 자동 호출
+ */
+
+import java.io.IOException;//입출력에 예외처리 클래스
+import java.io.PrintWriter;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletConfig;//서블릿의 초기환경설정할때 필요
+import javax.servlet.ServletException;//서블릿의 오류발생시 처리해주는 예외처리클래스
+import javax.servlet.annotation.WebServlet;//웹상에서 어떻게 접근->서블릿실행 정보
+import javax.servlet.http.HttpServlet;//상속을 받을 부모클래스
+import javax.servlet.http.HttpServletRequest;//요청을 받아서 처리해주는 인터페이스
+import javax.servlet.http.HttpServletResponse;//응답을 받아서 처리해주는 인터페이스
+
+/**
+ * Servlet implementation class HelloTest
+ */
+@WebServlet("/HelloTest")
+public class HelloTest extends HttpServlet {
+	
+	/**
+	 * @see Servlet#init(ServletConfig)
+	 */
+	public void init(ServletConfig config) throws ServletException {
+		// TODO Auto-generated method stub
+		System.out.println("서블릿이 실행시 제일 먼저 호출되는 메서드(init)");
+		System.out.println("생성자와 같은 역할(서블릿의 초기값을 설정)");
+	}
+
+	/**
+	 * @see Servlet#destroy()
+	 */
+	public void destroy() {
+		// TODO Auto-generated method stub
+		System.out.println("서블릿이 종료할때(메모리 해제할때도 사용)");
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 *   메서드의 매개변수를 통한 객체를 얻어오는 방법2번째 (call By Reference)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("웹상에서 get방식으로 접속할때마다 자동으로 호출됨!!");
+		//어떤형태의 문서를 보내줄지 결정
+		response.setContentType("text/html;charset=utf-8");//html문서+한글테이터 포함
+		//PrintWriter out=new PrintWriter();
+		PrintWriter out=response.getWriter();//객체를 얻어오는 방법 3번째
+		out.println("<html><head></head>");//document.write("<html><head></head>");
+		out.println("<body>");
+		//외부에서 접속했을때 어떻게 보여줄까?
+		out.println("<h2>Hello Servlet 이연수!!!</h2>");
+		//추가
+		out.println("<table border=1>");
+		 for(int i=2;i<=9;i++) {//행(단)
+			 out.println("<tr>");
+			 for(int j=1;j<10;j++) {
+				 out.println("<td>");
+				 out.println(i+"*"+j+"="+(i*j));
+				 out.println("</td>");
+			 }
+			 out.println("</tr>");
+		 }
+		out.println("</table>");
+		out.println("</body></html>");
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("웹상에서 post방식으로 접속할때마다 자동으로 호출되는 메서드");
+	}
+
+}
+================================================
+서블릿(초창기)=>자바프로그래밍 코딩+HTML,CSS,Js
+                          ex)85%            15%
+
+  처음 배우기가 어렵다(단점),시간이 오래걸림
+==========================>jsp=>html+css+js+최소한의 자바코드
+                                                                     <%~%>,<%=%>~
+                                                             모델1 방식(소규모)
+                                                             jsp->서블릿
+                                                                     서블릿=>실행속도가 빠르다.
+
+모델1 방식->중복코딩이 많아지는 단점(세션처리)=>서블릿(모델2)대규모 포탈사이트,금융
+                페이지가 많아지면 에러잡기가 어렵다            =>스프링
+==================================================
+ 요청을 받아서 처리해주는 JSP 작성,서블릿 작성
+                               ====   ======
+  ServletTest
+        |
+         -src/main/java->HelloTest.java(서블릿)(1)
+                                  GetDate.java(2)
+        |
+        (src/main/webapp)
+                |         input3.html=====>arrayPrint.jsp
+                 -sub->send.html(요청)=>getdate.jsp(처리) (2)
+
+ ** send.html **
+
+<form method="post"  action="getdate.jsp">
+                                  ==============>상대경로를 지정해서 jsp호출
+   이름:<input type="text" name="name"><br>
+   주소:<input type="text" name="addr"><br> 
+  <input type="submit" value="보내기">
+ </form>
+
+
+**getdate.jsp**
+
+<%
+     //요청->request, 응답->response
+     request.setCharacterEncoding("utf-8");
+     String name=request.getParameter("name");
+     String addr=request.getParameter("addr");
+     out.println("name=>"+name+",addr="+addr);
+%>
+==================================
+ 특정사이트 팝업창(=공지사항창)
+
+ ServletTest
+        |
+         -src/main/java->HelloTest.java(서블릿)(1)
+                  GetDate.java(2)
+                  Notice.java(3-3)
+        |
+         -WebContent(src/main/webapp)->index.jsp(3-1) or main.jsp
+                                                        =>자바스크립트를 이용(창을 띄운다.)
+				         서블릿의 경로가 중요하다. 
+                |
+                 -sub->send.html(요청)=>getdate.jsp(처리) (2)
+                |=============================
+                 -notice->20221223.txt (3-2)
+                
+
+
+   ** index.jsp **
+
+ <script>
+    function test(){  //public void test(){}
+    //1.경로포함해서 불러올 문서명 2.문서의 타이틀제목 3.창의옵션(left,top,width,height)
+    	//window.open('./sub/send.html','w','left=300,top=200,width=400,height=200');
+    	window.open('/ServletTest/Notice','w','left=300,top=200,width=400,height=200');
+    }
+</script>
+
+ ** Notice.java **
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+//추가
+import java.util.*;//Date or Calendar클래스
+
+/**
+ * Servlet implementation class Notice
+ */
+@WebServlet("/Notice")
+public class Notice extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("text/html;charset=utf-8");//html문서+한글테이터 포함
+		//PrintWriter out=new PrintWriter();
+		PrintWriter out=response.getWriter();//객체를 얻어오는 방법 3번째
+		out.println("<html><head></head>");//document.write("<html><head></head>");
+		out.println("<body>");
+		//-----------------------------------------------
+		out.println("<h2>오늘의 공지사항</h2>");
+		//notice->2021713.txt
+		String fileName="";//불러올 파일명을 저장
+		Calendar cal=Calendar.getInstance();//Date d=new Date();
+		fileName+=cal.get(Calendar.YEAR);//형식) 날짜객체명.get(정적상수명)->2019
+		fileName+=cal.get(Calendar.MONTH)+1;//0~11월+1을 줘야 정확한 월이 표시된다.
+		fileName+=cal.get(Calendar.DATE);//12=>윤년도 자동계산
+		fileName+=".txt";// 2021713.txt
+		//--------------------------------------------------
+		//경로명+파일명->절대경로(경로)
+		String realPath="C:/webtest/4.jsp/sou/ServletTest/WebContent/notice/"+fileName;
+		System.out.println("realPath="+realPath);
+		try {
+			//FileInputStream(영문) or FileReader(한글)
+			BufferedReader br=new BufferedReader(new FileReader(realPath));
+			String line="";//한줄씩 읽어들여서 저장할 변수
+			
+			while((line=br.readLine())!=null) {//계속 읽어들일 수 있다면
+				out.println(line+"<br>");//클라이언트의 브라우저 전송
+			}
+			br.close();
+		}catch(IOException e) {
+			System.out.println("불러올 파일의 경로와 파일명을 다시 확인해주세요=>"+e);
+		}catch(Exception e) {
+			System.out.println("오늘 공지사항이 없습니다.");
+		}
+		//------------------------------------------
+		out.println("<p align=center>");
+		out.println("<hr>");
+		out.println("<input type='submit' value='창닫기' onclick='window.close()'>");
+		out.println("</body></html>");
+	}
+}
+
+==============================================
+예습
+ **ppt =>5장.내장객체, 6장 액션태그 예습 ***
+
+
+
+
