@@ -1,0 +1,402 @@
+3일차(내장객체,액션태그의 사용법)
+
+
+JspWork =>프로젝트(내장객체(=디폴트객체),액션태그)=>액션태그 마무리(빈즈)->JDBC
+
+http://localhost:8090/JspWork/RequestTest
+                               /프로젝트명/실행시킬 서블릿클래스명
+
+  action="../abc/request.jsp"  ->요청을 jsp방식으로 처리하는 경우
+
+  action="/JspWork/RequestTest" ->서블릿이 처리하는 경우
+
+  보안때문에 가상경로=>실제로는 존재하지 않은데 존재하는것 처럼
+                                  경로를 설정할 수 있다.
+
+------------------------------------------------------------------------
+내장객체,액션태그->include 액션태그(동적 디자인)
+                        forward 액션태그
+지시어->3종류
+          1.page 지시어 ->서버에 요청하는 문장(속성->값설정)
+                                  contentType,pageEncoding, import~
+
+          **2.include 지시어->화면디자인을 설계할때 사용 (정적 디자인),
+                                      =>변경된 부분이 있다면 다시 읽어들여야 된다.(F5 새로고침해야 한다)
+                                      자주사용,반복되는 변수선언=>파일로 만들어서 불러올 수있다.
+                                                                        **********
+                                 ->메서드 사용하는 목적과 비슷
+                                 ->공통으로 자주 사용되는 내용(화면디자인)
+                                 ->상용구처럼 파일로 만들어서 필요로할때
+                                    ******************************
+                                    불러올 수 있다.(텍스트 가 특정위치에 삽입)
+                                   ********************************
+          3.taglib 지시어=>모델2에서 적용->23년 1월 2~3주쯤 
+
+==========================================
+       JspWork
+            |            <%@include file="상대경로 포함해서 불러올 파일명" %>
+                             실행할때 지정된 위치에 텍스트파일을 삽입(동적)
+
+              -src/main/webapp->includeTest.jsp(1)
+                     |
+                      -inobject->req.jsp->request객체
+                     |
+                      -action
+                     |
+                      -bottom->bottom.html(화면디자인)(2)
+                     |
+                      -sub->JspModule.java(자주 사용,반복적인 자바구문)(3)
+
+********** JSP와 서블릿의 관계*****************************************
+
+내장 객체(Implicit Object)
+
+JSP 프로그램 코드에서 프로그래머가 선언하지 않아도 사용할 수 있는 
+미리 선언된 객체를 의미한다.
+(=>jsp만들때부터 만들어져 있는 객체)
+
+** 스크립트릿(<% ~ %>) 안에서만 사용할 수 있다. **
+      메서드 작성X =>선언문과의 차이점
+
+<%!
+            사용불가
+%>
+
+내장 객체의 생성
+서블릿 컨테이너가 해당 JSP 페이지의 실행 시 자동으로 생성해 준다.=>sou(req*.java)
+                      									   include*.java
+내장 객체가 선언되는 곳
+
+JSP 실행 시 자동 생성되는 서블릿 코드의 _jspService() 메소드 내에서 선언된다
+
+*** 서블릿의 종류 ***
+
+1.순수 서블릿->사용자정의 서블릿
+2.응용 서블릿->jsp파일 작성=>내부적으로 자동으로 변환
+
+ ** 차이점 **
+
+1)순수 서블릿+ jsp패키지에 관련된 클래스를 추가
+                    import javax.servlet.jsp.*;
+
+2) 상속받는 클래스가 좀 다르다.
+
+extends HttpServlet(부모)
+            =======
+extends org.apache.jasper.runtime.HttpJspBase(자식)
+                                                   ========
+
+3) init() ,get->doGet(), post->doPost(), destroy()호출
+
+->
+                 init()->_jspInit()=>명칭은 다르지만 기능이 같다.
+  public void _jspInit() {
+  }
+                 destroy()->_jspDestroy()
+  public void _jspDestroy() {
+  }
+
+   get or post요청->service()=>_jspService()에서 처리
+
+  public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
+      throws java.io.IOException, javax.servlet.ServletException {
+
+
+//내장객체를 만드는 소스코드부분
+      response.setContentType("text/html; charset=UTF-8");
+      pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+      _jspx_page_context = pageContext;
+      application = pageContext.getServletContext();
+      =======
+      config = pageContext.getServletConfig();//자바의 객체를 생성하는 방법 3
+      ====                                                     메서드의 반환형을 통해서 생성됨
+      session = pageContext.getSession();
+      =====
+      out = pageContext.getOut();
+      ===
+      _jspx_out = out;
+
+    7~8개 내장객체=>
+                                ***request,->요청객체
+                                *response,->응답객체(사용자의 요청결과+html문서로 만들어서
+                                                               전송객체)
+                                * out, ->서블릿의 입출력할때 사용
+                                *session  =>회원로그인할때 필요
+                                application, =>웹프로젝트에서의 객체의 사용범위와 연관
+                                config,->서블릿의 초기화 매개변수를 설정할때 할때 사용(모델2)
+                                exception =>예외처리할때 사용하는 객체(try~catch~)
+********************************************************
+--------------------------------------
+1.서버의 도메인 이름을 반환 <%=request.getServerName() %><br>
+2.서버의 포트 번호를 반환 <%=request.getServerPort() %><br>
+
+*3.요청된 URL에서 경로를 반환<%=request.getRequestURL() %><br>
+*4.요청된 URI에서 경로를 반환<%=request.getRequestURI() %><br>
+------------------------------------------------------------------------------
+ 3.요청된 URL에서 경로를 반환http://localhost:8090/JspWork/inobject/req.jsp
+                                          http프로토콜부터 요청문서까지의 경로 전체
+
+ 4.요청된 URI에서 경로를 반환/JspWork/inobject/req.jsp
+                                        =>/JspWork/inobject/req.jsp (**모델2에서 경로)
+                                         서버포트이후 부터 요청문서까지의 경로
+
+*5.String getRemoteAddr()(원격ip 주소) <%=request.getRemoteAddr() %><br>
+
+6.클라이언트가 요청한 프로토콜을 반환 <%=request.getProtocol() %><br>
+*7.요청 방식(GET, POST)을 반환 <%=request.getMethod() %><br>
+------------------------------------------------------------------------------------------
+
+응답객체(=response)=>res.jsp
+ ==>문서의 타입및 한글처리
+ response.setContentType("text/html;charset=utf-8");
+ response.sendRedirect("경로포함해서 이동할 페이지명");//페이지 이동
+---------------------------------------------------------------------------
+
+웹프로그래밍=>******페이지 이동시키는 방법(jsp)******* =>기술 면접
+                 
+1.response객체->
+
+                                    ->http:// 반드시 줄것
+ //response.sendRedirect("http://www.chosun.com");  외부의 사이트로 이동
+     response.sendRedirect("./req.jsp"); //상대경로를 지정(내부 파일이동)
+    =>**URL창이 이동할 페이지로 전환이 되면서 이동이 된다.
+    =>데이터를 서로 공유할 수없다.(데이터를 공유하면서 이동X)
+
+2.forward 액션태그==>모델2의 핵심
+
+    =>외부의 사이트로 이동X
+    =>자기 프로젝트의 다른 페이지로만 이동이 가능하다.(O)
+    =>**URL창이 이동할 페이지로 전환이 X **
+    결론) 데이터를 공유하면서 페이지를 이동시킬 수 가 있다.=>예매사이트
+
+       웹페이지->A.jsp(int a=10) -->B.jsp(<%=a%>
+-------------------------------------------------------------------
+회원로그인->예매페이지 1-->예매페이지 2--->예매페이지 3
+                    지역              상영관 시간      카드,무통장입금
+------------------------------------------------------------------
+ 웹->페이지이동 하면 전의 정보가 사라진다.=>세션처리(디폴트 30분)
+
+  A.jsp====>    B.jsp=>C.jsp
+ int su=100
+
+3.자바스크립트  ->location.href="이동할 페이지명"
+                        location.replace("http://~이동할 페이지명")
+
+                        history.back()->전의 페이지로 이동
+                        history.go(-1)->전의 페이지로 이동
+                        history.forward()->앞의 페이지로 이동
+============================================
+ **** 액션태그의 개요 와 종류 ***** 
+
+액션태그=>어떤 기능(1.페이지 이동,2.외부의 파일을 불러오는 기능)을 가진 태그
+                 메인페이지(index.jsp->top.jsp,bottom.jsp,left,jsp,body.jsp)
+
+            =>3.객체를 생성,4.Setter,5.Getter->태그형태로 만들어서 사용->액션태그
+
+액션태그의 종류->5가지 종류<--6가지 종류(applet태그 ->요즘 사용X)
+
+  ->** (useBean,setProperty,getProperty) **,
+  ->include,forward->메인페이지를 작성
+      ------------------------------------- -----------------
+
+액션태그-> JspWork
+                      |
+                       -WebContent(src/main/webapp)
+                                inobject
+                                action->form.jsp--->include.jsp---->sub.jsp
+                                                      요청            응답페이지      응답페이지2
+
+                                   ex)      사장   ----->  부장-------->  과장
+                                                       <----부장(처리한 부분) <-------
+                                                                     +
+                                                               과장(전송 받은 나머지부분)
+**************************************************
+include액션태그를 사용(X) or (O)
+include 지시어의 차이점
+
+공통점->둘다 외부의 파일의 내용을 불러와서 특정한 위치에 삽입한다.
+차이점->include 액션태그=>동적으로 변경된 내용을 특정한 위치에 삽입(실행결과)
+                                         ***************                  =====
+                                    =>(새로 고침 F5)이 자동으로 수행
+
+            include 지시어->정적으로 문자열만 복사->특정한 위치에 삽입(->새로고침X)
+                                                                   =>다시 파일을 읽어들여야 된다.
+                                   **********************************
+*********************************************************
+
+
+ 주석->눈에 안보이는 주석=><%  ~%>
+
+------------------------------------------------------------------------------
+       <c:if></c:if>
+형식) <jsp:include  page="include.jsp"/> ->시작태그와 종료태그 사이에 내용이
+        식별자:액션태그이름     속성명="값"     없음을 표시하는 구분=> />
+          (액션태그를 분류할때 사용하는 키워드)
+
+         <jsp:include page="include.jsp"></jsp:include page="include.jsp">
+
+
+          <시작태그> 내용  </종료태그>========><시작태그 />
+          <b>내용</b>  ==========><b></b> =><b />
+
+        <c:out ~> ->모델2에서 나오는 용어
+
+        <jsp:include page="include.jsp(이동할 페이지명)"  flush="false">
+        
+        buffer
+        flush="false"==>입출력할때 화면에 출력하기전까지 버퍼에 쌓아놓음
+                                                                                8kb =>16kb
+                                 buffer(임시 저장 창고)
+         지정한 페이지로 이동할때 현재 작업한 내용을 버퍼에 쌓아놓게 되는데
+         이 작업한 내용을 ->현재 브라우저에게 전부 전송하고 지정한 페이지로
+          이동유무를 결정해주는 속성(true->브라우저에게 전송 (거의 사용X)
+           false->계속 보관하는 속성      + 처리할 내용 같이 합쳐서 출력
+
+        </jsp:include>
+************************************************************
+        <식별자:액션태그명 액션태그의 속성명="속성값(경로포함해서 이동할페이지명)"~ />
+                                       속성명 순서는 정해져 있지 않음(순서 중요X)
+ 식별자->액션태그의 종류를 구분하는 인자로 사용된다.
+          ex) <c:out~>
+-----------------------------------------------------------------------------------
+  forward액션태그를 이용해서 페이지를 이동(모델2와 연관)
+
+                         form.jsp (save as)             include.jsp(save as)(ctrl+c,ctrl+v)
+         forward->forward.jsp(이동할 페이지명)-->move.jsp-->a.jsp
+             폴더              a.jsp                                             b.jsp
+
+ ****************************************************
+ <%
+    String move=request.getParameter("move");//a.jsp or b.jsp
+    System.out.println("move=>"+move);
+    if(move.equals("a.jsp")){
+       //response.sendRedirect("a.jsp");
+%>
+<!-- forward 액션태그 page="이동할 페이지명" -->
+<jsp:forward page='a.jsp' /><br>
+<% }else if(move.equals("b.jsp")) { %>
+<jsp:forward page='b.jsp' /><br>
+<%} else {%>
+   <script>
+      window.alert("당신이 요청하신 페이지는 없습니다.\n확인 다시 해보세요!")
+      location.href="forward.jsp"
+   </script>
+<% } %>
+===========================================
+    웹프로젝트명
+          |
+           -src
+          |
+           -WebContent(src/main/webapp)(/)=>main.jsp or index.jsp
+                  |
+                    -board->
+                  |     |
+                         -image
+
+                   -customer
+                  |      |
+                          -image
+                         |
+                          -js
+                         |
+                          -css
+                    -research
+                  |
+                   -WEB-INF->web.xml(환경설정파일)=>xml파일(10가지 공식)
+                        |                                             환경설정
+                         -lib=>외부패키지를 저장하는 곳=>ojdbc6.jar
+
+
+
+
+ 액션태그->include,forward액션=>데이터공유
+               useBean,setProperty,getProperty액션태그=>과제
+             ->ppt로 예습
+
+ 메인페이지를 작성=>include,forward액션
+
+(웹에서의 jdbc 연동방법)
+*****************************************************
+
+ ****************************************************
+HTTP Status 404 – Not Found ->경로포함해서 파일명이 틀린경우
+
+ 데이터 공유
+
+** 내장객체의 변수사용 범위 **
+
+1.page 범위=>현재 페이지에서만
+                    사용되는 변수  <%
+                                        int su=100;
+                                       %>
+
+**2.request 범위=>한페이지 이상
+                    (요청-응답 페이지 )
+                     데이터 공유
+
+***3.session 범위=>로그인을 하는 동안
+                        데이터 공유
+                       로그아웃할때까지
+                       사용(30분)
+
+4.application 범위=>모든 페이지
+                            데이터 공유 사용
+                             가능
+----------------------------------------------------------------------
+전철패스(수도권) 서울,경기일부
+
+  **A.jsp (int su=100;)=>현재 보고 있는 페이지에서만 변수사용(default page)
+ -------------------------
+  B.jsp->2.request(요청--->응답)->하나의 변수를 두페이지에서 공유해서 사용
+                                   <---
+--------------------->두페이지를 공유해서 사용(요청,응답)
+ 로그인을 해야 볼 수 있는 페이지-->회원제로 운영하는 사이트
+    10페이지->***세션처리 (session)
+
+ //---------------------------------------
+    int su=100; //a.jsp이 공유->사용?
+    Date d=new Date();//b.jsp이 공유
+    
+    //서버의 메모리에 저장->객체만 저장=>컬렉션->HashMap계열(key,value)
+    //형식) request|session|application.setAttribute("키명",저장할값)
+    request.setAttribute("total",su);//int->Integer->Object->형변환
+    request.setAttribute("cal",d);
+   //--------------------------------------
+
+***************************************************
+  하나의 페이지에서 사용된 변수=>다른 페이지에서 어떻게 공유해서 사용?
+
+  1.parameter를 전달해서 받아오는 방법(사용자로부터 값을 입력받아서 처리)
+                        request.getParameter("전달받은 매개변수명") =>모델1
+
+ 2.서버의 메모리에 저장된 데이터를 통해서 받아오는 방법=>모델2에서 많이 사용
+                        request.getAttribute("key명")
+
+***********************************************
+<<예습>>
+
+ 서블릿의 환경설정부분->xml 문법(10가지)=> 서블릿의 환경설정부분
+ 메인페이지->include,forward이용=>활용
+ 자바빈즈 액션태그->useBean
+
+setProperty,getProperty 정리=>과제
+=====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
