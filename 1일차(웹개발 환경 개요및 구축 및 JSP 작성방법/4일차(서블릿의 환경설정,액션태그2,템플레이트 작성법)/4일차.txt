@@ -1,0 +1,364 @@
+4일차(서블릿의 환경설정,액션태그2,템플레이트 작성법)
+
+  Jsp기초문법(tomcat 설치~쿠키와 세션)->10장
+   ->JDBC 정리->1.회원관리->2.게시판 모델1->3.모델2문법->4.게시판 모델2
+======================================
+
+ 서블릿의 실행시키는 방법(조건)=>** 환경설정 **
+
+ xml문법=>데이터전송(B2B)~=>자바에서의 주로 환경설정 목적
+
+                                           1.web.xml에서 환경설정
+                                           2.안드로이드 프로그램(화면디자인 ->xml)
+                                           ***3.스프링->환경설정(xml구조)
+
+  html5(정적)->정해진 태그만 사용=>DHTML(동적)->XHTML
+                <h1></h1>                 Dom          (html문서 작성
+                                                                          +
+                                                                      xml구조의 태그사용)
+
+   ServletTest
+        |
+         -src/main/webapp
+               |
+                -xmltest->person.xml
+                ==============
+html5=>화면디자인->웹사이트 설계
+xml =>특성
+=======================
+
+1.확장자->.xml (환경설정)->화면디자인(fx)
+
+2.맨 처음 선언부가 먼저 나온다.
+
+<?xml version="1.0" encoding="UTF-8"?> 
+
+html->태그 정해져 있기때문에 <h1>(모양)
+
+<?xml version="1.0" encoding="utf-8"?> =>한글도 가능(태그)
+           속성명               속성명
+
+<?xml version="1.0"~>  encoding->이 생략->영문만 가능
+==================================
+  xml->extensible markup language
+     ->사용자정의 태그를 사용이 가능 (기능)->성격
+     ->태그를 임의로 작성이 가능하지만 현실적-->전세계 표준
+
+  html->정해진 태그만 사용->암기(화면 출력)-><h1>홍길동</h1>
+  xml->임의로 작성(의미 전달)-><name>홍길동</name> ->의미(뜻)전달 
+
+ 3.루트태그는 한번만 사용->루트태그는 반드시 존재해야 한다.
+=>최상위태그
+
+ 4.태그의 이름을 부여=>알파벳,숫자,특수기호를 조합
+
+  <name> </name> or <이름></이름>
+
+  <h1>홍길동</h1>      <name>홍길동</name>
+      글자크게(제목)           이름은 홍길동---------->의미가 전달
+ 
+ 5.첫글자는 숫자가 오면 안된다.-->자바의 식별자와 같다(변수,클래스,메서드~)
+
+   <1a> </1a> X    <a1>~</a1>
+ 
+ 6.태그중간에 _ ,-,. 이 올 수 있다.(대부분 -> -)
+
+  <servlet-name>  <servlet.name> <servlet_name>
+          (o)                        (x)                  (x)
+
+ 7.태그는 대,소문자를 구분해서 사용
+  <NAME> ,<Name>,<name>
+
+ 8.시작태그가 있으면 종료태그가 반드시 존재
+  <name>홍길동</name> =>태그명은 의미가 있는 단어사용
+
+  <a1>홍길동</a1>  <이름>홍길동</이름>
+
+ 9.태그내부에 또 다른 태그를 사용이 가능(겹쳐서)=>중첩
+
+      <person>
+        <!-- name  -->==>X  =>태그내부에는 주석을 달지 말자
+ ex)  <name>홍길동</name><!-- name  -->==>X
+        <age>23</age>
+     </person>
+
+ 10.태그를 사용->속성을 사용=>속성값은 반드시 " "  ->html->속성->"" 생략 가능
+
+ ex) <font size=3>홍길동</font>
+     => <font size="3">홍길동</font>
+  xml구조=>트리구조로 구성->한개라도 틀리면 전체X
+           탬색기
+
+ **11.xml주석-><!-- 한글을 쓰면 안되는 경우  -->
+       encoding속성이 영문으로 되어있으면 주석도 한글X
+
+ xml 주석-><!--   --> html주석,jsp주석
+
+ 중첩된 태그내부에서는 절대로 주석달지 말것. =>실행이 안되는 경우 발생
+-----------------------------------------------------------------
+ 테이블 대신에 xml으로 정보를 표시하는 경우도 발생=>json 파일
+
+<?xml version="1.0" encoding="UTF-8"?>
+  ->DTD 선언문
+<개인정보>
+  <개인>
+     <사원번호 id="1">1</사원번호>
+     <이름>홍길동</이름>
+     <성별>남자</성별>
+     <전번>02-123-0987</전번>
+     <주소>서울시 강남구 대현빌딩 3층</주소>
+     
+     <사원번호 id="2">2</사원번호>
+     <이름>테스트</이름>
+     <성별>여자</성별>
+     <전번>02-333-0987</전번>
+     <주소>서울시 강북구</주소>
+  </개인>
+</개인정보>
+
+xml=><서블릿></서블릿>=>전 세계 표준 DTD 선언문
+
+ web.xml에서 자주 사용되는 태그
+
+<!-- 서블릿의 이름 지정 -->
+  <servlet>
+    <servlet-name>실행시킬 서블릿의 간단한 별칭이름부여</servlet-name>
+    <servlet-class>패키지명....실행시킬 서블릿의 Full이름</servlet-class>
+  </servlet>
+  
+  <!-- 웹상에서 어떻게 서블릿을 실행시키는지 접근방법 -->
+  <servlet-mapping>
+     <servlet-name>실행시킬 서블릿의 간단한 별칭이름부여</servlet-name>
+     <url-pattern>웹상에서 실행되는 서블릿의 가상 url경로 지정</url-pattern>
+  </servlet-mapping>
+
+===========================================
+<!-- 서블릿의 이름 지정 -->
+  <servlet>
+    <servlet-name>Hello</servlet-name>=>3)
+    <servlet-class>HelloTest</servlet-class>=>4) HelloTest 서블릿을 실행
+  </servlet>                                                       시킨다.
+  
+  <!-- 웹상에서 어떻게 서블릿을 실행시키는지 접근방법 -->
+  <servlet-mapping>
+     <servlet-name>Hello</servlet-name>  =>2)
+     <url-pattern>/test/Hello</url-pattern> =>1)
+  </servlet-mapping>
+
+  url->/test/Hello ===>2)실행시킬 서블릿이 Hello
+
+  http://localhost:8090/ServletTest/abc/imsi/test/Hello
+                                                  =========
+                                                   가상의 경로를 지정해서 서블릿을 실행시킬 수
+                                                    있다.
+========================================
+  주제 설정->1~2주
+
+금지 주제=> 영화예매사이트, 실시간으로 보여주는 예매사이트...
+
+JspWork2
+      |
+                  include액션, forward액션태그=>이동(데이터를 공유,**파라미터값전달)
+       -src.main.webapp(/)->index.jsp(1) or main.jsp=>web.xml에 지정
+                |
+                 -module->top.jsp,bottom.jsp ,~Left.jsp(상단,하단,좌측)
+                  template->template.jsp(3)->실질적인 메인페이지
+                  view->indexControl.jsp(2)
+
+  index.jsp--->indexControl.jsp->template.jsp->top.jsp,bottom.jsp
+              param                   param
+       
+=======================================
+ *** 제약회사의 홈페이지를 작성 ***
+
+  ** 상단메뉴 **
+
+   회사메뉴  제품소개     연구개발   묻고 답하기    자료실(다운로드)
+     intro       product    research    faq            file
+     인사말    신제품         연구개발      FAQ          제품설명서
+                      product_new.jsp
+     intro_01.jsp
+     연혁       주력제품  
+      intro_02.jsp                  
+      비전
+      intor_03.jsp
+    찾아오시는길
+====================
+ 기능과 상관이 없는 페이지는 미리 준비(저장X ->단순히 보여주는 페이지)
+======================
+링크를 걸기
+
+=>불러올 파일명_번호_서브번호2.jsp
+
+<jsp:forward page="/view/indexControl.jsp">
+  <jsp:param name="매개변수명" value="전달할값" />
+  <jsp:param name="PAGENUM" value="01" />
+</jsp:forward>
+===============================
+<jsp:forward page="/view/indexControl.jsp">
+  <jsp:param name="CONTROL" value="intro" />
+  <jsp:param name="PAGENUM" value="01" />
+</jsp:forward>
+
+
+ ===top.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<a href="/JspWork2/view/indexControl.jsp?CONTROL=intro&PAGENUM=01">회사소개</a>
+<a href="/JspWork2/view/indexControl.jsp?CONTROL=product&PAGENUM=01">제품소개</a>
+<a href="/JspWork2/view/indexControl.jsp?CONTROL=research&PAGENUM=01">연구개발</a>
+<a href="/JspWork2/view/indexControl.jsp?CONTROL=faq&PAGENUM=01">묻고답하기</a>
+<a href="/JspWork2/view/indexControl.jsp?CONTROL=file&PAGENUM=01">자료실</a>
+
+-----------------------------------------------------------------------
+web.xml
+
+  =>웹페이지의 메인페이지를 지정해주는태그
+ <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file> =>나오는 순서 메인페이지를
+                                                                     찾는 순서=>찾는 목록이 없으면
+                                                                     404에러유발
+  </welcome-file-list>
+
+===============================
+
+액션태그->include,forward,plugin(X)-->애플릿의 잔재(현재 사용X)
+                                       -----------------------------
+                  빈즈액션태그
+
+               useBean,setProperty,getProperty=>쿠키,세션->DB(JDBC)
+               --------------------------------------
+
+ JspWork
+      |
+       -src->클래스(서블릿),자바빈즈(Setter,Getter)->패키지명.BeanTest
+        -WebContent
+                  |
+                   -action
+                     forward                      2.자바빈즈사용 O                          자바빈즈사용 X
+                     beans->bean.jsp,   form.jsp(입력)->bean2.jsp      bean3.jsp
+                                 1.자바빈즈X        액션태그x      메서드 호출      3.액션태그 O
+==================================================
+                    form.jsp->bean.jsp ,bean2.jsp,bean3.jsp
+
+
+<h1>자바빈즈(입력폼)</h1>
+  <form method="post" action="bean2.jsp">
+   이름:<input type="text" name="str"><p>
+   주소:<input type="text" name="addr"><p>
+   <input type="submit" value="보내기">
+  </form>
+
+bean2.jsp
+
+<%
+    //한글처리
+    request.setCharacterEncoding("utf-8");
+    String str=request.getParameter("str");
+    String addr=request.getParameter("addr");
+    System.out.println("str=>"+str+",addr=>"+addr);
+    //1.객체생성->데이터저장,조회,출력
+    beanDTO bd=new beanDTO();
+    //2.입력받은 갯수만큼 Setter Method호출
+    bd.setStr(str);//bd.setStr(request.getParameter("str"));
+    bd.setAddr(addr);
+    //3.Getter Method를 호출해서->테이블의 각 필드에 저장
+    out.println("입력받은 이름은"+bd.getStr()+"<br>");
+    out.println("입력받은 주소는"+bd.getAddr()+"<br>");
+%>
+<hr>
+<b><%=bd.getStr() %></b>님 잘 오셨습니다.<br>
+<b>주소는 <%=bd.getAddr() %></b> 이군요!
+</body>
+</html>
+===================================
+
+ 디자인부분+자바코드를 같이 사용=>모델1
+  jsp->가능한 자바코드를 많이 사용
+====================
+
+------------------------------------------------------------------------------
+ 디자인영역+프로그램=>혼합(디자인 복잡)=>자바코드=>클래스 뽑아내서
+    html,css,js                                                                              작업(자바빈즈)
+
+**자바빈즈=>웹상에서 불러다 사용하는 클래스(DTO)=>Data Transfer Object
+
+자바빈즈 액션태그=>자바빈즈에 대한 코드를 태그형태로 만들어서 사용하기 쉽게
+                                       만들어준 태그=>
+                                        너무나 자주사용,반복=>태그로 작성(보편적인 기능)
+
+  bean2.jsp를 save as bean3.jsp로 작성(ctrl+c,ctrl+v)
+---------------------------------------------
+ ********자바빈즈 3가지********
+
+1.객체를 생성->useBean 태그
+
+ //BeanTest bt=new BeanTest();
+//사용형식
+<jsp:useBean id="객체명"  class="패키지명.클래스명"  scope="사용범위" />
+                                                                                    page->현재 jsp내에서만(default)
+                                                                            request->한페이지 이상 공유해서 사용
+        =>request.setAttribute(key,객체명(저장할값))
+
+ <jsp:useBean id="bt" class="test.BeanTest" scope="page" />
+                                                                           session->로그인한 동안
+                                                                           application->모든 페이지
+=================================================
+2. //bt.setStr(str);
+   // bt.setAddr(addr); 
+
+               setStr(저장할값)
+형식) <jsp:setProperty name="객체명" property="멤버변수명(str)"  
+                                  value="저장할값" />->Setter 호출
+
+               setStr("저장할값")
+
+        <jsp:setProperty name="bt" property="str"  value="<%=변수명%>" />
+
+3.Getter Method를 대신 사용할 수 있는 태그
+
+<%=bt.getStr() %>
+
+형식)
+<jsp:getProperty name="객체명 " property="멤버변수명" />
+ <jsp:getProperty name="bt " property="str" />
+
+           getStr()
+========================================
+ 자바코드를 작성하는 경우와 액션태그를 사용하는 차이점?
+
+<%-- <jsp:useBean id="bt" class="test.BeanTest" scope="page" /> --%>
+
+ 액션태그를 주석달때에는 <%--    --%> ctrl+shift+/
+
+회원가입->20개 입력을 받아서 저장    
+ 
+          String str=request.getParameter("str");
+          String addr=request.getParameter("addr");
+          ....
+
+          BeanTest bt=new BeanTest();
+          bt.setStr(str);
+          ,,,==============>20줄
+
+       ->한줄-><jsp:setProperty name="객체명" property="*" />
+  ->입력받은 갯수만큼-->Setter Method=>30개 자동으로 호출
+
+*****************************************************
+  입력받은 폼의  name="str" =>private String str;
+                    =======                          ===>setStr(value값을 저장)
+
+   cp.stData("김승현");
+   cp.stData("홍길동");
+
+
+
+
+
+
+
+
+
+
+
