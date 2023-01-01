@@ -1,0 +1,437 @@
+5일차(자바빈즈 정리, 쿠키와 세션(Jsp 기초)->JDBC 웹상에서 설정
+       ->MySql 설치 및 사용법
+
+  회원관리(2.5일~3일),게시판(2.5~3일)=>모델1
+  모델2 문법(1.5~2일)->게시판(모델2로 작성)
+=============================
+   JspWork
+        |
+         -src
+        |
+         -WebContent
+                 |
+                  -beans=>cal.jsp->calResult.jsp                                                  
+
+cal.jsp
+
+<center>
+   <h3>계산기</h3>
+   <form name="form1" method="post" action="calResult.jsp">
+   <input type="text" name="num1" width="200" size="5">
+    <select name="operator">
+      <option selected>+</option>
+      <option>-</option>
+      <option>*</option>
+      <option>/</option>
+    </select>
+   <input type="text" name="num2" width="200" size="5"><p>
+   <input type="submit" value="계산">
+   <input type="reset" value="다시입력">
+   </form>
+</center>
+
+CalcBean.java
+
+package calc;//1.package 최상위패키지명.하위패키지명...;//기능별로 분리
+
+//2.public class로 작성->외부에서(jsp파일내부에서) 언제든지 메서드를 호출하기위해서 
+public class CalcBean {
+
+	//3.입력받아서 저장->private 멤버변수로 작성=><input type="text" name="num1"와 반드시 같아야)
+	private int num1,num2;//"10"->String=>계산(int로 변환)
+	private String operator="";//연산자를 저장(+,-,*,/)
+	
+	private int result;//계산목적일때
+	
+	//+,-,*,/ calculate
+	public void calculate() {
+		//+
+		if(operator.equals("+")) {
+			result=num1+num2;
+		}
+		//-
+		if(operator.equals("-")) {
+			result=num1-num2;
+		}
+		//*
+		if(operator.equals("*")) {
+			result=num1*num2;
+		}
+		// /
+		if(operator.equals("/")) {
+			result=num1/num2;
+		}
+	}
+
+	public int getNum1() {
+		return num1;
+	}
+
+	public void setNum1(int num1) {
+		this.num1 = num1;
+		System.out.println("setNum1()호출됨!");
+	}
+
+	public int getNum2() {
+		return num2;
+	}
+
+	public void setNum2(int num2) {
+		this.num2 = num2;
+		System.out.println("setNum2()호출됨!");
+	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+		System.out.println("setOperator()호출됨!");
+	}
+
+	public int getResult() {
+		return result;
+	}
+	
+}
+=============================
+calResult.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="calc.CalcBean"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>요청을 받아서 처리해주는 페이지</title>
+</head>
+<body>
+<%
+  //입력받아서 계산->출력(방법1)->자바빈즈를 이용->따로 클래스를 만들어서 메서드를 통한 접근방법
+  /*
+  CalcBean ca=new CalcBean();
+  ca.setNum1(Integer.parseInt(request.getParameter("num1"))); //"23"->23
+  ca.setOperator(request.getParameter("operator"));
+  ca.setNum2(Integer.parseInt(request.getParameter("num2")));
+  ca.calculate();//계산이 종료->result=>getResult()호출
+ */
+%>
+<!--방법2  -->
+<jsp:useBean id="ca" class="calc.CalcBean"  scope="page" />
+<jsp:setProperty name="ca" property="*" />
+<%  ca.calculate();  %>
+<hr>
+계산결과:<%=ca.getResult() %><br>
+계산결과2:<jsp:getProperty name="ca" property="result" />
+</body>
+</html>
+-------------------------------------------------------------------
+
+  cal.jsp save as cal2.jsp(합친 예제)로 저장
+
+  cal.jsp(입력)+calResult.jsp(출력)을 합치는 경우
+===========================
+cal.jsp(투수)
+<form name="form1" method="post" action="calResult.jsp">
+                                                        ==============포수
+
+cal2.jsp =>내가 요청하고 내가 처리해주는 페이지
+
+<form name="form1" method="post" action="cal2.jsp">
+                                                       ======자기 페이지 이름을 사용==
+
+<form name="form1" method="post">  action속성을 생략=>default가
+                                                                                    self
+
+<input type="submit" value="계산"> =>버튼을 작성할때 주의할점
+           =========>submit 으로 반드시 줘야 된다.
+
+<input type="button"으로 줘면 실행X)=>함수를 만들어서 ->~submit()호출
+          =========(X)
+
+쿠키와 세션=>세션이 중요하다.
+********************
+JspWork3 =>프로젝트 작성
+
+     JspWork3
+            |
+             WebContent(/)src/main/java
+
+             -cookietest=>makecookie.jsp->usecookie.jsp
+            |
+             -sessiontest->배포
+=================
+
+쿠키와 세션 나온배경=>페이지를 이동(앞의 정보=>다음페이지에서 불러다 사용하게
+                                                해주는 방법)
+
+웹프로그래밍=>쇼핑몰(여성,남성~)=>결재=>한페이지->종류->무통장,카드,,,
+                    A.jsp(상영관선택,시간선택)-->B.jsp(결재)
+                                    기본적으로 데이터공유X
+
+1.Get 방식 접속=>request.getParameter(~)
+2.Hidden방식=>게시판에서 설명(눈에 보이지 않게 전달) =>url창에 표시X
+
+               ****************************************
+               url창에 표시X =>post방식=>주로 입력을 받아서 전달
+               url창에 표시X =>hidden방식=>주로 입력을 받아서 전달X
+               *****************************************
+3.쿠키
+
+HTTP의 상태 유지를 위한 방법
+
+클라이언트의 상태 정보를 클라이언트의 하드 디스크에 저장한 후 필요 시 저장된 쿠키를 읽어서 클라이언트를 식별하는 방식
+쿠키란 서버가 클라이언트에 전송하여 저장하는 텍스트 조각을 의미
+
+=>특정사이트로 접속=>접속한 컴퓨터(서버)->자기 컴퓨터의 정보를 담은 
+                                                       파일을 만들어서 ->클라이언트 파일 전송
+    
+
+=====================================
+
+window7
+
+C:\Users\kitcoop\AppData\Roaming\Microsoft\Windows\Cookies
+              =====                                                       =====에 저장
+              계정명                                                   탐색기
+
+window10=>윈도우 마크+R=>shells:cookies =>탐색기 =>더이상 사용X
+                     실행                        IE,chrome의 cookie에서 사용
+
+     
+<%
+   //쿠키이름,저장할값->쿠키객체생성
+   String cookiename="mycookie";
+   //1.쿠키객체를 생성
+   Cookie c=new Cookie(cookiename,"apple");//1.쿠키이름, 2.저장할값
+  
+   //2.쿠키값을 내 컴퓨터에 전송하기전에 설정
+   c.setMaxAge(60*2);//2분 쿠키 저장유지시간(60*60*24*365);
+   c.setValue("Melone");//중간에 쿠키값을 변경->setValue(수정할값)
+   response.addCookie(c);//addCookie(전송할 쿠키객체명);
+%>
+<body>
+  <h1>쿠키를 생성하는 예제</h1>
+  <p>
+  쿠키가 생성되었습니다.<br>
+  쿠키의 내용은 <a href="useCookie.jsp">여기에서 확인</a>
+</body>
+</html>
+======================================
+http://localhost:8090/JspWork3/cookietest/makeCookie.jsp
+         192.168.0.35
+
+***useCookie.jsp **
+
+<%
+     Cookie[] cookies=request.getCookies();//메서드의 반환형
+     if(cookies!=null){//검색할 쿠키의 정보가 들어있다면
+    	 for(int i=0;i<cookies.length;i++){
+    		 //쿠키이름=>mycookie
+    		 if(cookies[i].getName().equals("mycookie")){ %>
+    			cookieName:<%=cookies[i].getName() %><br>
+    			cookieValue:<%=cookies[i].getValue() %><br>
+   <% 
+    		 }
+    	 }
+     }
+  
+  %>
+
+********************************************************
+세션(Session) =>은행=>통장,대출
+
+  고객(클라이언트)-------------->은행직원(서버)
+  고객(클라이언트2)
+   ,,,,
+
+클라이언트와 서버간의 상태를 유지하기 위한 방법=>로그인 작업
+
+                                   (은행의 번호표)
+클라이언트가 처음 접속했을 때 세션 ID를 부여하고, 서버에 세션 ID를 저장
+다시 클라이언트가 접속했을 때 부여된 세션 ID를 이용해서 클라이언트를 구분
+********************************************************
+세션id:2F4C259C4B6A7E5F73C2758654E965BB
+
+세션id:C69B14AE7E612BA58806DBFBC1FF2016
+
+  서버입장에서 브라우저를 구분하는 고유의 번호(=세션id)=>번호표
+
+** get방식을 사용하지 않는 이유 **
+
+http://localhost:8090/JspWork3/sessiontest/sessionTest1.jsp?id=test&passwd=1234
+                                                                                       ================
+                                                                                         노출=>보안때문에 Post방식사용
+**
+쿠키와 세션의 공통점->둘다 클라이언트---------서버와의 연결을 일정시간동안
+                                                          유지시켜주는 방법(로그인)
+
+쿠키->파일로 저장->해킹의 소지,개인정보 유출->잘 사용X
+*************************************************
+세션->서버의 메모리에 저장->30분(default)유지->30분후 자동 종료
+             HashMap(키,저장)
+*************************************************
+        인터넷 은행 홈뱅킹->10~15분정도
+**
+->ex) 은행->번호표 받기(세션id)=>새로 발급(번호표)=>강제로 종료
+
+  세션의 메모리에 저장(HashMap)->키,value로 저장
+
+         request.setAttribute(키,저장할값);=>최소 2페이지이상에서의 서로 공유하는 방법
+         --------------------------------------------
+          page < request(모델2에서 주로 사용)< session(모델1,모델2 다사용) < application(실제로는 사용X)
+         --------------------------------------------
+         session.setAttribute(키,저장할값(계정id));
+          <->session.getAttribute(키명)
+
+****************************************************************
+
+4.세션
+
+ sessionTest1.jsp
+
+<%
+     //전달확인
+     String id=request.getParameter("id");
+     String passwd=request.getParameter("passwd");
+     System.out.println("id=>"+id+",passwd=>"+passwd);
+     //오라클,MySqL,,,->member->sql->select->true or false
+     //셰션처리->서버의 메모리에 저장->페이지를 이동해도 
+     session.setAttribute("idKey",id);//키명(부여하는 회사의규칙키명),저장할값(계정id or email)
+     session.setMaxInactiveInterval(60);//초단위->1분(세션유지시간)
+ %>
+
+ sessionTest2.jsp
+
+<%
+      request.setCharacterEncoding("utf-8");//한글처리
+      String sports=request.getParameter("sports");
+      String season=request.getParameter("season");
+      //개인정보id=>request.getParameter()(주로 입력을 해서 전달)
+      //session.setAttribute("idKey",id); 서버메모리저장<->session.getAttribute(키명)
+      String id=(String)session.getAttribute("idKey");//Object->String
+      //접속한 브라우저도 구분(세션id(번호표))
+      String sessionid=session.getId();//번호표 확인
+      int interval=session.getMaxInactiveInterval();//60초
+      
+      if(id!=null){ //현재 계정으로 로그인했다면 
+%>
+      <b><%=id %></b>님이 좋아하시는 스포츠와 계절은 <p>
+      <b><%=sports %></b>과 <b><%=season %></b>입니다.<p>
+      세션id:<%=sessionid %><p>
+      세션유지시간:<%=interval %>초 <p>
+     <%
+           session.invalidate();//연결해제(세션객체 정보를 자동으로 삭제)->로그아웃을 할때 호출되는 메서드
+      }else{ //id=null (즉 로그인한 적이 없거나 연결시간이 초과했거나)
+    	  out.println("세션의 연결시간이 초과되었습니다.다시 로그인해주세요!");
+      }
+     %>
+
+
+세션id:5B79A0F00112DC8643498F179861EF36
+세션id:5916BA6C85625DA2A44187ECD5E6EA60
+
+세션id:B5BA1AD00DC6FCD8A65CB6B25887F80A
+세션id:42E72CA65F4C3BD9594210B98F942D1A
+=====================================================
+  회원관리 프로그램 =>JspMember(새 프로젝트명 작성)
+                            =======DB설치=>DB연결하는 것까지(MySQL)
+                                                         www.mysql.com =>오라클이 인수
+                                                     => 설치과정
+                                                                  maria DB
+                                 |
+                                  -WebContent
+                                          |
+                                           -db=>oratest.jsp  save as 
+                                                    mysqltest.jsp
+==========================================
+웹상에서의 JDBC 접속방법
+
+1.모든 프로젝트에 접속=>C:\Tomcat 8.5\lib에 오라클, Mysql드라이버 복사
+
+2.원하는 특정 프로젝트에 접속
+                               JspMember
+                                     |
+                                      -src/main/java=>
+                                      -src/main/webapp
+                                                |
+                                                 -WEB-INF
+                                                       |
+                                                       ** -lib=>연결시킬 드라이버를 복사하시면 된다.
+
+==========================================
+
+설치유형=>Typical (설치과정이 짧아진다.)->다 설치
+                                   일반유저 입장(자동)
+
+                           Custom->수동설정=>설치경로,,기타
+                                 환경설정을 하면서 설치하는 경우
+
+                           설치경로->c:\MySQL 5.1\
+                             Register ther MySQL now
+                  
+
+                                 등록->개인정보 제공X(해제)
+=================================
+설치후에 2차로 환경설정->Detail Configuration->
+
+           MySQL용도를 선택? 1.개발목적(언어)->Developer Machine(선택)
+                                     =========================
+                                     2.Server Machine(서버목적)
+           =>MultiFunction Database(다목적->개발,간단한 운영)
+                설치경로 지정->C:\
+           =>Manual Setting->동시접속수 15
+           ->접속할 프로토콜->TCP/IP
+                                  포트번호=>3306->3307=>이미 다른 버전의 mysql이 설치된분
+                                  오라클->1521->1522
+                                   Add firewall exception for this port
+                                    체크->현재 이 포트외에 접근을 불가하게 하겠다.
+
+            ->DB에 데이터를 저장->한글이 깨지지 않도록 언어를 선택->utf-8
+            ->서비스 이름->MySQL
+             *******PATH에 등록->MySQL의 실행파일(bin)=>체크
+             ->콘솔에 접속해서 경로에 상관없이 사용이 가능하다.
+             ->***접속계정 (관리자)->root ->1234
+                                                         1234로 설정
+             Enable root access from remote machines
+             =>외부에서 root계정을 내 MySQL에 허용해줄것인가 유무->체크
+========================================
+
+=>1.MySQL 사용법(CRUD)=>SQL 정리=>오라클의 CRUD와 동일
+     2.DB연동 테스트
+     3.JDBC Programming 전체 과정 Review
+     4.회원로그인 
+=========================================
+=>웹상에서의 DB연동방법에 대해서 설정
+              전체과정 정리(복습)
+=========================================
+
+14장 368~369 테이블 생성
+           377~381 JDBC 접속절차
+           388~390 오라클로 변경 -> 테이블명, url경로 변경,계정명, 암호 변경
+           392~393 ResultSet rs메서드
+           394~395 특정 id만 출력하는 예제
+		select * from member where memberid=?
+
+           403 insertForm.jsp
+           404~405 테이블에 저장 예제 
+           410 **트랜잭션 처리 하는부분 => p412 con.commit()
+						      con.rollback()
+           415 ***커넥션 풀 개념***
+
+	회원로그인=> p590 회원가입 로드맵 
+			p591 Member -> DTO
+			p592 MemberDAO -> p593 insert()
+			p603 ~611 로그인 과정
+**********************************************************************
+23년 1/2(월) 체크리스트(jsp 1~2일차), 팀주제 
+
+UI/UX 요구분석 1/10 (jsp 3~5일차) 체크리스트, 팀주제 2주 
+UI/UX 콘셉트기획 1/20 (jsp 6~8일차) 체크리스트,모델링 준비 
+		         JSP(필기시험) 포트폴리오(팀별로 ppt작성)
+
+
+
+
