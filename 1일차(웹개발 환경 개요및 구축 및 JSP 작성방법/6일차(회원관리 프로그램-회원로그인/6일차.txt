@@ -1,0 +1,290 @@
+6일차(JDBC 정리 및 회원로그인 구현)-회원관리
+
+1.웹상에서의 환경설정=>JDBC 정리->MySQL, Oracle을 둘다 DB연동설정
+2.회원관리->**회원관리 리스트목록보기(관리자)=>게시판=>글목록보기
+                    (과제)->테이블과 필드변경
+
+                회원로그인->과제)
+
+  JspMember->웹프로젝트를 생성
+        |
+         -src
+        |
+         -WebContent
+                |
+                 -db->oractest.jsp save as mysqltest.jsp
+
+========================================
+ JDBC(Java Database Connectivity) 
+
+ 자바언어-----JDBC기술------->DataBase에 접속
+          JSP에서 JDBC를 이용한 DB 접근 =>접속 드라이버 필요
+
+ *********************************************                                                
+                                                                   고객테이블->ojdbc6.jar필요(11g)
+                                                                                   ojdbc14.jar(9i,10g)
+  C:\jdk1.8\jre\lib\ext 폴더에 복사하는 방법->ojdbc6.jar 복사=>이클립스를 가동
+  =======                                                                   자동 인식
+  
+**** **************웹상에서 DB연동하는 방법(환경설정) ***************
+
+Tomcat9.0\lib 폴더에 복사하는 방법 ->접속하고자하는 드라이버를 복사(ex ojdbc6.jar~)
+                                                                      ->전체 프로젝트에서 DB연동하고 싶은경우에 사용
+                                                                         (전역)
+프로젝트명
+Context\WEB-INF\lib 폴더에 복사하는 방법->이클립스에서 환경설정하는 방법
+JspMember                                                     ->특정 프로젝트에서만 DB연동하는 방법(Local)
+************************************************************
+ 회원관리 프로젝트
+
+주제->벤치마킹=>쇼핑몰->업무분석=>15~20개 =>모델링(2주)=>화면디자인(2주)=>업무
+(2주)
+
+회원관리=>회원가입,회원로그인,회원수정,검색,회원탈퇴,,,,
+		우편번호검색,중복 id 체크...
+
+   필드추가 
+SQL> 
+     create table member(
+     id varchar2(20) primary key,
+     passwd varchar2(20) not null,
+    name   varchar2(20) not null,
+     e_mail varchar2(20) ,
+     phone varchar2(30)  not null,
+     zipcode varchar2(10) ,
+     address varchar2(60) not null,
+     job  varchar2(30)
+    );
+
+테이블이 생성되었습니다.
+
+SQL> insert into member values('nup','1234','홍길동',
+            'test@daum.net','02-123-0987','132-098',
+            '서울시 강남구 대현빌딩 3층','프로그래머');
+
+1 개의 행이 만들어졌습니다.
+
+SQL>commit; =>테이블에 반영X(테이블에 데이터가 안들어간다.주의할점)
+
+**** 모델1(=default) 웹프로그래밍 *****
+
+ 장점
+
+1. 적은규모(중소규모)의 사이트에 적합(4~5)
+2. 적은 인원으로 웹사이트 개발에 적합
+
+단점
+
+1.대규모의 (대기업규모) 사이트에 적합
+  하지 않는다.(10명 이상)
+
+2.페이지가 많아지면 유지보수가 어렵다=>사람이 부족
+
+
+** 모델1의 효율성 문제 **
+
+1. jsp에서의 자바코드를 사용하지 않는다. =>가능한 최소한의 자바코드만 사용
+                                                  =>디자인부분과 혼합=>에러유발->유지보수가 어렵다
+
+2.DB연동과 관련된 테이블에 따른 자바빈즈를 따로 작성한다.
+
+**  3.자바빈즈의 종류  ** 
+
+  1) DB연결빈->DB연결및 연결해제기능=>DBConnectionMgr.java (배포)
+     =>접속정보가 정확하게 설정
+
+    private String _driver = "oracle.jdbc.driver.OracleDriver",
+    _url = "jdbc:oracle:thin:@localhost:1521:orcl",
+    _user = "scott",               ========= ====>orcl->xe
+    _password = "tiger";
+
+
+  **2) 데이터저장빈->테이블에 데이터저장  =>테이블이 20~30개 (1:1 대응)
+                         및 조회기능(Setter,Getter) =>테이블명DTO
+                        ->테이블의 갯수만큼 만들어진다.
+
+//입력받은 갯수만큼 멤버변수를 선언(input type="text" name="?"와 반드시 같아야 된다.
+	private String mem_id; //회원id
+	private String mem_passwd;//암호
+	private String mem_name;//이름
+	private String mem_email;//이메일
+	private String mem_phone;//전번
+	private String mem_zipcode;//우편번호
+	private String mem_address;//주소
+	private String mem_job;// 직업
+
+   ,,,,
+ ex)
+    핸드폰  ____ - _____- _______  =>mem_phone
+                                                ->Setter메서드의 매개변수 1개 고정->액션태그
+            =>각각입력받은 값을 나중에 문자열로 합쳐서 Setter Method의 매개변수로 전달
+
+    핸드폰  ___________________=>mem_phone
+            
+
+  **3) 비지니스 로직빈->웹상에서 메서드만 따로 호출할 목적으로 만들어진 자바클래스
+ 
+         테이블명DAO클래스->(Data Access Object)
+
+          =>웹상에서 호출할 메서드를 작성=>DB에 먼저 연결=>처리종료
+                                                      메모리에서 해제가 될 수 있도록
+                                                      처리
+         MemberDAO.java
+
+오라클
+sys로 로그인한 후 grant alter table,drop table to scott 
+
+==================================
+ select=>반환값이 있다. where조건식=>매개변수가 있다는 사실
+insert,update,delete=>반환값이 없다
+
+SQL> select id,passwd from member where id='nup' and passwd='1234';
+                 반환값 존재                       =====================
+                                                                      매개변수가 2개
+ID                   PASSWD
+-------------------- --------------------
+nup                  1234  =>rs.next()=>true
+
+***MemberDAO.java ******
+
+//웹상에서 호출할 메서드를 작성->DB연결
+import java.sql.*;//DB
+import java.util.*;//자료구조->Vector,ArrayList,,,
+
+public class MemberDAO {  //DBConnectionMgr ->has a 관계
+	
+	//1.멤버변수에 연결할 클래스의 객체를 선언
+	private DBConnectionMgr pool=null;//getConnection,freeConnection()
+
+	//2.공통으로 접속할 경우 필요로하는 멤버변수
+	private Connection con=null;
+	private PreparedStatement pstmt=null;//sql실행
+	private ResultSet rs=null;//select
+	private String sql="";//실행시킬 SQL구문 저장
+	
+	//2.생성자를 통해서 객체를 얻어오는 구문 작성
+	public MemberDAO() {
+		try {
+			pool=DBConnectionMgr.getInstance();//정적메서드 제공
+			System.out.println("pool=>"+pool);
+		}catch(Exception e) {
+			System.out.println("DB연결 실패=>"+e);//e.toString()
+		}
+	}//생성자
+	
+	//1)요구분석에 따른 메서드를 작성->회원로그인
+	//1.회원로그인 ->id,passwd
+	public boolean loginCheck(String id,String passwd) {
+		//1.DB연결
+		boolean check=false;
+		//2.SQL처리
+		try {
+			con=pool.getConnection();//만들어진 Connection반환
+			System.out.println("con=>"+con);
+			sql="select id,passwd from member where id=? and passwd=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, passwd);
+			rs=pstmt.executeQuery();
+			check=rs.next();//데이터가 존재=>true or 없으면 ->false
+		}catch(Exception e) {
+			System.out.println("loginCheck() 실행 에러유발=>"+e);
+		}finally {
+			//3.메모리해제
+			pool.freeConnection(con, pstmt, rs);//con.close(),pstmt.close(),rs.close()
+		}
+		return check;
+	}
+===============================================
+ 사이트 주소=>주제와 비슷한 사이트 찾기=>요구분석
+
+              ex) 웨딩사이트=>회원가입=>flow-chart(흐름도를 작성)
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="hewon.MemberDAO" %>
+    
+<jsp:useBean id="memMgr" class="hewon.MemberDAO" />
+<%
+    String mem_id=request.getParameter("mem_id");
+    String mem_passwd=request.getParameter("mem_passwd");
+    System.out.println("mem_id=>"+mem_id+",mem_passwd=>"+mem_passwd);
+    //->member->MemberDAO객체필요=>loginCheck()호출
+    //MemberDAO memMgr=new MemberDAO();
+    boolean check=memMgr.loginCheck(mem_id, mem_passwd);
+%>
+<%
+   //check->LoginSuccess.jsp(인증화면) ,LogError.jsp(에러메세지)
+   if(check){//if(check==true) 인증성공
+	   session.setAttribute("idKey",mem_id);//키명,저장할값(id계정이름)
+	   response.sendRedirect("LoginSuccess.jsp");
+   }else{//id가 없다면
+	   response.sendRedirect("LogError.jsp");//에러메세지 출력
+   }
+%>
+=============MySQL 설치 및 환경설정================================
+
+설치유형=>Typical (설치과정이 짧아진다.)->다 설치
+                                   일반유저 입장(자동)
+
+                           Custom->수동설정=>설치경로,,기타
+                                 환경설정을 하면서 설치하는 경우
+
+                           설치경로->c:\MySQL 5.1\
+                             Register ther MySQL now
+
+                                 등록->개인정보 제공X(해제)
+=================================
+설치후에 2차로 환경설정->Detail Configuration->
+
+           MySQL용도를 선택? 1.개발목적(언어)->Developer Machine(선택)
+                                     =========================
+                                     2.Server Machine(서버목적)
+           =>MultiFunction Database(다목적->개발,간단한 운영)
+                설치경로 지정->C:\
+           =>Manual Setting->동시접속수 15
+           ->접속할 프로토콜->TCP/IP
+                                  포트번호=>3306->3307
+                                  오라클->1521->1522
+                                   Add firewall exception for this port
+                                    체크->현재 이 포트외에 접근을 불가하게 하겠다.
+
+            ->DB에 데이터를 저장->한글이 깨지지 않도록 언어를 선택->utf-8
+            ->서비스 이름->MySQL
+             *******PATH에 등록->MySQL의 실행파일(bin)=>체크
+             ->콘솔에 접속해서 경로에 상관없이 사용이 가능하다.
+             ->***접속계정 (관리자)->root ->1234
+                                                         1234로 설정
+             Enable root access from remote machines
+             =>외부에서 root계정을 내 MySQL에 허용해줄것인가 유무->체크
+========================================
+ 1.자바스크립트 함수를 작성 idCheck(id) 함수작성->script.js
+
+ 2.IdCheck.jsp를 작성->중복을 체크해주는 메서드를 호출
+   =>LoginProc.jsp와 소스코드 거의 유사
+
+ 3.MemberDAO에서 중복id값을 체크해주는 메서드 작성
+
+====================================
+  중복id체크 정리-->우편번호 검색=>회원가입 전까지
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
