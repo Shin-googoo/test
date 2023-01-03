@@ -1,0 +1,167 @@
+
+//select * from zipcode where area3 like '%미아2동%';
+	public ArrayList<ZipcodeDTO> zipcodeRead(String area3){
+		//레코드 한개이상 담을 변수(객체) 선언
+		ArrayList<ZipcodeDTO>zipList=new ArrayList();//미리생성
+		try {
+			con=pool.getConnection();
+		  //sql="select * from zipcode where area3 like '%미아2동%'";
+		    sql="select * from zipcode where area3 like '"+area3+"%'";
+		    pstmt=con.prepareStatement(sql);//NullPointerException
+		    rs=pstmt.executeQuery();
+		    //검색된 레코드의 값을 필드별로 담는 소스코드를 작성
+		    //찾은 레코드가 한개 if(rs.next()) 한개이상(while(rs.next())
+		    System.out.println("검색된 sql구문 확인=>"+sql);
+		    
+		    while(rs.next()) {
+		    	//저장된 데이터를 getter메서드로 불러오게 쉽게하기위해서
+		    	ZipcodeDTO tempZipcode=new ZipcodeDTO();
+		    	tempZipcode.setZipcode(rs.getString("zipcode"));
+		    	tempZipcode.setArea1(rs.getString("area1"));//<->getArea1()
+		    	tempZipcode.setArea2(rs.getString("area2"));//null
+		    	tempZipcode.setArea3(rs.getString("area3"));//null
+		    	tempZipcode.setArea4(rs.getString("area4"));//null
+		    	//ArrayList에 담는 구문을 작성꼭 할것.
+		    	zipList.add(tempZipcode);//ZipCheck.jsp(null)없으면
+		    	/////////////////////////////
+		    }
+		}catch(Exception e) {
+			System.out.println("zipcodeRead() 실행오류=>"+e);
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return zipList;//ZipCheck.jsp에서 메서드의 반환값->for문
+	}
+
+
+2.script.js
+
+//우편번호를 검색해주는 함수선언
+function zipCheck(){
+    //check=y->검색전의 창의 모습을 구분하는 인자(매개변수로 지정해서 전달)
+    //               하기 위해서
+    //            menubar(메뉴바),status(상태바),scrollbars(스크롤기능),toolbar=yes|no
+    url="ZipCheck.jsp?check=y";
+    window.open(url,"post","left=400,top=220,width=500,height=300,"+
+                            "menubar=no,status=yes,toolbar=no,scrollbars=yes")
+}
+
+3.ZipCheck.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="java.util.*,hewon.*" %>
+<!DOCTYPE html>
+<jsp:useBean id="memMgr" class="hewon.MemberDAO" />
+<%
+  //script.js=>ZipCheck()=>ZipCheck.jsp?check=y
+  request.setCharacterEncoding("utf-8");//한글처리
+  
+  String check=request.getParameter("check");//y(검색전)->n
+  String area3=request.getParameter("area3");//검색어
+  System.out.println("check=>"+check+",area3=>"+area3);
+  //MemberDAO memMgr=new MemberDAO();
+  ArrayList<ZipcodeDTO> zipcodeList=memMgr.zipcodeRead(area3);
+  int totalList=zipcodeList.size();
+  System.out.println("검색된 총레코드수(totalList)=>"+totalList);
+%>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>우편번호 검색</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+
+<script>
+//동이름을 체크할 함수선언
+  function dongCheck(){
+	  if(document.zipForm.area3.value==""){
+		  alert("동이름을 먼저 입력하세요!");
+		  document.zipForm.area3.focus();
+		  return;
+	  }
+	  //document.폼객체명.submit()
+	  document.zipForm.submit();
+  }
+  //검색된 레코드중에서 내주소와 가장 가까운 주소를 링크클릭
+  //형식) Register.jsp(부모창)의 특정항목에 값을 넣어주는 함수
+  //부모창(opener), 자식창(self)
+  //형식2) opener.document.폼객체명.입력양식.속성=값
+  function sendAddress(zipcode,area1,area2,area3,area4){
+	  var address=area1+" "+area2+" "+area3+" "+area4;
+	opener.document.regForm.mem_zipcode.value=zipcode;
+	opener.document.regForm.mem_address.value=address;
+	self.close();//self->ZipCheck.jsp창(자식창)
+  }
+</script>
+</head>
+<body bgcolor="#FFFFCC">
+  <center>
+    <b>우편번호 찾기</b>
+    <table>
+  <!-- ZipCheck.jsp?area3='미아2동'&check=n -->
+   <form name="zipForm" method="post" action="ZipCheck.jsp">
+        <tr>
+        <td><br>
+        동이름 입력:<input type="text"  name="area3">
+        <input type="button" value="검색"
+                   onclick="dongCheck()">
+        </td>
+        </tr>
+        <!--
+          form태그 안쪽에 써주면서 입력란을 통하지 않고 전송하는 방법중 하나
+          형식) input type="hidden" name="매개변수명" value="전달할값"
+          히든객체를 쓴이용 사용자가 검색어를 입력하고 검색버튼을 눌렀는지
+          안눌렀지를 체크할 변수로 사용
+          -->
+        <input type="hidden" name="check"  value="n">
+   </form>
+   <!--
+      새로운창이 open(x) 폼태그아래에서 검색결과를 출력
+     -->
+   <%
+     //검색어를 입력하고 검색버튼을 눌렀다면
+     if(check.equals("n")){
+    	 if(zipcodeList.isEmpty()){//검색된 레코드가 없다면
+    	 //if(zipcodeList.size()==0){//	
+   %>
+      <tr><td align="center">
+            <br>검색된 레코드가 없습니다.
+          </td>
+      </tr>
+    <%}else {%>
+   <tr><td align="center"><br>
+   *검색후 ,아래 우편번호를 클릭하면 자동으로
+     입력됩니다</td></tr>
+   <%
+      for(int i=0;i<totalList;i++){ //for
+       ZipcodeDTO zipBean=zipcodeList.get(i);
+    		  //zipcodeList.elementAt(i) 벡터라면
+       String tempZipcode=zipBean.getZipcode();//우편번호
+       String tempArea1=zipBean.getArea1().trim();//시 "서울   "->"서울"
+       String tempArea2=zipBean.getArea2().trim();//구
+       String tempArea3=zipBean.getArea3().trim();//동
+       String tempArea4=zipBean.getArea4().trim();//나머지
+   %>    
+  <tr><td>
+      <a href="JavaScript:sendAddress('<%=tempZipcode%>',
+                                                     '<%=tempArea1%>',
+                                                     '<%=tempArea2%>',
+                                                     '<%=tempArea3%>',
+                                                     '<%=tempArea4%>')">
+  <%=tempZipcode%>&nbsp;<%=tempArea1%>&nbsp;
+  <%=tempArea2%>&nbsp;<%=tempArea3%>&nbsp;  
+  <%=tempArea4%>                               
+  </a><br>
+  <%
+            }//for
+         }//else {
+     }// if(check.equals("n")){
+  %>
+    </td></tr>
+    <tr><td align="center"><br>
+<a href="JavaScript:this.close()">닫기</a>                      
+    </table>
+  </center>
+</body>
+</html>

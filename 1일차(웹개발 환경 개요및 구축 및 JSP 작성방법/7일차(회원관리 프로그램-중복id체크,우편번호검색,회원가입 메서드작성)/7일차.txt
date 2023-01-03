@@ -1,0 +1,431 @@
+7일차(회원관리-중복id 체크,우편번호검색,회원가입)
+                   ====== 
+
+ =>주제=>모델1,모델2 중심의 프로젝트를 할것.=>스프링
+                       ===============
+
+1.중복id를 체크해주는 메서드를 작성
+
+ kkk계정 =>member 검색
+
+sql>select id from member where id='kkk';  //where 조건식
+               ==>결과->반환값이 있다.                    매개변수가 존재
+
+SQL> select id from member where id='kkk';//매개변수가 한개
+
+선택된 레코드가 없습니다. =>기존에 존재X ->이 계정으로 사용이 가능
+
+SQL> select id from member where id='nup';
+
+ID
+--------------------
+nup                 =>기존에 사용=>이 계정을 사용X
+
+1.MemberDAO에 checkId 메서드 작성
+
+public boolean checkId(String id) {
+		boolean check=false;//초기값
+		try {
+			con=pool.getConnection();//만들어진 객체를 받아옴
+			sql="select id from member where id=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs=pstmt.executeQuery();
+			check=rs.next();//데이터존재 true or 없으면 false
+			System.out.println("checkId메서드의 check=>"+check);
+		}catch(Exception e) {
+			System.out.println("checkId() 실행오류=>"+e);//e.toString()
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return check;
+	}
+=======================================
+2.Register.jsp ->중복id 버튼을 클릭->자바스크립트함수 호출
+              script.js
+
+<input type="button" value="ID중복확인" 
+                                     onClick="idCheck(this.form.mem_id.value)">
+
+//중복ID체크 해주는 자바스크립트함수 선언
+function idCheck(id){
+   if(id==""){
+	   alert("아이디를 먼저 입력하세요!");
+	   document.regForm.mem_id.focus();//document.폼객체명.입력양식객체명.함수명()
+   }else{//입력을 했다면 ->jsp파일에게 매개변수를 전달하는 방법
+	   //창을 실행->요청할 문서를 지정->매개변수도 같이 전달할 수있도록 코딩
+	   url="IdCheck.jsp?mem_id="+id //request.getParameter("mem_id")
+	   //1.불러올 문서명 2.창의 제목 3.창의 옵션
+	   window.open(url,"post","left=450,top=150,width=300,height=150")
+   }
+}
+
+3.IdCheck.jsp를 작성 =>LoginProc.jsp와 기능이 동일(save as)
+=======================================
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="hewon.MemberDAO" %>
+    
+<%
+    String mem_id=request.getParameter("mem_id");
+    System.out.println("IdCheck.jsp의 mem_id=>"+mem_id);
+    //->member->MemberDAO객체필요=>loginCheck()호출
+    MemberDAO memMgr=new MemberDAO();
+    boolean check=memMgr.checkId(mem_id);
+%>
+<html>
+<body bgcolor="#FFFFCC">
+<br>
+<center>
+<b><%=mem_id %></b>
+<%
+   if(check){//이미 존재하는 아이디라면
+	  out.println("는 이미 존재하는 아이디입니다.<p>");
+   }else{//존재하는 아이디가 아니라면
+	   out.println("는 사용가능한 아이디입니다.<p>");
+   }
+%>
+<!-- 자바스크립트에서 자기 자신을 가리키는 예약어 self-->
+<a href="#" onclick="self.close()">닫기</a>
+</center>
+</body>
+</html>
+=====================================
+** 자바스크립트 파일 수정->새로 고침이 바로 안되는 경우
+                                브라우저의 캐시를 제거->새로 고쳐라
+===================================
+   jsp페이지의 상단에다 
+<%
+ response.setHeader("Cache-Control","no-cache");
+ response.setHeader("Pragma","no-cache");
+ response.setDateHeader("Expires",0);
+%>
+
+
+- HTML의 경우 아래 구문을 <head> 태그 사이에 넣어주면 된다.
+
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+
+출처: https://fruitdev.tistory.com/103 [과일가게 개발자]
+
+
+*** Register.jsp의 예 ***
+
+<%@ page contentType="text/html;charset=UTF-8"%>
+<html>
+<head>
+<%
+ response.setHeader("Cache-Control","no-cache");
+ response.setHeader("Pragma","no-cache");
+ response.setDateHeader("Expires",0);
+%>
+<title>회원가입</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" src="script.js?ver=2.0"></script>
+</head>
+,,,
+=========================================
+
+SQL> select count(*) from zipcode;
+
+  COUNT(*)
+----------
+     42619
+
+ scott/tiger
+
+ 오라클 또는 MySQL
+
+ drop table zipcode
+
+CREATE TABLE zipcode (
+	zipcode             char(7)              NOT NULL  ,
+	area1               char(10)             NULL      ,
+	area2               char(20)             NULL      ,
+	area3               char(40)             NULL      ,
+	area4               char(20)             NULL      
+);
+
+
+select count(*) from zipcode;
+
+0개
+
+sql>@c:\webtest\zipcode.txt (~.txt , ~.csv, ~.xls=>파일변환 툴)
+      MySQL =>버전=>import
+~
+
+sql>commit;=>트랜잭션 처리때문에 
+
+ 테이블을 하나 추가할때 마다 => DTO 하나씩 작성
+				(웹에서 검색-> 저장된 데이터 꺼내올 목적)
+
+==================================
+ 실시간 데이터->1.open API 제공 (유료,무료)=>속도가 느림
+                    2.~.json파일을 불러오는 쪽으로 실행
+==================================
+ 저장된 데이터를==>컬렉션을 사용=> 화면에 출력
+                         Vector=>ArrayList
+
+1.ZipcodeDTO 작성
+
+package hewon;
+
+public class ZipcodeDTO {
+
+	                  //우편번호  시,도    구,소도시  동,면,리, 나머지 주소
+	private String zipcode,area1,area2,area3,area4;
+ ,,,
+
+2.MemberDAO ->우편번호에 해당하는 메서드를 작성=>잘 모르는 경우
+                                                                      like
+
+*****************************************************
+        ** 메서드의 매개변수와 반환형을 결정하는 방법 **
+
+ **사용목적**
+
+ DTO =>1.데이터를 담을 목적으로 사용하는 클래스->
+                2.매개변수,반환형으로도 사용한다.
+                   객체생성하는 방법 3가지
+
+      select * from member where id='nup';//pk
+           반환형(레코드가 한개)  매개변수 1개(String id)
+                ZipcodeDTO형으로  MemberDTO, SangDTO,,,
+
+sql>select * from zipcode where area3 like '%미아2동%'; ->14개
+           반환형(레코드가 여러개)         매개변수가 한개    
+
+           14개가 필요=>ZipcodeDTO 14개가 필요=>ArrayList   or Vector 
+                                 
+      select zipcode from zipcode where area3 like '%미아2동%';
+           반환형(특정 필드만 화면에 출력)=>String or int,double,,,
+
+******************************************************
+      select zipcode,area1 from zipcode where area3 like '%미아2동%';
+          반환형(필드 한개이상 담을려면 어떤 자료형?)=>DTO형으로 데이터를 담아야 된다.
+
+*******************************************************
+            
+              insert into member values(?,?,?,?,,,,)=>8개
+
+                        registerMember(String id,String passwd,String name,,,,,)
+                                                      DTO형
+                                                             callByReference
+============================================
+//3.우편번호->ZipCheck.jsp
+	public ArrayList<ZipcodeDTO> zipcodeRead(String area3){
+		//레코드 한개이상 담을 변수(객체)선언
+		   ArrayList<ZipcodeDTO> zipList=new ArrayList();//필드별로 저장된 DTO 여러개 저장
+		   
+		   try {
+			   con=pool.getConnection();
+			   //select * from zipcode where area3 like '미아2동%'
+			   sql="select * from zipcode where area3 like '"+area3+"%'";
+			   pstmt=con.prepareStatement(sql);
+			   rs=pstmt.executeQuery();
+			   //검색된 레코드의 값을 필드별로 담는 소스코드->찾은 레코드가 한개 if(rs.next())
+			   //                                                                       한개이상->while(rs.next())
+			   while(rs.next()) {
+				   ZipcodeDTO tempZipcode=new ZipcodeDTO();
+				   tempZipcode.setZipcode(rs.getString("zipcode"));//"142-813"
+				   tempZipcode.setArea1(rs.getString("area1"));//"서울"
+				   tempZipcode.setArea2(rs.getString("area2"));
+				   tempZipcode.setArea3(rs.getString("area3"));
+				   tempZipcode.setArea4(rs.getString("area4"));
+				   //ArrayList에 담는 구문을 담는 구문
+				   zipList.add(tempZipcode);//zipList.size()=>14개
+			   }
+		   }catch(Exception e) {
+			   System.out.println("zipcodeRead()에러 유발=>"+e);
+		   }finally {
+			   pool.freeConnection(con, pstmt, rs);
+		   }
+		   return zipList;
+	}
+	
+3.우편번호->자바스크립트함수를 이용->ZipCheck.jsp를 호출
+  <td> <input type="text" name="mem_zipcode" size="7">
+                 <input type="button" value="우편번호찾기" onClick="zipCheck()"></td>
+
+script.js
+
+//우편번호를 검색해주는 함수선언
+function zipCheck(){
+	//check=y->검색전의 창의모습을 구분하는 인자(매개변수로 지정해서 전달하기위해 필요)
+	//menubar(메뉴바),status(상태바),scrollbars(스크롤기능),toolbar=yes|no
+    url="ZipCheck.jsp?check=y"
+    window.open(url,"post","left=400,top=220,width=500,height=300,"+
+    		                "menubar=no,status=yes,toolbar=no,scrollbars=yes")	
+}
+
+
+4.ZipCheck.jsp <===ZipCheck.html =>ZipCheck.jsp 변경
+                                     =><%  %>을 사용을 못하기에
+
+ jsp에 디자인만 복사
+===========
+
+<form name="zipForm" method="post"  action="ZipCheck.jsp">
+        <tr>
+        <td><br>
+        동이름 입력:<input type="text"  name="area3">
+        <input type="button" value="검색"  onclick="dongCheck()">
+        </td>
+        </tr>
+        <!--매개변수를 전달 ZipCheck.jsp?check=n -->    
+         <input type="hidden" name="매개변수명"  value="전달할값">
+        <input type="hidden" name="check"  value="n">
+   </form>
+=======================================
+** ZipCheck.jsp **
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="java.util.*,hewon.*" %>
+<!DOCTYPE html>
+<jsp:useBean id="memMgr" class="hewon.MemberDAO" />
+<%
+     //script.js->ZipCheck()=>ZipCheck.jsp?check=y
+     
+      request.setCharacterEncoding("utf-8");//한글처리
+     
+     String check=request.getParameter("check");
+     String area3=request.getParameter("area3");
+     System.out.println("check=>"+check+",area3=>"+area3);
+     ArrayList<ZipcodeDTO> zipcodeList=memMgr.zipcodeRead(area3);
+     int totalList=zipcodeList.size();
+     System.out.println("검색된 총레코드수(totalList)=>"+totalList);
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>우편번호 검색</title>
+<link href="style.css" rel="stylesheet"  type="text/css">
+<script>
+//동이름을 체크할 함수선언
+  function dongCheck(){
+	  if(document.zipForm.area3.value==""){
+		  alert("동이름을 먼저 입력하세요!");
+		  document.zipForm.area3.focus();
+		  return;
+	  }
+	  //document.폼객체명.submit() 전송이 가능하다.
+	  document.zipForm.submit();
+  }
+  //검색된 레코드중에서 내 주소와 가장 가까운 주소를 링크클릭
+  //형식)Register.jsp(부모창)의 특정항목에 값을 넣어주는 함수=>부모창(opener),자식창(self)
+  //형식2) opener.document.폼객체명.입력양식.속성=값
+  function sendAddress(zipcode,area1,area2,area3,area4){
+	  var address=area1+" "+area2+" "+area3+" "+area4
+	  opener.document.regForm.mem_zipcode.value=zipcode
+	  opener.document.regForm.mem_address.value=address
+	  self.close();//self->ZipCheck.jsp창(자식창)
+  }
+</script>
+</head>
+<body bgcolor="#FFFFCC">
+
+  <center>
+    <b>우편번호 찾기</b>
+    <table>
+    <!--ZipCheck.jsp?area3='미아2동'&check=n&매개변수명3=값&~  -->
+   <form name="zipForm" method="post"  action="ZipCheck.jsp">
+        <tr>
+        <td><br>
+        동이름 입력:<input type="text"  name="area3">
+        <input type="button" value="검색"  onclick="dongCheck()">
+        </td>
+        </tr>
+        <!--매개변수를 전달 ZipCheck.jsp?check=n  form태그내부에서 기술 -->    
+        <input type="hidden" name="check"  value="n">
+   </form>
+   <% 
+       //검색어를 입력하고 검색버튼을 눌렀다면 
+       if(check.equals("n")) {
+    	   if(zipcodeList.isEmpty()){ //검색된 레코드가 없다면 if(zipcodeList.size()==0){
+   %>
+      <tr><td align="center">
+            <br>검색된 레코드가 없습니다.
+          </td>
+      </tr>
+   <% } else { %>
+   <tr><td align="center"><br>
+   *검색후 ,아래 우편번호를 클릭하면 자동으로
+     입력됩니다</td></tr>
+     <%
+           for(int i=0;i<totalList;i++) {
+            ZipcodeDTO zipBean=zipcodeList.get(i);//zipcodeList.elementAt(i);
+            String tempZipcode=zipBean.getZipcode();//우편번호
+            String tempArea1=zipBean.getArea1().trim();//시->"서울     "->"서울"
+            String tempArea2=zipBean.getArea2().trim();//구
+            String tempArea3=zipBean.getArea3().trim();//동
+            String tempArea4=zipBean.getArea4().trim();//나머지
+     %>
+  <tr><td>
+     <a href="JavaScript:sendAddress('<%=tempZipcode%>',
+                                                      '<%=tempArea1%>',
+                                                      '<%=tempArea2%>',
+                                                      '<%=tempArea3%>',
+                                                      '<%=tempArea4%>')">
+                                                      
+      <%=tempZipcode %>&nbsp;<%=tempArea1 %>&nbsp;<%=tempArea2 %>&nbsp;
+      <%=tempArea3 %>&nbsp;<%=tempArea4 %>
+  </a><br>
+   <%
+              }//for
+           }//inner if
+       }//outer if
+   %>
+    </td></tr>
+    <tr><td align="center"><br>
+<a href="JavaScript:this.close()">닫기</a>                      
+    </table>
+  </cente>
+</body>
+</html>
+
+=======================================
+check=>y,area3=>null
+검색된 총레코드수(totalList)=>0
+pool=>hewon.DBConnectionMgr@5ee6c75a
+check=>n,area3=>ë¯¸ì2ë =>한글이 깨진다는 의미
+검색된 총레코드수(totalList)=>0
+pool=>hewon.DBConnectionMgr@5ee6c75a
+check=>n,area3=>ë¯¸ì2ë
+검색된 총레코드수(totalList)=>0
+
+
+delete from zipcode;
+commit;
+
+4만개의 데이터 
+insert into ~ 1개만 넣어준뒤에 
+select * from zipcode
+------------------------------------------------------------------------------------
+  Register.jsp->RegisterProc.jsp->MemberInsert.jsp->IdCheck.jsp와 소스
+                                                                               코드와 비슷
+
+                            MemberDAO->boolean memberInsert(MemberDTO mem)
+                                                 p852 메서드 참조
+ 예습
+
+ 회원가입,회원수정,회원탈퇴,이용약관 추가->마무리
+===============================================
+
+
+
+
+
+ZIPCODE AREA1      AREA2                AREA3
+------- ---------- -------------------- ----------------------------------------
+AREA4
+--------------------
+142-813 서울       강북구               미아2동
+233번지
+
+
+
+
