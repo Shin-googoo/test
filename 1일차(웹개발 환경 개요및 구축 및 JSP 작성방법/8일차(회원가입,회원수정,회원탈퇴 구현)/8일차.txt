@@ -1,0 +1,277 @@
+8일차(회원가입,수정,회원탈퇴 구현) 
+
+*****************************
+ ->1.테이블에 데이터를 저장->수정=>삭제
+     2.페이지를 이동=>매개변수를 전달
+*****************************
+
+	//4.회원가입->insert into member values(?,?,?,,,)
+	public boolean memberInsert(MemberDTO mem) {
+		boolean check=false;//회원가입 성공유무
+		//rs
+		try {
+			con=pool.getConnection();
+			//--트랜잭션->오라클은 필수
+			con.setAutoCommit(false);//default->con.setAutoCommit(true)
+			//----------------------------
+			sql="insert into member values(?,?,?,?,?,?,?,?)";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, mem.getMem_id());//(1,'test')
+			pstmt.setString(2, mem.getMem_passwd());
+			pstmt.setString(3, mem.getMem_name());
+			pstmt.setString(4, mem.getMem_email());
+			pstmt.setString(5, mem.getMem_phone());
+			pstmt.setString(6, mem.getMem_zipcode());
+			pstmt.setString(7, mem.getMem_address());
+			pstmt.setString(8, mem.getMem_job());
+			
+			int insert=pstmt.executeUpdate();//반환 1 (성공), 0 (실패)
+			System.out.println("insert(데이터 입력유무)=>"+insert);
+			con.commit();//실질적으로 메모리상의 insert->테이블에 반영
+			if(insert > 0) { //if(insert==1)
+				check=true;//데이터 성공확인
+			}
+		}catch(Exception e) {
+			System.out.println("memberInsert() 에러유발=>"+e);
+		}finally {
+			pool.freeConnection(con,pstmt);
+		}
+		return check;
+	}
+----------------------------------------------------------------------------
+MemberInsert.jsp
+
+ =>memberInsert()호출
+
+<%
+    //Register.jsp->RegisterProc.jsp->Memberinsert.jsp
+    request.setCharacterEncoding("utf-8");//한글처리
+%>
+<jsp:useBean id="mem" class="hewon.MemberDTO" />
+<jsp:setProperty name="mem"  property="*" />
+<%
+      MemberDAO memMgr=new MemberDAO();
+      boolean check=memMgr.memberInsert(mem);
+%>
+<html>
+<body bgcolor="#FFFFCC">
+<br>
+<center>
+   <%
+        if(check){//회원가입에 성공했다면
+        	out.println("<b>회원가입을 축하드립니다.</b><p>");
+            out.println("<a href=Login.jsp>로그인</a>");
+        }else{ //회원가입 실패
+        	out.println("<b>다시 입력하여 주십시오.</b><p>");
+            out.println("<a href=Register.jsp>다시 가입</a>");
+        }
+   %>
+</center>
+</body>
+</html>
+===========================================
+** 회원가입은 되는데 로그인이 안되는 경우 **
+
+1.오라클의 commit을 쓰지 않으면 테이블에 반영X ->오라클에서 commit(문제해결)
+2.오라클에서 문제발생=>공백문제->id-->"test "  =====>로그인창
+                                            password->"1234 "
+
+             "test ".equals("test")=>false
+             "test "=>"test"
+
+public void setMem_id(String mem_id) {//"test "->"test"
+		this.mem_id = mem_id.trim();
+	}                                             ====
+	public String getMem_passwd() {
+		return mem_passwd;
+	}
+	public void setMem_passwd(String mem_passwd) {
+		this.mem_passwd = mem_passwd.trim();
+	}                                                              =====
+=========================================
+ 회원가입=>게시판의 글쓰기(테이블과 필드명이 틀리다.)
+ 회원수정=>게시판의 글수정도 동일하다.
+
+ ** 로그인이 먼저 실행 전제조건 **
+
+ 회원수정 click->MemberUpdate.jsp(수정할 내용을 보여줄 페이지)
+                        Register.jsp를 save as 
+
+                     MemberUpdateProc.jsp=>memberInsert.jsp와 거의 동일
+                                                            회원가입시켜주는 메서드 호출
+                       회원수정시켜주는 메서드호출
+============================================
+1.MemberDAO클래스
+
+//5.회원수정->특정 회원 찾기->nup,kkk,test,,,
+	//select * from member where id='nup';
+	public MemberDTO getMember(String mem_id) {
+		MemberDTO mem=null;//id값에 해당되는 레코드 한개를 저장
+		
+		try {
+			con=pool.getConnection();
+			sql="select * from member where id=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, mem_id);
+			rs=pstmt.executeQuery();
+			//찾은 레코드가 한개라면 if(rs.next()) ->한개이상->while(rs.next())
+		    if(rs.next()) {
+		    	mem=new MemberDTO();
+		    	//찾은 필드값->Setter Method에 저장 ->웹에 출력->Getter Method호출
+		    	mem.setMem_id(rs.getString("id"));
+		    	mem.setMem_passwd(rs.getString("passwd"));
+		    	mem.setMem_name(rs.getString("name"));
+		    	mem.setMem_phone(rs.getString("phone"));
+		    	mem.setMem_zipcode(rs.getString("zipcode"));
+		    	mem.setMem_address(rs.getString("address"));
+		    	mem.setMem_email(rs.getString("e_mail"));
+		    	mem.setMem_job(rs.getString("job"));
+		    }
+		}catch(Exception e) {
+			System.out.println("getMember()메서드 에러유발=>"+e);
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+	  return mem;
+	}
+
+ 6)수정시켜주는 메서드 작성=>데이터저장=>회원가입 메서드와 구조와 동일
+  
+//6.찾은 데이터를 수정
+	public boolean memberUpdate(MemberDTO mem) {
+		boolean check=false;//회원수정 성공유무
+		//rs
+		try {
+			con=pool.getConnection();
+			//--트랜잭션->오라클은 필수
+			con.setAutoCommit(false);//default->con.setAutoCommit(true)
+			//----------------------------
+			sql="update member set passwd=?,name=?,e_mail=?,phone=?,"
+					+"zipcode=?, address=?, job=?  where id=?";
+			
+			pstmt=con.prepareStatement(sql);
+			
+			pstmt.setString(1, mem.getMem_passwd());
+			pstmt.setString(2, mem.getMem_name());
+			pstmt.setString(3, mem.getMem_email());
+			pstmt.setString(4, mem.getMem_phone());
+			pstmt.setString(5, mem.getMem_zipcode());
+			pstmt.setString(6, mem.getMem_address());
+			pstmt.setString(7, mem.getMem_job());
+			pstmt.setString(8, mem.getMem_id());//(1,'test')
+			
+			int update=pstmt.executeUpdate();//반환 1 (성공), 0 (실패)
+			System.out.println("update(데이터 수정유무)=>"+update);
+			con.commit();//실질적으로 메모리상의 insert->테이블에 반영
+			if(update==1) { 
+				check=true;//수정성공
+			}
+		}catch(Exception e) {
+			System.out.println("memberUpdate() 에러유발=>"+e);
+		}finally {
+			pool.freeConnection(con,pstmt);
+		}
+		return check;
+	}
+	
+================================================
+3.Login.jsp에 링크걸기
+
+ <a href="MemberUpdate.jsp">회원수정</a>
+ <a href="DelCheckForm.jsp?mem_id=<%=mem_id%>">회원탈퇴</a>
+
+  memberInsert.jsp save as MemberUpdateProc.jsp
+  ===========             ==============
+
+  **tip**
+ 
+  매개변수를 전달할때 <form></form>에 input box=>를 통해서 전달하지 않으면
+  String mem_id=request.getParamter을 사용불가
+=============================================
+ 회원탈퇴
+
+1.MemberDAO =>탈퇴시켜주는 메서드 작성
+
+//7.회원탈퇴 =>본인=>암호입력<----계정에 저장된 암호비교=>탈퇴
+	public int memberDelete(String id,String passwd) { //1.입력X  2.입력 O
+		String dbpasswd="";//DB상에서 찾은 암호를 저장
+		int x=-1;//회원탈퇴 유무
+		
+		try {
+			con=pool.getConnection();
+			con.setAutoCommit(false);//트랜잭션처리
+			//1.id값에 해당하는 암호를 먼저 찾기
+			pstmt=con.prepareStatement("select passwd from member where id=?");
+			pstmt.setString(1, id);
+			rs=pstmt.executeQuery();
+			//암호가 존재한다면
+			if(rs.next()) {
+				dbpasswd=rs.getString("passwd");
+				System.out.println("dbpasswd=>"+dbpasswd);
+				//dbpasswd(DB상에 저장된 암호)==passwd(웹상에서 입력한 값)
+				if(dbpasswd.equals(passwd)) {
+					pstmt=con.prepareStatement("delete from member where id=?");
+					pstmt.setString(1, id);
+					int delete=pstmt.executeUpdate();
+					System.out.println("delete(회원탈퇴 성공유무)=>"+delete);
+					con.commit();
+					x=1;//회원탈퇴성공
+				}else {
+					x=0;//회원탈퇴 실패->암호가 틀려서
+				}
+			}else {
+				x=-1;//암호가 존재하지 않은 경우
+			}
+		}catch(Exception e) {
+			System.out.println("memberDelete() 오류=>"+e);
+		}finally {
+	        pool.freeConnection(con, pstmt, rs);
+		}
+		return x;
+	}
+	
+2.DelCheckForm.jsp?mem_id='nup'=>id,passwd를 매개변수로 전달
+
+<input type="button" value="취소" onclick="history.back()" >
+<INPUT TYPE="button" value="취소"
+        onclick="document.location.href='Login.jsp?mem_id=<%=mem_id%>'">
+</TD>                                                             ================
+         왜 전달했는가? 이미 계정으로 로그인한 상태 페이지로 전환하기위해서
+
+   MemberUpdateProc.jsp save as deletePro.jsp 작성
+
+
+3.deletePro.jsp
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="hewon.MemberDAO" %>
+<!DOCTYPE html>      
+<%
+      //추가 deletePro.jsp?mem_id='nup'&passwd='1234'
+      String mem_id=request.getParameter("mem_id");//입력X->hidden
+      String passwd=request.getParameter("passwd");//입력 O
+      
+      System.out.println("deletePro.jsp의 mem_id=>"+mem_id+",passwd=>"+passwd);
+      
+      MemberDAO memMgr=new MemberDAO();
+      int check=memMgr.memberDelete(mem_id,passwd);
+      System.out.println("deletePro.jsp의 회원삭제유무(check=>)"+check);
+%>
+   <%
+        if(check==1){//회원삭제에 성공했다면
+        	session.invalidate();//세션연결해제
+    %>
+      <script>
+           alert('<%=mem_id%>님 성공적으로 탈퇴처리 되었습니다.');
+           location.href="Login.jsp";//mem_id=null->id,passwd인증창
+      </script>  	
+   <% }else {%>
+        <script>
+          alert("비밀번호가 틀립니다.\n 다시 한번 확인하시기 바랍니다.");
+          history.back();//history.go(-1)
+       </script>
+   <% } %>
+==============================================
+
+
