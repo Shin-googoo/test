@@ -1,0 +1,265 @@
+10일차(모델1의 게시판-페이징처리및 게시판의 글쓰기 구현) =>글상세보기
+
+***************************************************
+** 페이징 처리에 대한 용어정리 **
+
+ 페이징 처리=>테이블의 총레코드를 페이지당 정해진 갯수로 출력시켜주는 웹프로그래밍의
+                  기법                               (default 10개)
+
+1개
+record->10개->1페이지 작성(출력)->10개페이지 (1 블럭) ->block
+                         10개                  10개 페이지->block이 생성
+                         20개
+                         30개->3page
+ 
+www.jspstudy.co.kr
+
+** 블럭->10개의 페이지를 모아서 하나의 작업단위(10*10)=100개
+         ->레코드의 갯수와 페이지에 따라서 종류가 3종류
+
+** 블럭의 종류 **
+
+                     페이지수
+                     1~10     11~20                                        21~30            
+1.이전블럭=>이전 10개 11 12 13 14 15 16 17 18 19 20 다음블럭
+                   ----------   현재 블럭                               =>레코드갯수가 200개
+                    이전블럭이 나올조건=> 최소 현재페이지 11이상                                                                이상
+
+                               현재 페이지
+**2.현재블럭  1 2 3 4 [5] 6 7 8 9 10 =>레코드가 100개면
+                     현재 블럭
+
+3.다음블럭 1 2 3 4 5 6 7 8 9 10 ::: 다음 10개?  =>레코드갯수가 100개이상
+                                                    다음블럭
+
+*********************************************************
+   www.jspstudy.co.kr
+
+1. int nowPage=>현재 보고 있는 페이지(클릭해서)=>레코드번호,데이터가
+                                                                           다르게 출력
+
+2. int nowBlock=>현재블럭=>현재 페이지가 포함된 전체 페이지들
+
+3  int numPerPage = 10;  =>페이지당 보여주는 레코드수를 지정   
+                 /
+4. int pagePerBlock = 10; =>블럭당 보여주는 페이지수를 지정
+                /
+5. 총페이지수=총레코드수/페이지당 보여주는 레코드수
+                          122/10=12.2=(int)13.2=13
+
+ 12페이지 10개 2개->1 페이지를 더 생성->총 13페이지
+                                                             122/10
+    int totalPage =(int)Math.ceil((double)totalRecord / numPerPage);
+                                      무조건 올림메서드
+
+6. 총블럭수=총페이지수 /블럭당 보여주는 페이지수
+    int totalBlock =(int)Math.ceil((double)totalPage / pagePerBlock);
+	                                                   13/10=1.3
+
+7. 페이지당 맨 처음에 보여주는 게시물 번호
+                                   현재페이지*페이지당 보여주는 레코드수
+
+   int beginPerPage =   nowPage * numPerPage;
+                      ex)            1*10=10,9,8,7,6
+                                       2*10=20,19,18,17,16,,
+=======================================
+list.jsp 시작 =>페이징 처리
+
+ 회원관리=>오라클인데 mysql로 변환
+
+ 1.DBConnectionMgr->mysql로 변환
+
+ 2.mydb에 member테이블 생성
+
+create table member(     
+ id varchar(20) primary key,
+ passwd varchar(20) not null,
+ name   varchar(20) not null,
+ e_mail varchar(20) ,
+ phone varchar(30)  not null,
+ zipcode varchar(10) ,
+ address varchar(60) not null,
+ job  varchar(30)
+ );
+
+ insert into member values('nup','1234','홍길동',
+        'test@daum.net','02-123-0987','132-098',
+        '서울시 강남구 대현빌딩 3층','프로그래머');
+
+*******************************************************
+  MemberDAO=>getArticleCount() ,getArticles() 복사 =>테이블명과 필드명
+                                                                                  변경
+  MemberList.jsp
+==================================
+  =>MemberList.jsp
+
+ 글쓰기
+
+MemberDAO->insertArcticle메서드=>하나의 메서드로 통합
+
+select now();-- select 함수명() 오늘 날짜 출력
+
+select sysdate from dual; //?  sysdate
+===========================
+
+//------ 게시판의 글쓰기 및 답변글쓰기----------------
+	//insert into board values(?,?,,,)
+	public void insertArticle(BoardDTO article) { //~(MemberDTO mem)
+		
+		//1.article=>신규글인지 답변글인지 확인
+		int num=article.getNum();//0(신규글) 0아닌경우(답변글)
+		int ref=article.getRef();
+		int re_step=article.getRe_step();
+		int re_level=article.getRe_level();
+		//테이블에 입력할 게시물번호를 저장할 변수
+		int number=0;//데이터를 저장하기위한 게시물번호
+		System.out.println("insertArticle 메서드의 내부 num=>"+num);//0신규글
+		System.out.println("ref=>"+ref+",re_step=>"+re_step+"re_level=>"+re_level);
+		
+		try {
+			con=pool.getConnection();
+			sql="select max(num) from board"; //최대값+1=실제 저장할 게시물번호
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {//보여주는 결과가 있다면 ->rs.last()->rs.getRow();(X)
+				number=rs.getInt(1)+1;  //변수명=rs.get자료형(필드명 또는 인덱스번호)=>필드명X을 사용할 수 없는 경우에 사용
+			}else {//현재 테이블에 데이터가 한개라도 없는 경우
+				number=1;
+			}
+			//답변글이라면
+			if(num!=0) {
+				;
+			}else {//신규글이라면 num=0(신규글)
+				ref=number;//1,2,3,4,5,,,,
+				re_step=0;
+				re_level=0;
+			}
+			//12개->num,reg_date,reacount(생략)->default,
+			//작성날짜->sysdate,now()<-mysql(?대신에)
+			sql="insert into board(writer,email,subject,passwd,reg_date,";
+			sql+=" ref,re_step,re_level,content,ip) values(?,?,?,?,?,?,?,?,?,?)";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, article.getWriter());//웹에서는 Setter Method를 메모리에 저장
+			pstmt.setString(2, article.getEmail());
+			pstmt.setString(3, article.getSubject());
+			pstmt.setString(4, article.getPasswd());
+			pstmt.setTimestamp(5, article.getReg_date());//? 대신에 now()(웹상에서 계산해서 저장)
+			//--------ref,re_step,re_level에 대한 계산이 적용이 된상태에서 저장----------------------
+			pstmt.setInt(6, ref);//pstmt.setInt(6, article.getRef());(X)
+			pstmt.setInt(7, re_step);
+			pstmt.setInt(8, re_level);
+			//--------------------------------------------------------
+			pstmt.setString(9, article.getContent());
+			pstmt.setString(10, article.getIp());//request.getRemoteAddr()//jsp(writePro.jsp)
+			int insert=pstmt.executeUpdate();
+			System.out.println("게시판의 글쓰기 성공유무(insert)=>"+insert);//1 or 0실패
+		}catch(Exception e) {
+			System.out.println("insertArticle() 메서드 에러유발"+e);
+		}finally {
+			pool.freeConnection(con,pstmt,rs);
+		}
+	}
+	//글상세,글수정,글삭제
+----------------------------------------------------------------------
+ writeForm.jsp(입력폼), writePro.jsp(insertArticle 메서드호출)
+---------------------------------------------------------------------
+ ==writeForm.jsp==
+
+<%
+       //list.jsp(글쓰기)->신규글 ,content.jsp(글상세보기)->글쓰기->답변글
+       int num=0,ref=1,re_step=0,re_level=0;//writePro.jsp(신규글)
+       
+       //content.jsp에서 매개변수가 전달
+       if(request.getParameter("num")!=null){ //0은 아니고, 음수X ->양수 1이상
+    	   num=Integer.parseInt(request.getParameter("num"));//"3"->3
+    	   ref=Integer.parseInt(request.getParameter("ref"));
+    	   re_step=Integer.parseInt(request.getParameter("re_step"));
+    	   re_level=Integer.parseInt(request.getParameter("re_level"));
+    	   System.out.println("content.jsp에서 넘어온 매개변수 확인");
+    	   System.out.println("num=>"+num+",ref="+ref
+    			                          +"re_step="+re_step+",re_level=>"+re_level);
+       }
+   
+   %>
+<body bgcolor="#e0ffff">  
+<center><b>글쓰기</b>
+<br><!-- onsubmit이벤트="return 호출할 함수명 -->
+<form method="post" name="writeform"  action="writePro.jsp" 
+          onsubmit="return writeSave()">
+   
+   <!-- 입력하지 않고 매개변수로 전달해서 테이블에 저장 (hidden) -->  
+   <input type="hidden" name="num" value="<%=num %>">
+   <input type="hidden" name="ref" value="<%=ref %>">
+   <input type="hidden" name="re_step" value="<%=re_step %>">
+   <input type="hidden" name="re_level" value="<%=re_level %>">
+        
+<table width="400" border="1" cellspacing="0" cellpadding="0"  bgcolor="#e0ffff" align="center">
+   <tr>
+    <td align="right" colspan="2" bgcolor="#b0e0e6">
+	    <a href="list.jsp"> 글목록</a> 
+   </td>
+   </tr>
+   <tr>
+    <td  width="70"  bgcolor="#b0e0e6" align="center">이 름</td>
+    <td  width="330">
+       <input type="text" size="10" maxlength="10" name="writer"></td>
+  </tr>
+  <tr>
+    <td  width="70"  bgcolor="#b0e0e6" align="center" >제 목</td>
+    <td  width="330">
+       <input type="text" size="40" maxlength="50" name="subject"></td>
+  </tr>
+  <tr>
+    <td  width="70"  bgcolor="#b0e0e6" align="center">Email</td>
+    <td  width="330">
+       <input type="text" size="40" maxlength="30" name="email" ></td>
+  </tr>
+  <tr>
+    <td  width="70"  bgcolor="#b0e0e6" align="center" >내 용</td>
+    <td  width="330" >
+     <textarea name="content" rows="13" cols="40"></textarea> </td>
+  </tr>
+  <tr>
+    <td  width="70"  bgcolor="#b0e0e6" align="center" >비밀번호</td>
+    <td  width="330" >
+     <input type="password" size="8" maxlength="12" name="passwd"> 
+	 </td>
+  </tr>
+<tr>      
+ <td colspan=2 bgcolor="#b0e0e6" align="center"> 
+  <input type="submit" value="글쓰기" >  
+  <input type="reset" value="다시작성">
+  <input type="button" value="목록보기" OnClick="window.location='list.jsp'">
+</td></tr></table>    
+</form>      
+</body>
+</html>      
+========================================
+ ==writePro.jsp==
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import="java.sql.Timestamp,lys.board.*" %>
+    <%
+     //한글처리
+     request.setCharacterEncoding("utf-8");
+     //BoardDTO->Setter Method(5)+hidden(4)
+     //BoardDTO article=new BoardDTO();
+     //BoardDAO 객체필요->insertArticle호출
+    %>
+    <jsp:useBean id="article" class="lys.board.BoardDTO" />
+    <jsp:setProperty name="article"  property="*" />
+    <%
+      //BoardDAO객체->insertArticle(article)=>9개->10개->12개(readcount(0),num)
+      Timestamp temp=new Timestamp(System.currentTimeMillis());//컴퓨터의 날짜,시간
+      article.setReg_date(temp);//오늘 날짜 계산
+      article.setIp(request.getRemoteAddr());//원격ip주소 저장
+      
+      BoardDAO dbPro=new BoardDAO();
+      dbPro.insertArticle(article);
+      response.sendRedirect("list.jsp");//입력한후 다시 DB접속->새로 고침해서 화면에 새로운 글 반영
+    %>
+ ==========================================
+
+
+

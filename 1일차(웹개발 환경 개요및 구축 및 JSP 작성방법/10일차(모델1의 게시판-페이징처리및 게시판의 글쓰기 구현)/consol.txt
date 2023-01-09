@@ -1,0 +1,186 @@
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Server version:        Apache Tomcat/8.5.43
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Server built:          Jul 4 2019 20:53:15 UTC
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Server number:         8.5.43.0
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: OS Name:               Windows 10
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: OS Version:            10.0
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Architecture:          amd64
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Java Home:             C:\Users\MOON\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955\jre
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: JVM Version:           15.0.2+7-27
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: JVM Vendor:            Oracle Corporation
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: CATALINA_BASE:         C:\webtest\4.jsp\2.backend\sou\.metadata\.plugins\org.eclipse.wst.server.core\tmp0
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: CATALINA_HOME:         C:\Tomcat 8.5
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dcatalina.base=C:\webtest\4.jsp\2.backend\sou\.metadata\.plugins\org.eclipse.wst.server.core\tmp0
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dcatalina.home=C:\Tomcat 8.5
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dwtp.deploy=C:\webtest\4.jsp\2.backend\sou\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dfile.encoding=UTF-8
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -XX:+ShowCodeDetailsInExceptionMessages
+7월 23, 2021 1:37:26 오후 org.apache.catalina.core.AprLifecycleListener lifecycleEvent
+INFO: The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Users\MOON\.p2\pool\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955\jre\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Users/MOON/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955/jre/bin/server;C:/Users/MOON/.p2/pool/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_15.0.2.v20210201-0955/jre/bin;C:\jdk1.8.0\bin;C:\MySQL 5.1\bin;C:\Users\MOON\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Bandizip\;C:\webtest\3.java\eclipse;;.]
+7월 23, 2021 1:37:26 오후 org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8090"]
+7월 23, 2021 1:37:26 오후 org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+INFO: Using a shared selector for servlet write/read
+7월 23, 2021 1:37:26 오후 org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["ajp-nio-8009"]
+7월 23, 2021 1:37:26 오후 org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+INFO: Using a shared selector for servlet write/read
+7월 23, 2021 1:37:26 오후 org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 953 ms
+7월 23, 2021 1:37:26 오후 org.apache.catalina.core.StandardService startInternal
+INFO: Starting service [Catalina]
+7월 23, 2021 1:37:26 오후 org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/8.5.43
+7월 23, 2021 1:37:26 오후 org.apache.catalina.util.SessionIdGeneratorBase createSecureRandom
+WARNING: Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [119] milliseconds.
+7월 23, 2021 1:37:27 오후 org.apache.jasper.servlet.TldScanner scanJars
+INFO: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+7월 23, 2021 1:37:27 오후 org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8090"]
+7월 23, 2021 1:37:27 오후 org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["ajp-nio-8009"]
+7월 23, 2021 1:37:27 오후 org.apache.catalina.startup.Catalina start
+INFO: Server startup in 760 ms
+7월 23, 2021 1:37:28 오후 org.apache.catalina.core.StandardWrapperValve invoke
+SEVERE: Servlet.service() for servlet [jsp] in context with path [/JspBoard] threw exception [Unable to compile class for JSP: 
+
+An error occurred at line: [26] in the jsp file: [/list.jsp]
+BoardDAO cannot be resolved to a type
+23:  int number=0;//beginPerPage->페이지별로  시작하는 맨 처음에 나오는 게시물번호
+24:  List articleList=null;//화면에 출력할 레코드를 저장할 변수
+25:  
+26:  BoardDAO dbPro=new BoardDAO();
+27:  count=dbPro.getArticleCount();//select count(*) from board->member
+28:  System.out.println("현재 레코드수(count)=>"+count);
+29:   if (count > 0){
+
+
+An error occurred at line: [26] in the jsp file: [/list.jsp]
+BoardDAO cannot be resolved to a type
+23:  int number=0;//beginPerPage->페이지별로  시작하는 맨 처음에 나오는 게시물번호
+24:  List articleList=null;//화면에 출력할 레코드를 저장할 변수
+25:  
+26:  BoardDAO dbPro=new BoardDAO();
+27:  count=dbPro.getArticleCount();//select count(*) from board->member
+28:  System.out.println("현재 레코드수(count)=>"+count);
+29:   if (count > 0){
+
+
+An error occurred at line: [75] in the jsp file: [/list.jsp]
+BoardDTO cannot be resolved to a type
+72:     <!-- 실질적으로 레코드를 출력시켜주는 부분 -->
+73:     <%
+74:          for(int i=0;i<articleList.size();i++){
+75:              BoardDTO article=(BoardDTO)articleList.get(i);//articleList.elementAt(i);
+76:     %>
+77:    <tr height="30"><!--하나씩 감소하면서 출력하는 게시물번호  -->
+78:     <td align="center"  width="50" ><%=number-- %></td>
+
+
+An error occurred at line: [75] in the jsp file: [/list.jsp]
+BoardDTO cannot be resolved to a type
+72:     <!-- 실질적으로 레코드를 출력시켜주는 부분 -->
+73:     <%
+74:          for(int i=0;i<articleList.size();i++){
+75:              BoardDTO article=(BoardDTO)articleList.get(i);//articleList.elementAt(i);
+76:     %>
+77:    <tr height="30"><!--하나씩 감소하면서 출력하는 게시물번호  -->
+78:     <td align="center"  width="50" ><%=number-- %></td>
+
+
+Stacktrace:] with root cause
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [26] in the jsp file: [/list.jsp]
+BoardDAO cannot be resolved to a type
+23:  int number=0;//beginPerPage->페이지별로  시작하는 맨 처음에 나오는 게시물번호
+24:  List articleList=null;//화면에 출력할 레코드를 저장할 변수
+25:  
+26:  BoardDAO dbPro=new BoardDAO();
+27:  count=dbPro.getArticleCount();//select count(*) from board->member
+28:  System.out.println("현재 레코드수(count)=>"+count);
+29:   if (count > 0){
+
+
+An error occurred at line: [26] in the jsp file: [/list.jsp]
+BoardDAO cannot be resolved to a type
+23:  int number=0;//beginPerPage->페이지별로  시작하는 맨 처음에 나오는 게시물번호
+24:  List articleList=null;//화면에 출력할 레코드를 저장할 변수
+25:  
+26:  BoardDAO dbPro=new BoardDAO();
+27:  count=dbPro.getArticleCount();//select count(*) from board->member
+28:  System.out.println("현재 레코드수(count)=>"+count);
+29:   if (count > 0){
+
+
+An error occurred at line: [75] in the jsp file: [/list.jsp]
+BoardDTO cannot be resolved to a type
+72:     <!-- 실질적으로 레코드를 출력시켜주는 부분 -->
+73:     <%
+74:          for(int i=0;i<articleList.size();i++){
+75:              BoardDTO article=(BoardDTO)articleList.get(i);//articleList.elementAt(i);
+76:     %>
+77:    <tr height="30"><!--하나씩 감소하면서 출력하는 게시물번호  -->
+78:     <td align="center"  width="50" ><%=number-- %></td>
+
+
+An error occurred at line: [75] in the jsp file: [/list.jsp]
+BoardDTO cannot be resolved to a type
+72:     <!-- 실질적으로 레코드를 출력시켜주는 부분 -->
+73:     <%
+74:          for(int i=0;i<articleList.size();i++){
+75:              BoardDTO article=(BoardDTO)articleList.get(i);//articleList.elementAt(i);
+76:     %>
+77:    <tr height="30"><!--하나씩 감소하면서 출력하는 게시물번호  -->
+78:     <td align="center"  width="50" ><%=number-- %></td>
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:212)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:549)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:378)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:350)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:334)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:595)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:386)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:330)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:741)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:137)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:660)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:798)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:808)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1130)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:832)
