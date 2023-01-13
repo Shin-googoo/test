@@ -1,0 +1,38 @@
+public BoardDTO getArticle(int num) {
+		BoardDTO article=null;//ArrayList articleList=null;//여러개 담을때
+		
+		try {
+			con=pool.getConnection();
+		
+			sql="update board set readcount=readcount+1 where num=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			int update=pstmt.executeUpdate();
+			System.out.println("조회수 증가유무(update)=>"+update);//1
+			
+			sql="select * from board where num=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {//보여주는 결과가 있다면
+				  article=new BoardDTO();//MemberDTO=>필드별로 담을것.
+				  article.setNum(rs.getInt("num"));
+				  article.setWriter(rs.getString("writer"));
+				  article.setEmail(rs.getString("email"));
+				  article.setSubject(rs.getString("subject"));
+				  article.setPasswd(rs.getString("passwd"));
+				  article.setReg_date(rs.getTimestamp("reg_date"));//오늘날짜->코딩
+				  article.setReadcount(rs.getInt("readcount"));//조회수 default->0
+				  article.setRef(rs.getInt("ref"));//그룹번호->신규글과 답변글을 묶어주는 역할
+				  article.setRe_step(rs.getInt("re_step"));//답변글이 나오는 순서
+				  article.setRe_level(rs.getInt("re_level"));//들여쓰기(답변의 깊이)
+				  article.setContent(rs.getString("content"));//글내용
+				  article.setIp(rs.getString("ip"));//글쓴이의 ip주소->request.getRemoteAddr()
+			}
+		}catch(Exception e) {
+			System.out.println("getArticle() 에러유발=>"+e);
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return article;
+	}

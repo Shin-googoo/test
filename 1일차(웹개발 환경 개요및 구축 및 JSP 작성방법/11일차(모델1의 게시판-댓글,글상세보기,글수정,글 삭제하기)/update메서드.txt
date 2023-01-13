@@ -1,0 +1,38 @@
+public int updateArticle(BoardDTO article) {// insertArticle(BoardDTO article)
+
+		String dbpasswd = null;// db에서 찾은 암호를 저장
+		int x = -1;// 게시물의 수정성공유무
+
+		try {
+			con = pool.getConnection();
+			sql = "select passwd from board where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, article.getNum());
+			rs = pstmt.executeQuery();
+			if (rs.next()) {// 보여주는 결과가 있다면
+				dbpasswd = rs.getString("passwd");
+				System.out.println("dbpasswd=>" + dbpasswd);// 확인한 뒤에 나중에 삭제해야한다.
+				if (dbpasswd.equals(article.getPasswd())) {
+					sql = "update board set writer=?,email=?,subject=?,passwd=?,";
+					sql += " content=?  where num=?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, article.getWriter());// 웹에서는 이미 데이터저장된 상태(Setter~)
+					pstmt.setString(2, article.getEmail());
+					pstmt.setString(3, article.getSubject());
+					pstmt.setString(4, article.getPasswd());
+					pstmt.setString(5, article.getContent());// 내용
+					pstmt.setInt(6, article.getNum());
+					int update = pstmt.executeUpdate();
+					System.out.println("게시판의 글수정 성공유무(update)=>" + update);
+					x = 1;// 수정성공유무
+				} else {// 암호가 틀린경우
+					x = 0;// 수정실패
+				}
+			} // if(rs.next())
+		} catch (Exception e) {
+			System.out.println("updateArticle() 메서드 에러유발=>" + e);
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return x;
+	}
