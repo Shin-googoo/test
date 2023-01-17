@@ -1,0 +1,167 @@
+
+1.다음중 웹개발 환경 구축 순서가 올바르게 된것은?
+
+① Java 설치->Tomcat 설치->JSP구성 및 실행
+② Tomcat 설치->Java 설치->JSP구성 및 실행
+③ JSP구성 및 실행->Tomcat 설치->Java 설치
+④ Tomcat 설치->JSP구성 및 실행->Java 설치
+
+
+2.JSP 웹어플리케이션 작성할때 성격이 다른 하나는어느것인가?
+
+① web.xml   
+② WEB-INF/lib 
+③ test.jsp
+④ imsi.php
+
+3.Jsp의 구성요소가 아닌것은?
+
+① Scriptlet
+② Expression
+③ Declaration
+④ Include
+
+4.서블릿을 만들수있는 조건중에서 맞는 문장은?
+
+① 반드시 class로 시작하는 클래스를 만든다.
+② 반드시 HttpThread클래스를 상속받아서 작성을 한다.
+③ Get으로 요청을 하는 경우에는 service()를 구현해서 작성할 수 있다.
+④ 서블릿을 작성할 경우에는 외부의 패키지는 필요하지 않는다.
+
+5.다음중 Jsp의 내장객체가 아닌것은?
+
+① Request
+② Response
+③ Exception
+④ Service
+
+6.다음중 웹프로그래밍을 작성할 때 성격이 다른 하나는?
+
+① <font face="돋움체" size="4">테스트</font>
+② <script>location.href="writeForm.jsp" </script>
+③ <jsp:forward page="res.jsp" />
+④ <%  response.sendRedirect("list.jsp"); %>
+
+7. 다음중 자바의 객체를 생성시켜주는 액션태그는?
+
+① <jsp:setProperty name="test"  property="*"  />
+② <jsp:useBean id="test" class="java.util.Date" />
+③ <jsp:getProperty name="test" property="name" />
+④ <%=4+3%>
+
+8.다음중 xml 문법으로 틀린 문장은?
+
+① xml문서에는 최소한의 루트 태그가 반드시 존재한다.
+② 태그 이름은 알파벳,숫자,특수기호를 조합해서 작성한다.
+③ 첫 글자는 숫자가 와도 된다.
+④ 태그는 대,소문자를 구분해서 사용을 한다.
+
+9. 자바빈즈의 종류가 아닌것은?
+
+①DB연결빈
+②DTO클래스
+③DAO클래스
+④String클래스
+
+10.다음중 내장객체에 대한 설명으로 틀린 문장은?
+
+①JSP 프로그램 코드에서 프로그래머가 선언하지 않아도 사용할 수 있는 미리 선언된 객체를 의미한다.
+②스크립트릿(<% ~ %>) 안에서만 사용할 수 있다.
+③JSP 실행 시 자동 생성되는 서블릿 코드의 _jspService() 메소드 내에서 선언된다.
+④HttpThread를 상속받아서 작성해야 사용할 수 있는 객체를 의미한다.
+
+11.request객체에서 전달되는 매개변수를 받아서 처리해주는 메서드는?
+
+①getParameter 메서드
+②setCharacterEncoding("utf-8") 메서드
+③sendRedirect 메서드 
+④getMethod 메서드
+
+12.Jsp 액션태그중에서 다른 JSP 페이지로 처리 제어권을 넘겨서 페이지를 이동    하는데 관여하는 액션태그는?
+
+①<jsp:forward>
+②<jsp:useBean>
+③<jsp:setProperty>
+④<jsp:getProperty>
+
+13. 다음과 같은 테이블을 생성시키는 JDBC Programming 소스코드가 있다. 
+실행순서가 올바르게 설정된 것은?
+
+2. con=DriverManager.getConnection(url,"test1","t1234");
+1. Class.forName("oracle.jdbc.driver.OracleDriver");
+4. sql="create table MyTest(name varchar2(20),age number)";
+3. stmt=con.createStatement();
+5. stmt.executeUpdate(sql);
+
+① 1->2->3->4->5    ② 2->1->4->3->5
+③ 3->2->4->5->1    ④ 5->4->3->2->1 
+
+14.모델1 방식의 특성에 대해서 알맞게 설명한 것은?
+
+① 적은 규모(중소규모)의 사이트에 적합한 개발방식이다.
+② 많은 인원으로 웹사이트 개발에 적합하다.
+③ 페이지가 많아지면 유지보수가 쉬워진다.
+④ 대규모의 사이트개발에 적합하다.
+
+15.아래와 같은 웹프로그래밍의 소스코드와 성격이 다른 소스코드는 어느것인가?
+
+<a href="MemberUpdate.jsp?memid=<%=memid%>">회원수정</a>
+
+① 
+<form method="post" action="MemberUpdate.jsp">
+<input type="text" name="memid">
+<input type="submit" value="전송">
+</form>
+
+② 
+<form method="post" action="MemberUpdate.jsp">
+<input type="hidden" name="memid" value="<%=memid%>" >
+<input type="submit" value="전송">
+</form>
+
+③
+<form method="post" action="MemberUpdate.jsp?memid=<%=memid%>">
+<input type="submit" value="전송">
+</form>
+
+④
+<form method="post" action="test.jsp">
+<input type="button" value="전송" >
+</form>
+
+16.회원가입을 실행시켰을때 테이블에 데이터가 깨져서 들어가는 현상이 발생되었다. 이러한 현상을 고려해서 올바르게 한글을 입력 받으려면 다음 어느부분을 고려해서 소스 코드를 작성해야 하는가?
+
+① 입력받기전에 request.setCharacterEncoding("utf-8")을 추가한다.
+② 입력받기전에 session.setAttribute("name",mem_id) 구문을 추가한다.
+③ 입력받기전에 request.getAttribute("utf-8")구문을 추가한다.
+④ 입력받기전에 response.sendRedirect("login.jsp")을 추가한다.
+
+17.다음중 게시판 프로그램의 답변글을 작성할때 고려하지 않아도 되는 것은?
+
+①pageNum
+②ref
+③re_level
+④re_step
+
+18.mysql에 접속을 할때 특정 DB(mysql)에 접속할 수 있는 명령어는?
+(특정 DB로 전환하는 명령어)
+
+①show databases
+②show  tables
+③use mysql
+④select * from customer
+
+19.홈페이지의 메인페이지를 작성할때 주로 사용하는 액션태그는?
+
+① forward,include 액션태그
+② out객체
+③ 스크립트릿
+④ 표현식
+
+20.주로 변수의 값을 출력시켜주는 역할을 하는 JSP의 구성요소는?
+
+① 스크립트릿
+② 표현식
+③ 선언문
+④ 액션태그
+
