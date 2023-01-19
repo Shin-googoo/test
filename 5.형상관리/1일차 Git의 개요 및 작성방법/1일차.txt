@@ -1,0 +1,1237 @@
+1일차 Git의 개요 및 작성방법=>git 가입(메일계정 등록=>인증절차)
+
+프로젝트관리와 CVS =>옛날부터(금융권)
+
+                               =>Git(콘솔모드),GitHub(웹모드)--***이클립스와 연결***
+
+  =>소스 합치는경우 ->경로문제
+
+  프로젝트명(JspBoard2)
+          |
+           -WebContent->~.jsp,script.js
+                  |
+                   -board->팀원이 작성한 소스
+                  |
+                   -member
+                  |
+                   -notice
+--------------------------------------------
+       
+프로젝트 팀->4~5명(각자 코딩작업)
+                                    ->공지사항,답변형,회원관리,메인페이지(디자인)
+
+                                 로컬저장소(작업한 내용이 들어 있는 폴더)=>팀원
+                                =>Git설치->개요 ,사용법(=명령어=>콘솔작업)
+
+                                웹상에 존재->원격저장소(=웹하드)
+                               =>이클립스(로컬저장소) 와 원격저장소 연결=>구글
+                                   프로젝트별로 작업(인증방법)
+                               ==>파일(push) 와 다운로드(병합)
+
+-------------------------------------------------------------------------------
+                         
+브랜치(branch)?=>프로젝트 작업영역(개인)
+
+완벽한 분산 환경에서 빠르고 단순하게 수백 수천 개의 동시 
+발적인 브랜치 작업을 수행하는 것을 목표로 하는 버전 관리 시스템
+
+버전 관리 시스템(형상관리)
+
+->여러명의 공통 프로젝트를 관리->시스템(공통으로 사용하는 파일,폴더)
+------------------------------------------------------------------------
+
+***Git의 특징***
+
+1.로컬  및 원격 저장소 생성=>저장소(용어)-->개인폴더
+2.로컬 저장소에 파일 생성 및 추가 ->소스작업(파일작업)
+3.수정 내역을 로컬 저장소에 저장--------------------->commit과 같다
+                                                                    기록을 하기위해서
+4.파일 수정 내역 추적(변경사항을 체크하기위해)->git add을 이용해서 파일의 변동
+                                                             사항을 확인시켜주는 명령어
+5.원격 저장소에 제출된 수정 내역을 로컬 저장소에 적용
+6.Master에 영향을 끼치지 않는 브랜치 생성--->브랜치
+7.브랜치 사이의 병합(Merge)------------------>병합(팀원들의 프로젝트 내용을 합치는 경우)
+8.브랜치를 병합하는 도중의 충돌 감지
+==================================
+
+1.Git의 실습(Local)
+2.GitHub의 개요 및 사용법(Remote)->인터넷상에서 데이터를 올리고 다운로드
+**3.GitHub와 이클립스와의 연동방법==>프로젝트
+
+C:\Program Files\Git ->설치경로
+
+설치유형
+Git Bash Only->콘솔작업(도스모드)->각자 Local
+Git GUI Only->그래픽(GitHub hub)
+
+Git 사용명령어->리눅스 명령어를 이용 사용
+
+Use Git from Git Bash only->개념,간단한 명령어
+
+*Use Git from Window~=>PATH에 Git정보 추가->사용
+
+=======
+브랜치
+master
+checkout
+commit
+간단한 명령어 사용
+====== 유닉스 또는 리눅스 환경
+
+  *** 리눅스 명령어(=유닉스 명령어) **
+
+ =>계정으로 로그인=>홈폴더
+
+kitcoop@kitcoop-PC MINGW64 ~
+계정명      컴퓨터명
+
+1. 현재 위치
+$pwd
+
+/c/Users/kitcoop=>현재 작업위치
+
+2.git(개인 컴퓨터)---->github와 연결
+계정명,이메일 주소
+
+--로컬 저장소(작업영역) =>workspace
+
+=>메모장에서 작성한 문자열 복사=>맥에서 사용에서 에러유발
+
+git config -–global user.name "사용자 이름(영문이니셀)"
+git config -–global user.email "이메일(정확)"
+
+ 유저정보를 등록해주고 commit & push할경우 위 설정한 name으로 commit이
+ 되게하기위해서 사용
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 ~
+$ git config --global --list
+                              ===>저장된 항목을 확인할때 사용
+user.name=yeansu lee
+user.email=nup49rok1@empas.com
+
+https://herojoon-dev.tistory.com/50 =>등록,삭제 참조
+**************************
+$ ->일반유저로 현재 접속한 상태
+# ->관리자로 현재 접속한 상태 표시
+
+ =>% 맥에서 
+**************************
+ cd 이동할 위치(.. ,./~)  ->change directory
+
+ cd ..
+mkdir 디렉토리명->디렉토리생성<->rmdir 삭제시킬 디렉토리명
+
+c:\imsi
+        test.txt,,,,프로젝트 파일
+     (공유)
+A              B
+
+*********************************************
+cd imsi=>c:\imsi->각자 데이터를 따로 저장할 수있는 영역을 생성
+                         ->로컬 저장소
+*********************************************
+
+$git --help->도움말 확인
+
+ 화면지우기->clear  =>오라클의 clear screen와 비슷한 기능
+--------------------------------------------------------
+   명령어가 오타가 아닌데 에러가 계속 발생이 되새면 git을 종료한 뒤 다시 접속해서
+   명령어를 다시 사용해줄것.
+--------------------------------------------------------------------------
+  exit
+  $cd .. =>c:\
+  $mkdir imsi2
+  $git init
+ --------------------------------------------------------
+ ** 로컬저장소를 만드는 명령어 **
+
+$git init =>특정폴더(c:\imsi)=>로컬저장소로 만들겠다
+
+                            팀원끼리 공유->github에 가입->원격저장소
+$ git init
+Initialized empty Git repository in C:/imsi/.git/
+                                                             숨김파일->환경설정파일
+                                                              .으로 시작하는 파일명(눈에 X)
+
+$ ls =>폴더안에 들어가있는 내용을 보여줄때 사용하는 명령어
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+                                                        ======브랜치
+  영역을 설정을 하나 설정->무조건 하나의 master 브랜치가 만들어진다.
+$ ls -al =>숨김파일까지 보여주세요(-al)
+
+total 12
+drwxr-xr-x 1 kitcoop 197121 0 3월   7 15:42 ./  =>d로 시작(폴더의미)
+drwxr-xr-x 1 kitcoop 197121 0 3월   7 15:37 ../
+drwxr-xr-x 1 kitcoop 197121 0 3월   7 15:42 .git/
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$
+
+1.로컬 저장소를 생성->브랜치를 하나 생성시켜준다.(master)
+
+(master)
+************************************************
+2.브랜치=>공통으로 사용이 되는 파일을 각자의 영역에서 아무런
+                     충돌없이 사용할 수있도록 해주는 영역
+
+	    =>c:\imsi\a.txt	<---A
+				<---B
+-----------------------------------------------------------------
+텍스트파일을 하나생성 (test.txt)->파일을 추가,수정,,,
+                           	     test.py(자동으로 파이썬이 설치)=>옛날버전의 경우
+
+ vim편집기=>파일을 생성해서 편집을 해주는 역할 프로그램이름
+
+vim->편집기를 실행시키는 명령어
+ vi,->vim 생성시킬 파일명->파일이 하나 생성->편집기가 열린다.
+        vim test.txt
+
+파일에 내용 추가->i키(insert)->커서가 이동->글자를 입력
+print("hello world");
+
+esc키를 누르고 shift : =>지금까지 작업한 내용을 저장하고 준비
+
+:명령어를 입력하고 enter
+
+직접명령어 모드
+:wq enter->파일저장->종료하라.
+  write quit
+
+ vim test.txt
+
+---------------------------------------------------
+$ 파일의 내용을 확인->cat 경로포함해서 파일명
+$cat test.txt  =>파일의 내용만을 확인할때 사용
+  cat hello.txt
+
+$ cat test.txt============>공통으로 프로젝트 작성
+print("hello world")
+
+-->특정파일을 내용을 추가,수정->반드시
+
+ -->지금 현재까지 작업한 내용 좀 알려주세요->git status
+
+  c:\imsi->hello.txt파일 생성->없었는데 새로 추가(변화가 발생)
+
+ =>생성된 파일을 git이 인식이 가능하도록 설정(추적 가능한 파일을 생성)
+
+ git add
+
+ git add 명령어------------------>작업한 내용을 병합(합칠때)
+                                                           작업파일로 설정(추적파일로 설정)
+
+ commit 명령어를 사용->작업한 내용을 git에게 알려주는 역할
+                                                (수정,삭제,,,)
+ ex)
+
+ $ git add test.txt
+
+CR =>현재의 위치에서 다음줄로 개행을 할때
+         커서가 맨앞에 위치   
+ 
+LF=>현재의 위치는 변화지 않은상태에서 커서만
+        위로 이동
+https://m.blog.naver.com/PostView.nhn?blogId=pthread_join&logNo=220720777376&proxyReferer=http%3A%2F%2Fwww.google.co.kr%2Furl%3Fsa%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D1%26ved%3D2ahUKEwis98m94bbkAhUjyosBHXG9DdcQFjAAegQIABAB%26url%3Dhttp%253A%252F%252Fm.blog.naver.com%252Fpthread_join%252F220720777376%26usg%3DAOvVaw0sejuHYcCCmoeXlBl1Jufs
+----------------------------------
+경고 메세지->파일을 저장할때 리눅스방식으로
+ 저장하지 않았기때문에 발생하는 에러메세지
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (master)
+$ git config --global core.autocrlf true
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (master)
+$ git add hello.txt=>git add test.txt
+
+ 파일의 내용을 변경=>반드시 커밋메세지를 작성하라
+ =>커밋메세지를 가지고 git이 어떻게 이 파일이 변화가 있는지를 확인할 수가 있다.
+
+******************************************
+  맥에서 git commit에서 에러가 나오신분
+ % git commit -am "hello world program" 
+******************************************
+----------------------------------------------------------------
+$ git commit
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (master)
+$ git commit
+=> 커밋메세지를 작성하기위해서 i키를 입력하라 
+      커밋메세지를 작성하고 저장하고 종료하라 shift : wq -> 저장하고 빠져나가기	
+
+
+[master (root-commit) 5e08dcb] create "hello world" message
+ 1 file changed, 2 insertions(+)
+ create mode 100644 hello.txt
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (master)
+------------------------------------------
+1.로컬저장소->실제 존재하는 파일(물리적인 영역)
+2.브랜치->로컬저장소에서 나만이 사용하는 고유의 작업영역(논리적인 영역)=>물리적인 영역은 같은데
+-->특정 다른 영역으로 이동X(checkout)                                           시간대가 달라서 겹치지 않은 영역
+
+ 프로젝트
+   test.txt(공유시킬 파일들)->git add 명령어->git에게 알려주는역할
+                                                           		       내용의 수정을 기록(추적)
+
+ 브랜치(branch)=>프로젝트 작업영역(개인)->비유) 같은 공간인데 서로 다른 시간대에서
+                                                                        작업하는 느낌
+
+A (master)                            B(새로운 브랜치->hotfix)
+print("hello world")        print("hello world")
+                                                 print("B")
+----------------------               --------------------------
+insert,update,delete,--->상대방은 insert,,,X ->commit
+
+$git status->현재 상태를 확인(commit을 이미 한 상태)
+                   commit을 해야 된다고 알려준다.
+====================================
+
+$ git add test.txt ->각자 작업한 파일의 내용을 기록하라(git)
+
+warning: LF will be replaced by CRLF in test.txt.
+The file will have its original line endings in your working directory.
+=>리눅스형태로 파일저장(경고 메세지)->저장에는 문제 없다.
+
+->commit->파일에다가 커밋메세지를 작성하고나서 빠져나가게 되어있다.
+
+$ git commit
+->커밋 메세지를 작성->저장->종료->최종 마무리
+
+[master (root-commit) 4869169] create file "hello world" programm
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test.txt
+
+$ git status=>현재 저장소 상태를 체크해주는 명령어
+
+On branch master
+nothing to commit, working tree clean
+->커밋할 내용이 없다.(현재 여기에서 작업할 내용이 없다는 표시)->정상
+-----------------------------------------------------------------------
+clear->커서가 맨위로 이동(화면 지우기)
+
+------------------------------------------------------
+$ git branch -->브랜치 목록을 확인할때 사용
+
+* master -->현재 작업중인 브랜치명 앞에 *이 표시
+
+ 브랜치를 새로 만들어주는 명령어
+
+*****************************
+$ git branch 생성시킬 브랜치명(hotfix)
+*****************************
+
+$ git branch hotfix
+
+$ git branch
+  hotfix  =>새로 추가된 브랜치 확인
+* master
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+
+**********************
+$ git checkout 이동할 브랜치명
+**********************
+
+$ git checkout hotfix
+Switched to branch 'hotfix'  //master->hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+            test.txt
+hollo.txts
+ git add hello.txt->git commit
+-------------------------------------
+  =>git commit -a => 작업한 내용을 한꺼번에 처리 
+
+$ ls->디렉토리 내용을 확인(dir)
+$ cat test.txt
+print("hello world")  ===>master작업한 내용을 확인
+
+-----------------------
+            test.txt(공통파일)~.jsp~.html
+             ,,,,
+
+master                                 hotfix
+print("hello world")           print("hello world")
+                                       print("Tell your World");->추가
+==================================
+(hotfix)
+  test.txt
+
+vim test.txt
+
+i(끼워넣기)->print("Tell your World");
+esc키 누르고 shift :->wq
+
+*****************************************************
+  커밋메세지를 vim 편집기로 작성하기 싫은경우
+    git checkout hotfix
+=>git commit -am "add output 'Tell your World'" =>한문장으로 해결
+-----------------------------------------
+ 파일의 내용을 수정->git add,git commit
+                                   X
+git add->새로 추가된 파일의 경우에 한번만 지정
+-------------------------------------------------
+commit=>파일이 하나,파일 동시에 작업->한꺼번에 commt
+               ->내용을 수정할때마다 작성
+
+*******************************************
+** git commit -a ->하나이상의 파일을 commit설정할때 사용
+		        =>변경된 사항을 git이 기록이 되게 해야하기때문에
+     git commit ->한개의 파일에 대해서 comit할때                         
+*******************************************
+------------------------------------------------------------
+그래픽->이클립스->커밋할 대상파일들을 전부 check->커밋
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git status
+On branch hotfix
+nothing to commit, working tree clean  =>마무리 잘하셨다는 의미
+  =>깨끗하게 파일의 내용을 수정했고 git이 인식했음을 의미
+      하는 메세지
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git checkout master
+Switched to branch 'master'
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+==============================
+
+결론:하나의 공통의 파일을 서로 다른 작업영역(브랜치)에서 작업이
+        가능하다.
+
+  팀원 5명->브랜치를 5개 만들어서 각자 들어가서 작업=>병합을 하면 된다.
+master,hotfix,hotfix2,,,,
+--------------------------------------------------------------
+ 하나 파일이상을 공유해서 작업->합치는 작업(병합)
+                                                     ====
+(핵심)
+master,                                             hotfix
+ test.txt                                        test.txt
+print("hello world")                    print("hello world")
+                                                print("Tell your world")
+                                                 ,,,
+=================================
+병합할때 
+
+같은 라인에 서로 다른 내용이 들어가 있으면 충돌=>git에서 충돌에러
+
+************************************************
+1.git init->로컬 저장소를 생성시키는 명령어(c:\imsi)->master
+2.git add 수정한 파일명==>이 파일에 변동사항을 브랜치별로 기록
+               test.txt
+3.git commit->파일을 수정할때 마다 최종적으로 commit 메세지저장
+                   ->git log=>시간별로 내용을 확인이 가능하게 만들어 주기위해서
+
+4.git branch->현재 브랜치 목록을 확인
+5.git branch 생성시킬 브랜치명(hotfix)
+6.git checkout 이동할 브랜치명
+----------------------------------
+7.git merge 병합할 브랜치명
+************************************************
+
+   master   hotfix
+      1           2
+       +1
+============
+       2         2
+
+ master입장에서
+
+git merge hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git merge hotfix
+Updating 4869169..35358e2
+Fast-forward
+ test.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+=>master입장에서 hotfix에서의 새롭게 추가된 내용을
+    내 파일에 반영해달라(합쳐달라=병합해달라)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ cat test.txt
+print("hello world")
+print("Tell your World")
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+
+----------------------------------------------------------오후작업을 할 예정----------------
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ vim test.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ cat test.txt
+print("hello World");
+print("Tell your World");
+print("Tell his World");=>3번째 라인에 새로운 문장을 추가
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git commit -am "added output 'Tell his World'"
+===============================
+hint: Waiting for your editor to close the fi[master d3144fb] added output "Tell his World"
+ 1 file changed, 1 insertion(+)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+
+master->내용추가(test.txt) =>print("Tell his World")
+-------------------------------------------------------------
+git checkout hotfix
+
+Switched to branch 'hotfix'
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ vim test.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+        test.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+ =>반드시 다른 브랜치로 이동하기위해서는 지금까지 작업한 내용을
+     반드시 커밋을 해야 이동할 수 있다는 에러메세지(등록한 사용자이름 메일등록)
+====================================
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git commit -a
+hint: Waiting for your editor to close the [hotfix e7ca045] added output "Tell her World"
+ 1 file changed, 1 insertion(+)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ cat test.txt
+print("hello World");
+print("Tell your World");
+print("Tell her World");//->새로운 내용을 각자 추가
+
+=>한꺼번에 commit 메세지까지 처리하고 싶다.
+git commit -am "add output 'Tell her World'"
+================================
+ 1        1
+ 2        2
+==================>서로 다른 라인의 내용은 병합할때 에러가 발생되지 않는다.
+
+3        3=>서로 같은 라인의 서로 다른내용일 경우에는 병합이 안된다.
+                충돌?->어떻게 수정할것인가?
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ cat test.txt
+print("hello World");
+print("Tell your World");
+---------------------------
+print("Tell his World"); <-->print("Tell her World");
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git merge hotfix
+Auto-merging test.txt
+CONFLICT (content): Merge conflict in test.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+ ****충돌난 위치를 알고 싶으면 파일의 내용을 꺼내보기 **
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master|MERGING)
+$ cat test.txt
+print("hello World");
+print("Tell your World");
+<<<<<<< HEAD
+print("Tell his World");
+=======
+print("Tell her World");
+>>>>>>> hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master|MERGING)
+$ vim test.txt => 내용을 수정하고 커밋을 주기위해서
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master|MERGING)
+$
+====================================
+git commit -a =>편집기로 들어가서 내용을 수정->저장
+                         불편하다.
+
+---------------------------------------------------------
+**git commit -a -m "커밋메세지" ->바로 반영이 된다. ***
+================================
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master|MERGING)
+$ git commit -a -m "conflict resolved"
+[master be2346f] conflict resolved
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ cat test.txt
+print("hello World");
+print("Tell your World");
+print("Tell his World");
+print("Tell her World");
+
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git checkout hotfix
+Switched to branch 'hotfix'
+
+git commit -am "added his or herworld"
+[master 9dcd12a] added his or herworld
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ cat test.txt
+print("hello World");
+print("Tell your World");
+print("Tell her World");
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+====================================
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git log -p
+commit be2346fd30f2f54686f2a6bbf352b58b5fb8341a (HEAD -> master)
+Merge: d3144fb e7ca045
+Author: yeansu lee <nup49rok1@empas.com>
+Date:   Fri Mar 8 11:19:57 2019 +0900
+
+    conflict resolved
+
+commit e7ca0451972119d2c97a7bbac8e0de1f96476197 (hotfix)
+Author: yeansu lee <nup49rok1@empas.com>
+Date:   Fri Mar 8 11:03:57 2019 +0900
+
+    added output "Tell her World"
+
+diff --git a/test.txt b/test.txt
+index ac89027..b39bec5 100644
+--- a/test.txt
++++ b/test.txt
+@@ -1,2 +1,3 @@
+:
+,,,
+q를 입력하면 빠져나감
+
+hotfix->내용추가(test.txt)  =>print("Tell her World")
+==============================
+
+ GitHub
+
+1.전 세계에서 진행되는 오픈 소스 프로젝트가 많이 모여 있어 이에 참여하고 오픈소스에 기여할 수 있는 기회가 있다.
+                                 ===========
+2.개발자는 GitHub를 이용해 자신이 작성했던 코드 그 자체를 곧바로 제공이 가능
+           public -> private(money)
+
+3.작업한 내용을 포트폴리오로 준비해 공개
+
+4.기획자 역시 자신이 준비했었던 기획문서를 공개할 수 있다
+
+https://github.com
+
+ 계정명,이메일주소(인증 링크문자열이 전달),암호
+
+************************************************
+1.원격저장소->직접 만드는 경우
+   https://github.com/nup49rok1/testkim.git ->외부에서 접속을 할 수 있는 경로표시
+                                계정이름
+
+2.다른 사람의 원격저장소를 내 원격저장소로 복사(fork) 가져올 수 있다.
+************************************************
+***  원격 저장소와 git **
+
+===실습2 (로컬저장소(c:\imsi) <------>원격저장소(GitHub)(공유사이트)
+                              c:\imsi2
+                              c:\
+원격연결 =>git clone->원격저장소의 내용을 로컬저장소로 복사하라
+                      query =>원격저장소의 내용을 가져올 대상자
+	         
+*****************************************************
+https://github.com/nup49rok1/jquery-ui =>직접 온라인(url에 입력)
+                                                              =>다운로드를 받아서 가져간경우
+                                                                   Clone or Download
+https://github.com/Shin-googoo/jquery.git=> 원격저장소 주소2
+
+https://github.com/nup49rok1/ajax.git ->바로 ajax
+******************************************************
+git clone 복사해서 가져올 원격저장소 주소
+
+git clone https://github.com/nup49rok1/ajax.git
+===================================
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git clone https://github.com/nup49rok1/jquery.git
+
+Cloning into 'jquery'...
+remote: Enumerating objects: 66483, done.
+remote: Total 66483 (delta 0), reused 0 (delta 0), pack-reused 66483
+Receiving objects: 100% (66483/66483), 25.86 MiB | 1.53 MiB/s, done.
+Resolving deltas: 100% (49266/49266), done.
+
+ ==>다운로드가 됨을 확인이 가능
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ cd jquery
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ ls
+jquery/           test.txt
+  폴더명(보라색)        파일명
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ cd jquery
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi/jquery (master)
+$ ls
+AUTHORS.txt  CONTRIBUTING.md  Gruntfile.js  README.md  ui/
+bower.json   demos/           LICENSE.txt   tests/
+build/       external/        package.json  themes/
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi/jquery-ui (master)
+$ cat package.json
+{
+,,,,
+
+ git status=> origin/master =>내가 만든경우
+                    (원격저장소 이름)
+                    origin/dev
+========================================
+로컬저장소<--->원격저장소를 연결
+           원격연결
+
+
+  ppt=>command_hello을 작성하는 연습
+
+** 연결시키기 위해서 필요 ->git remote 명령어
+
+https://github.com/nup49rok1/test.git -> test 원격저장소를 생성한 경우 
+                                          =====
+https://github.com/Shin-googoo/command_hello.git
+                                          =============
+
+git remote add 원격저장소별칭명     원격저장소 주소명
+                       origin(master 대용)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git remote -v
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git remote add origin https://github.com/Shin-googoo/command_hello.git
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git remote -v
+ 
+ 업로드 및 다운로드용
+origin  https://github.com/Shin-googoo/command_hello.git (fetch)
+origin  https://github.com/Shin-googoo/command_hello.git (push)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+
+******************************************************
+git remote rm 삭제시킬 원격저장소 이름
+
+$git remote rm origin
+$git remote -v
+$ git remote add origin https://github.com/nup49rok1/test.git
+$git remote -v
+
+
+ kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (master)
+$ git remote rm origin(삭제시킬 원격저장소 별칭명)
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (master)
+$ git remote -v
+
+  연결이 끊어짐을 확인
+
+git remote add origin https://github.com/nup49rok1/test2.git
+git remote add origin https://github.com/nup49rok1/command_hello.git
+*******************************************************
+git push ->로컬저장소의 내용->원격저장소로 올리기(업로드)
+
+fatal: The current branch master has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin master
+
+  =>어떠한 브랜치를 가진 내용을 올린것인지 지정해 주지 않아서 발생된
+       에러메세지
+
+  =>git push 원격저장소 별칭명 --all (로컬저장소에 저장된 모든 브랜치-> 올려라)
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$
+  =>git push origin --all  ->로그인창(계정id,암호입력) ==>각자 입력
+					    계정명,개인토큰(암호)
+*****************************************************************
+*** 에러발생시 실습 ****
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git remote rm origin =>연결끊기
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git remote -v =>연결이 안되어있는 상태=>연결확인
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git remote add origin https://github.com/nup49rok1/command_hello.git 
+=>다시 연결
+                                                                              ===============
+                                                                                원격저장소는 다른것을 만들어서 연결
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git remote -v  =>연결확인
+origin  https://github.com/nup49rok1/command_hello.git (fetch)
+origin  https://github.com/nup49rok1/command_hello.git (push)
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git push origin --all
+
+   git push 오류발생시 토콘생성방법 
+   https://madplay.github.io/post/how-to-fix-github-password-authentication-was-removed-issue
+=>개인토큰(beta (x) classic (O)을 선택해서 작성) => 개인토큰 생성시
+	          note 부분에 간단한 개인토큰에 대한 설명란을 써야 개인 토큰 생성 (O)
+	          ex) note -> login test라는 텍스트 저장
+
+   Login창:계정명(nup49rok1)
+              암호:로그인할때의 암호입력
+
+   두번째 계정명=>Username for 'https://github.com': nup49rok1(계정명)
+                       암호창:개인토콘인증키를 복사해서 넣어주면 push
+********************************************************
+Logon failed, use ctrl+c to cancel basic credential prompt.
+Username for 'https://github.com': nup49rok1
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (15/15), 1.26 KiB | 645.00 KiB/s, done.
+Total 15 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/nup49rok1/command_hello.git
+ * [new branch]      hotfix -> hotfix
+ * [new branch]      master -> master
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+
+cat >>   만들고자하는 파일명
+작성ㅁ
+ㅇㅁ
+ㅇㅁ
+ㅁㅇ
+ctrl+ Z
+만들어지고 저장
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ cat >> README.md
+dkakda
+dda
+da
+da
+da
+da
+ad
+adffkfkfa
+ad
+dad
+ad
+ad
+[1]+  Stopped                 cat >> README.md
+           -> ctrl +. z 입력 => 입력x 저장 
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ cat README.md
+dkakda
+dda
+da
+da
+da
+da
+ad
+adffkfkfa
+ad
+dad
+ad
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git add README.md
+warning: LF will be replaced by CRLF in README.md.
+The file will have its original line endings in your working directory
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git config --global core.autocrlf true 
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git add README.md
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git commit -m "remote repository add README.md"
+-> 파일이 2개 이상이라면 $ git commit -am
+
+[master eb40ae1] remote repository add README.md
+ 1 file changed, 11 insertions(+)
+create mode 100644 README.md
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$ git push origin master	=> 연결이 되어있어야 사용할 수 있는 명령어
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 318 bytes | 318.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/nup49rok1/command_hello.git
+   28ee23a..eb40ae1  master -> master
+
+KITCOOP@DESKTOP-N8916Q4 MINGW64 /c/imsi (master)
+$
+
+**************************************************
+실패한 경우 사용!
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git push origin --all
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (15/15), 1.17 KiB | 1.17 MiB/s, done.
+Total 15 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), done.
+remote:
+remote: Create a pull request for 'hotfix' on GitHub by visiting:
+remote:      https://github.com/nup49rok1/test/pull/new/hotfix
+remote:
+To https://github.com/nup49rok1/test.git
+ * [new branch]      hotfix -> hotfix
+ ! [rejected]              master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/nup49rok1/test.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git remote -v
+origin  https://github.com/nup49rok1/test.git (fetch)
+origin  https://github.com/nup49rok1/test.git (push)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$ git push origin hotfix
+Everything up-to-date
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (master)
+$
+<?   -><%
+  
+?>        %>
+=====================================
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ ls
+jquery-ui/  test.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+
+*** 리눅스에서 파일을 만드는 방법 2가지 **
+
+$ vim imsi.txt(생성할 파일명) ->입력->esc키 shift: wq
+-------------------------------------------------------
+$ cat >> imsi.txt(만들고자하는 파일명)  =>cat >> 생성할 파일명
+       리다이렉션
+          <<
+--------------------------------------------------
+dakdakdakad
+ad'ad'da'dada'ad'ad
+ad
+da
+ad
+add
+a
+adgkgkgkaka
+dd
+ad
+d
+ad
+ad
+----------------->다 입력한 후 ^Z(ctrl+z) 입력하면 파일이 생성이 된다.
+
+[1]+  Stopped                 cat >> imsi.txt
+
+$ cat imsi.txt
+dakdakdakad
+ad'ad'da'dada'ad'ad
+ad
+da
+ad
+add
+a
+adgkgkgkaka
+dd
+ad
+d
+ad
+ad
+-----------------------------------------------------------
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ ls
+imsi.txt  jquery-ui/  test.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git add imsi.txt
+warning: LF will be replaced by CRLF in imsi.txt.
+The file will have its original line endings in your working y
+
+ =>윈도우와 리눅스의 저장방식이 다르기때문에 에러유발
+ 
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git config --global core.autocrlf true  =>유닉스방식으로 데이터를 저장
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git add imsi.txt  ->imsi.txt파일에 git에게 알려주는 역할(변화)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ 
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git commit -m "remote repository add a imsi.txt"
+
+=>git commit -a -m "remote repository add a imsi.txt"
+====================================
+[hotfix 2f7be3b] remote repository add a imsi.txt
+ 1 file changed, 13 insertions(+)
+ create mode 100644 imsi.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git push origin hotfix
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 326 bytes | 326.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/nup49rok1/test.git
+   e7ca045..2f7be3b  hotfix -> hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+https://github.com/nup49rok1/command_hello.git =>가장 최근에 만든거
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+
+$ git remote add origin https://github.com/nup49rok1/command_hello.git
+                                                          =======
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git remote -v
+
+origin  https://github.com/nup49rok1/command_hello.git (fetch)
+origin  https://github.com/nup49rok1/command_hello.git (push)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git push origin hotfix   ===>로그인창 =>id,/passwd =>개인토콘을 하기전
+
+Enumerating objects: 12, done.
+Counting objects: 100% (12/12), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (7/7), done.
+Writing objects: 100% (12/12), 1.04 KiB | 1.04 MiB/s, done.
+Total 12 (delta 0), reused 0 (delta 0)
+To https://github.com/nup49rok1/command_hello222.git
+ * [new branch]      hotfix -> hotfix  =>내 hotfix의 내용=>상대방에게도 
+                                                                                  hotfix만들어서
+                                                                                  내용을 저장
+=============================================
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+
+**********************************************
+git clone=>로컬저장소 <----원격저장소로 내용을 복사
+git remote add=>원격저장소 연결할때
+                rm ->원격저장소와 연결해제
+
+git push 원격저장소의 별명 내 로컬저장소의 브랜치면(or --all (모든 브랜치의)
+             내용을 올리기     =============
+
+ 콘솔모드에서 종료할때 exit(logout)->exit
+---------------------------------------------------------------------------------
+   로컬 master --->원격 master로 데이터 올리기 실패 ?
+       commit수          commit수가 같아야 된다.
+
+
+   Personal access tokens 생성
+
+   인증키(gXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) Delete버튼
+
+
+**********************************************
+git fetch  ->원격 저장소의 커밋정보들을 가져옴(작업한 내용)
+                          +
+             	          로컬 저장소의 작업과 병합(수동)
+                       원격 저장소에 반영
+
+ ==> git fetch(변경사항을 반영시켜주는 명령어)+git push(로컬->원격)
+                            수동으로 합치는 명령어    로컬의 정보=원격의 정보(동기화)
+
+git pull   -> 원격 저장소의 커밋정보들을 가져와서
+                       자동으로 로컬 브랜치에 병합  (자동)
+                       수행(단점 변경사항을 알 수없다)
+***********************************************
+//For commit GitHub tutorial
+//GitHub modification
+print("hello World");
+print("Tell your World");
+print("Tell her World");
+
+커밋 메세지 
+test.txt remote added
+
+==>브라우저 문제때문에 저장이 안된경우
+==>크롬으로 작업(추천)->저장이 된다.
+=============================
+로컬저장소에서 내용을 2줄 추가 
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ vim test.txt
+
+//For commit GitHub tutorial
+//GitHub modification
+-----------------------------------------> 내용을 수정한 경우 
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git commit -a -m "test.txt modification Local repository"[hotfix cb33a67] test.txt modification Local repository
+ 1 file changed, 2 insertions(+)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git status
+On branch hotfix
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        jquery/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git push origin hotfix    =>git push origin(원격) hotfix(로컬)
+-----------------------------------------
+To https://github.com/nup49rok1/command_hello222.git
+ ! [rejected]        hotfix -> hotfix (fetch first)
+error: failed to push some refs to 'https://github.com/nup49rok1/command_hello222.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+ ==>로컬,원격저장소의 같은 파일이라도 서로 같은 라인의 서로다른 내용을 저장
+ ===>저장되는 내용이 서로 다르다(=>커밋수가 다르다)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+$ git fetch  ->로컬저장소 정보 <== 원격저장소 정보
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/nup49rok1/command_hello222
+   2f7be3b..20873d3  hotfix     -> origin/hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git merge origin/hotfix => git merge origin/master
+Auto-merging test.txt
+CONFLICT (content): Merge conflict in test.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+   ==>로컬저장소의 test.txt   ----->원격저장소의 test.txt의 파일의 내용이
+          같은라인에 서로 다른 내용이 들어가있으면 병합이 안된다는 에러메세지가 출력
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix|MERGING)
+
+$ git diff
+diff --cc test.txt
+index 1bf4782,edb7f93..0000000
+--- a/test.txt
++++ b/test.txt
+@@@ -1,5 -1,5 +1,10 @@@
+++<<<<<<< HEAD
+ +//For command line git tutorial
+ +//Local repository modification
+++=======
+:  => q를 입력해야 빠져나간다. 
+,,,
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix|MERGING)
+$ vim test.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix|MERGING)
+$ git commit -a -m "conflict resolved GitHub"
+[hotfix a5b86ad] conflict resolved GitHub
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git push origin hotfix => git push origin master
+               ====(원격) hotfix(로컬의 브랜치명)
+
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 759 bytes | 759.00 KiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0)
+To https://github.com/nup49rok1/command_hello222.git
+   20873d3..a5b86ad  hotfix -> hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+ ->원격저장소를 클릭->새로 고침이 반영=>확인할 수 가 있다.
+==================================
+=>자동 ->git pull을 사용=>상대방(원격저장소)의 커밋정보를 가져와서
+                                                    맞춰주고 Local가져온다.
+                                                    에러발생->고치고 나서 git pull
+--------------------------------------------------------------
+//First GitHub modification
+
+//Second Local repository modification
+
+print("hello World");
+
+print("Tell your World");
+
+print("Tell her World");
+print("Tell My World");===>이 부분만 추가한 경우
+=============================
+
+ 커밋 메세지 
+  GitHub for git pull
+
+ 저장
+============================
+로컬저장소<----원격저장소의 변경내용을 자동
+                      가져오고->git fetch
+                      자동병합->git merge
+                      문제생김->git diff
+                       =====>자동으로 이 세가지를
+                          함꺼번에 해주는 명령어
+                      git pull를 사용할것.
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git pull origin hotfix	=> git pull origin master
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/nup49rok1/command_hello222
+ * branch            hotfix     -> FETCH_HEAD
+   a5b86ad..88e2cbf  hotfix     -> origin/hotfix
+Updating a5b86ad..88e2cbf
+Fast-forward
+ test.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ cat test.txt
+//First GitHub modification
+//Second Local repository modification
+print("hello World");
+print("Tell your World");
+print("Tell her World");
+print("Tell My World")  =>반영이 된것을 확인할 수가 있다.
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+
+
