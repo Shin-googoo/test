@@ -1,0 +1,451 @@
+2일차(Git과 이클립스와의 연동방법)
+
+
+
+git clone=>로컬저장소<----원격저장소로 내용을 복사
+git remote add
+                rm ->원격저장소와 연결,해제
+
+git push 원격저장소의 별명 내 로컬저장소의 브랜치면(or --all (모든 브랜치의)
+             내용을 올리기
+---------------------------------------------------------------------------------
+   로컬저장소 master ------------>원격 master로 데이터 올리기 실패 ?
+             commit수          ----------commit수가 같아야 된다.
+      (=프로젝트에서 작업한 양)
+
+**********************************************
+git push =>로컬=>원격
+git pull  =>원격->로컬
+
+git fetch  ->원격 저장소의 커밋정보들을 가져옴(작업한 내용)
+                          +
+                로컬 저장소의 작업과 병합(수동)
+                원격 저장소에 반영=>동기화
+
+ ==>git fetch(변경사항을 반영시켜주는 명령어)+git push(로컬->원격)
+
+git pull   -> 원격 저장소의 커밋정보들을 가져와(자동으로 git fetch을 해준다)
+                서 자동으로 로컬 브랜치에 병합  (자동)
+                수행(단점 변경사항을 알 수없다)
+
+*********************command_hello hello.txt**************************
+
+//For commit GitHub tutorial
+//GitHub modification
+print("hello World");
+print("Tell your World");
+print("Tell her World");
+
+커밋 메세지 
+hello.txt remote added
+
+==>브라우저 문제때문에 저장이 안된경우(IE)
+==>크롬으로 작업->저장이 된다.
+=============================
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ vim hello.txt
+
+
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git commit -a -m "test.txt modification Local repository"[hotfix cb33a67] test.txt modification Local repository
+ 1 file changed, 2 insertions(+)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git status
+On branch hotfix
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        jquery-ui/
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git push origin hotfix    =>git push origin(원격) hotfix(로컬)
+-----------------------------------------
+To https://github.com/nup49rok1/command_hello.git
+ ! [rejected]        hotfix -> hotfix (fetch first)
+error: failed to push some refs to 'https://github.com/nup49rok1/command_hello222.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+ ==>로컬,원격저장소의 같은 파일이라도 서로 같은 라인의 서로다른 내용을 저장
+ ===>저장되는 내용이 서로 다르다(=>커밋수가 다르다)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+$ git fetch  ->로컬저장소 정보== 원격저장소 정보
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/nup49rok1/command_hello222
+   2f7be3b..20873d3  hotfix     -> origin/hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git merge origin/hotfix
+Auto-merging hello.txt
+CONFLICT (content): Merge conflict in test.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+   ==>로컬저장소의 hello.txt   ----->원격저장소의 hello.txt의 파일의 내용이
+          같은라인에 서로 다른 내용이 들어가 있으면 병합이 안된다는 에러메세지가
+          출력
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix|MERGING)
+
+$ git diff  =>충돌난 두파일의 위치를 알려주세요하는 명령어
+diff --cc hello.txt
+index 1bf4782,edb7f93..0000000
+--- a/test.txt
++++ b/test.txt
+@@@ -1,5 -1,5 +1,10 @@@
+++<<<<<<< HEAD
+ +//For command line git tutorial
+ +//Local repository modification
+++=======
+:
+,,,
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix|MERGING)
+$ vim hello.txt
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix|MERGING)
+$ git commit -a -m "conflict resolved GitHub"
+[hotfix a5b86ad] conflict resolved GitHub
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$ git push origin hotfix
+               ====(원격) hotfix(로컬의 브랜치명)
+
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 759 bytes | 759.00 KiB/s, done.
+Total 6 (delta 0), reused 0 (delta 0)
+To https://github.com/nup49rok1/command_hello222.git
+   20873d3..a5b86ad  hotfix -> hotfix
+
+kitcoop@kitcoop-PC MINGW64 /c/imsi (hotfix)
+$
+
+ ->원격저장소를 클릭->새로 고침이 반영=>확인할 수 가 있다.
+==================================
+ git fetch+git push
+
+=>자동 ->git pull을 사용=>상대방의 커밋정보를 가져와서
+                                       맞춰주고 가져온다.
+                                에러발생->고치고 나서 git pull
+
+-----------------hello.txt---------------------------------------------
+//First GitHub modification
+
+//Second Local repository modification
+
+print("hello World");
+
+print("Tell your World");
+
+print("Tell her World");
+print("Tell My World");===>이 부분만 추가한 경우
+
+ 커밋메세지
+
+GitHub for git pull =>command change버튼누름
+
+  원격에서 hello.txt파일을 수정->커밋
+
+  로컬에서 git fetch+git push origin hotfix
+             합쳐서 한꺼번에 처리해주는 명령어
+             git pull origin hotfix
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (hotfix)
+$  git pull origin hotfix
+warning: redirecting to https://github.com/nup49rok1/command_hello.git/
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From http://github.com/nup49rok1/command_hello
+ * branch            hotfix     -> FETCH_HEAD
+   6579c89..85a04fb  hotfix     -> origin/hotfix
+Updating 6579c89..85a04fb
+Fast-forward
+ hello.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+kitcoop@DESKTOP-C1FHBJE MINGW64 /c/imsi (hotfix)
+
+cat hello.txt
+=============================
+
+->이클립스 프로젝트를 작성->GitHub(공통)->원격저장소 설정
+----------------------------------------------------------------
+*********
+이클립스
+           ->이클립스에서 Git 설치 및 사용법(1)
+              default로 git은 이미 설치된 상태(로컬 저장소를 설치)
+             help->eclipse market place->검색어 git
+
+           Window/->Perspective->Open Perspective
+          ->Other를 선택
+
+            로컬저장소 새로 생성->C:\Users\kitcoop\git
+                                                      계정명\git->새로 생성
+
+           ->C:\Users\kitcoop\git\repository\JspStudy(연결시킬 프로젝트명)
+                                         -------------->처음에는 새로 생성
+
+             Egit->install->설치가 안되어 있기에 설치->Eeclipse재가동
+                      installed->이미 설치가 완료된 상태를 의미 
+                                      설치할 필요가 없다.
+                      upgrade=>차기버전이 존재하면->다시 차기버전으로
+                                    설치하고나서 이클립스 재가동
+------------------------------------------------------------ 
+**********************************
+            
+            ->로컬저장소를 이용해서 브랜치 작성,브랜치 전환
+            ->충돌시 어떻게 해결
+
+1.로컬저장소 영역을 설정->git\jspStudy->소스파일 작성...
+                                1)파일 수정->git add 파일설정->커밋->커밋메세지를
+                                         작성->브랜치별로 작성한 내용을 기록(날짜)
+                                -------------------------------------------------------
+                                오 click->team->commit->파일 선택오click add to index
+                                클릭(git 에게 수정한 파일 목록을 등록)
+                                commit or commit push->원격저장소로 바로 올릴 수있는 옵션
+                                -----------------------------------------------------
+                                ->master 브랜치가 하나 생성이 되어서 작업 일어남
+
+   Java EE=>로컬 저장소 생성, 커밋,브랜치작성, 이동->작업,,,
+   git 화면->로컬 저장소----------->원격저장소
+                                     push
+                                 <-----------
+                                     pull
+--------------------------------------------------------------------------
+   새로 브랜치를 생성=>이동->작업
+   브랜치(자기만의 작업영역)->checkout(전환)
+
+  master->hello.jsp
+
+ <% 
+     //자바코드를 사용할 수 있는 영역(Scriptlet)->지역변수선언,제어문
+     String str="테스트";
+     //System.out.println("str=>"+str);//디버깅용
+     out.println("str=>"+str);//웹에 출력
+ %> 
+ *******************************
+  hello.jsp 수정한뒤에
+  array.jsp ~
+  git commit -am "create project~ " 
+ *******************************
+========================================
+
+ hotfix->hello.jsp
+
+<% 
+     //자바코드를 사용할 수 있는 영역(Scriptlet)->지역변수선언,제어문
+     String str="테스트";
+     document.write("~");
+     System.out.println("str=>"+str);//디버깅용
+     out.println("<h1>"+"str=>"+str+"</h1>");//웹에 출력
+ %>
+
+    master입장
+=>team->merge->병합할 브랜치를 선택(hotfix)=>합치시면 된다.
+----------------------------------------------------------------
+**************************************************
+merge가 충돌이 되면서 고쳐야 된다.(내용을 수정)->merge를 다시 해야 된다.
+(병합)
+**************************************************
+충돌=>같은 라인에 서로 다른 내용이 들어가 있으면 충돌->어느것을 병합해야될지
+           모르는 경우
+===============================================
+master->hello.jsp=><%=str%>->수정->커밋->커밋메세지 작성
+hotfix->hello.jsp=> <hr>->수정->커밋->커밋메세지 작성
+                               ~
+---------------------------------------------------------------------
+<%   master
+     //자바코드를 사용할 수 있는 영역(Scriptlet)->지역변수선언,제어문
+     String str="테스트";
+     System.out.println("str=>"+str);//디버깅용
+     out.println("<h1>"+"str=>"+str+"</h1>");//웹에 출력
+ %>
+ <%=str%>
+-----------------------------------------------------------------------------
+
+master                                            hotfix
+hello.jsp                                          hello.jsp
+(수정,commit(커밋메세지)                (수정,commit(커밋메세지)  
+                                                       
+           X
+=>테스트
+-----------------------------------------------------------------------------------
+master경우 hello.jsp 
+
+<%=str%>
+ <hr>
+ str값 출력=<%=str%>
+
+-----------------------------
+hotfix로 이동
+
+<%=str%>
+ <hr>
+ str값 출력=<%=str%>
+========================>충돌시  master에서 수정한 것을 
+                                                             commit으로 반영한 결과
+--------------------------------------------------------------------------------
+ git clone,git remote, git push,git fetch,git pull
+
+
+ command_hello ->hello.txt, imsi.txt
+
+  *** 경로문제 (존재하는 폴더를 지정)*** 
+  import as general project을 선택해도 불러온다.=>단순하게 파일이 들어있는경우
+  import using the New Project wizard를 이용해서 ->jsp프로젝트를 불러올 목적
+
+==============================
+https://github.com/nup49rok1/command_hello.git
+
+원격저장소의 내용을 로컬저장소로 가져오기(1)
+
+ 원격저장소가 이미 github에 존재하는 경우
+   ==>이클립스에 연결해서 작업(로컬 저장소가 없다면)
+   ==>프로젝트를 새로 만들어서 불러오는 방법
+-------------------------------------------------------------
+JspStudye(로컬 저장소)<----------------------새로 원격저장소 생성(1)
+                                             pull(3)
+JspStudye(로컬 저장소)---------------------->새로 원격저장소 생성(1)
+                                            push(2)
+
+
+https://github.com/--------->한번 로그인한 적이 있으면 바로 접속
+=========================================
+새로운 원격저장소 이름을 작성=>eclipse_jspstudy
+
+https://github.com/nup49rok1/eclipse_jspstudy.git
+
+==>로컬저장소에서 원격저장소로 파일을 업로드할때 필요로하는 원격저장소 주소값
+
+origin->원격저장소의 master의 별칭이름->그대로 사용
+ 
+Push to Upstream
+
+모든 브랜치의 작업내역을
+푸시하는 간편한 방식
+================================
+ 로컬저장소(abc/imsi.jsp추가)->commit->push   원격저장소에 올라갔는지 확인
+                                                                (수정이 가능)imsi.jsp
+                                                                   commit
+로컬저장소jspStudy 에 있는 abc/imsi.jsp파일 내용
+~
+수식계산:<%=(3+5)%>
+
+-----------------------------------------------------------------------------
+원격저장소에 존재하는 eclispe_jspStudy에 있는 abc/imsi.jsp파일 내용
+
+수식계산:<%=(3+5)%>
+<hr>
+수식계산2:<%=(3*5)%>
+                    
+커밋메세지=>imsi.jsp modified on GitHub =>Command changes
+---------------------------------------------------------------------
+
+JspStudye(로컬 저장소)<----------------------새로 원격저장소 생성(1)
+                                             pull(fetch+merge)
+JspStudye(로컬 저장소)---------------------->새로 원격저장소 생성(1)
+                                            push
+
+push할때 에러가 유발이 되는 경우
+
+로컬저장소(파일 내용)!= 원격저장소(파일 내용)->내용수정(commit의 수)
+    push가 에러유발(똑같은 파일이 존재하면서 같은 라인에 서로 다른 내용이 들어
+                            있으면 에러유발)
+
+<hr>
+수식계산3:<%=(3*5) %>
+수식계산4:<%=(6/2) %>
+
+ master /abc/imsi.jsp 
+커밋메세지->imsi.jsp modified on GitHub
+
+================================================
+
+로컬저장소 입장에서 원격저장소에서 변경된 내용(commit수,내용)의 정보를 먼저
+로컬저장소로 가지고 와서 이 저장소에 맞게 내용을 읽어들여서 push
+   **(fetch)**+(push)==>pull
+               Merge
+
+fetch=>원격저장소에서 변경된 내용(commit수,내용)의 정보를 먼저
+           로컬저장소로 가지고 오는 명령어
+=======================================
+
+                1.GitHub(원격저장소)와 연결
+                2.GitHub을 데이터를 올리기
+                3.GitHub-->이클립스로 데이터를 가져오기
+==================================
+  imsi.jsp파일 수정=> 원격저장소에서 작업
+
+ 수식계산2:<%=(3*5) %>
+   
+ 수식계산3:<%=(6/2) %>
+
+  중간정리
+***********************************************
+  작업을 하고나서 바로 커밋할 대상자를 모두 선택
+  커밋메세지를 주고 commit and push=>개인계정명,개인토큰암호 인증
+                                             =>이미 인증된 경우라면 바로 적용
+                      commit , push branch master
+                                   push to origin->모든 branch 적용
+***********************************************
+                     commit and push->reject(충돌난 부분이 있다는 표시)
+                     git fetch+git merge=>git diff(충돌위치 알려준다.)
+                     =>git pull
+                     수정하고 다시 push하면 된다.
+
+===================
+ <hr>
+ 수식계산4:<%=(3-4)%>  =>수정=>커밋
+
+커밋메세지=>last commit
+
+fetch = +refs/heads/*:refs/remotes/origin/*
+========================================
+로컬=>원격저장소 정보(git fetch)->Merge->push=>git pull(중간과정 생략->에러수정어려움)
+
+에러유발->pull 메뉴를 이용해서 어디가 충돌이 났는지를 바로 확인이 가능
+            처음에는 에러유발->환경설정 파일을 불러와서 fetch정보 넣어준뒤에
+            pull->충돌위치를 알려주니깐 ->수정하고 바로 commit and push
+========================================
+
+
+***** git에서 팀프로젝트를 하는 방법****
+
+git에서 팀프로젝트 만들기 =>구글 검색어
+
+  업무가 나누어진 상태(모델링이 끝나야 =>각 업무별로 테이블을 설계작성)
+
+1.https://devlog-wjdrbs96.tistory.com/226 =>프로젝트 팀조직 생성하는 방법
+
+2.https://xively.tistory.com/17=>팀조직 생성및 초대하는 방법
+
+3.https://victorydntmd.tistory.com/91 =>프로젝트 협업하는 방법
+                                                                                     각자 맡은 업무별로 작업을 하는 경우
+********************************************************************(
+
+
