@@ -1,0 +1,325 @@
+웹프로그래밍=> jsp(모델1,모델2)-> Ajax
+
+1일차 Ajax의 개요 및 작성법
+
+=>AjaxTest
+===============
+  web programming=>1.server->Jsp(Java),Spring,Ajax Programming(=>before)
+                                             2.client=>javascript,jQuery,bootsrap~
+                                                                 (Ajax)(=after)
+-----------------------------------------------------------------------------------------
+ 1.domob1.html
+
+<script>
+ //함수의 선언부분=>1.함수를 이용해서 객체를 생성  
+			2.동적 멤버변수를 생성(선언X  바로 사용)->컴파일과정X
+ //형식) function 함수명(매개변수,,,,)->자바의 생성자를 이용
+ function Student(name,grade,sung,addr){ //public Student(String name,String grade,String~)
+	 //this.멤버변수=값
+	 this.name=name;//this.name="홍길동"
+     this.grade=grade;//this.grade=1
+     this.sung=sung;//this.sung="남"
+     this.addr=addr;//this.addr="서울시 강남구 대현빌딩 3층"
+ }
+</script>
+</head>
+<body>
+<script>
+//객체생성->클래스명 객체명=new 클래스명(=생성자)()->자바
+//                     객체명=new 함수명(매개변수명,,,,)    
+hong=new Student("홍길동",1,"남","서울시 강남구 대현빌딩 3층");
+alert(hong.name+","+hong.grade+","+hong.sung+","+hong.addr);//객체명.속성명
+</script>
+
+2.domob2.html
+
+<title>2.domob2.html(객체생성방법-2)</title>
+<script>
+ function test(){
+	 //형식) var 객체명=new Object();//형이 정해져 있지 않다->어떠한 대상도 저장이 가능하다.
+	 //       Student st=new Student();//학생만 저장
+	 var mem=new Object(); //객체명.속성명=저장할값->따라서 자동으로 자료형이 결정된다.
+	 mem.id=1234; //private int id=1234;(자바)
+	 mem.name="테스트";//String name="테스트";
+	 mem.hobby="바둑";
+	 mem.sung="남자";
+	 
+	 //Setter Method->public void setId(int id) {this.id=id}
+	 //형식) 객체명.함수명=function(매개변수명){this.속성명=값}
+	 mem.setHobby=function(hobby){  //public void setHobby(String hobby){this.hobby=hobby}
+		 this.hobby=hobby;//this.hobby="음악감상"
+	 }
+	 //Getter Method->public 반환값 get멤버변수명(){ return this.멤버변수명;}
+	 //형식) 객체명.함수명=function(){ return this.속성명}
+	 mem.getHobby=function(){
+		 return this.hobby;
+	 }
+	 //public String toString(){}
+	 mem.toString=function(){
+		 return this.id+","+this.name+","+this.hobby+","+this.sung;
+	 }
+	 //객체명.호출할 함수명(저장할값~)
+	 mem.setHobby("음악감상");
+	 alert(mem.toString());
+ }
+</script>
+</head>
+<body onload="test()">
+
+</body>
+</html>
+-------------------------------------------------------
+** 3.domob3.html (key,value) **
+
+<title>key,value값을 이용한 객체생성방법-3(JSON 표기법)</title>
+<script>
+ /*
+   형식) var 객체명={
+		  속성명(=멤버변수명):값1, 
+		  속성명2:값2,
+		  ,,,
+		  함수명:function(매개변수~){내용기술}
+   }
+ */
+ //var person={}  내용이 없는 객체
+ var person={
+		  name:'홍길동', //key(속성명):값(value)
+		  age:23,
+		  eat:function(food){
+			  alert(this.name+'은 오늘'+food+'을 먹을 예정입니다.');
+		  }
+   }
+   //객체명.속성명
+   document.write(person.name);
+   person.eat('도시락');
+</script>
+</head>
+<body>
+
+</body>
+</html>
+==================================
+** Ajax**
+
+Asynchronous Javascript and XML
+(비동기적인)
+
+기존 방식(모델1,모델2 방식)
+
+웹 브라우저가 서버에 Request 전송
+서버는 Request를 처리하여 Response를 사용자에게 전송
+웹 브라우저가 Response 내용을 표시
+
+
+**** Ajax의 4대 구성요소 ****
+
+**************************************************
+개요=>서버에 직접적으로 요청하지 않고 간접적으로 xhr객체를 통해서 요청하며
+         요청결과를 xhr객체를 통해서 브라우저로 실시간으로 전송을 받는다.
+        =>요청결과를 원하는 위치에 출력시켜주는 프로그래밍방식
+***************************************************
+특징
+
+ 1) 서버와 직접 연결X->요청을 할 수 없다.(XHR 객체)
+ 2) 페이지 이동이 없다.
+
+
+1.XMLHttpRequest(=XHR객체)=>브라우저에서 만들어서 준다.
+    기능=>웹 서버와의 통신 담당      client----xhr객체----server
+ 
+2.DOM(Document Object Model)=>클라이언트의 특정위치에 출력
+   문서 구조 담당
+
+3.CSS =>화면 디자인
+글자색, 배경색 등의 UI 담당
+
+4.자바스크립트=>이벤트를 연결
+
+사용자의 동작 감지, XMLHttpRequest와 DOM, CSS 사이의 중개
+*************************************************
+   ** Ajax 프로그래밍 작성 순서 **  
+
+Step 1 : XMLHttpRequest 객체 구하기
+Step 2 : 웹 서버에 요청 전송하기
+Step 3 : 웹 서버의 응답을 화면에 반영하기
+
+=======================================
+ 4.domajax.html
+
+  function test(){
+	   /*
+	     IE(ActiveXObject 속성),IE외의 chrome,firefox,,,(XMLHttpRequest속성)
+	     //IE7 이후부터,IE외의 다른 브라우저->XMLHttpRequest속성
+	   */
+	   if(window.XMLHttpRequest){
+		   var xhrObject=new XMLHttpRequest();//객체를 생성->반환
+		   alert(xhrObject);//[xhr Object] =>주소값 표시 
+                                     $.ajax()=>jQuery에서 Ajax를 처리해주는 함수이름
+	   }
+   }
+</script>
+</head>
+<body onload="test()">
+==============================================
+4.domajax.html save as 5.domAjax2.html=>Ajax의 처리과정을 기술
+
+IE->?  chromse->다이아몬드 형태출력
+
+simple.txt  ->파일의 문서형태->utf-8 =>한글처리 OK
+
+simple2.txt ->ansi로 저장한 경우=>한글이 깨진다.
+
+==============================
+simple.jsp->charset=utf-8 =========>charset이 utf-8,euc-kr로 설정하면
+                  파일의 문서형태->utf-8                   한글처리 OK
+
+simple2.jsp->charset=euc-kr(옛날방식의 한글처리방법)
+                  파일의 문서형태->ansi
+
+============================
+
+<title>Ajax의 요청및 처리과정</title>
+<script>
+
+    var httpRequest=null;//xhr객체를 저장할 변수(전역변수의 성격)
+    
+    //1)xhr객체를 얻어오는 함수
+   function getXHR(){
+	   if(window.XMLHttpRequest){
+		   //httpRequest=new XMLHttpRequest();//객체를 생성->반환
+		   return new XMLHttpRequest();
+	   }
+   }
+    //2)요청을 받아서 처리해주는 함수
+   function load(url){//2.요청문서를 매개변수로 전달받아서 서버에 요청해주는 함수
+	   //1.xhr객체를 구해주는 구문
+	   httpRequest=getXHR();
+       //alert(httpRequest);
+       //2.서버요청할 준비->콜백함수를 지정
+       //콜백함수->특별한 조건이 만족하면 자동적으로 실행이 되는 함수
+       //2.형식)xhr객체명.onreadystatechange=콜백함수명;//() X ->함수이름만 쓸것
+       httpRequest.onreadystatechange=viewMessage;
+       //3.xhr객체명.open(3개의 매개변수를 지정)
+       //1)요청방식(get or post),2.요청문서명(url),3.처리방식(비동기방식(true) or 동기방식)
+       //비동기방식=>채팅,메일보내기(상대방이 결과를 보내주는것아 상관없이 다른일을 할 수 있는 방식)
+       httpRequest.open("GET",url,true);
+       //4.xhr객체명.send(null or 매개변수명)
+       httpRequest.send(null);//서버에게 요청하는 함수
+   }
+    //3)서버로부터 처리결과를 받아서 출력시켜주는 함수(=콜백함수)
+    function viewMessage(){
+    	//alert("viewMessage()호출됨!");
+    	//1)톰캣서버가 클라이언트의 요청을 다 받았는지 확인?->readyState=4(1,2,3 일부만 받은경우)
+    		if(httpRequest.readyState==4){
+    			//2.톰캣서버가 클라이언트에게 데이터를 다 전송했는지를 체크
+    			if(httpRequest.status==200){//404(페이지  X),500(문법에러),403(접근금지)
+    				//텍스트(text)->responseText 이용 xml(responseXml 속성을 이용),json
+    				alert(httpRequest.responseText);
+    			}else{//404(페이지  X),500(문법에러),403(접근금지)
+    				alert('실패:'+httpRequest.status);
+    			}
+    		}
+    }
+</script>
+</head>
+<body>
+   <h2>텍스트파일에 대한 한글처리방법</h2><!-- 1.이벤트발생 -->
+   <input type="button" value="simple.txt" onclick="load('simple.txt')">
+   <input type="button" value="simple2.txt" onclick="load('simple2.txt')">
+   <input type="button" value="simple.jsp" onclick="load('simple.jsp')">
+   <input type="button" value="simple2.jsp" onclick="load('simple2.jsp')">
+</body>
+</html>
+------------------------------------------------------------------------------------
+  ** 중복id를 체크 기능**
+
+1.script.js에서 idCheck()함수의 사용X
+ 
+//중복ID체크 해주는 자바스크립트함수 선언
+/*  작동되지 않도록 주석처리할 것.
+function idCheck(id){
+   if(id==""){
+	   alert("아이디를 먼저 입력하세요!");
+	   document.regForm.mem_id.focus();//document.폼객체명.입력양식객체명.함수명()
+   }else{//입력을 했다면 ->jsp파일에게 매개변수를 전달하는 방법
+	   //창을 실행->요청할 문서를 지정->매개변수도 같이 전달할 수있도록 코딩
+	   url="IdCheck.jsp?mem_id="+id //request.getParameter("mem_id")
+	   //1.불러올 문서명 2.창의 제목 3.창의 옵션
+	   window.open(url,"post","left=450,top=150,width=300,height=150")
+   }
+}
+*/
+
+
+
+  JspMember의 WebContent에 복사해서 사용할것.
+  Register.jsp -> Register2.jsp 복사 
+===========================
+html->dhtml->html+xml문서형태의 파일을 저장
+                         사용자정의 태그를 같이 사용
+                          XHTML
+
+Ajax를 같이 사용=>jsp=>html+선언문
+
+                         jsp=>xhtml+선언문 =>imtest.jsp
+
+Register.jsp save as Register2.jsp로 백업을 받을것.
+
+******************************************************
+2.Register.jsp에의 선언문을 xhmlt형식의 선언문으로 변경
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<input type="text" name="mem_id"  id="mem_id"  size="15">
+                                                       ========
+		      <input type="button" value="ID중복확인" 
+                                     onClick="idCheck(this.form.mem_id.value)"></td>
+            <td id="ducheck" width="27%">아이디를 적어 주세요.</td>
+                  ========>특정 td정보를 얻어오기 위해서 필요
+============================================
+
+3.searchWord.js 따로 자바스크립트 파일 작성
+  Ajaxj의 전체처리코드
+
+4.prototype.js->jQuery를 배우기전의 나온 자바스크립트
+   배포                     라이브러리
+
+***********************************************
+function $(element) {
+  if (arguments.length > 1) {
+    for (var i = 0, elements = [], length = arguments.length; i < length; i++)
+      elements.push($(arguments[i]));
+    return elements;
+  }
+  if (Object.isString(element))
+    ===============================
+    element = document.getElementById(element);
+   ================================
+  return Element.extend(element);
+}
+*************************************************
+
+var test = document.getElementById("mem_id"); //태그정보
+               $("id값")=>$("mem_id")
+                       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
