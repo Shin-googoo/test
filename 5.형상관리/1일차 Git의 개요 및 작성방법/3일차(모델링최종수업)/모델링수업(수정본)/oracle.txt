@@ -1,0 +1,109 @@
+/* 부서 */
+CREATE TABLE dept2 (
+	deptno NUMBER(3) NOT NULL, /* 부서번호 */
+	dname VARCHAR2(20), /* 부서명 */
+	loc varchar2(30) /* 부서위치 */
+);
+
+COMMENT ON TABLE dept2 IS '부서';
+
+COMMENT ON COLUMN dept2.deptno IS '부서번호';
+
+COMMENT ON COLUMN dept2.dname IS '부서명';
+
+COMMENT ON COLUMN dept2.loc IS '부서위치';
+
+CREATE UNIQUE INDEX PK_dept2
+	ON dept2 (
+		deptno ASC
+	);
+
+ALTER TABLE dept2
+	ADD
+		CONSTRAINT PK_dept2
+		PRIMARY KEY (
+			deptno
+		);
+
+/* 사원 */
+CREATE TABLE sawon2 (
+	sabun number(3) NOT NULL, /* 사원번호 */
+	saname VARCHAR2(50), /* 이름 */
+	addr VARCHAR2(255), /* 주소 */
+	tel VARCHAR2(30), /* 전번 */
+	deptno NUMBER(3) /* 부서번호 */
+);
+
+COMMENT ON TABLE sawon2 IS '사원';
+
+COMMENT ON COLUMN sawon2.sabun IS '사원번호';
+
+COMMENT ON COLUMN sawon2.saname IS '이름';
+
+COMMENT ON COLUMN sawon2.addr IS '주소';
+
+COMMENT ON COLUMN sawon2.tel IS '전번';
+
+COMMENT ON COLUMN sawon2.deptno IS '부서번호';
+
+CREATE UNIQUE INDEX PK_sawon2
+	ON sawon2 (
+		sabun ASC
+	);
+
+ALTER TABLE sawon2
+	ADD
+		CONSTRAINT PK_sawon2
+		PRIMARY KEY (
+			sabun
+		);
+
+/* 신체 */
+CREATE TABLE body (
+	sabun number(3) NOT NULL, /* 사원번호 */
+	height number(3,2), /* 키 */
+	weight number(3,2), /* 몸무게 */
+	blood varchar2(4) /* 혈액형 */
+);
+
+COMMENT ON TABLE body IS '신체';
+
+COMMENT ON COLUMN body.sabun IS '사원번호';
+
+COMMENT ON COLUMN body.height IS '키';
+
+COMMENT ON COLUMN body.weight IS '몸무게';
+
+COMMENT ON COLUMN body.blood IS '혈액형';
+
+CREATE UNIQUE INDEX PK_body
+	ON body (
+		sabun ASC
+	);
+
+ALTER TABLE body
+	ADD
+		CONSTRAINT PK_body
+		PRIMARY KEY (
+			sabun
+		);
+
+ALTER TABLE sawon2
+	ADD
+		CONSTRAINT FK_dept2_TO_sawon2
+		FOREIGN KEY (
+			deptno
+		)
+		REFERENCES dept2 (
+			deptno
+		);
+
+ALTER TABLE body
+	ADD
+		CONSTRAINT FK_sawon2_TO_body
+		FOREIGN KEY (
+			sabun
+		)
+		REFERENCES sawon2 (
+			sabun
+		);
