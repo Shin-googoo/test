@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+           src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>06.child.html(부모-자식관계(중첩))</title>
+<script>
+  $(function(){
+	  //중첩=>트리구조 형성(DOM)
+	  //형식) 부모태그 > 자식태그->부모태그 바로 밑에 있는 자식태그를 선택할때 사용->자손태그 포함X
+	  //형식2) 부모태그 자식태그->부모태그 바로 밑에 있는 자식태그를 선택할때 사용->자손태그 포함O
+	  //형식3)부모태그+자식태그=>바로 옆의 태그를 찾을때 사용
+	  //next()->바로 다음번 항목,<->prev()=>바로 전의 항목(태그)
+	  //nextAll()->바로 다음번 항목 전체,<->prevAll()->바로 이전의 항목전체
+	  $('body div').css('border','3px solid navy');
+	 // $('span+a').next().next().css('border','3px double green'); next() 여러번 사용이 가능
+	  $('span+a').nextAll().css('border','3px double green');
+	  $('span+a').next().next().prevAll().css('background','yellow');//태그정보2를 기준으로 왼쪽에 있는 모든 태그
+	  $('span+a').siblings().css('background','cyan');//a태그를 기준으로해서 왼쪽(형)과 오른쪽(동생)태그들
+  })
+</script>
+</head>
+<body>
+    <div>
+          <ul>과일목록
+              <li>사과</li>
+              <li>배</li>
+              <li>복숭아</li>
+              <li>오렌지</li>
+              <li>파인애플</li>
+          </ul>
+          <div>가을</div>
+    </div>
+    <div>jQuery 연습</div>
+    <p>
+    	<span>태그정보</span>
+    	<a>one</a>
+    	<span>태그정보2</span>
+    	<span>태그정보3</span>
+    	<span>태그정보4</span>
+    </p>
+</body>
+</html>
+
