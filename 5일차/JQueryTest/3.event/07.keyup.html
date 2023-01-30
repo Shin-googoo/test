@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>jQuery defalut</title>
+<script>
+	$(function(){
+    /*
+    사용자가 글자를 입력했을때 발생하는 이벤트-> KeyUp (Typing)
+    단순히 특정글자를 누른 경우=> KeyPress(F1~F12,Alt,Ctrl,Shift)
+    보통 글자를 누른경우-> KeyDown 
+    */
+    $('input').keyup(function(){
+      //사용자정의 함수를 부르는 방법을 알려주기 위해서 
+      var value=$(this).val(); //써진 글자-> $('input').val()
+      //출력구문
+      report(value); // $('#console').text(value) ;
+    })
+    //버튼을 눌렀을때 input 박스의 내용을 지우고 커서 입력
+    $('button').click(function(){
+      $('input').val(''); //지우기
+      $('input').focus(); //커서 입력 
+      $('#console').empty(); //내용만 삭제 
+    })
+    //사용자정의 함수 
+    function report(msg){
+      $('#console').text(msg); //<-> $('#console').text() 
+    }
+	})
+</script>
+</head>
+<body>
+  <button>reset</button><p>
+  <input type="text" value="val함수 연습중" size="100">
+  <div id="console"></div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>09.formevent.html</title>
+<script>
+	$(function(){
+    $('h1').css({'color':'red','text-decoration':'underline'});
+    //형식) $('자식선택자').wrap('부모태그 내용')
+    $('#message').wrap('<h2>요소안에 자료를 넣기</h2>');
+	})
+</script>
+</head>
+<body>
+  <h1>jQuery의 이벤트 종류 정리</h1>
+    <!-- <h2>요소 안에 자료를 넣기 -->
+      <div id="message"></div>
+    <!-- </h2> -->
+  <form id="frm" action="aa.jsp">
+    <input type="text" id="data" name="data">
+    <input type="submit" value="확인">
+  </form><p>
+  <button id="clear">지우기</button>
+  <ul id="disp">
+    <!-- 
+    <li>aaa</li>
+    <li>bbb</li>
+    <li>ccc</li> 
+    -->
+  </ul><p>
+    <a href="http://www.daum.net">daum</a>
+</body>
+</html>

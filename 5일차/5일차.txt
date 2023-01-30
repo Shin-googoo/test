@@ -1,0 +1,292 @@
+5일차(jQuery의 이벤트처리) =>이벤트 종류와 함수
+3.event 
+01.bind.html
+
+ <script>
+  $(function(){
+	  /*
+	  형식) window.on이벤트종류명=호출할 함수명 or function(){}
+	  형식2) window.addEventListener(이벤트종류명,실행할 함수명)
+	  형식3)$(이벤트발생 대상자 선택자).bind(등록할 이벤트종류명,함수명 또는 function(){})
+	        태그의 기본적인 기능(원래기능 (링크)->이동, 전송버튼(submit)->페이지 이동)
+	        비활성화 시키는 방법->1)함수끝에 return false를 주는 경우->매개변수 X
+	                                    2)함수를 작성하면서 event객체를 매개변수로 전달받아서
+	                                       event.preventDefault()를 호출해도 된다.
+	  */
+	  //$('a').bind('click',function(){  (1)
+	  //$('a').bind('click',function(event){//(2) ->이벤트종류명(호출할함수명 또는 function(){})
+	  $('a').click(function(event){//(2)
+		  //alert('click이벤트 처리')
+		  //$(this)->each내부의 같은 태그를 구분할때 사용,이벤트를 발생시킨 태그를 구분할때도 사용
+		  //var href=$(this).attr('href');//$('선택자').attr(속성명,속성값)<->$('선택자').attr(속성명)
+		  //alert(href);
+		  //$('img').attr('src',href);
+		  $('img').attr('src',$(this).attr('href'));
+		  //return false (1)
+		  event.preventDefault();//(2)
+	  })
+  })
+</script>
+</head>
+<body>
+   <ul><!-- 링크걸기(기본기능(페이지 이동기능)) -->
+     <li><a href="../picCats/Persian.jpg">Persian</a></li>
+     <li><a href="../picCats/RussianBlue.jpg">RussianBlue</a></li>
+     <li><a href="../picCats/BritishShorthairs.jpg">BritishShorthairs</a></li>
+   </ul>
+   <img>
+  <!--  <img src="../picCats/Persian.jpg"> -->
+</body>
+</html>
+
+ 02.toggleclass.html
+
+<style>
+   p {margin:4px;font-size:16px;
+        font-weight:bolder;cursor:pointer}
+   .blue {color:blue}       =========
+</style>
+<script>
+  $(function(){
+	  //$('p').bind('click',function(){
+	  //jquery에서의 이벤트 연결방법2->$(선택자).이벤트종류명(function(){})
+	  $('p').click(function(){
+		  //alert('이벤트종류')
+		  //형식) $(선택자).toggleClass(클래스 선택자)  addClass()<->removeClass()
+		  $(this).toggleClass('blue');//같은 태그구분(이벤트를 발생시킨 태그를 가리키는 예약어)
+	  })
+  })
+</script>
+</head>
+<body>
+<p class="blue">엘리먼트에 적용된 클래스를</p>
+<p>추가하고 제거하기를 반복연습합니다.
+</body>
+</html>
+======================================
+03.bind2.html
+
+<script>
+  $(function(){
+	  /*
+	   이벤트 연결방식->2가지 차이점?
+	   형식) 등록할 이벤트명:function() {} ->익명함수형태로 코딩
+	   
+	   1.bind를 사용하는 경우->현재 발생시킬 이벤트 뿐만아니라 다른 이벤트도 연결이 가능
+	   2.bind를 사용X ->click->발생시킨 이벤트만 처리
+	  
+	  */
+	  $('img').bind({   //<->unbind()=>이벤트 연결을 해제시켜주는 함수
+		  mouseout:function(){
+			  $('img').attr('src','../picCats/Persian.jpg')
+		  },
+		  mouseover:function(){
+			  $('img').attr('src','../picCats/RussianBlue.jpg')
+		  },
+		  click:function(){
+			  alert('bind함수를 이용한 연결테스트입니다.')
+		  }
+	  })
+	  /*
+	  $('img').mouseover(function(){})
+	  $('img').mouseout(function(){})
+	  $('img').click(function(){})
+	  */
+  })
+</script>
+</head>
+<body>
+  <img src="../picCats/Persian.jpg" width="200" height="200">
+</body>
+</html>
+----------------------------------------------------------------
+04.remove.html
+
+<title>jQuery예제(특정태그의 내용을 삭제(remove,empty구분))</title>
+<script>
+  $(function(){
+	  //$('#button1').bind('click',function(){})
+	  $('#button1').click(function(){
+	       $('#div1').remove() //전체삭제->drop table 삭제할 테이블명(구조까지 삭제 내용까지)
+	  })
+	  $('#button2').click(function(){
+		  $('#div1').empty()//->특정태그의 자식태그를 포함한다면 자식태드들도 삭제
+	  })
+	  $('#button3').click(function(){
+	      $('.test').empty()//delete from 테이블명=>특정 태그의 내용만 삭제
+	  })
+  })
+</script>
+</head>
+<body>
+<div id="div1"  style="height:100px;width:300px;
+                                 border:1px solid black;background-color:yellow">
+                                 
+	<p class="test" style="height:50px;width:50px;
+                                 border:1px solid red;background-color:yellow">div first</p>
+    <p>div second</p>
+</div><br>
+<button id="button1">Remove div</button>
+<button id="button2">Empty div</button>
+<button id="button3">Empty p</button>
+</body>
+</html>
+
+========================================
+05.event.html
+
+<script>
+  $(function(){
+	  //event객체->이벤트를 발생시킨 객체에 대한 정보를 가지고 있는 객체(클릭한 좌표값,마우스버튼 누른경우)
+	 // $('img').bind('dblclick',function(event){
+	  $('img').one('dblclick',function(event){
+		  //alert('이미지 더블클릭')
+		  //var $target=$(event.target) //이벤트를 발생시킨 대상자에 대한 정보를 가지고 있는 속성
+		  var $target=$(this)
+		  alert($target.width()+","+$target.height())//120,120
+		  $target.width($target.width()*2)
+		  //형식2) $(이벤트발생대상자 선택자).unbind('해제시킬 이벤트종류명')
+		  //형식3) $(이벤트발생대상자 선택자).unbind()->모든 이벤트 연결이 다 끊어진다.
+		//  $target.unbind() //$target.unbind('dblclick')
+	  })
+  $(document).on('mouseover',function(e){
+		$('.posX').text(e.pageX);//e.pageX->x좌표값
+		$('.posY').text(e.pageY);//e.pageY->y좌표값
+	 })
+  })
+</script>
+</head>
+<body>
+   <img src="../picCats/Persian.jpg" >
+   <p>x:<span class="posX">0</span></p>
+   <p>y:<span class="posY">0</span></p>
+</body>
+</html>
+========================================
+**06.hover.html
+
+<script>
+  $(function(){
+	  //형식) $('선택자').hover(1.mouseover|function(){},2.mouseout | function(){})
+	  //mouseouver와 mouseout을 번갈아 가면서 호출해주는 함수->hover
+	  $('h1').hover(function(){
+		  //$(event.target) ->event객체를 매개변수로 받아올것.
+		  $(this).addClass('reverse')
+	  },function(){
+		  $(this).removeClass('reverse')
+	  })
+  })
+  //function test(){}
+  //function test2(){}
+</script>
+</head>
+<body>
+ <h1>hover test-0</h1>
+ <h1>hover test-1</h1>
+ <h1>hover test-2</h1>
+</body>
+</html>
+----------------------------------------------------------------
+07.keyup.html
+
+<script>
+  $(function(){
+	  //사용자가 글자를 입력했을때 발생하는 이벤트->keyUp
+	  //단순히 특정글자를 누른경우->keyPress
+	  $('input').keyup(function(){
+		  var value=$(this).val()
+		  //출력구문
+		  report(value)
+	  })
+	  //버튼을 눌렀을때 input의 내용을 지우고 커서 입력
+	  $('button').click(function(){
+		  $('input').val('')
+		  $('input').focus() //커서입력
+		  $('#console').empty() //내용을 삭제
+	  })
+	  //사용자 정의 함수를 작성->div태그에 입력받은 값을 추가시켜주는 함수 작성
+	  function report(msg){
+		  $('#console').text(msg)//<->$('#console').text()(Getter 함수)
+	  }
+  })
+</script>
+</head>
+<body>
+ <button>reset</button><p>
+ <input type="text" value="val 함수 연습중" size="100">
+ <div id="console"></div>
+</body>
+------------------------------------------------------------------------
+08.change.html =>change이벤트를 발생
+
+<script>
+  $(function(){
+	  $('#sel').change(function(event){
+		  /*
+		  var imgSrc=$(event.target).val()
+		  $('#img').attr('src',imgSrc)
+		  */
+		  $('#img').attr('src',$(event.target).val())
+	  })
+  })
+</script>
+</head>
+<body>
+<form name="frm">
+   <table>
+    <tr>
+       <td>
+          <select id="sel">
+               <option value="../picCats/ragdoll.jpg">Ragdoll</option>
+               <option value="../picCats/MaineCoon.jpg">MaineCoon</option>
+               <option value="../picCats/Persian.jpg">Persian</option>
+          </select>
+       </td>
+       <td><img id="img"></td>
+    </tr>
+   </table>
+</form>
+</body>
+</html>
+=============================================
+
+Blur 이벤트,submit 이벤트
+=>회원가입->정리
+8장.다양한 효과와 애니매이션 
+ p290 표정리=>중간점검
+===================
+09.formevent.html
+
+<script>
+  $(function(){
+	  $('h1').css({'color':'red','text-decoration':'underline'})
+	  //형식) $('자식선택자').wrap('부모태그 내용')
+	  $('#message').wrap('<h2>요소안에 자료를 넣기</h2>')
+	  //onfocus이벤트->커서가 들어가는 경우에 발생되는 이벤트종류
+	  $('input').focus(function(){
+		  $(this).addClass('focused')//커서가 들어간 inputbox를 의미
+	  })
+	  //onblur이벤트->현재 input에서 커서가 벗어났을때 발생하는 이벤트종류
+	  $('input').blur(function(){
+		  $(this).removeClass('focused')
+	  })
+	  //전송버튼의 기본적인 기능->데이터를 전송(action="aa.jsp")=>onsubmit 이벤트종류명
+	  $('#frm').submit(function(event){
+		  var new_line=$('<li>'+$('#data').val()+'</li>')
+		  $('#disp').append(new_line)
+		  //추가
+		  $('#data').val('')
+		  $('#data').focus()
+		  //------------------------------------
+		  event.preventDefault();//전송을 금지
+	  })
+	  //지우기 버튼클릭
+	  $('#clear').click(function(){
+		  $('#disp').empty()
+	  })
+  })
+--------------------------------
+10.input.html(회원가입폼) <---input.js
+
+=============================================
+
