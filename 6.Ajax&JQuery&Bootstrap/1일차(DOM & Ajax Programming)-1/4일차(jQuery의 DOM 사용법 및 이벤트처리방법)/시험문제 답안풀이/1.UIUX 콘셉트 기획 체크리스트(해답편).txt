@@ -1,0 +1,95 @@
+
+1.중복 id를 체크해서 중복id 여부를 확인해주는 IdCheck.jsp
+ 의 소스코드중 중복된 아이디 여부를 출력시켜주는 부분(html부분)을 화면
+캡처해서 올리시오.(1-1,1-2,1-3)
+
+<<정답>>
+<center>
+<b><%=mem_id%></b>
+<%
+  if(check){//이미 존재하는 아이디라면
+	  out.println("는 이미 존재하는 아이디입니다.<p>");
+  }else{//존재하는 아이디가 아니라면
+	  out.println("는 사용가능한 아이디입니다.<p>");
+  }
+%>
+<!-- 자바스크립트에서 자기 자신의 창을 가리키는 예약어 (self)  -->
+<a href="#" onclick="self.close()">닫기</a>
+</center>
+
+
+2.우편번호를 검색하는 경우 ZipCheck.jsp에서 zipcodeRead 메서드
+를 호출하는데 이 메서드의 내용중에서 검색된 데이터를 ArrayList에
+담는 구문을 화면캡처해서 올리시오.(2-1,2-2,2-3)
+
+
+<<정답>>
+
+                      while(rs.next()) {
+		    	//저장된 데이터를 getter메서드로 불러오게 쉽게하기위해서
+		    	ZipcodeDTO tempZipcode=new ZipcodeDTO();
+		    	tempZipcode.setZipcode(rs.getString("zipcode"));
+		    	tempZipcode.setArea1(rs.getString("area1"));//<->getArea1()
+		    	tempZipcode.setArea2(rs.getString("area2"));//null
+		    	tempZipcode.setArea3(rs.getString("area3"));//null
+		    	tempZipcode.setArea4(rs.getString("area4"));//null
+		    	//ArrayList에 담는 구문을 작성꼭 할것.
+		    	zipList.add(tempZipcode);//ZipCheck.jsp(null)없으면
+		    	/////////////////////////////
+		    }
+3.게시판의 글목록보기(list.jsp)을 구현하는데 필요로하는 메서드중 
+   화면에 출력하기위한 총레코드수를 구해주는 메서드를 작성하고 
+   화면캡처하시오.(3-1)
+
+<<정답>>
+
+                       public int getArticleCount() {
+		int x=0;//총레코드수갯수를 저장
+		try {
+		     con=pool.getConnection();
+		     System.out.println("con=>"+con);//DBConnectionMgr
+		    sql="select count(*) from board";//select count(*) from member;
+		    pstmt=con.prepareStatement(sql);
+		    rs=pstmt.executeQuery();
+		    if(rs.next()) {//보여주는 결과가 있다면
+		    	x=rs.getInt(1);//변수명=rs.get자료형(필드명 또는 인덱스번호)
+		    }                       //필드명이 없기때문에 인덱스번호로 불러와야된다.
+		}catch(Exception e) {
+			System.out.println("getArticleCount() 에러유발=>"+e);
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return x;
+                           }
+4.JDBC Programming을 이용한 웹프로그래밍을 작성할때 오라클로
+  접속해서 프로그래밍을 작성할려고 한다. 이때 오라클 접속에 필요로하는
+  DB접속에 관련된 정보를 다음과 같을때 다음에 빈칸을 맞는 문장을 기술
+ 해서 화면캡처하시오.(3-2,3-3)
+
+
+try {
+   	  Class.forName(                                             );
+                                    ----------------------------------------
+   	  con=DriverManager.getConnection(url,"scott","tiger");
+   	  stmt=___________________________________
+   	  sql="create table MyTest33(name varchar2(20),age number)";
+   	  int create=stmt.executeUpdate(sql);
+   	  System.out.println("테이블 성공유무(create)=>"+create);
+                ,,,
+  }catch(Exception e){
+     e.printStackTrace();
+ }
+
+
+<<정답>>
+
+               //1.접속할 드라이버를 메모리에 올리기(상위패키지.하위패키지...클래스명)
+   	  Class.forName("oracle.jdbc.driver.OracleDriver");
+   	  //2.접속하기위해서 인증 ->1.접속경로 2.계정명 3.암호
+   	  con=DriverManager.getConnection(url,"scott","tiger");
+   	  System.out.println("접속 con=>"+con);
+   	  //3.테이블을 생성->create table->stmt
+   	  stmt=con.createStatement();
+   	  sql="create table MyTest33(name varchar2(20),age number)";
+   	  int create=stmt.executeUpdate(sql);
+   	  System.out.println("테이블 성공유무(create)=>"+create);

@@ -1,0 +1,266 @@
+4일차(jQuery의 DOM 사용법 및 이벤트처리방법)
+
+                     p217~
+1.selector->2.dom->3.event->4.effect->****5.Ajax(DB)****
+-------------------------------------------   ------------
+                                                           -------------
+
+  jQueryTest
+         |
+          -1.selector=>선택자를 찾는 방법(선택자,연관 함수)
+           2.dom->화면에 출력하는 부분?
+                    01.addClass.html
+ 
+           3.event->이벤트처리 방법? 처리해주는 함수
+
+01.addClass.html
+
+$(function(){
+	  //$('h1:eq(0)').attr('class','high_light_0');
+	  /*
+	    jQuery에서 스타일을 적용
+	    css()->속성명->속성값을 부여(하나씩 부여)->css({키명:속성값;~})
+	    addClass(적용시킬 클래스명)->한꺼번에 여러개의 스타일을 동시에 설정하고 싶을때 사용
+	        <->removeClass(해제시킬 클래스명)
+	              toggleClass(적용시킬 클래스명)
+	  */
+	  //$('h1').addClass('high_light_0'); each함수를 사용하지 않아도 되는 방법
+	  $('h1').addClass(function(index){ //자바스크립트의 매개변수에서 또 다른 함수를 호출해서 리턴
+		  alert(index)                             //콜백함수계열
+		  return 'high_light_'+index;
+	  })
+  })
+=================================
+02.filter.html->01.addClass.html을 save as or ctrl+c,ctrl+v
+
+<script>
+  $(function(){
+	  /*
+	    jQuery에서 특정태그를 검색->contains(단어),not(찾는 선택자)(범위)
+	    //형식)$('선택자').filter('찾는 조건에 해당하는 선택자(태그 or  속성선택자)')
+	  
+	  */
+	  //(1) $('h1:even').css({backgroundColor:'Black',color:'White'})
+	  //h1태그중에서 짝수번째에 해당되는 h1태그의 바탕색은 검정색,글자색은 흰색으로 설정하라
+	 //(2) $('h1').filter(':even').css({backgroundColor:'Black',color:'White'})
+	 //(3) 매개변수를 전달받아서 처리해주는 함수를 이용
+	  $('h1').filter(function(index){
+	         return index%2==1	  
+	  }).css({backgroundColor:'Black',color:'White'})
+	  //제어문->if형식과 비슷->$('선택자').is('찾을 조건')->true, false
+	  $('h1').each(function(){
+		  if($(this).is('.select')){ //$(this)=>현재 읽어들이는 h1태그
+			  $(this).css('background','yellow').css('font-size','16pt');
+		  }else{
+			  $(this).css('background','green');
+		  }
+	  })
+  })
+</script>
+</head>
+<body>
+   <h1>Item-0</h1>
+   <h1 class="select">Item-1</h1>
+   <h1 id="select">Item-2</h1>
+   <h1>Item-3</h1>
+   <h1>Item-4</h1>
+</body>
+</html>
+---------------------------------------------------------------
+03.append.html->p233~234표에 있는 함수를 정리
+
+<script>
+  $(function(){
+	  /*
+	         함수             설명
+	    $(A).appendTo(B)->A를 B의 기존자식의 뒤에 추가할때 사용
+	    $(A).prependTo(B)->A를 B의 기존자식의 앞에 추가할때 사용
+	    
+	    $(A).insertAfter(B)->A를 B뒤에 추가할때 사용
+	    $(A).insertBefore(B)->A를 B앞에 추가할때 사용
+	  */
+	 //(1) $('<h1>jQueryTest</h1>').appendTo('div');
+	 //(2) $('<h1>jQueryTest</h1>').prependTo('div');
+	 //(3) $('<h1>DOMTest</h1>').insertAfter('div');
+	  $('<h1>DOMTest</h1>').css('color','red').insertBefore('div');
+	  $('img').attr('width',300).insertBefore('div');
+  })
+</script>
+</head>
+<body>
+      <!-- <h1>DOMTest</h1> (4)-->
+  <div>
+      <!--  <h1>jQueryTest</h1> (2)-->
+       <h1>안녕하세요?</h1>
+      <!--  <h1>jQueryTest</h1> (1)-->
+  </div>
+     <!-- <h1>DOMTest</h1> (3) -->
+  <h1>반가워요!</h1>
+  <img src="../picCats/Persian.jpg">
+</body>
+</html>
+=================================
+
+03.append.html save as 04.append2.html
+
+<script>
+  $(function(){
+	  /*
+	         함수             설명
+	    $(A).append(B)->B를 A의 기존자식의 뒤에 추가할때 사용
+	    $(A).prepend(B)->B를 A의 기존자식의 앞에 추가할때 사용
+	    
+	    $(A).after(B)->B를 A뒤에 추가할때 사용(자식에 추가 X)
+	    $(A).before(B)->B를 A앞에 추가할때 사용(자식에 추가 X)
+	  */
+	  //(1) $('div').append('<h1>jQueryTest222</h1>');
+	  //(2)  $('div').prepend('<h1>jQueryTest444</h1>');
+	  //(3)  $('div').after('<h1>DOMTest555</h1>');
+	  //(4)  $('div > h1').css('color','red').before('<h1>DOMTest 6666</h1>');
+	  $('img').attr('width',300).before('<h1>DOMTest 6666</h1>');//이미지 앞에 배치
+  })
+</script>
+</head>
+<body>
+      <!-- <h1>DOMTest6666</h1> (4)-->
+  <div>
+      <!--  <h1>jQueryTest444</h1> (2)-->
+       <h1>안녕하세요?</h1>
+      <!--  <h1>jQueryTest222</h1> (1)-->
+  </div>
+     <!-- <h1>DOMTest5555</h1> (3) -->
+  <h1>반가워요!</h1>
+  <img src="../picCats/Persian.jpg">
+</body>
+</html>
+******************************************************
+   p235 $("#wrap p:eq(2)").after("<p>After</p>")
+
+    id가 wrap인 태그를 찾아서 세번째 p태그뒤에 <p>After</p>
+
+           $("<p>insertAfter</p>).insertAfter("#wrap p:eq(1)")
+    2번째 p태그뒤에 <p>insertAfter</p>를 뒤에 추가
+
+      $("#wrap p:eq(1)").before("<p>Before</p>");
+       <p>Before</p>를 두번째 p태그 앞에 추가
+
+      $("<p>insertBefore</p>").insertBefore("#wrap p:eq(0)");
+              첫번째 p태그앞에 <p>insertBefore</p>을 추가
+
+  <<예습>> p237 clone(),empty(),remove()의 차이점
+            p245 이벤트 등록 메서드?
+            p246 load(),ready(),**click(),dblclick(),mouseover,mouseout(),**hover()
+                    focus(),blur(),change(),keyup()
+                    on이벤트 등록메서드
+             *** 기본 이벤트 차단하기 *** p256
+=====================================================
+05.append3.html
+
+<script>
+  $(function(){
+	  /*
+	   형식) 1.$(부모태그 > 자식태그)->부모태그 바로밑의 자식태그를 찾을때 사용(자손 포함 X)
+	         2.$(부모태그  자식태그)->부모태그 바로밑의 자식태그를 찾을때 사용(자손 포함 O)
+	         3.$(부모태그+자식태그)->부모태그 바로 옆에 인접한 형제태그(짝궁)찾기
+	         4.$(부모태그~자식태그)->부모태그 바로 옆에 짝궁+다른 인접한 태그까지 찾기
+	  */
+	  $('*').addClass('textstyle');
+	  $('em~a').next().css('background-color','yellow').each(function(){
+                         //$(부모).append(자식)<->$(자식).appendTo(부모)
+		  $('.result1').append($(this))
+	  })
+  })
+</script>
+</head>
+<body>
+   <em>one</em>
+   <a>two</a>
+   <a>three</a>
+   <b>four</b>
+   <a>five</a>
+   <em>six</em>
+   <hr>
+   <div>
+      <span>prev+next로 검색된 엘리먼트 확인예제</span>
+      <span class="result1"></span>
+   </div>
+</body>
+</html>
+====================================
+**jQuery의 함수 사용시 주의할 점** 
+
+each함수
+
+1.$('반복할 선택자').each(호출할 함수 | function(){})
+2.단독으로 사용하는 경우 =>$.함수명=>$.each(함수),$.ajax() ->특정태그와 상관없이 언제든지
+                                                                                      불러다 사용하는 함수
+
+06.extend.html
+
+<script>
+  $(function(){
+	  //새로 객체를 하나 생성=>데이터를 입력->나중에 추가로 저장
+	  var object1={} //비어있는 객체(내용이 없는)//var object1=new Object();
+	  //var object1=[] 배열
+	  //동적으로 속성(=멤버변수)을 추가=>객체명.속성=값
+	  object1.name='임시'; //String name="임시";//자바의 경우
+	  object1.addr='서울시 강남구 대현빌딩 3층';
+	  object1.age=23;
+	  alert(object1.name+'님의 주소는 '+object1.addr+'이고요,나이는'+object1.age+'살입니다.')
+	  
+	  //$.extend(기존의 객체명,객체명2,객체명3,,,)=>객체배열 관리=>$.each 처리
+	  var object2={name:'테스트'}
+	  $.extend(object2,{  //기존의 객체에 내용을 추가목적
+		  region:'서울시 강북구',
+		  age:34,
+		  sung:'남자'
+	  })
+	  //출력->자바->확장 for문=>자바스크립트의 jQuery=>$.each
+	  var output='';//출력할 값을 저장할 변수
+	  //형식)$.each(1.출력할 객체명,2.매개변수로 index와 value값을 갖는 함수호출)
+	  $.each(object2,function(key,item){
+		  output+=key+':'+item+'\n'
+	  })
+	  alert(output);
+  })
+</script>
+==============================
+07.$.each.html
+
+<script>
+  $(function(){
+	  //$.each()->단독으로 사용(배열관리(포탈사이트의 주소를 관리),객체관리)
+	  var array=[{name:'naver',link:'http://www.naver.com'},
+		  				{name:'daum',link:'http://www.daum.net'},
+		  				{name:'nate',link:'http://www.empas.com'},
+		  				{name:'google',link:'http://www.google.com'}
+	                   ]//배열생성 //var array={}
+	 //형식)$.each(컬렉션(배열),처리해줄 함수명(index,value){처리구문}) 
+	 $.each(array,function(index,item){//index->배열의 인덱스번호
+		                                                 //item->배열의 인덱스를 통해 접근가능한 객체
+		var output='';
+		  output+='<a href="'+item.link+'">';  
+		  output+='<h1>'+item.name+'</h1>';
+		  output+='</a>';
+		  //인덱스번호에 해당하는 항목을 가져와서 body에 결합
+		  document.body.innerHTML+=output;
+	 }) 
+  })
+</script>
+</head>
+<body>
+
+</body>
+</html>
+==============================
+
+3.event
+    01.bind.html
+
+
+
+
+
+
+
+
