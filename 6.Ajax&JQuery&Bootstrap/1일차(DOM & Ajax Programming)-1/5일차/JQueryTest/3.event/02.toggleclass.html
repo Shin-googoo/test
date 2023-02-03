@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>02.toggleclass예제</title>
+<style>
+	p {margin: 4px; font-size:16px; font-weight:bold; cursor:pointer;}
+																								/* 특정태그에 갖다될 때 */
+	.blue {color:blue;}
+</style>
+<script>
+	$(function(){
+		//$('p').bind('click',function(){
+			$('p').click(function(){ //$('선택자').이벤트종류명(function(){})
+			//alert('이벤트종류');
+			//형식)$(선택자).toggleClass(적용시킬클래스명)
+			//addClass()<-->removeClass() ,hasClass
+			$(this).toggleClass('blue');
+		})
+	})
+</script>
+</head>
+<body>
+	<p class="blue">엘리먼트에 적용된 클래스를</p>
+	<p>추가하고 제거하기를 반복연습합니다.
+</body>
+</html>

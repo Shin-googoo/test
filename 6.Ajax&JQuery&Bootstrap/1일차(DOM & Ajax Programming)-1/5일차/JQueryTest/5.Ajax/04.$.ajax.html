@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>04.$.ajax.html(parsing(파싱))</title>
+<!-- 
+	<person>
+		<name>홍길동</name>
+		<job>학생</job>
+		<age>23</age>	
+	</person>
+ -->
+<script>
+	$(function(){
+		//getXml.jsp-> xml문서
+		//$.ajax('getXml.jsp',function(data){})
+		$.ajax('getXml.jsp',{
+			//data:~ 매개변수 없으니까 생략
+			success:function(data){
+				//분리작업(=파싱분리) parse ->find() or filter()
+				$(data).find('person').each(function(){
+					var name='<li>'+$(this).find('name').text()+'</li>';
+					var job='<li>'+$(this).find('job').text()+'</li>';
+					var age='<li>'+$(this).find('age').text()+'</li>';
+					//<div>에 결합해서 화면에 출력
+					$('#output').append('<ul>'+name+job+age+'</ul>');
+				})//each
+			},//success
+			error:function(){
+				alert('서버요청 및 파일불러오기 실패!');
+			}
+		})//$.ajax
+	})
+</script>
+</head>
+<body>
+	<div id="output">
+		<!-- 
+		<ul>
+			<li>홍길동</li>
+			<li>학생</li>
+			<li>23</li>
+		</ul>
+		-->
+	</div>
+	
+</body>
+</html>

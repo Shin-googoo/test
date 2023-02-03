@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>01.load.html(외부의 파일의 내용을 불러와서 출력)</title>
+<script>
+	$(function(){
+    //include지시자 대용으로 사용한다고
+    //메뉴보기1
+    $('#menu1').click(function(){
+      //형식) $('선택자').load('경로 포함해서 불러올 문서명')
+      $('#message1').load('menu.html'); //다 불러오는 경우
+      return false; //a 링크기능 디폴트기능 중지
+	  })
+    //메뉴보기1 삭제
+    $('#menu1-1').click(function(){
+      $('#message1').empty(); //내용만 변경
+      return false;
+    })
+    //메뉴보기2=> 파일을 불러올때 특정한 태그만 불러오고 싶다.
+    $('#menu2').click(function(){
+      //같은 태그중에서 구분해서 불러올 경우 #id명-> 해당내용
+      //형식) $('선택자').load('경로 포함해서 불러올 문서명')
+      $('#message2').load('menu.html #news_1'); //다 불러오는 경우
+      return false; //a 링크기능 디폴트기능 중지
+    })
+    //메뉴보기2 삭제
+    $('#menu2-1').click(function(){
+      $('#message1').empty(); //내용만 변경
+      return false;
+    })
+  })
+</script>
+</head>
+<body>
+  <div>
+    <a href="#" id="menu1">메뉴보기1</a>
+    <a href="#" id="menu1-1">메뉴보기1 삭제</a>
+    <span id="message1">
+      <p>중식 메뉴</p>
+      <ul>
+        <li>짜장면</li>
+        <li>짬   뽕</li>
+        <li>탕수육</li>
+        <li>만   두</li>
+      </ul>
+      <p>메뉴를 골라주세요 
+      </span>
+  </div>
+  <div>
+    <a href="#" id="menu2">메뉴보기2</a>
+    <a href="#" id="menu2-1">메뉴보기2 삭제</a>
+    <span id="message2"></span>
+  </div>
+</body>
+</html>

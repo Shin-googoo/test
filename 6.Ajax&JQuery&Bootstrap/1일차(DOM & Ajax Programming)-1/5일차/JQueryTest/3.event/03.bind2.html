@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>03.bind2.html</title>
+<script>
+	$(function(){
+/*
+이벤트 연결방식-> 2가지 차이점?
+형식) 등록할 이벤트명: function(){}-> 익명함수형태로 코딩(p248)
+1. bind를 사용하는 경우-> 현재 발생시킨 이벤트뿐만아니라 다른 이벤트도 연결해서 사용가능
+                  => on으로 연결시킴 
+
+2. bind를 사용X  -> 단독으로 발생시킨 이벤트만 처리
+*/
+		
+		$('img').bind({ //<->unbind()=이벤트연결을 해제시켜주는 함수
+      mouseout:function(){
+        $('img').attr('src','../picCats/Persian.jpg');
+      },
+      mouseover:function(){
+        $('img').attr('src','../picCats/RussianBlue.jpg');
+      },
+      click:function(){
+        alert('bind함수를 이용한 연결테스트입니다.');
+      }
+    })
+	})
+    /*
+    $('img').mouseover(function(){})-> 개별로 이벤트 처리
+    $('img').mouseout(function(){})
+    $('img').click(function(){})
+    */
+</script>
+</head>
+<body>
+	
+	<img src="../picCats/Persian.jpg" width="200" height="200">
+	
+</body>
+</html>
