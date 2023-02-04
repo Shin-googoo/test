@@ -1,0 +1,539 @@
+6일차(jQuery의 effect 및 Ajax 프로그래밍)
+
+1.selector->2.dom->3.event->4.effect->5.Ajax
+
+9.formevent.html
+
+<title>09.formevent.html</title>
+<style>
+   .focused {background-color:#bbb}
+</style>
+<script>
+  $(function(){
+	  $('h1').css({'color':'red','text-decoration':'underline'})
+	  //형식) $('자식선택자').wrap('부모태그 내용')
+	  $('#message').wrap('<h2>요소안에 자료를 넣기</h2>');
+      //추가
+      $('#data').focus();
+    //onfocus이벤트->커서가 들어가는 경우에 발생되는 이벤트종류
+    $('input').focus(function(){
+    	$(this).addClass('focused');
+    })
+    //onblur이벤트->현재 input에서 커서가 벗어났을때 발생하는 이벤트종류
+    $('input').blur(function(){
+    	$(this).removeClass('focused');
+    })
+    //전송버튼의 기본적인 기능->데이터를 전송(action="aa.jsp")=>onsubmit이벤트 종류발생됨
+    //$('#frm').on('submit',function(event){
+    $('#frm').submit(function(e){
+    	var new_line=$('<li>'+$('#data').val()+'</li>');
+    	$('#disp').append(new_line);
+    	//추가
+    	$('#data').val('');//지우기
+    	$('#data').focus();
+    	e.preventDefault();//전송을 금지
+    	//return false;
+    })
+    //지우기 버튼 클릭
+    $('#clear').click(function(){
+    	$('#disp').empty();
+    	$('#data').val('');
+    	$('#data').focus();//다시 입력받기위해서 커서 입력
+    })
+  })
+</script>
+</head>
+<body>
+   <h1>jQuery의 이벤트 종류 정리</h1>
+   <!-- <h2>요소안에 자료를 넣기 -->
+   		<div id="message"></div>
+   <!-- </h2> -->
+   <form id="frm" action="aa.jsp">
+   	 <input type="text" id="data" name="data">
+   	 <input type="submit" value="확인">
+   </form>
+   <button id="clear">지우기</button>
+   <ul id="disp">
+   		<!-- 
+   		<li>aaa</li>
+   		<li>bbb</li> -->
+   </ul><p>
+   <a href="http://www.daum.net">daum</a>
+</body>
+</html>
+
+==============================
+input.html
+
+<title>jQuery예제(10.input.html)</title>
+<style>
+    #userid,#age,#pwd1,#pwd2  {width:200px}
+    .msg {color:red; padding-left:2px}
+</style>
+<script type="text/javascript" src="input.js?ver=1"></script>
+</head>
+<body>
+   <h2>***간단한 회원 가입폼***</h2>
+   <form id="signup" method="post">
+     id입력:<input type="text" name="userid"  id="userid">
+     <span class="msg" id="id_error">id값은 (필수정보) 입력하세요</span><br>
+     <!-- 나이 -->
+     나이입력:<input type="text" name="age"  id="age">
+     <span class="msg" id="age_error1">나이는 반드시(필수정보) 입력하세요</span><br>
+     <span class="msg" id="age_error2">나이는 반드시 숫자로 입력하세요</span><br>
+     <!--비밀번호  -->
+     비번입력:<input type="password" name="pwd1"  id="pwd1">
+     <span class="msg" id="p_error1">비밀번호는 반드시 입력하세요</span><br>
+     <!--비밀번호 재입력 -->
+     비번재입력:<input type="password" name="pwd2"  id="pwd2">
+     <span class="msg" id="p_error2">비밀번호가 불일치합니다.</span><br>
+     
+     <input type="button" id="btnSend" value="전송">
+   </form>
+</body>
+</html>
+
+==============================
+=>input.js
+$(function(){
+	//에러메세지는 처음에는 안보이게 설정(특정태그를 화면에 보여주기또는 안보여주기) show()<->hide()
+	$('#id_error').hide()
+	$('#age_error1').hide()
+	$('#age_error2').hide()
+	$('#p_error1').hide()
+	$('#p_error2').hide()
+	//<input type="button" id="btnSend"  value="전송">
+	$('#btnSend').click(function(){
+		//1.id입력체크
+		var id=$('#userid').val()
+		if(id.length < 1){
+			$('#id_error').show()
+			return false;
+		}else{//한글자라도 입력했다면
+			$('#id_error').hide()
+		}
+		//2.age입력체크
+		var age=$('#age').val()
+		if(age.length < 1){
+			$('#age_error1').show()
+			return false;
+		}else{//한글자라도 입력했다면
+			$('#age_error1').hide()
+		}
+		//3.age이 숫자인지 아닌지 체크? =>2a or a,23a->입력받은 문자열의 길이
+		//0(48)~9(57)범위를 벗어나면 무조건 문자 =>isNaN함수를 이용
+		for(var i=0;i<age.length;i++){
+			var data=age.charAt(i).charCodeAt(0)//아스키코드값으로 변환
+			//alert(data)//48~57
+			if(data < 48  || data > 57){//문자를 입력했다면
+				$('#age_error2').show()
+				return false;
+				break;//탈출문
+			}else{//숫자를 입력했다면
+				$('#age_error2').hide()
+			}
+		}
+		
+		//4.pwd입력체크
+		var pwd1=$('#pwd1').val()
+		if(pwd1.length < 1){
+			//$('#p_error1').show()
+			$('#pwd1').next().show()
+			return false;
+		}else{//한글자라도 입력했다면
+			$('#pwd1').next().hide()
+		}
+		//5.pwd불일치 여부체크
+		var pwd2=$('#pwd2').val()
+		if(pwd2.length < 1){
+			$('#p_error2').show()
+			//$('#pwd2').next().show()
+			return false;
+		}else{//한글자라도 입력했다면
+			$('#p_error2').hide()
+		}
+		//불일치 체크
+		if(pwd1!=pwd2){
+			$('#p_error2').show()
+			return false;
+		}
+		//정상적으로 다 입력했다면 document.form객체명.submit()->action='register.jsp'
+		$('#signup').attr('action','register.jsp').submit()
+		
+		return true;//전송이 가능하게 설정
+	})
+})
+=======================================
+4.effect
+    01.slide.html
+
+<script>
+  $(function(){
+	  //slideup
+	  $('#slideup').click(function(){
+		  //형식) $('선택자').slideUp() or slideUp(유지시간,함수)
+	      $('div').slideUp()
+	  })
+	  //slidedown
+	  $('#slidedown').click(function(){
+		  //형식) $('선택자').slideDown() or slideDown(유지시간(초,문자열(slow,fast)),함수)
+	      $('div').slideDown("slow")
+	  })
+	  
+	  //slideToggle
+	  $('#slideToggle').click(function(){
+		  //형식) $('선택자').slideToggle() or slideToggle(유지시간(초,문자열(slow,fast)),함수)
+	      $('div').slideToggle("slow")
+	  })
+  })
+</script>
+</head>
+<body>
+   <button id="slideup">slideup</button>
+   <button id="slidedown">slidedown</button>
+   <button id="slideToggle">slideToggle</button>
+   <p>
+   <div></div><div></div><div></div><div></div>
+</body>
+</html>
+----------------------------------------------------------------
+02.fade.html
+
+<script>
+  $(function(){
+	  //fadeIn->서서히 화면이 보이는 경우
+	  $('#fadeIn').click(function(){
+		  //형식 $('선택자').fadeIn(애니매이션 유지시간->함수호출)
+		  $('div').fadeIn(3000,function(){ //div태그를 3초동안 서서히 보여준뒤
+			  $('span').fadeIn(100)//0.1초 ->1000(초)
+		  })
+	  })
+	  //fadeOut->불투명도 감소->서서히 사라짐(투명도)
+	  $('#fadeOut').click(function(){
+		  //형식 $('선택자').fadeOut(애니매이션 유지시간(초,slow,fast)->함수호출)
+		  $('div').fadeOut(3000,function(){ //div태그를 3초동안 서서히 사라짐
+			  $('span').fadeIn(100)//0.1초 ->1000(초)
+		  })
+	  })
+	  //fadeToggle->fadeIn,fadeOut이 번갈아 가면서 화면에 출력
+	  $('#fadeToggle').click(function(){
+		  //형식 $('선택자').fadeToggle(애니매이션 유지시간(초,slow,fast)->함수호출)
+		  $('div').fadeToggle(3000,function(){ 
+			  $('span').fadeIn(100)//0.1초 ->1000(초)
+		  })
+	  })
+  })
+</script>
+</head>
+<body>
+<p>
+ 불투명도를 점점 높여서 보이게  설정
+ speed를 fast,normal,slow 또는 0이상의 숫자(밀리세컨드 단위)를 준다.(ex 3000)
+ 애니매이션이 끝난후에 사용자정의 함수를 지정
+ </p>
+ <div><span>Success!</span></div>
+ <button id="fadeIn">fadeIn</button>
+ <button id="fadeOut">fadeOut</button>
+ <button id="fadeToggle">fadeToggle</button>
+</body>
+</html>
+==============02-2.animate.html=============
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" 
+           src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>02-2.animate.html</title>
+<style>
+    .txt1{background-color:aqua;}
+    .txt2{background-color:pink;}
+</style>
+<script>
+  $(function(){
+	  $('.btn1').on('click',function(){
+		  //형식) $('효과대상자').animate(스타일속성,유지시간,가속도(늦게 또는 빠르게),콜백함수)
+		 $('.txt1').animate({
+		  marginLeft:"500px",
+		  fontSize:"30px"
+	  },2000,"linear",function(){
+		  alert("모션완료!")
+		})//animate함수
+	  })//on함수
+	//.btn2 이벤트 연결  
+	  $('.btn2').on('click',function(){
+		  //형식) $('효과대상자').animate(스타일속성,유지시간,가속도(늦게 또는 빠르게),콜백함수)
+		 $('.txt2').animate({
+		  marginLeft:"50px",
+		  fontSize:"10px"
+	  },1000,"linear",function(){
+		  alert("모션완료2!")
+		})//animate함수
+	  })
+	//
+  })
+</script>
+</head>
+<body>
+   <p><button class="btn1">버튼1</button></p>
+   <span class="txt1">"500px"로 이동</span>
+   <p><button class="btn2">버튼2</button></p>
+   <span class="txt2">"50px"로 이동</span>
+</body>
+</html>
+
+
+===================================
+  jQuery활용(실무예제)=>벤치마킹
+
+03.TabMenu.html
+
+<style type="text/css">
+  * {    /* 모든 태그는 좌측상단 0,0을 기준으로 배치 */
+      margin:0;  
+      padding:0;
+  }
+ #container {
+    width:500px;
+    margin:50px auto; /* 양쪽 여백은 자동으로 설정 */
+ }
+ ul.tab li {  /* 탭의 제목에 대한 스타일 적용 */
+    list-style-type:none; /* 마커 제거 */
+    width:100px;
+    height:40px;
+    float:left; /* 왼쪽으로 정렬 */
+ }
+ ul.tab li a { /* 탭의 글자색,정렬,탭이미지 불러오기 */
+   background:url("../img/tab.jpg");
+   display:block;
+   color:blue; /* 탭제목의 글자 */
+   line-height:40px; /*행간 */
+   text-align:center; /* 정중앙에 위치 */
+ }
+ 
+ ul.tab li a.selected { /* 맨 처음의 자바스크립트탭을 설정 */
+   background:url("../img/tab_selected.jpg");
+   text-decoration:none; /* 텍스트밑줄(underline,overline,line-through) */
+   color:#333;
+   cursor:default; /* 손가락이 아닌 default 화살표 */
+ }
+ /* 선택된 탭에 대한 내용을 스타일 적용 */
+ ul.panel{
+     clear:both; /*위의 배치방법을 초기화 */
+     border:1px solid #9FB7D4;
+     border-top:none;
+     padding:0;
+ }
+ 
+ ul.panel li {
+    list-style-type:none;
+    padding:10px;/* 테두리안의 여백 */
+    text-indent:1em; /* 맨 처음 나오는 행의 들여쓰기 설정(현재 폰트크기 만큼)*/
+    color:#333;
+ }
+</style>
+<script>
+  $(function(){
+	  //첫번째탭을 제외한 나머지탭의 내용은 안보이게 설정
+	  //not #tab1->#tab1을 제외한 나머지는 안보이게 설정
+	  $("ul.panel li:not("+$("ul.tab li a.selected").attr("href")+")").hide()
+	  $("ul.tab li a").click(function(){
+		  $("ul.tab li a").removeClass("selected")//현재 선택된 탭에 설정된  스타일 해제
+		  $(this).addClass("selected") //현재 방금 선택된 탭으로 스타일 적용
+		  $("ul.panel li").hide() //전의 내용은 감춘다.(전부)
+		  $($(this).attr("href")).show() //현재 선택된 tab의 내용만 보여주세요
+	  })
+	  
+  })
+</script>
+======================================
+
+04.largeimage.html
+
+<script>
+  $(function(){
+	  //$('.small a').mouseover(function(){})
+	  $('.small a').hover(function(){
+		  var imgname=$(this).attr('href')
+		  //alert(imgname)  fadeIn,fadeOut->fadeTo(유지시간,투명도(0 or 1),효과완료후 처리할 함수)
+		  $('.large').fadeTo("slow",0,function(){ //서서히 안보이게 설정하고나서 0은 안보이게
+			  $('.large').attr('src',imgname)//$('.large').attr('src',$(this).attr('href'))
+		  }).fadeTo("slow",1)//서서히 눈에 보인다.(투명도 1)->새로운 이미지가 전환
+	  },function(){})
+  })
+</script>
+</head>
+<body>
+    <div class="small">
+    <a href="../img/photo1.jpg"><img src="../img/photo1.jpg"></a>
+    <a href="../img/photo2.jpg"><img src="../img/photo2.jpg"></a>
+    <a href="../img/photo3.jpg"><img src="../img/photo3.jpg"></a>
+    <a href="../img/photo4.jpg"><img src="../img/photo4.jpg"></a>
+    <a href="../img/photo5.jpg"><img src="../img/photo5.jpg"></a>
+    <a href="../img/photo6.jpg"><img src="../img/photo6.jpg"></a>
+    </div>
+    <img src="../img/photo1.jpg"  class="large">
+</body>
+</html>
+======================================
+ ***05.Ajax *** =>자바스크립트=>DB연동해서 어떻게 원하는 위치에
+                                                데이터를 출력시켜줄 것인가?
+
+  01.load.html
+**********************************
+<p id="news_1">중식 메뉴</p>
+<ul>
+   <li>짜장면</li>
+   <li>짬   뽕</li>
+   <li>탕수육</li>
+   <li>만   두</li>
+</ul>
+<p id="news_2">메뉴를 골라주세요 
+*************************************
+<script>
+  $(function(){
+	  $('#menu1').click(function(){
+		  //형식) $('선택자').load('경로포함해서 불러올 문서명')
+		  $('#message1').load('menu.html');//다 불러오는 경우
+		  return false;//a 링크기능 중지시키기 위해서
+	  })
+	  //메뉴보기1 삭제
+	  $('#menu1-1').click(function(){
+		  $('#message1').empty();
+		  return false;
+	  })
+	  //메뉴보기2=>파일을 불러올때 특정한 태그만 불러오고 싶을때 사용
+	  $('#menu2').click(function(){
+		  // 같은태그중에서 구분해서 불러올 경우 #id명->해당되는 내용
+		  //형식) $('선택자').load('경로포함해서 불러올 문서명 특정한 태그명')
+		  $('#message2').load('menu.html #news_1');
+		  //$('#message2').load('menu.html p');//p태그만 다 불러온다.
+		  return false;//a 링크기능 중지시키기 위해서
+	  })
+	  //메뉴보기2 삭제
+	  $('#menu2-1').click(function(){
+		  $('#message2').empty();
+		  return false;
+	  })
+  })
+</script>
+</head>
+<body>
+   <div>
+   		<a href="#" id="menu1">메뉴보기1</a>
+   		<a href="#" id="menu1-1">메뉴보기1 삭제</a>
+   		<span id="message1"></span>
+   </div>
+   
+   <div>
+   		<a href="#" id="menu2">메뉴보기2</a>
+   		<a href="#" id="menu2-1">메뉴보기2 삭제</a>
+   		<span id="message2"></span>
+   </div>
+   
+</body>
+</html>
+
+-----------------------------------------------------------------
+02.$.post().html
+
+<script>
+  $(function(){
+	  //$.post()->내부적으로 $.ajax를 실행->post방식으로 서버에 요청->서버에 요청한 문서결과
+	  //                                                 콜백함수전달->콜백함수가 받아서 원하는 위치에 출력
+	  $('#saveButton').click(function(){
+		  var value=$('#name').val()
+		  //alert(value)
+		  /*
+		     형식) $.post(1.url(요청문서),2.전달할 매개변수명 {매개변수명:전달할값})
+		                      3.콜백함수명  4.요청문서 종류(생략이 가능))
+		                      request.getParameter(name)
+		  */
+		  $.post('aa.jsp',{name:value},function(args){ //문자열(태그포함한 문자열)
+			  //args<=<%=name%>님 jQuery Ajax 환영합니다.!
+			  $('#resultDIV').html(args)
+		  })
+	  })
+	  //지우기
+	  $('#clearButton').bind('click',function(){
+		  $('#resultDIV').empty()//내용만 삭제
+	  })
+  })
+</script>
+</head>
+<body>
+이름:<input type="text"  id="name"><br><p>
+<button id="saveButton">전송</button>
+<button id="clearButton">지우기</button>
+<div id="resultDIV"></div>
+</body>
+</html>
+=====================================
+03.$.ajax().html
+
+<script>
+  $(function(){
+	  /*
+	  $.ajax(1.url(요청문서),2.매개변수(생략가능),3.콜백함수)
+	  //aa.jsp?name='test'&age=23&addr='서울시 ~'
+	  */
+	  $.ajax({
+		  url:'aa2.jsp',  //1.url(속성명):value값만 변경가능
+		  data:{name:'test',age:23,addr:'서울시 강남구 대현빌딩 3층'},//2.data:{변수:값,변수2:값2,,}
+		  success:function(args){//3.success:성공적으로 서버가 데이터를 보내준경우함수(매개변수명)
+			  $('body').append(args)
+		  }
+	  })
+  })
+</script>
+</head>
+<body>
+
+</body>
+</html>
+==================================
+aa2.jsp
+
+<body>
+<%
+   request.setCharacterEncoding("utf-8");
+   String name=request.getParameter("name");
+   String age=request.getParameter("age");
+   String addr=request.getParameter("addr");
+%>
+<%=name%>님 jQuery Ajax 환영합니다.^^<br>
+나이는 <%=age %>이고,주소는 <%=addr %> 이군요!!!
+</body>
+====================================
+ getXml.jsp 작성 =>xml,json
+
+  jsp파일이지만 내용은 xml파일형태로 웹에 출력
+
+<%@ page language="java" contentType="text/xml; charset=UTF-8"
+    pageEncoding="UTF-8"                         =======>xml문서형태로 
+                                                                                 서버에게 요청이 가능
+    trimDirectiveWhitespaces="true"%>
+    =======================>태그와 태그 문자열 사이에 공백이 들어가있으면
+                                                           에러유발
+                                                           공백을 제거시키라는 옵션
+<?xml version="1.0" encoding="UTF-8" ?> =>xml의 선언문 먼저 작성
+<people> ======================>xml의 최상위태그는 반드시 한개는
+  <person>                                                    존재해야 한다.
+      <name>홍길동</name>
+      <job>학생</job>
+      <age>23</age>
+  </person>
+  <person>
+      <name>테스트</name>
+      <job>웹프로그래머</job>
+      <age>27</age>
+  </person>
+  <person>
+      <name>임시</name>
+      <job>직장인</job>
+      <age>34</age>
+  </person>
+</people>
+
+ open API-> json파일 >>>> xml 파일
+====================================
