@@ -1,0 +1,156 @@
+-- 부서
+CREATE TABLE "dept2" (
+	"deptno" number(3)   NOT NULL, -- 부서번호
+	"dname"  VARCHAR(20) NULL,     -- 부서명
+	"loc"    varchar(20) NULL      -- 부서위치
+);
+
+-- 부서 기본키
+CREATE UNIQUE INDEX "PK_dept2"
+	ON "dept2" ( -- 부서
+		"deptno" ASC -- 부서번호
+	);
+
+-- 부서
+ALTER TABLE "dept2"
+	ADD
+		CONSTRAINT "PK_dept2" -- 부서 기본키
+		PRIMARY KEY (
+			"deptno" -- 부서번호
+		);
+
+-- 부서
+COMMENT ON TABLE "dept2" IS '부서';
+
+-- 부서번호
+COMMENT ON COLUMN "dept2"."deptno" IS '부서번호';
+
+-- 부서명
+COMMENT ON COLUMN "dept2"."dname" IS '부서명';
+
+-- 부서위치
+COMMENT ON COLUMN "dept2"."loc" IS '부서위치';
+
+-- 부서 기본키
+COMMENT ON INDEX "PK_dept2" IS '부서 기본키';
+
+-- 부서 기본키
+COMMENT ON CONSTRAINT "dept2"."PK_dept2" IS '부서 기본키';
+
+-- 사원
+CREATE TABLE "sawon2" (
+	"sabun"  number(3)    NOT NULL, -- 사원번호
+	"saname" VARCHAR(50)  NULL,     -- 이름
+	"addre"  VARCHAR(255) NULL,     -- 주소
+	"tel"    VARCHAR(30)  NULL,     -- 전화번호
+	"deptno" number(3)    NULL      -- 부서번호
+);
+
+-- 사원 기본키
+CREATE UNIQUE INDEX "PK_sawon2"
+	ON "sawon2" ( -- 사원
+		"sabun" ASC -- 사원번호
+	);
+
+-- 사원
+ALTER TABLE "sawon2"
+	ADD
+		CONSTRAINT "PK_sawon2" -- 사원 기본키
+		PRIMARY KEY (
+			"sabun" -- 사원번호
+		);
+
+-- 사원
+COMMENT ON TABLE "sawon2" IS '사원';
+
+-- 사원번호
+COMMENT ON COLUMN "sawon2"."sabun" IS '사원번호';
+
+-- 이름
+COMMENT ON COLUMN "sawon2"."saname" IS '이름';
+
+-- 주소
+COMMENT ON COLUMN "sawon2"."addre" IS '주소';
+
+-- 전화번호
+COMMENT ON COLUMN "sawon2"."tel" IS '전화번호';
+
+-- 부서번호
+COMMENT ON COLUMN "sawon2"."deptno" IS '부서번호';
+
+-- 사원 기본키
+COMMENT ON INDEX "PK_sawon2" IS '사원 기본키';
+
+-- 사원 기본키
+COMMENT ON CONSTRAINT "sawon2"."PK_sawon2" IS '사원 기본키';
+
+-- 신체
+CREATE TABLE "body" (
+	"sabun"  number(3)   NOT NULL, -- 사원번호
+	"height" number(3,2) NULL,     -- 키
+	"weight" number(3,2) NULL,     -- 몸무게
+	"blood"  varchar(4)  NULL      -- 혈액형
+);
+
+-- 신체 기본키
+CREATE UNIQUE INDEX "PK_body"
+	ON "body" ( -- 신체
+		"sabun" ASC -- 사원번호
+	);
+
+-- 신체
+ALTER TABLE "body"
+	ADD
+		CONSTRAINT "PK_body" -- 신체 기본키
+		PRIMARY KEY (
+			"sabun" -- 사원번호
+		);
+
+-- 신체
+COMMENT ON TABLE "body" IS '신체';
+
+-- 사원번호
+COMMENT ON COLUMN "body"."sabun" IS '사원번호';
+
+-- 키
+COMMENT ON COLUMN "body"."height" IS '키';
+
+-- 몸무게
+COMMENT ON COLUMN "body"."weight" IS '몸무게';
+
+-- 혈액형
+COMMENT ON COLUMN "body"."blood" IS '혈액형';
+
+-- 신체 기본키
+COMMENT ON INDEX "PK_body" IS '신체 기본키';
+
+-- 신체 기본키
+COMMENT ON CONSTRAINT "body"."PK_body" IS '신체 기본키';
+
+-- 사원
+ALTER TABLE "sawon2"
+	ADD
+		CONSTRAINT "FK_dept2_TO_sawon2" -- 부서 -> 사원
+		FOREIGN KEY (
+			"deptno" -- 부서번호
+		)
+		REFERENCES "dept2" ( -- 부서
+			"deptno" -- 부서번호
+		);
+
+-- 부서 -> 사원
+COMMENT ON CONSTRAINT "sawon2"."FK_dept2_TO_sawon2" IS '부서 -> 사원';
+
+-- 신체
+ALTER TABLE "body"
+	ADD
+		CONSTRAINT "FK_sawon2_TO_body" -- 사원 -> 신체
+		FOREIGN KEY (
+			"sabun" -- 사원번호
+		)
+		REFERENCES "sawon2" ( -- 사원
+			"sabun" -- 사원번호
+		);
+
+-- 사원 -> 신체
+COMMENT ON CONSTRAINT "body"."FK_sawon2_TO_body" IS '사원 -> 신체';

@@ -1,0 +1,87 @@
+-- 부서
+CREATE TABLE "dept2" (
+	"deptno" number(3)   NOT NULL, -- 부서번호
+	"dname"  VARCHAR(20) NULL,     -- 부서명
+	"loc"    varchar(20) NULL      -- 부서위치
+);
+
+-- 부서 기본키
+CREATE UNIQUE INDEX "PK_dept2"
+	ON "dept2" ( -- 부서
+		"deptno" ASC -- 부서번호
+	);
+
+-- 부서
+ALTER TABLE "dept2"
+	ADD
+		CONSTRAINT "PK_dept2" -- 부서 기본키
+		PRIMARY KEY (
+			"deptno" -- 부서번호
+		);
+
+-- 사원
+CREATE TABLE "sawon2" (
+	"sabun"  number(3)    NOT NULL, -- 사원번호
+	"saname" VARCHAR(50)  NULL,     -- 이름
+	"addre"  VARCHAR(255) NULL,     -- 주소
+	"tel"    VARCHAR(30)  NULL,     -- 전화번호
+	"deptno" number(3)    NULL      -- 부서번호
+);
+
+-- 사원 기본키
+CREATE UNIQUE INDEX "PK_sawon2"
+	ON "sawon2" ( -- 사원
+		"sabun" ASC -- 사원번호
+	);
+
+-- 사원
+ALTER TABLE "sawon2"
+	ADD
+		CONSTRAINT "PK_sawon2" -- 사원 기본키
+		PRIMARY KEY (
+			"sabun" -- 사원번호
+		);
+
+-- 신체
+CREATE TABLE "body" (
+	"sabun"  number(3)   NOT NULL, -- 사원번호
+	"height" number(3,2) NULL,     -- 키
+	"weight" number(3,2) NULL,     -- 몸무게
+	"blood"  varchar(4)  NULL      -- 혈액형
+);
+
+-- 신체 기본키
+CREATE UNIQUE INDEX "PK_body"
+	ON "body" ( -- 신체
+		"sabun" ASC -- 사원번호
+	);
+
+-- 신체
+ALTER TABLE "body"
+	ADD
+		CONSTRAINT "PK_body" -- 신체 기본키
+		PRIMARY KEY (
+			"sabun" -- 사원번호
+		);
+
+-- 사원
+ALTER TABLE "sawon2"
+	ADD
+		CONSTRAINT "FK_dept2_TO_sawon2" -- 부서 -> 사원
+		FOREIGN KEY (
+			"deptno" -- 부서번호
+		)
+		REFERENCES "dept2" ( -- 부서
+			"deptno" -- 부서번호
+		);
+
+-- 신체
+ALTER TABLE "body"
+	ADD
+		CONSTRAINT "FK_sawon2_TO_body" -- 사원 -> 신체
+		FOREIGN KEY (
+			"sabun" -- 사원번호
+		)
+		REFERENCES "sawon2" ( -- 사원
+			"sabun" -- 사원번호
+		);
