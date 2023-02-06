@@ -1,0 +1,360 @@
+8일차(JQuery의 Ajax를 이용한 DB연동방법2),boostrap의 개요및 작성법
+
+
+
+$.get() 내용
+
+<script>
+  $(function(){
+	       //json or xml 파일불러오기 get방식으로 ajax()를 요청해주는 함수
+		  //(2)$.get('경로포함해서 불러올 파일명(사이트 주소)',불러와서 처리할 function(매개변수명){}
+		     $.get('item.xml',function(data){
+			  //분리작업:파싱
+			  $('#treeData').append('<tr><td>id</td>'+'<td>name+</td>'
+					                            +'<td>price</td>'+'<td>description</td></tr>')
+			  $(data).find('item').each(function(){
+				  //똑같은 태그 구분->$(this)
+				  var $item=$(this)//현재 선택되어서 불러올 객체->$(this)->$item을 써도 된다.
+				  /*
+				  <item id="1" name="레몬">
+                   <price>3000</price>
+                   */
+				  $('#treeData').append('<tr><td>'+$item.attr('id')+'</td><td>'
+						                            +$item.attr('name')+'</td><td>'
+						                            +$item.find('price').text()+'</td><td>'
+						                            +$item.find('description').text()+'</td></tr>')
+			  })//.each
+	  })//$.get
+  })
+====================================
+11.$.getScript().html
+
+<script>
+/*
+ * function call(param){
+		return ("Hello,"+param)
+ }
+ */
+  $(function(){
+	  //형식) $.getScript('경로포함해서 불러올 js파일명')->js되어 있는 파일을 읽어들여서 선언된 함수호출
+	  $.getScript("test.js")//실행할때 불러옴
+	  $('#submit').click(function(){
+		  var msg=call($('.username').val())
+		  $('#message').html(msg)
+		  return false;//전송X
+	  })
+  })
+  
+</script>
+=======================
+ 회원가입할때 이 함수를 이용
+
+12.$.serialize().html
+
+<script type="text/javascript" 
+		    src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<title>12.$.serialize().html</title>
+<script>
+	$(function(){
+		$('#submit').click(function(){
+			$('#result').empty(); //전의 내용 지우고, 새로운 내용 추가시키기 위해 필요 
+			/*(1)
+			var form_data=$('form').serialize();
+			//form태그의 입력양식의 입력한 값 -> 매개변수= 전달할 값&매개변수2 = 값2&,,,,
+			$('#result').text(form_data);
+			//seq=1&username=test&password=1234&hobby=music&hobby=yoga
+			*/
+			//(2)
+			/*
+			var form_data=$('form').serializeArray(); //배열형태로 만들어서 전달
+			$.each(form_data,function(index,items){ //폼의 입력받은 순서가 인덱스번호로 구분 
+				$('#result').append(items.name+"="+items.value+"<br>"); //항목=저장할 값 
+				//[{seq:1,username:'imsi',password:'7890'}]
+				*/
+				//(3) 서버에 요청
+				//var form_data=$('form').serializeArray();
+				var form_data=$('form').serialize();
+				$.post('form.jsp',form_data,function(args){
+					$('#result').html(args);
+				})
+			})
+		})
+</script>
+</head>
+<body>
+	<form>
+		<input type="hidden" name="seq" value="1"> <!-- 입력X url창에도 표시X -->
+		<label>이름을 입력:</label>
+		<input type="text" name="username"><br>
+		<label>암호를 입력</label>
+		<input type="password" name="password"><br>
+		<input type="checkbox" name="hobby" value="music">music
+		<input type="checkbox" name="hobby" value="yoga">yoga
+		<input type="checkbox" name="hobby" value="reading">reading<br>
+		<input type="button" id="submit" value="전송">
+	</form>
+	<hr>
+	<div id="result"></div>
+</body>
+</html>
+   {매개변수명:전달할값,매개변수명2:전달할값,,,}
+   폼에 입력한 데이터를 JSON형식의 문자열로 변환->전송함수(serializeArray()) ,serialize() 의 차이점
+
+-->
+  <form>
+    <input type="hidden" name="seq"  value="1">
+    <label>이름을 입력하세요:</label>
+    <input type="text" name="username"><br>
+    <label>암호를 입력하세요:</label>
+    <input type="password" name="password"><br>
+    <input type="checkbox" name="hobby" value="music">music
+    <input type="checkbox" name="hobby" value="yoga">yoga
+    <input type="checkbox" name="hobby" value="reading">reading<br>
+    <input type="button" id="submit" value="전송">
+  </form>
+  <hr>
+  <div id="result"></div>
+</body>
+</html>
+=============================
+  form.jsp
+
+<%
+   request.setCharacterEncoding("utf-8");
+   String seq=request.getParameter("seq");
+   String username=request.getParameter("username");
+   String password=request.getParameter("password");
+   //hobby=>배열형태의 문자열을 받는경우
+   String []hobby=request.getParameterValues("hobby");
+   for(int i=0;i<hobby.length;i++){
+	   out.println(hobby[i]);
+   }
+%>
+<%=seq%>번과 <%=username %><%=password %>이 전달되었습니다.!
+=======================================
+
+13.autoid.html(최종예제)=>실시간 검색어를 찾아서 출력
+
+<script>
+  $(function(){
+	  $('.listbox').hide() //<->$('.listbox').show()=>검색어를 입력했을경우에 데이터가 존재하는경우
+	  $('.userid').keyup(function(){ //검색어를 입력했다면(이벤트처리)
+		  var uid=$('.userid').val()
+		  //alert(uid)
+	      var param='userid='+uid //autoid.jsp에 요청
+	      //$.post(~)
+	      $.ajax({
+	    	  type:'post', /* type:get | post 전송방식을 지정*/
+	    	  url:'autoid.jsp', /* url:'요청문서' */
+	    	  data:param, /* data:{매개변수명:값~} */
+	    	  success:function(html){  //<li>검색어</li>
+	    		  $('.listbox').show() //스타일 적용시킬 목록을 화면에 출력
+	    		  $('.namelist').html(html)//태그포함한 문자열을 저장->html(매개변수의 값)
+	    		  //하이라이트 효과
+	    		  $('li').hover(function(){
+	    			  $(this).addClass('hover')
+	    		  },function(){
+	    			  $(this).removeClass('hover')
+	    		  })
+	    		  //검색할 목록중에서 원하는 하나의 항목을 클릭
+	    		  $('li').click(function(){
+	    			  $('.userid').val($(this).text())//선택한 항목이 inputbox에 등록
+	    			  $('.listbox').hide() //검색목록부분 감추기
+	    		  })
+	    	  }//success
+	      })//$.ajax
+	     return false;//전송X
+	  })//keyup
+  })
+</script>
+</head>
+<body>
+  <h1>검색할 id를 입력하세요</h1>
+  <form>
+     검색어:<input type="text" name="userid"  class="userid"><br>
+     <div class="listbox">
+     		<div class="namelist"></div>
+     </div>
+  </form>
+======================
+
+BoardDAO 메서드 추가
+
+//select writer from board where writer like '%?%';
+	public List<String> getArticleId(String name){
+		List<String> nameList=new ArrayList();
+		try {
+			con=pool.getConnection();
+			sql="select writer from board where writer like '%"+name+"%'";
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				String writer=rs.getString("writer");
+				nameList.add(writer);
+			}
+		}catch(Exception e) {
+			System.out.println("getArticleId()메서드 에러유발=>"+e);
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return nameList;
+	}
+==================================
+  autoid.jsp
+
+<%
+   request.setCharacterEncoding("utf-8");//이름검색이라면 
+   String userid=request.getParameter("userid");
+   System.out.println("autoid.jsp의 userid=>"+userid);
+   //DB연동 확인결과
+   BoardDAO dbPro=new BoardDAO();
+   List<String> name=dbPro.getArticleId(userid);
+   //검색된 갯수만큼 li태그에 담아서 전송
+   for(int i=0;i<name.size();i++){
+	   String sname=name.get(i);//0~
+	   out.println("<li>"+sname+"</li>");
+   }
+   /* (1)테스트용
+   out.println("<li>testkim</li>");
+   out.println("<li>test</li>");
+   out.println("<li>test2</li>");
+   out.println("<li>test3</li>");
+   */
+%>
+======================================
+BoostrapTest=>프로젝트
+      |
+       -src/main/webapp
+             |
+              -1.grid->template.html
+             |
+             ==============
+              -css   부트스트랩에서 사용할 css,html,js에 관련된 파일위치
+             |
+              -fonts
+             |
+              -js
+           ==============
+	3(한글버전),4(영문버전),5(가장 최신 버전 )
+
+http://bootstrapk.com/ =>한글버전
+
+
+template.html
+
+     <meta charset="utf-8">=>한글처리
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        =>IE의 최신버전을 사용하라
+ **********************************************************
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    반응형 웹페이지를 만들라는 옵션
+   =>width=device-width =>핸드폰,태블릿,pc의 크기에 맞춰서 자동으로 넓이를 설정
+      넓이에 맞는 웹페이지를 볼 수 있도록 설정해주는 옵션
+       initial-scale=1=>초기 설정값
+***********************************************************
+ template.html을 전체 블럭
+
+            1.grid=>grid1.html
+
+****
+부트스트랩의 개요
+
+***********************************************************
+=>디자인 스타일 및 액션이 미리 정의된 html,css,js 파일로 구성된 프레임 워크(=개발환경)
+************************************************************
+
+** 부트스트랩의 장점 **
+
+1.다양한 스타일이 정의 되어있어 디자인이 간편(=템플레이트)
+2.CSS클래스명만 바꾸면 쉽게 디자인 적용 및 수정 가능  =>기존의 CSS 클래스선택자만
+   =======                                                     이해하고 변경하자
+
+3.반응형을 고려한 프레임워크=>모바일 페이지
+4.무료 오픈 소스(다운로드 간편)
+5.다양한 예시 제공 (초보자도 쉬움)
+
+** 부트스트랩 단점 **
+
+**1.디자인이 정형화 됨=>디자인의 패턴이 정해져 있다.=>다른 패턴으로 변경이 가능
+                                       구조파악=>약 2주정도
+
+2.심플한 디자인 형태로 국내 정서랑 안맞음 =>우리나라(멀티페이지)<->외국(싱글페이지형태)
+**3.구조변경을 위한 프레임워크 수정시 구조 파악 어려움
+
+4.구 브라우저에 대한 지원이 미흡
+(최소 IE8 이상 되어야 함)
+
+*** Grid(그리드) ****
+
+1.부트스트랩의 핵심 레이아웃
+2.총 12열로 구성=>(1열씩 12개, 8,4, 4,4,4,6,6)로 레이아웃이 가능
+3.그리드의 합은 항상 12가 되어야 한다. 합이 12를 넘거나 부족하면
+   화면 레이아웃을 구성하는 데 문제가 발생할 수 있다.
+4.클래스 선택자를 기반으로 화면의 레이아웃을 잡아주는 역할
+5.클래스 접두사 분류
+
+  ** 부트스트랩의 기본 접두어 **
+
+모바일폰(<768px)=>.col-xs- =>핸드폰에서 실행하는 클래스 선택자를 의미(접두어)
+태블릿(>=768px)=>.col-sm- =>태블릿
+데스크탑(>=992px)=>.col-md- =>pc의 기본
+데스크탑(>=1200px)=>.col-lg_ =>pc의 고해상도에 해당하는 클래스 선택자 접두어
+
+==============================================
+
+<div id="container-fluid"><!-- 전체 레이아웃 감싸주기  -->
+     <div class="row">
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+         <div class="col-md-1">.col-md-1</div>
+     </div>
+     <div class="row">
+         <div class="col-md-4">.col-md-4</div>
+         <div class="col-md-4">.col-md-4</div>
+         <div class="col-md-4">.col-md-4</div>
+     </div>
+     
+     <div class="row">
+         <div class="col-md-6">.col-md-6</div>
+         <div class="col-md-6">.col-md-6</div>
+     </div>
+     
+     <div class="row">
+         <div class="col-md-2">.col-md-2</div>
+         <div class="col-md-8">.col-md-8</div>
+         <div class="col-md-2">.col-md-2</div>
+     </div>
+=========================================
+grid1.html save as grid2.html
+
+ grid2.html
+
+<div class="row">
+         <div class="col-md-8">.col-md-8
+             <div class="row">
+                <div class="col-md-4 pad10">내부 4개의 col-md4</div>
+                <div class="col-md-8 pad10">내부 8개의 col-md8</div>
+             </div>
+         </div>
+         <div class="col-md-4">.col-md-4
+             <div class="row">
+                <div class="col-md-6 pad10">내부 6개의 col-md6</div>
+                <div class="col-md-6 pad10">내부 6개의 col-md6</div>
+             </div>
+         </div>
+     </div>
+
+=============================================
+ =>www.w3schools.com =>부트스트랩내용을 확인
+==============================================
+
+
