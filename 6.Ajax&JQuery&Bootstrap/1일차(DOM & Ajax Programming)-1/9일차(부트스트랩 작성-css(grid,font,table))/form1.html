@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+    <title>부트스트랩 예제</title>
+
+    <!-- 부트스트랩 -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+    <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h1>bootstrap 예제</h1>
+    <div class="container">
+    <h1 class="text-info text-center">부트스트랩의 기본폼양식</h1>
+    	<form>
+    		 <label for="Name">이름</label>
+    		 <input type="text" placeholder="이름" name="Name">
+    		 
+    		 <label for="emailaddress">이메일</label>
+    		 <input type="email" placeholder="이메일" name="emailaddress">
+    		 <button type="submit">확인</button>
+    	</form>
+    	<hr>
+    	<!-- 
+    	  1.입력받는 양식을 <div>로 묶어준뒤  class="form-group"을 부여한다.
+    	    .form-group {
+            margin-bottom: 15px;   //입력란과 입력란사이의 적절한 거리를 유지시키기위해서 
+           }
+    	2.입력을 받는 양식 => class="form-control"을 부여한다.
+    	   .form-control {
+			  display: block;  //줄바꿈
+			  width: 100%;
+			  height: 34px;
+			  padding: 6px 12px;//상단의 거리 6px 하단의 거리는 12px
+			  font-size: 14px;  //글자는 14px
+			  line-height: 1.42857143;
+			  color: #555;
+			  background-color: #fff;
+			  background-image: none;
+			  border: 1px solid #ccc; //기본적으로 테두리 설정
+			  border-radius: 4px;//모서리는 둥글게 설정
+			  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+			          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+			  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+			       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+			          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+      .form-control:focus {
+	  border-color: #66afe9;
+	  outline: 0;
+	  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+	          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+    	 -->
+    	<h1 class="text-primary text-center">부트스트랩의 폼양식 적용</h1>
+    	<form role="form"><!--폼역할(입력한 값을 전송하는 역할을 하는 폼  -->
+    	   <div class="form-group">
+    			<label for="Name">이름</label>
+    		    <input type="text"  class="form-control" placeholder="이름" name="Name">
+    	   </div>
+    	   <div class="form-group">
+    			<label for="emailaddress">이메일</label>
+    		    <input type="text"  class="form-control" placeholder="이메일" name="emailaddress">
+    	   </div>
+    	   <div class="form-group">
+    	        <button type="submit">확인</button>
+    	   </div>
+    	</form>
+    </div>
+    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="../js/bootstrap.min.js"></script>
+  </body>
+</html>
+

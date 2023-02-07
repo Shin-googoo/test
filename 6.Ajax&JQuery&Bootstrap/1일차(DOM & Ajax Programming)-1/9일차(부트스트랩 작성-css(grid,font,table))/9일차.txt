@@ -1,0 +1,370 @@
+﻿9일차(부트스트랩 작성-css(grid,font,table))
+
+=>레이아웃 설계(7단계)=>div태그로 영역설정
+=========================
+grid2.html save as grid3(offset).html
+
+<h1>그리드 시스템 특징3 </h1>
+    <h4 class="text-primary">그리드 사이에 분리가능(오프셋(offset-n))</h4>
+    <h4 class="text-success">그리드(오프셋(offset-n))이 12개를 넘으면 다음줄에 개행</h4>
+    <div id="container"><!-- 전체 레이아웃 감싸주기  -->
+    
+     <div class="row">
+         <div class="col-md-5">.col-md-5</div>
+         <div class="col-md-5 col-md-offset-2">col-md-5 col-md-offset-2</div>
+     </div>
+     
+     <div class="row">
+         <div class="col-md-4">.col-md-4</div>
+         <div class="col-md-7 col-md-offset-1">col-md-7 col-md-offset-1</div>
+     </div>
+     
+     <div class="row">
+         <div class="col-md-3">.col-md-3</div>
+         <div class="col-md-6 col-md-offset-3">col-md-6 col-md-offset-3</div>
+     </div>
+     
+     <div class="row">
+         <div class="col-md-2">.col-md-2</div>
+         <div class="col-md-7 col-md-offset-3">col-md-7 col-md-offset-3</div>
+     </div>
+------------------------------------------------------------------
+  grid4(2단).html
+  @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+<!-- 부트스트랩 -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+     <style>
+       외부에서 cdn방식으로 주소를 이용한 폰트를 불러올 수 있다.
+     @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+     ///---------------------------------------------------------------------------
+     header{height:100px;background-color:rgba(125,211,242,0.5);/* 투명도 */
+                  border-radius:15px;padding:10px;margin:10px 0;
+                  font-family:'Nanum Gothic',sans-serif;
+                  text-align:center;
+                }
+     footer{ font-family:'Nanum Gothic',sans-serif;
+                  text-align:center;}
+     ul.nav{background-color:rgba(210,201,201, .5);
+                  border-radius:10px;padding:10px;}
+     </style>
+=========================================
+ grid4(2단).html save as grid5(3단).html
+
+<!-- 추가 -->
+      <div class="col-md-2">
+          <div class="banner">기타 부가적인 내용</div>
+      </div>
+
+-------------------------------------------------------------------------
+grid4(2단).html save as grid6(중첩2단).html
+
+<div class="col-md-9"><!-- 내부에 중첩된 그리드를 배치  -->
+             <div class="row">
+               <div class="col-md-5">
+			            <p>
+			       디지털 경제의 확산으로 우리 주변에는 규모를 가늠할 수 없을 정도로 많은 정보와
+			        데이터가 생산되는 '빅데이터(Big Data)' 환경이 도래하고 있다. 
+			        빅데이터란 과거 아날로그 환경에서 생성되던 데이터에 비하면 그 규모가 방대
+			        하고, 생성 주기도 짧고, 형태도 수치 데이터뿐 아니라 문자와 영상 데이터를 
+			        포함하는 대규모 데이터를 말한다.
+			       </p>
+            </div>
+         <div class="col-md-7">
+	     <p>
+	     PC와 인터넷, 모바일 기기 이용이 생활화되면서 사람들이 도처에 남긴 발자국
+	     (데이터)은 기하급수적으로 증가하고 있다(정용찬, 2012a). 쇼핑의 예를 들어 
+	     보자. 데이터의 관점에서 보면 과거에는 상점에서 물건을 살 때만 데이터가 
+	     기록되었다. 반면 인터넷쇼핑몰의 경우에는 구매를 하지 않더라도 방문자가
+	      돌아다닌 기록이 자동적으로 데이터로 저장된다.
+	       어떤 상품에 관심이 있는지, 얼마 동안 쇼핑몰에 머물렀는지를 알 수 있다.
+	      쇼핑뿐 아니라 은행, 증권과 같은 금융거래, 교육과 학습, 여가활동, 자료검색과
+	       이메일 등 하루 대부분의 시간을 PC와 인터넷에 할애한다. 
+	       사람과 기계, 기계와 기계가 서로 정보를 주고받는 사물지능통신
+	       (M2M, Machine to Machine)의 확산도 디지털 정보가 폭발적으로 증가하게
+	        되는 이유다.     
+	     </p>
+	         </div><!-- col-md-7 -->
+	       </div><!--  안쪽의 row-->
+      </div>
+=========================================
+grid4(2단).html save as grid7(위치변경).html
+
+   www.jspstudy.co.kr
+
+<div class="row"><!-- push(오른쪽에 배치),pull(왼쪽에 배치) 숫자는 12를 맞출것 -->
+         <div class="col-md-2 col-md-push-10">
+                           ---------->반대편은 10의 영역을 오른쪽에 배치(push)
+             <ul class="nav">
+              <li>회원가입</li>
+              <li>회원로그인</li>
+              <li>게시판</li>
+              <li>설문조사</li>
+             </ul>
+         </div>
+         
+         <div class="col-md-10 col-md-pull-2">
+                           ----------->반대편의 2의 영역을 왼쪽에 배치(pull)
+=========================================
+  1.grid(1~7예제)
+
+******************************************
+1.부트스트랩의 기본 글꼴 - Helvetica Neue,Helvetica,Arial
+2.전체적인 글꼴 크기 – 14px
+3.전체의 행간->1.42857443
+4.글꼴 색 – 진한 회색
+5.배경 색상 – 흰색
+6.직접 부트스트랩의 파일을 편집하는 것보다 따로 설정이 권장 사항
+*******************************************
+
+  2.font->font.html ->파일로 작성해서 불러오는 방법을 이용
+
+
+ 1. @font-face =>웹폰트를 사용하는 방법
+
+1.웹폰트는 웹 디자이너가 사용자의 컴퓨터에 설치되지 않은 글꼴을 사용 가능
+
+2.웹폰트는 구입한 폰트를 서버에 올려 놓은 후, CSS에 글꼴 파일을 포함시켜
+놓으면  해당 사이트를 접속하는 사용자의 컴퓨터에 그 폰트가 다운로드 되어
+ 보여집니다.
+
+3.웹폰트를 HTML에 포함하려면 CSS3방식의 @font-face 규칙으로 정의
+4.W3C 권장형식  - *.woff
+5.크롬,사파리,파이어 폭스, 오페라,IE9이상 버전에서 *.woff 글꼴 형식을 지원 
+
+==================================
+ 2.@import를 통한 글꼴을 불러오는 방법
+---------------------------------------
+3.body태그에 부여하는 방법(수동)
+
+** 참조 **
+
+윈도우->12px 또는 11px가 좋다
+14px이 상인 경우에는 글꼴이
+깨지는 현상이 발생이 되곤한다
+14px 이상의 글꼴은 나눔고딕이나
+맑은 고딕등 최근에 나온 글꼴을
+사용하면 가독성을 높일 수가 있다
+==================
+3.table->table1.html
+
+<!-- 1.class="table" (넓이가 100%인 테이블,행사이에 border적용)-->
+      <table class="table">
+                ===========>기본 테이블을 작성해서 적용되는 스타일
+      <table class="table">
+         <thead>
+             <tr>
+               <td>번호</td>
+               <td>글제목</td>
+               <td>작성자</td>
+            </tr>
+         </thead>
+            <tr>
+               <td>1</td>
+               <td>게시판의 글제목</td>
+               <td>홍길동</td>
+            </tr>
+            <tr>
+               <td>2</td>
+               <td>게시판의 글제목2</td>
+               <td>테스트2</td>
+            </tr>
+            <tr>
+               <td>3</td>
+               <td>게시판의 글제목3</td>
+               <td>임시3</td>
+            </tr>
+      </table>
+      <p>
+----------------------------------------------------------------------------
+<!-- 2.table-striped(테이블의 각행에 색상을 넣어주는 효과) -->
+<!-- 3.table-bordered(기본테이블은 각행에만 밑줄,테이블 전체에 테두리를 설정) -->
+       <table class="table table-bordered">
+
+-----------------------------------------------------------------------------
+  table1.html save as table2.html
+
+ <!-- 4.class="table-hover" (각행에 마우스를 갖다대면 색상이 변경)-->
+     <h4 class="text-success text-center">class="table-hover"를 준경우</h4>
+      <table class="table table-hover">
+
+<!-- 5.table-condensed
+            각각의 셀의 padding값이 작아져서 타이트한 느낌을 적용(셀과 셀안의 문자열간격) -->
+            
+      <!-- 6.각 행또는 각 셀마다 색상을 부여(행에 부여하는 클래스 선택자)
+             active(회색),success(연두색),warnning(겨자색),danger(빨강색)부여
+       -->
+      <h4 class="text-primary text-right">class="table-condensed를 사용한 경우</h4>
+       <table class="table table-condensed">
+
+ <thead>
+            <tr class="active">
+                <td>번호</td><td>글제목</td><td>작성자</td>
+            </tr>
+         </thead>
+            <tr class="success">
+                <td>1</td><td>게시판의 글제목</td><td>홍길동</td>
+            </tr>
+            <tr class="warning">
+                <td>2</td><td>게시판의 글제목2</td><td>테스트</td>
+            </tr>
+            <tr class="danger">
+                <td>3</td><td>게시판의 글제목3</td><td>임시3</td>
+            </tr>
+      </table>
+     </div>
+==============================================
+ table1.html save as table3.html
+<!--  
+        7.class="table-responsive
+        =>브라우저의 길이에 맞춰 테이블의 크기 및 내용부분또한 가변적으로 변함
+        =>테이블 태그 전체를 <div class="table-responsive">로 깜싸준다.
+        =>폭이 줄어들면 자동으로 스크롤바가 생성
+    -->
+     <div class="container">
+     <div class="table-responsive">
+      <table class="table">
+         <thead>
+         ,,,,
+<!-- 8.class="table-bordered table hover" 
+              테이블의 넓이는 기본적으로 100%사용하면서 테이블의 테두리에 선 적용,
+             마우스를 갖다댄 행은 색상적용 시켜주는 클래스 선택자)-->
+      <h4 class="text-success text-center">class="table-bordered,table-hover를 적용</h4>
+      <table class="table table-bordered table hover">
+         <thead>
+            <tr class="success">
+                <td>번호</td><td>글제목</td><td>작성자</td>
+            </tr>
+         </thead>
+            <tr class="warning">
+                <td>1</td><td>게시판의 글제목</td><td>홍길동</td>
+            </tr>
+            <tr>
+                <td>2</td><td class="text-warning">게시판의 글제목2</td><td>테스트</td>
+            </tr>
+            <tr>
+                <td>3</td><td>게시판의 글제목3</td><td class="text-danger">임시3</td>
+            </tr>
+      </table>
+==============================================
+*** 4.회원가입폼=>form태그를 이용 ***
+
+ 4.form=>form1.html
+    폴더
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+       -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+<div class="form-group">
+	         <label for="Name">이름</label>
+	         <input type="text" class="form-control" placeholder="이름">
+       </div>
+       
+         <div class="form-group">
+	         <label for="emailaddress">이메일</label>
+	         <input type="email" class="form-control" placeholder="이메일">
+        </div>
+        
+        <div class="form-group">
+            <button type="submit">확인</button>
+        </div>
+      </form>
+********************************************************
+form1.html save as form2(inline).html
+
+<!--  text-left,text-center,text-right(인용구에서 주로 사용 pull-right)
+        3.인라인폼->브라우저의 폭에 따라서 배치방법이 변경(class="form-inline")
+                        1)폭이 넓으면 가로로 정렬
+                        2)폭이 줄어들면 세로로 정렬
+            .sr-only 클래스 선택자(화면에 안보이게 설정)(label부분이 경우에 따라서는 감추는 역할)
+      -->
+      <hr>
+      <h4 class="text-primary pull-right">부트스트랩의 폼양식적용</h4>
+      <form role="form" class="form-inline">
+     
+       <div class="form-group">
+	         <label for="Name" class="sr-only">이름</label>
+	         <input type="text" class="form-control" placeholder="이름">
+       </div>
+       
+         <div class="form-group">
+	         <label for="emailaddress" class="sr-only">이메일</label>
+	         <input type="email" class="form-control" placeholder="이메일">
+        </div>
+        
+        <div class="form-group">
+            <button type="submit">확인</button>
+        </div>
+      </form>
+      <hr>
+      <p>
+      <!-- 
+         4.폼양식을 수평으로 정렬->label,input에 적용(그리드 시스템과 혼합)
+                        class="form-horizontal"
+            모바일(col-xs-n(1~12)),pc(col-md-n or col-lg-n)
+           입력양식은 <div>로 묶어줘야 된다.
+       -->
+       <h4 class="text-primary text-center">부트스트랩의 수평폼</h4>
+      <form role="form" class="form-horizontal">
+                                  ================
+       <div class="form-group">
+	         <label for="Name" class="col-xs-2 col-lg-2 control-label">이름</label>
+	                                     ========================
+                     <div class="col-xs-10 col-lg-10">
+	         		<input type="text" class="form-control" placeholder="이름">
+	         </div>
+       </div>
+       
+         <div class="form-group">
+	         <label for="emailaddress" class="col-xs-2 col-lg-2 control-label">이메일</label>
+	         <div class="col-xs-10 col-lg-10">
+	         		<input type="email" class="form-control" placeholder="이메일">
+	         </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="col-xs-offset-2 col-xs-10 col-lg-offset-2 col-lg-10">
+              <button type="submit">확인</button>
+          </div>
+        </div>
+      </form>
+    </div>
+============================================
+form3(select,check).html
+
+   <!-- rows속성만 사용(기본적으로 넓이는 100%)-->
+     <textarea rows="5" class="form-control"></textarea>
+     
+     <!-- checkbox->div태그로 묶어준다.-><label>로 감싸준다.
+         input[type="radio"],
+        input[type="checkbox"] {
+       margin: 4px 0 0;
+       margin-top: 1px \9;
+       line-height: normal;
+}
+      -->
+     <h5 class="text-success">input type="checkbox"</h5>
+     <div class="checkbox">
+          <label>
+                <input type="checkbox" value="">여기는 체크박스 사용
+          </label>
+     </div>
+======================================
+
+
