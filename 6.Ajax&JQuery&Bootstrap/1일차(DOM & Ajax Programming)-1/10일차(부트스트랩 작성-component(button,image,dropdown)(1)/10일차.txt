@@ -1,0 +1,428 @@
+10일차(부트스트랩 작성-component(button,image,dropdown)
+
+form3.html
+
+<div class="radio">
+          <label>
+              <input type="radio" name="optionRadios"  id="optionRadios2"
+                          value="option2">여기는 라디오 박스사용2
+          </label>
+     </div>
+     <hr>
+     <h5>checkbox-inline(수평정렬) 선택자를 사용</h5>
+     <!-- label로 묶어주고 클래스 선택자 부여=>수평정렬(checkbox-inlne),(radio-inline) 사용  -->
+          <h4> 결재수단을 선택하세요</h4>
+          <label class="radio-inline">
+              <input type="radio" name="optionRadios"  id="optionRadios1"
+                          value="option1" checked>신용카드
+          </label>
+          
+          <label class="radio-inline">
+              <input type="radio" name="optionRadios"  id="optionRadios2"
+                          value="option2">현금
+          </label>
+          
+          <label class="radio-inline">
+              <input type="radio" name="optionRadios"  id="optionRadios3"
+                          value="option3">무통장 입금
+          </label>
+          <hr>
+          <h5 class="text-primary text-center">checkbox-inline 선택자를 사용</h5>
+          <label class="checkbox-inline">
+                <input type="checkbox" value="option1">1.회원가입
+          </label>
+          
+          <label class="checkbox-inline">
+                <input type="checkbox" value="option2">2.회원로그인
+          </label>
+          <h5>콤보박스</h5>
+          <!-- input과 동일하게 width->100% 적용,multiple사용(다중선택이 된다.)(리스트박스) -->
+          <select class="form-control">
+             <option>사원</option>
+             <option>대리</option>
+             <option>과장</option>
+          </select>
+          
+          <select multiple class="form-control">
+             <option>1</option>
+             <option>2</option>
+             <option>3</option>
+          </select>
+================================
+5.button ==========>버튼의 크기,버튼의 색깔(기능)=>버튼 그룹(=>툴바)
+      button.html
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+<h4 class="text-primary">input 태그 사용</h4>
+    <input type="button"  class="btn btn-default"value="기본 모양 버튼">
+    <input type="button"  class="btn btn-primary"value="중요한 버튼">
+    <input type="button"  class="btn btn-success"value="긍정의미 버튼">
+    <input type="button"  class="btn btn-info"value="정보제공 버튼">
+    <input type="button"  class="btn btn-warning"value="주의알림 버튼">
+    <input type="button"  class="btn btn-danger"value="위험표시 버튼">
+    <input type="button"  class="btn btn-link"value="단순 링크 버튼">
+    
+    <h4 class="text-success">a태그를 이용(role="button")</h4>
+    <!-- role="button"(버튼역할을 한다) -->
+    <a href="#" class="btn btn-default" role="button">기본모양버튼</a>
+    <a href="#" class="btn btn-primary" role="button">중요버튼</a>
+    <a href="#" class="btn btn-success" role="button">긍정버튼</a>
+    
+    <h4 class="text-warning text-right">버튼만드는 방법3</h4>
+    <button type="button">클래스 선택자가 적용되지 않은 경우</button>
+    <button type="button"  class="btn">class="btn"만 적용</button>
+    <button type="button"  class="btn btn-warning">class="btn btn-warning"만 적용</button>
+    </div>
+
+button2(size).html =>버튼의 크기
+
+  <!-- .btn클래스 선택자(btn-lg(pc), btn-sm(Tablet),btn-xs(Mobile)추가
+                 버튼의 비활성화 (disabled)
+        .btn-lg,
+.btn-group-lg > .btn { =>pc
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
+.btn-sm,=>Table
+.btn-group-sm > .btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-xs,=>Mobile
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+            -->
+<button class="btn btn-primary btn-lg" disabled="disabled">큰버튼</button>
+   <button class="btn btn-primary btn-lg">큰버튼 btn-lg</button>
+   <p>
+   <button class="btn btn-primary">중요버튼</button>
+   <button class="btn btn-default">기본버튼</button>
+   <p>
+   
+   <p>
+   <button class="btn btn-primary btn-sm">작은버튼 btn-sm</button>
+   <button class="btn btn-default btn-sm">작은버튼 btn-sm</button>
+   <p>
+   
+   <p>
+   <button class="btn btn-primary btn-xs">더 작은 버튼 btn-xs</button>
+   <button class="btn btn-default btn-xs">더 작은 버튼 btn-xs</button>
+   <p>
+   <!-- 대화상자에 나오는 버튼(.btn-blcok)선택자(넓이가 100% 사용) -->
+   <button class="btn btn-primary btn-block">대화상자버튼</button>
+   </div>
+--------------------------------------------------------------------------
+6.image->image.html
+  폴더
+    
+<!--  
+        이미지도 그리드 시스템과 혼합해서 사용
+        1.img-rounded->둥근테두리
+        2.img-circle->원형이미지(ex 졸업앨범 사진)
+        3.img-thumnail->썸네일(그림 주위에 테두리 쳐진형태)
+        4.img-responsive(반응형)->브라우저의 크기를 줄이면 기본이미지를 제외한 크기가 줄어듬
+    -->
+===========================================
+7.component->1.dropdown.html
+
+** 드롭다운 **
+<!--
+ 기본개념및 주의 사항
+       
+1.메뉴를 눌렀을때 하단으로 펼쳐지는 것
+2.단독으로 사용할 수없고 부트스트랩에 포함된 자바스크립트와 jQuery를 같이 사용 해야 한다.
+3.일반적으로 드롭다운 부분은 ul과 li로 구성된 리스트 태그에 적용된다.(상단메뉴에서 많이 사용)
+4.아래와 같이 jquery에 관련된 파일을 불러와야 제대로 작동이 된다.
+    
+    부트스트랩에서 작성하는 방법
+    
+         1.드롭다운해서 나오는메뉴부분을 감싸주는 선택자->dropdown
+         
+           .dropup,    //위에 배치
+           .dropdown {
+           position: relative;//상대적인 배치(밑에)
+}
+          메뉴를 표시=>role="menu", 메뉴항목(=서브메뉴)->role="menuitem"
+         2.메뉴항목을 현재 안보이게 설정->ul class="dropdown-menu"->display: none;
+         3.클릭했을때 드롭다운할 수 있도록 설정->data-toggle="dropdown"
+           ->부트스트랩->jQuery와 코딩으로 연결된 속성(내장)
+         4.tab키를 이용해서 특정메뉴를 선택해서 실행=>tabindex="-1"
+           tab키로 여기를 클릭하세요로 이동 enter->메뉴가 펼쳐질 수 있도록 설정
+    
+         -->
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+          background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+       <div class="dropdown">
+         <a data-toggle="dropdown" href="#">여기를 클릭하세요</a>
+          <ul class="dropdown-menu" role="menu">
+             <li role="presentation"><a role="menuitem" tabindex="-1"  href="#">회원로그인</a></li>
+             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">자유게시판</a></li>
+             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">설문조사</a></li>
+          </ul>
+       </div>
+------------------------------------------------------------------------------
+1.dropdown.html save as 2.dropdown(위치).html
+
+<!--
+           드롭다운에 별도의 헤더를 추가(대표키워드)
+          li태그내부에 class="dropdown-header
+          어느 특정 메뉴는 메뉴 불활성화(사용불가)->li태그 내부에 class="disabled"
+        .dropdown-menu .divider {
+			  height: 1px;
+			  margin: 9px 0;
+			  overflow: hidden;
+			  background-color: #e5e5e5;
+			}
+			.dropdown-header {
+			  display: block;
+			  padding: 3px 20px;
+			  font-size: 12px;
+			  line-height: 1.42857143;
+			  color: #777;
+			  white-space: nowrap;
+			}
+         -->
+       <div class="dropdown">
+         <!-- <a data-toggle="dropdown" href="#">여기를 클릭하세요</a> -->
+         <input type="button" data-toggle="dropdown" class="btn btn-default btn-primary"
+                                          value="여기를 클릭하세요">
+          <ul class="dropdown-menu" role="menu">
+             <li role="presentation" class="dropdown-header">회원</li>
+             <li role="presentation"><a role="menuitem" tabindex="-1"  href="#">회원로그인</a></li>
+             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">자유게시판</a></li>
+             <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">설문조사</a></li>
+             <li role="presentation" class="divider"></li><!-- 분리선 -->
+             <li role="presentation"><a role="menuitem" tabindex="-1"  href="#">관리자 로그인</a></li>
+          </ul>
+       </div>
+       <hr>
+=============================================
+3.buttongroup(설정).html
+
+<!-- 
+        1.버튼의 그룹을 설정(생성시킨 버트을 div태그로 묶어주고 div 태그 내부에
+                                 btn-group선택자 설정
+        2.버튼그룹의 크기를 일괄적으로 조절(btn-group-lg,btn-group-sm,btn-group-xs
+                                                             ~-lg,~-sm(태블릿),~-xs(모바일)
+            .btn-lg,
+			.btn-group-lg > .btn {
+			  padding: 10px 16px;
+			  font-size: 18px;
+			  line-height: 1.3333333;
+			  border-radius: 6px;
+			}                                                   
+       -->
+      <h4 class="text-success">버튼그룹을 설정한 경우</h4>
+      <div class="btn-group btn-group-lg">
+	      <input type="button" class="btn btn-default" value="기본 모양 버튼">
+	      <input type="button" class="btn btn-primary" value="중요한 버튼">
+	      <input type="button" class="btn btn-success" value="긍정의미 버튼">
+	      <input type="button" class="btn btn-info" value="정보제공 버튼">
+      </div>
+      <p>
+      <hr>
+      <!-- 버튼그룹(1개이상)을 툴바형식으로 변환
+             서로 다른 종류의 버튼그룹을 div태그로 묶어준뒤 class="btn-toolbar"로 설정
+             툴바형태의 버튼그룹에서는 버튼의 크기를 일정하게 유지
+                .btn-toolbar > .btn-group,
+				.btn-toolbar > .input-group {
+				  margin-left: 5px; /*이동*/
+				}
+       -->
+     <div class="btn-toolbar">
+	      <div class="btn-group btn-group-sm">
+		      <input type="button" class="btn btn-default" value="버튼1">
+		      <input type="button" class="btn btn-primary" value="버튼2">
+		      <input type="button" class="btn btn-success" value="버튼3">
+		      <input type="button" class="btn btn-info" value="버튼4">
+	      </div>
+	     
+	     <div class="btn-group btn-group-sm">
+		      <input type="button" class="btn btn-default" value="버튼5">
+		      <input type="button" class="btn btn-primary" value="버튼6">
+	      </div> 
+     </div> 
+       ========================================
+3.buttongroup(설정).html  save as 4.buttongroup(정렬,중첩).html
+
+<!--
+************************************************
+         1.버튼그룹의 속한 버튼중에서 클릭해서 펼쳐질 버튼을 선택
+         2.펼쳐질 메뉴와 버튼을 다시 내부의 중첩그룹으로 묶어준다.(=>중첩)
+         3.caret(캐럿)->메뉴를 펼치게 해주는 화살표
+                         1).메뉴이름<span class="caret"></span>
+                         2).캐럿의 메뉴부분을 둥근 모서리를 설정
+                             버튼의 클래스 선택자-> dropdown-toggle
+************************************************
+      -->
+    <h4 class="text-success">버튼그룹의 중첩을 이용한 서브메뉴 이용</h4>
+    <div class="btn-group">
+		    <button type="button" class="btn btn-default">버튼1</button>
+		    <button type="button" class="btn btn-primary">버튼2</button>
+		    <div class="btn-group">
+				    <button type="button" data-toggle="dropdown"
+				                 class="btn btn-default dropdown-toggle">클릭<span class="caret"></span>
+				   </button>
+				    <ul class="dropdown-menu">
+				        <li><a href="#" tabindex="-1">공지사항</a></li>
+				        <li><a href="#" tabindex="-1">자유게시판</a></li>
+				        <li><a href="#" tabindex="-1">자료실</a></li>
+				    </ul>
+		    </div><!-- 안쪽의 btn-group -->
+    </div>
+    <p>
+    <!-- 
+*********************************************************
+         버튼그룹의 수직(btn-group-vertical),양쪽 정렬하기
+        버튼그룹을 만들때 사용하는 태그-><button>태그 또는 <a>링크 태그를 사용할것(input 태그 사용X)
+       버튼그룹의 수직,수평정렬이 가능한데 양쪽정렬은 <a>링크태그를 이용한 버튼그룹만 가능하다.
+***********************************************************     
+-->
+     <div class="btn-group-vertical">
+		    <button type="button" class="btn btn-default">버튼1</button>
+		    <button type="button" class="btn btn-primary">버튼2</button>
+		    <div class="btn-group">
+				    <button type="button" data-toggle="dropdown"
+				                 class="btn btn-default dropdown-toggle">클릭<span class="caret"></span>
+				   </button>
+				    <ul class="dropdown-menu">
+				        <li><a href="#" tabindex="-1">공지사항</a></li>
+				        <li><a href="#" tabindex="-1">자유게시판</a></li>
+				        <li><a href="#" tabindex="-1">자료실</a></li>
+				    </ul>
+		    </div><!-- 안쪽의 btn-group -->
+    </div>
+    <!-- 양쪽정렬(a 태그로 버튼을 만든 경우 사용이 가능)과 예외사항(button태그에서는 안된다.) -->
+    <h4>a태그로 이루어진 버튼의 경우에 양쪽정렬하기(btn-group-justified)</h4>
+    <div class="btn-group btn-group-justified">
+        <a href="#" class="btn btn-default">버튼1</a>
+        <a href="#" class="btn btn-default">버튼2</a>
+        <a href="#" class="btn btn-default">버튼3</a>
+    </div>
+    
+    <h4>button태그로 이루어진 버튼 그룹의 경우에는 양쪽정렬이 적용이 안된다.</h4>
+    <div class="btn-group btn-group-justified">
+		    <button type="button" class="btn btn-default">버튼1</button>
+		    <button type="button" class="btn btn-primary">버튼2</button>
+    </div>
+    <hr>
+    <div class="btn-group">
+		    <input type="button" class="btn btn-default">버튼3</button>
+		    <input type="button" class="btn btn-primary">버튼4</button>
+    </div>
+    =========================================
+ 4.buttongroup(정렬,중첩).html save as 5.buttondropdwon(크기,위치).html
+
+<div class="container">
+    <!--
+            1.다른 버튼과 캐럿을 결합시키는 방법
+                안쪽의 기존 버튼그룹을 제거-서브메뉴의 나오는 위치가 왼쪽메뉴에 치우쳐서 출력
+                캐럿이 적용된 버튼의 이름을 제거->왼쪽버튼과 캐럿이 결합
+      -->
+    <h4 class="text-success">분할된 버튼그룹의 구분(색깔)</h4>
+    <div class="btn-group">
+		    <button type="button" class="btn btn-default">버튼1</button>
+				    <button type="button" data-toggle="dropdown"
+				                 class="btn btn-default dropdown-toggle"><span class="caret"></span>
+				   </button>
+				    <ul class="dropdown-menu">
+				        <li><a href="#" tabindex="-1">공지사항</a></li>
+				        <li><a href="#" tabindex="-1">자유게시판</a></li>
+				        <li><a href="#" tabindex="-1">자료실</a></li>
+				    </ul>
+    </div>
+    <p>
+    <hr>
+    <!-- 
+         2.버튼의 색깔을 부여(btn- 접두어를 이용)
+     -->
+     <div class="btn-group">
+		    <button type="button" class="btn btn-default btn-danger">버튼2</button>
+	        <button type="button" data-toggle="dropdown"
+				                 class="btn btn-default dropdown-toggle btn-danger"><span class="caret"></span>
+				   </button>
+				    <ul class="dropdown-menu">
+				        <li><a href="#" tabindex="-1">공지사항</a></li>
+				        <li><a href="#" tabindex="-1">자유게시판</a></li>
+				        <li><a href="#" tabindex="-1">자료실</a></li>
+				    </ul>
+    </div>
+    <!-- 3.버튼드롭다운의 크기 조절(btn-lg,btn-sm,btn-xs) -->
+    <h4>버튼드롭다운의 크기 조절</h4>
+    <div class="btn-group">
+		    <button type="button" class="btn btn-default btn-success btn-lg">버튼3</button>
+	        <button type="button" data-toggle="dropdown"
+				                 class="btn btn-default dropdown-toggle btn-success btn-lg"><span class="caret"></span>
+				   </button>
+				    <ul class="dropdown-menu">
+				        <li><a href="#" tabindex="-1">공지사항</a></li>
+				        <li><a href="#" tabindex="-1">자유게시판</a></li>
+				        <li><a href="#" tabindex="-1">자료실</a></li>
+				    </ul>
+    </div>
+    
+    <h4>드롭다운,드롭업(dropup(브라우저 하단에 위치)</h4>
+     <div class="btn-group dropup">
+		    <button type="button" class="btn btn-default btn-muted btn-sm">버튼3</button>
+	        <button type="button" data-toggle="dropdown"
+				                 class="btn btn-default dropdown-toggle btn-muted btn-sm"><span class="caret"></span>
+				   </button>
+				    <ul class="dropdown-menu">
+				        <li><a href="#" tabindex="-1">공지사항</a></li>
+				        <li><a href="#" tabindex="-1">자유게시판</a></li>
+				        <li><a href="#" tabindex="-1">자료실</a></li>
+				    </ul>
+    </div>
+======================================
+
+
