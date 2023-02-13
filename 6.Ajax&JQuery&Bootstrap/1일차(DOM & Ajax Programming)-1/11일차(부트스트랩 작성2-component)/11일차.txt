@@ -1,0 +1,439 @@
+11일차(부트스트랩 작성2-component)
+
+  오 click->import->import 선택
+
+  General
+       |
+       *****************************
+        -Existing Projects into Workspace 
+          존재하는 워크스페이스(소스가 있는 폴더를 지정)
+
+       =>경로지정해서 copy to workspace로 복사해서 가져오기
+==================================
+부트스트랩의 내비게이션 기능
+
+1)내비게이션 2)내비게이션바
+
+****************************************
+내비게이션=>.nav 클래스 선택자 사용
+                문서 내부 또는 메인 메뉴 또는 서브 메뉴를 만들때 사용
+*******************************************
+                   종류->탭형, 알약형->디자인상의 차이는 없다.
+
+                 탭형-><ul class=“nav nav-tabs”>와 같이 사용된다.
+                 알약형-><ul class=“nav nav-pills”>와 같이 사용된다.
+************************************************
+
+내비게이션바=>.nav-bar 클래스 선택자 사용
+                  주로 메인 메뉴를 만들때 사용
+                  ===============
+
+*** 네비게이션의 차이점 **
+
+탭형 내비게이션=>메뉴 하단에 선이 있다.
+알약형 내비게이션=>메뉴 하단에 선이 없다. 
+*******************************
+$('li').on('click',function(){
+    $(li).eq(1).attr('class','active')
+     ~
+  }
+                          
+         activate 상태에서의 메뉴 모양이 알약과 같은형태
+         탭형과는 달리 알약형은 수직으로도 정렬이 가능하다.
+
+ <h1>6.navigation(종류).html</h1>
+    <!--
+      .nav {
+  padding-left: 0; /* 안쪽여백의 왼쪽은 0 */
+  margin-bottom: 0;/*아래쪽 바깥여백은 0 */
+  list-style: none;
+  
+  .nav-tabs {
+  border-bottom: 1px solid #ddd; /*테두리 아래쪽에 선을 긋기*/
+  }
+}
+      -->
+    <div class="container">
+       <h1>네비게이션</h1>
+       <h4>탭형 네비게이션</h4>
+       <ul class="nav nav-tabs">
+       	   <li><a href="#">회원관리</a></li>
+       	   <li><a href="#">공지사항</a></li>
+       	   <li><a href="#">자유게시판</a></li>
+       	   <li><a href="#">자료실</a></li>
+       </ul>
+       <br>
+       <h4>미리 특정 메뉴를 선택해서 화면에 출력(class="active")</h4>
+       <ul class="nav nav-tabs">
+       	   <li><a href="#">회원관리</a></li>
+       	   <li class="active" ><a href="#">공지사항</a></li>
+       	   <li><a href="#">자유게시판</a></li>
+       	   <li><a href="#">자료실</a></li>
+       </ul>
+       <p>
+       <hr>
+        <!-- 
+         .nav-pills > li {  메뉴를 왼쪽=>오른쪽으로 정렬하기위해서 속성을 부여
+        float: left;
+       }
+        -->
+       <h4>알약형 네비게이션</h4>
+       <ul class="nav nav-pills">
+       	   <li><a href="#">Java</a></li>
+       	   <li><a href="#">Jsp</a></li>
+       	   <li><a href="#">Ajax</a></li>
+       	   <li><a href="#">JQuery</a></li>
+       </ul>
+       <br>
+      
+       <h4>미리 특정 메뉴를 선택해서 화면에 출력(class="active")</h4>
+       <ul class="nav nav-pills">
+       	   <li><a href="#">Java</a></li>
+       	   <li class="active"><a href="#">Jsp</a></li>
+       	   <li><a href="#">Ajax</a></li>
+       	   <li><a href="#">JQuery</a></li>
+       </ul>
+       
+       <h4>알약형 수직정렬(nav-stacked)</h4>
+       <ul class="nav nav-pills nav-stacked">
+       	   <li><a href="#">Java</a></li>
+       	   <li class="active"><a href="#">Jsp</a></li>
+       	   <li><a href="#">Ajax</a></li>
+       	   <li><a href="#">JQuery</a></li>
+       </ul>
+       
+    </div>
+========================================
+  6.navigation(종류).html save as 7.navigation(정렬).html
+ <h1>7.navigation(정렬).html</h1>
+    
+    <div class="container">
+       <h1>네비게이션</h1>
+       <!-- 
+       .nav-tabs.nav-justified {
+       width: 100%; =>탭의 갯수에 따라서 비율로 설정(ex 4개 25%)
+       border-bottom: 0;
+}
+        -->
+       <h4>탭형 네비게이션 양쪽 정렬(nav-justified)</h4>
+       <ul class="nav nav-tabs nav-justified">
+       	   <li><a href="#">회원관리</a></li>
+       	   <li><a href="#">공지사항</a></li>
+       	   <li><a href="#">자유게시판</a></li>
+       	   <li class="disabled"><a href="#">자료실</a></li>
+       </ul>
+       <br>
+       <h4>미리 특정 메뉴를 선택해서 화면에 출력(class="active")</h4>
+       <ul class="nav nav-tabs">
+       	   <li><a href="#">회원관리</a></li>
+       	   <li class="active" ><a href="#">공지사항</a></li>
+       	   <li><a href="#">자유게시판</a></li>
+       	   <li><a href="#">자료실</a></li>
+       </ul>
+       <p>
+       <hr>
+       
+       <h4>알약형 네비게이션 양쪽정렬 및 메뉴 비활성화(class="disabled")</h4>
+       <ul class="nav nav-pills nav-justified">
+       	   <li><a href="#">Java</a></li>
+       	   <li class="active"><a href="#">Jsp</a></li>
+       	   <li class="disabled"><a href="#">Ajax</a></li>
+       	   <li><a href="#">JQuery</a></li>
+       </ul>
+       
+       <h4>알약형 수직정렬(nav-stacked)</h4>
+       <ul class="nav nav-pills nav-stacked">
+       	   <li><a href="#">Java</a></li>
+       	   <li class="active"><a href="#">Jsp</a></li>
+       	   <li><a href="#">Ajax</a></li>
+       	   <li><a href="#">JQuery</a></li>
+       </ul>
+       
+    </div>
+=======================================
+ 
+8.navigationdown.html
+
+ <h1>네이게이션</h1>
+           <h4>탭형 네비게이션 양쪽 정렬(nav-justified)</h4>
+           <ul class="nav nav-tabs nav-justified">
+                                               ==========
+               <li><a href="#">회원관리</a></li>
+               <li><a href="#">공지사항</a></li>
+               <li><a href="#">자유게시판</a></li>
+               <li><a href="#">자료실</a></li>
+           </ul>
+           <br>
+           <h4>미리 특정 메뉴를 선택해서 화면에 출력(class="active")</h4>
+           <ul class="nav nav-tabs">
+               <li><a href="#">회원관리</a></li>
+               <li class="active"><a href="#">공지사항</a></li>
+                    =========
+               <li><a href="#">자유게시판</a></li>
+               <li><a href="#">자료실</a></li>
+           </ul>
+           <p>
+      <hr>
+           <h4>알약형 네비게이션 양쪽정렬 및 메뉴 비활성화(class=disabled)</h4>
+           <ul class="nav nav-pills nav-justified">
+                                              =========
+               <li><a href="#">Java</a></li>
+               <li><a href="#">Jsp</a></li>
+               <li class="disabled"><a href="#">Ajax</a></li>
+                    ===========
+               <li><a href="#">jQuery</a></li>
+           </ul>
+           <br>
+           <h4>미리 특정 메뉴를 선택해서 화면에 출력(class="active")</h4>
+           <ul class="nav nav-pills">
+               <li><a href="#">Java</a></li>
+               <li class="active"><a href="#">Jsp</a></li>
+               <li><a href="#">Ajax</a></li>
+               <li><a href="#">jQuery</a></li>
+           </ul>
+           <p>
+           <h4>알약형 수직정렬(nav-stacked)</h4>
+           <ul class="nav nav-pills nav-stacked">
+                                              =========
+               <li><a href="#">Java</a></li>
+               <li class="active"><a href="#">Jsp</a></li>
+               <li><a href="#">Ajax</a></li>
+               <li><a href="#">jQuery</a></li>
+           </ul>
+           =================================
+
+6.navigation(종류).html save as 8.navidropdown.html
+
+<h4>탭형 네비게이션+드롭다운</h4>
+           <ul class="nav nav-tabs">
+               <li><a href="#">공지사항</a></li>
+               <li><a href="#">자유게시판</a></li>
+               <li><a href="#">Q&A</a></li>
+               <!-- <li><a href="#">사용자</a></li> -->
+               <!-- 네비게이션에 드롭다운을 추가할려면 div태그 대신에 li태그로 묶어줘야 된다. -->
+               <li class="dropdown">
+			         <a data-toggle="dropdown" href="#">사용자
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu" role="menu">
+			             <li role="presentation"><a role="menuitem" tabindex="-1"  href="#">회원로그인</a></li>
+			             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">자유게시판</a></li>
+			             <li role="presentation"><a role="menuitem" tabindex="-1" href="#">설문조사</a></li>
+			             <li class="divider"></li>
+			             <li><a role="menuitem" href="#">관리자</a></li>
+			          </ul>
+               </li>
+           </ul>
+===========================================
+8.navigationbar폴더 생성
+
+        1.navbar.html
+
+<h1 class="text-success text-center">네비게이션바 구현 </h1>
+       <div class="container">
+       <!-- 
+           navbar-header->사이트로고가 들어가는 부분과  모바일 상태에서의 아이콘이 나오는 부분
+           navbar-brand->로고 이미지 처리
+           <span class="icon-bar">아이콘 이미지 </span>
+            형식) glyphicon glyphicon-접두어
+       
+        -->
+         <nav class="navbar navbar-default" role="navigation"><!-- 상단메뉴 및 서브메뉴포함된 bar생성 -->
+           <div class="navbar-header">
+            <!-- 
+                1.navbar-toggle->네비게이션의 화면 출력 유무(모바일화면으로 전환할때 우측상단의 메뉴클릭)
+                2.data-toggle="collapse" =>모바일 상태에서 클릭하면 메뉴가 나오게 설정
+                3.data-target="찾아가는 클래스선택자(.navbar-ex1-collapse)"
+                                        ->모바일 상태의 메뉴동작과 연동부분
+             -->
+               <button type="button" class="navbar-toggle"
+                                                 data-toggle="collapse"
+                                                 data-target=".navbar-ex1-collapse">
+                   <span class="sr-only">navigation title</span>
+                  <!--  <span class="glyphicon glyphicon-phone-alt"></span> -->
+                   <!-- <span class="glyphicon glyphicon-camera"></span> -->
+                   <span class="icon-bar"></span>
+               </button>
+              <!-- <a class="navbar-brand" href="#"></a> -->
+              <a class="navbar-brand glyphicon" href="main.jsp"> 
+                          <span class="glyphicon glyphicon-home"></span>
+			  </a>
+           </div>
+           <!--  
+                 pc와 모바일부분이 같게 나오게 설정하는 부분
+                       모바일 상태에게 나오게 설정하는 부분(메뉴)
+               1.navbar-nav ->네비게이션 바의 메뉴설정할때 사용
+               2.collapse->맨 처음에는 메뉴가 안나오게 설정
+               3.navbar-ex1-collapse->모바일 상태에서 찾아가게 해주는 선택자
+               4.navbar-collapse->모바일 상태에서 생긴 아이콘을 클릭하면 서브메뉴가
+                                            보여지게 해주는 역할을 하는 선택자(내비게이션바의 주메뉴의 출력부분 설정할때)
+           -->
+           <div class="collapse navbar-collapse navbar-ex1-collapse">
+               <ul class="nav navbar-nav">
+                   <li><a href="#">공지사항</a></li>
+                   <li><a href="#">자유게시판</a></li>
+                   <li><a href="#">Q&A</a></li>
+               </ul>
+               <!--  검색폼(role="search")과 버튼추가
+               1.navbar-form->네비게이션바에 추가된 폼
+               2.네비게이션의 항목->navbar-right(선택자)=>오른쪽에 배치
+               
+                 -->
+               <form class="navbar-form navbar-right" role="search">
+                     <div class="form-group">
+                        <input type="text"  class="form-control" placeholder="검색어 입력">
+                     </div>
+                     <button type="button" class="btn btn-default">Submit</button>
+               </form>
+           </div>
+         </nav>
+========================================
+1.navbar.html save as 2.navbardropdown.html
+
+<body>
+    <h1 class="text-success text-center">네비게이션바 구현 </h1>
+       <div class="container">
+         <nav class="navbar navbar-default" role="navigation"><!-- 상단메뉴 및 서브메뉴포함된 bar생성 -->
+           <div class="navbar-header">
+               <button type="button" class="navbar-toggle"
+                                                 data-toggle="collapse"
+                                                 data-target=".navbar-ex1-collapse">
+                   <span class="icon-bar"></span>
+               </button>
+               //////////////////////////////////////////////////////////////////
+              <!-- <a class="navbar-brand" href="#"></a> -->
+              <a class="navbar-brand glyphicon" href="main.jsp"> 
+                          <span class="glyphicon glyphicon-home"></span>
+			  </a>
+              //////////////////////////////////////////////////////////////////
+           </div>
+           <div class="collapse navbar-collapse navbar-ex1-collapse">
+               <ul class="nav navbar-nav">
+                   <li class="dropdown">
+			         <a data-toggle="dropdown" href="#">사용자
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			             <li><a   href="#">회원로그인</a></li>
+			             <li><a   href="#">자유게시판</a></li>
+			             <li><a   href="#">설문조사</a></li>
+			          </ul>
+                   </li>
+                   <!-- 드롭다운 부분을 추가2 -->
+                   <li class="dropdown">
+			         <a data-toggle="dropdown" href="#">관리자
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			             <li><a   href="#">관리자로그인</a></li>
+			             <li><a   href="#">공지사항</a></li>
+			             <li><a   href="#">통계처리</a></li>
+			          </ul>
+                   </li>
+                   <!-- 드롭다운 부분을 추가3 -->
+                   <li class="dropdown">
+			         <a data-toggle="dropdown" href="#">Q&A
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			             <li><a   href="#">자료실</a></li>
+			             <li><a   href="#">자유게시판2</a></li>
+			             <li><a   href="#">설문조사2</a></li>
+			          </ul>
+                   </li>
+                  
+               </ul>
+
+==========================================
+2.navbardropdown.html save as 3.navbardropdown(정렬,문자열).html
+
+
+<!--
+         1.navbar-inverse->네비게이션의 배경색과 텍스트색을 반전효과를 줄 수 있다.
+         2.navbar-fixed-top을 적용->nav태그에 적용(네비게이션바를 상단에 고정)
+            넓이가 100%로 확대(단점)=>navbar-static-top을 주면 양쪽 padding값 해결
+            <->navbar-fixed-bottom(하단에 적용)
+    -->
+    <h1 class="text-success text-center">네비게이션바 구현 </h1>
+       <div class="container">
+         <nav class="navbar navbar-inverse navbar-static-top" role="navigation"><!-- 상단메뉴 및 서브메뉴포함된 bar생성 -->
+           <div class="navbar-header">
+               <button type="button" class="navbar-toggle"
+                                                 data-toggle="collapse"
+                                                 data-target=".navbar-ex1-collapse">
+                   <span class="icon-bar"></span>
+               </button>
+              <!-- <a class="navbar-brand" href="#"></a> -->
+              <a class="navbar-brand glyphicon" href="main.jsp"> 
+                          <span class="glyphicon glyphicon-home"></span>
+			  </a>
+           </div>
+           <div class="collapse navbar-collapse navbar-ex1-collapse">
+           <!-- navbar을 오른쪽에 배치(navbar-right <->navbar-left) 
+                 <ul class="nav navbar-nav navbar-right">
+              -->
+               <ul class="nav navbar-nav">
+                   <li class="dropdown">
+			        <!--  <a data-toggle="dropdown" href="#">사용자 
+			            사용자를 지우고 링크부분에 class="glyphicon glyphicon-user"을 부여
+			        -->
+			           <a  class="glyphicon glyphicon-user " data-toggle="dropdown" href="#">
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			             <li><a   href="#">회원로그인</a></li>
+			             <li><a   href="#">자유게시판</a></li>
+			             <li><a   href="#">설문조사</a></li>
+			          </ul>
+                   </li>
+                   <!-- 드롭다운 부분을 추가2 -->
+                   <li class="dropdown">
+			         <a data-toggle="dropdown" href="#">관리자
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			             <li><a   href="#">관리자로그인</a></li>
+			             <li><a   href="#">공지사항</a></li>
+			             <li><a   href="#">통계처리</a></li>
+			          </ul>
+                   </li>
+                   <!-- 드롭다운 부분을 추가3 -->
+                   <li class="dropdown">
+			         <a data-toggle="dropdown" href="#">Q&A
+			             <span class="caret"></span></a>
+			          <ul class="dropdown-menu">
+			             <li><a   href="#">자료실</a></li>
+			             <li><a   href="#">자유게시판2</a></li>
+			             <li><a   href="#">설문조사2</a></li>
+			          </ul>
+                   </li>
+                  
+               </ul>
+               <!--  검색폼(role="search")과 버튼추가
+               1.navbar-form->네비게이션바에 추가된 폼
+               2.네비게이션의 항목->navbar-right(선택자)=>오른쪽에 배치
+                 -->
+               <form class="navbar-form navbar-left" role="search">
+                     <div class="form-group">
+                        <input type="text"  class="form-control" placeholder="검색어 입력">
+                     </div>
+                     <button type="button" class="btn btn-default">Submit</button>
+               </form>
+               <!-- 
+                  1.네비게이션바에 버튼 추가->navbar-btn 클래스 이용
+                  2.네비게이션바에 들어가는 문자열->navbar-text
+                  3.네비게이션바에 들어가는 링크문자열->navbar-link(pull-right) 오른쪽에 배치
+                -->
+                <button type="button" class="btn btn-default navbar-btn">단순버튼</button>
+                <p class="navbar-text">로그인</p>
+                <p class="navbar-text pull-right">
+                    <a href="#" class="navbar-link">회원가입</a>
+                </p>
+           </div>
+         </nav>
+==========================================
+
+
+
+
+
+
+
+
+
+
+
