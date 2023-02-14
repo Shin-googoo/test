@@ -1,0 +1,330 @@
+2일차(다양한 컴포넌트및 화면 전환)
+
+
+******************************************
+ch4-pageMove->01.html
+******************************************
+1.현재페이지에서 다른 페이지로 이동할 페이지까지 같이 작성
+ =>페이지를 작성할때 id로 구분하고 링크걸때 이 id로 구분해서 이동(전환)
+  
+ <div  data-role="page"  id="first_page">
+                                    ===========
+ <div  data-role="page"  id="second_page">
+  ,,,,                              ============
+
+2.이동할 페이지를 따로 각자 파일로 만들어서 불러오는 경우(js,css이 적용되느냐?)
+
+   01.html을 save as 02.html을 작성
+
+   02.html <----02-2.html(js,css 불러올 수가 없는경우)->단독으로 실행X
+
+   글목록보기       글상세보기
+
+
+  단독으로 실행X
+
+*******************************************
+  모바일에 관련된 라이브러리 파일이 불러오게 설정이 된 파일이라면
+  단독으로 사용이 가능(모바일 화면 =>스타일 적용,이벤트처리를 할 수있다.)
+<!-- mobile css->jquery(1.8~1.11)->mobile jquery(1.4.5) -->
+    <link href="../mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../mobile/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../mobile/jquery.mobile-1.4.5.min.js"></script>
+*********************************************************
+
+=>단독으로 모바일 페이지가 안되는 경우(X) =>라이브러리를 불러올 수 없기때문이다.
+
+02.html----->02-2.html 전환(02-2.html도 스타일이 적용이 된다.)
+                     js,css 불러오게 설정(공유) 시켜주기 때문에
+                    링크된(연결된) 페이지 에서도 js,css파일을 불러오는 구문을 
+                     사용하지 않아도 된다.(소스코드를 절약, 화면이 복잡X)
+                                                메모리절약 O
+            *******************************************
+               =>스타일을 공유해서 불러다 사용이 가능하다.
+                   data-ajax="true" 페이지 이동시켜도 메인페이지에서 다른 페이지에 라이브러리르
+                                             공유시켜주는 속성
+            *******************************************
+       02.html 
+<!-- 외부의 파일을 불러오는 경우(id가 필요없다.) -->
+     <div  data-role="page">
+            <div data-role="header">
+                   <h1>첫번째 페이지</h1>
+            </div>
+           <div data-role="content">
+           <!-- 만약에 이동할 외부파일이 없으면 에러메세지 자동출력(Error Loading page)  -->
+                   <a href="02-2.html" data-role="button">두번째 페이지로 이동</a>
+            </div>  ==========
+           <div data-role="footer">
+                   <h1>화면하단</h1>
+            </div>
+     </div>
+
+  02-2.html ->라이브러리 소스코드 X
+
+  <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jQuery mobile 예제</title>
+ ****************************
+     =>jqueyrmobile에 대한 라이브러리를 작성하지 않아도 된다.(공유하기 때문에)
+ ******************************
+  </head>
+  <body>
+     <div  data-role="page">
+            <div data-role="header">
+                   <h1>두번째 페이지</h1>
+                   <!-- 이전으로 되돌아가는 기능을 부여하는 속성(data-rel="back") -->
+                   <a data-icon="arrow-l" data-rel="back">이전</a>
+            </div>
+           <div data-role="content">
+                 <p>Hello Second Page! </p>
+            </div>
+           <div data-role="footer">
+                   <h1>화면하단</h1>
+            </div>
+=========================================
+  단독으로 jQueryMobile을 가지고 있으면서 각 페이지별로 js,css파일을 불러오는
+  구문? (공유하지 않고 독립적으로 라이브러리를 불러와서 사용)
+
+  02.html파일을 save as
+  03.html <------------03-2.html 을 불러오게 하자
+
+<!--
+              2.content 지정(공유X) css,js=>
+                  data-ajax="true"(디폴트) =>메모리 공유 O (스타일 공유해서 사용)
+                  data-ajax="false" =>url 변경시 전체 페이지를 다시 로드 하라 =>메모리 공유X
+                  만약에 각자 파일마다 jQueryMobile의 라이브러리를 따로 불러온다면 의미가 없다.
+              -->
+           <div data-role="content">
+                   <a href="03-2.html" data-role="button" data-ajax="false">네번째 페이지로 이동</a>
+            </div>                                                        =============
+                                                                               메모리 공유(X)
+============================================
+ 03-2.html에서는 공유가 안되기때문에 따로 라이브러리를 불러와야 된다.
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,
+                                                       maximum-scale=1.0,minimum-scale=1.0,
+                                                       user-scalable=no">
+ 
+    <title>jQuery mobile 예제</title>
+****************************************************
+    <!-- mobile css->jquery(1.8~1.11)->mobile jquery(1.4.5) -->
+    <link href="../mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <script type="text/javascript" src="../mobile/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../mobile/jquery.mobile-1.4.5.min.js"></script>
+********************************************************
+  </head>
+  <body>
+     <div  data-role="page">
+            <div data-role="header">
+                   <h1>네번째 화면 페이지(공유X 단독사용)</h1>
+                   <a data-icon="arrow-l" data-rel="back">이전</a>
+            </div>
+           <div data-role="content">
+                   <p>단독으로 jQueryMobile 화면 디자인이 가능</p>
+            </div>
+
+==************************************************=
+jQueryMobile에서의 페이지 이동방법->2가지 방법
+jQueryMobile에서 각자 파일로 만들어서 불러올때 메모리 공유유무?
+                             data-ajax="true"(메모리 적게 사용하기위해서 권장) or "fasle"
+
+==************************************************=
+ch5-navbar 폴더=>01.html=>탭컨트롤
+
+<div data-role="header" data-position="fixed">
+	 <!-- data-role="navbar" (네비게이션을 작성하는 기능)
+	 data-position="fixed" (상단 탭컨트롤 고정) -->
+	   <div data-role="navbar" >
+	        <ul>
+	            <li><a href="#">회원로그인</a></li>
+	            <li><a href="#">게시판 목록보기</a></li>
+	            <li><a href="#">게시판 글쓰기</a></li>
+	            <li><a href="#">게시판 글수정</a></li>
+	        </ul>
+	   </div>
+	</div>
+========================================
+ch2-form=>form.html을 save as 해서 a.html =>회원가입
+
+<!--
+                    각 페이지마다 footer 네비게이션바가 공통으로 사용할 수 있도록 설정
+                 선택상태를 유지할 필요성->data-id 지정,data-position="fixed" 지정
+                 디폴트 선택버튼의 class 속성->ui-btn-active(활성화),ui-state-persist 지정(상태유지)
+              -->
+           <div data-role="footer" data-id="persistFooter" data-position="fixed">
+                   <div data-role="navbar">
+                       <ul>
+                           <li><a href="a.html" data-icon="plus"
+                                   class="ui-btn-active ui-state-persist">회원가입</a></li>
+                           <li><a href="b.html" data-icon="search">검색</a></li>
+                           <li><a href="c.html" data-icon="gear">목록보기</a></li>
+                       </ul>
+                   </div>
+            </div>
+==========================================
+
+ch5-navbar
+           |
+            -b.html
+           |
+            -c.html
+
+ **b.html **
+
+ <!-- 
+               1.실시간 검색=>data-filter="true" (필터적용)
+               2.listview 항목의 구분선=>data-role="list-divider"
+             -->
+           <div data-role="content">
+                   <ul data-role="listview" data-filter="true">
+                       <li data-role="list-divider">Divider(구분선)</li>
+                       <li><a href="#">방화</a></li>
+                       <li><a href="#">개화산역</a></li>
+                       <li><a href="#">김포공항</a></li>
+                       <li><a href="#">송정</a></li>
+                       <li><a href="#">마곡</a></li>
+                       <li><a href="#">발산</a></li>
+                   </ul>
+            </div>
+            <!-- 네비게이션바 -->
+           <div data-role="footer" data-id="persistFooter" data-position="fixed">
+                                               ==============>탭을 클릭마다 사용되는 공통의 id
+                   <div data-role="navbar">
+                       <ul>
+                           <li><a href="a.html" data-icon="plus">회원가입</a></li>
+                           <li><a href="b.html" data-icon="search"
+                                      class="ui-btn-active ui-state-persist">검색</a></li>
+                                      ============================
+                           <li><a href="c.html" data-icon="gear">목록보기</a></li>
+                       </ul>
+                   </div>
+            </div>
+=============================================
+
+b.html save as c.html로 저장
+
+<!-- 
+              data-role="collapsible-set"=>전체 화면의 데이터부분을 보여줄 영역을 설정할때 사용
+                              펼쳐질 각각의 항목->data-role="collapsible"로 설정한다.
+             -->
+           <div data-role="content">
+                <div data-role="collapsible-set">
+     	     <div data-role="collapsible">
+     	          <h1>이 사이트의 결재방식에 대해서 알고싶습니다.</h1>
+     	          <p>결재방식이 카드결재,현금,계좌이체,포인트결제가 존재하고 자세한 기타항목을 찾아보십시오.</p>
+     	     </div>
+     	     <div data-role="collapsible">
+     	         <h1>회원로그인시 하나에 몇 포인트가 적립이 되나요?</h1>
+     	         <p>회원로그인시 10pint 적립이되고 10일 연속로그인시 200point가 적립됩니다.</p>
+     	     </div>
+     	  </div>
+            </div>
+=============================================
+ 화면전환 효과=>01.html을 save as 04.html
+
+ <!--  
+                        data-transition="slide" (오른쪽->왼쪽으로 페이지 이동)->back버튼이 기능X
+                                                "slideup"(아래->위쪽으로 페이지 이동)
+                                                "slidedown"(위->아래쪽으로 페이지 이동)
+                                                 "pop"(팝업창 효과)
+                                                 "flip" (회전효과)
+                                                 "fade"=>fade효과
+                   
+                   -->
+            </div>
+           <div data-role="content">
+              <ul data-role="listview">
+                   <li><a href="#second_page" data-transition="slide">ListItem1</a></li>
+                   <li><a href="#second_page" data-transition="slideup">ListItem2</a></li>
+                   <li><a href="#second_page" data-transition="slidedown">ListItem3</a></li>
+                   <li><a href="#second_page" data-transition="pop">ListItem4</a></li>
+                   <li><a href="#second_page" data-transition="flip">ListItem5</a></li>
+                   <li><a href="#second_page" data-transition="fade">ListItem6</a></li>
+              </ul>
+            </div>
+=============================================
+04.html save as 05(dialog).html
+
+ch6-grid ->grid.html
+  폴더
+
+<!-- 
+      ui-gird-a~d=>행의 영역
+      ui-block-a~e=>행의 영역에서 표현되는 열의 영역을 의미
+      
+       Grid 정의 CSS             컬럼수                      컬럼에 포함되는 항목 CSS
+           ui-grid-a                 2                          ui-block-a, ui-block-b
+           ui-grid-b                 3                          ui-block-a, ui-block-b,ui-block-c
+           ui-grid-c                 4                          ui-block-a, ui-block-b,ui-block-c,ui-block-d
+           ui-grid-d                 5                          ui-block-a, ui-block-b,ui-block-c,ui-block-d,
+                                                                     ui-block-e
+   -->
+
+ch7-db->web.html (모바일과 DB연동방법)=>JDBC Programming이 아니라
+                                                    HTML5에서 제공해주는 DB=>front쪽 DB연동
+==========================================
+
+<!-- 첫번째 페이지(친구 목록 보기) -->
+     <div  data-role="page" id="page1">
+            <div data-role="header" data-position="fixed"><!-- 타이틀 제목 고정 -->
+                   <h1>친구목록보기</h1>
+                   <a href="#page2" data-icon="plus"  data-iconpos="right"
+                        class="ui-btn-right">등록</a>
+            </div>
+            <!-- listview 이용(전화번호부 목록처럼 출력), 검색기능(data-filter="true") -->
+           <div data-role="content">
+                   <ul data-role="listview"  data-filter="true"  id="output"></ul>
+            </div>
+           <div data-role="footer" data-position="fixed">
+                   <h1>화면하단</h1>
+            </div>
+     </div>
+     <!-- 두번째 페이지 (친구추가)  -->
+     <div  data-role="page" id="page2">
+            <div data-role="header" data-position="fixed">
+                   <h1>친구추가</h1>
+                 <a data-icon="arrow-l" data-rel="back">이전</a>
+            </div>
+           <div data-role="content">
+                 <form id="insfrm">
+                     <div  data-role="fieldcontain">
+                          <label for="name">이름</label>
+                          <input type="text" id="name">
+                     </div>
+                     
+                     <div  data-role="fieldcontain">
+                          <label for="phone">전화</label>
+                          <input type="text" id="phone">
+                     </div>
+                     
+                     <div  data-role="fieldcontain">
+                          <label for="address">주소</label>
+                          <input type="text" id="address">
+                     </div>
+                     <a data-role="button"  id="btnAdd">추가</a>
+                 </form>
+                 <!-- 
+                    팝업창 효과(스타일 적용) data-mini="true"
+                  data-overlay-theme="b"(부모창과 자식창과의 화면이 캡쳐서 보일때 세련되게 보여주는 테마)
+                    팝업창 =>data-role="popup"
+                  -->
+                  <div data-role="popup" id="notice"  data-theme="d"
+                          data-overlay-theme="b" class="ui-content"
+                          style="max-width:340px;text-align:center">
+                   <p class="notice-content"></p>
+                   <a href="#page1"  data-role="button"  data-inline="true"
+                        data-mini="true"  id="btn_confirm">확인</a>
+                  </div>
+            </div>
+           <div data-role="footer">
+                   <h1>화면하단</h1>
+            </div>
+     </div>
+=========================================
+
+
+

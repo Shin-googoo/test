@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"  content="width=device-width,initial-scale=1.0,
+                                                    maximum-scale=1.0,minimum-scale=1.0,
+                                                    user-scalable=no">
+<title>jQuery Mobile예제</title>
+<link href="../mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+<script type="text/javascript" src="../mobile/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../mobile/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+<!-- 첫번째 페이지(친구목록보기) -->
+<div data-role="page" id="page1">
+     <div data-role="header" data-position="fixed"><!-- 타이틀 제목 고정 -->
+     	 <h1>친구목록보기</h1>
+     	 <a href="#page2" data-icon="plus" data-iconpos="right"
+     	               class="ui-btn-right">등록</a>
+     </div>
+     <!--listview이용,검색기능(data-filter="true")-->
+    <div data-role="content">
+     	 <ul data-role="listview" data-filter="true" id="output">
+     	 
+     	 </ul>
+     </div>
+    <!-- 3.footer(꼬리말) -->
+    <div data-role="footer" data-position="fixed">
+     	 <h1>화면하단</h1>
+     </div>
+</div>
+<!-- 두번째페이지(친구추가) #page2 -->
+<div data-role="page" id="page2">
+     <div data-role="header" data-position="fixed"><!-- 타이틀 제목 고정 -->
+     	 <h1>친구추가</h1>
+     	 <a data-icon="arrow-l" data-rel="back">이전</a>
+     </div>
+     <!--listview이용,검색기능(data-filter="true")-->
+    <div data-role="content">
+     	 <form id="insfrm">
+     	 	<div data-role="fieldcontain">
+     	 		 <label for="name">이름</label>
+     	 		 <input type="text" id="name">
+     	 	</div>
+     	 	
+     	 	<div data-role="fieldcontain">
+     	 		 <label for="phone">전화</label>
+     	 		 <input type="text" id="phone">
+     	 	</div>
+     	 
+     	    <div data-role="fieldcontain">
+     	 		 <label for="address">주소</label>
+     	 		 <input type="text" id="address">
+     	 	</div>
+     	 	<a data-role="button" id="btnAdd">추가</a>
+     	 </form>
+     	 <!-- 
+     	  팝업창 효과(스타일 적용) data-mini="true" (작은 대화상자)
+     	   data-overlay-theme="b"(부모창과 자식차의 화면이 겹쳐서 보일때 세련되게
+     	                                       보여주는 테마)
+     	   팝업창=>data-role="popup"
+     	  -->
+     	  <div data-role="popup" id="notice" data-theme="d"
+     	          data-overlay-theme="b" class="ui-content"
+     	          style="max-width:340px;text-align:center">
+     	      <p class="notice-content"></p><!-- text()를 이용해서 출력 -->
+     	      <a href="#page1" data-role="button" data-inline="true"
+     	           data-mini="true" id="btn-confirm">확인</a>
+     	  </div>
+     </div>
+    <!-- 3.footer(꼬리말) -->
+    <div data-role="footer" data-position="fixed">
+     	 <h1>화면하단</h1>
+     </div>
+</div>
+</body>
+</html>
+
+
+
+
+
