@@ -1,325 +1,332 @@
-웹프로그래밍=> jsp(모델1,모델2)-> Ajax
 
-1일차 Ajax의 개요 및 작성법
+모바일 사이트->DB연동,화면디자인(jQuery,jQueryMobile)=>모바일 화면에서
+                                                     =========    실행되는 jQuery
 
-=>AjaxTest
-===============
-  web programming=>1.server->Jsp(Java),Spring,Ajax Programming(=>before)
-                                             2.client=>javascript,jQuery,bootsrap~
-                                                                 (Ajax)(=after)
------------------------------------------------------------------------------------------
- 1.domob1.html
+www.jquery.com
+->jquerymobile.com =>라이브러리
 
-<script>
- //함수의 선언부분=>1.함수를 이용해서 객체를 생성  
-			2.동적 멤버변수를 생성(선언X  바로 사용)->컴파일과정X
- //형식) function 함수명(매개변수,,,,)->자바의 생성자를 이용
- function Student(name,grade,sung,addr){ //public Student(String name,String grade,String~)
-	 //this.멤버변수=값
-	 this.name=name;//this.name="홍길동"
-     this.grade=grade;//this.grade=1
-     this.sung=sung;//this.sung="남"
-     this.addr=addr;//this.addr="서울시 강남구 대현빌딩 3층"
- }
-</script>
-</head>
-<body>
-<script>
-//객체생성->클래스명 객체명=new 클래스명(=생성자)()->자바
-//                     객체명=new 함수명(매개변수명,,,,)    
-hong=new Student("홍길동",1,"남","서울시 강남구 대현빌딩 3층");
-alert(hong.name+","+hong.grade+","+hong.sung+","+hong.addr);//객체명.속성명
-</script>
+ jQueryMobile
+        |
+         -src/main/webapp
+                |
+                 -ch1-ui->01.html=>html5기준(템플레이트 작성해야한다.)
+                |             02.button.html
+                 -
 
-2.domob2.html
+<!-- mobile css->jquery(1.8~1.11)->mobile jquery(1.4.5) -->
+    <link href="../mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+    <style>
+              .ui-button-width{  /*임의로 버튼의 넓이를 지정 */
+                 width:200px;
+              }
+              .ui-table-width{  /* 테이블 내부의 버튼의 넓이를 지정 */
+                  width:100%;
+              }
+</style>
+    <script type="text/javascript" src="../mobile/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../mobile/jquery.mobile-1.4.5.min.js"></script>
 
-<title>2.domob2.html(객체생성방법-2)</title>
-<script>
- function test(){
-	 //형식) var 객체명=new Object();//형이 정해져 있지 않다->어떠한 대상도 저장이 가능하다.
-	 //       Student st=new Student();//학생만 저장
-	 var mem=new Object(); //객체명.속성명=저장할값->따라서 자동으로 자료형이 결정된다.
-	 mem.id=1234; //private int id=1234;(자바)
-	 mem.name="테스트";//String name="테스트";
-	 mem.hobby="바둑";
-	 mem.sung="남자";
-	 
-	 //Setter Method->public void setId(int id) {this.id=id}
-	 //형식) 객체명.함수명=function(매개변수명){this.속성명=값}
-	 mem.setHobby=function(hobby){  //public void setHobby(String hobby){this.hobby=hobby}
-		 this.hobby=hobby;//this.hobby="음악감상"
-	 }
-	 //Getter Method->public 반환값 get멤버변수명(){ return this.멤버변수명;}
-	 //형식) 객체명.함수명=function(){ return this.속성명}
-	 mem.getHobby=function(){
-		 return this.hobby;
-	 }
-	 //public String toString(){}
-	 mem.toString=function(){
-		 return this.id+","+this.name+","+this.hobby+","+this.sung;
-	 }
-	 //객체명.호출할 함수명(저장할값~)
-	 mem.setHobby("음악감상");
-	 alert(mem.toString());
- }
-</script>
-</head>
-<body onload="test()">
+  </head>
+  <body>
+     <div  data-role="page">
+            <div data-role="header">
+                   <h1>Button의 크기 및 배치방법</h1>
+            </div>
+            <!-- data-role="button" 버튼생성  -->
+           <div data-role="content">
+           <!-- 1.브라우저의 폭에 맞게 100% 적용이 되는 버튼이 생성 -->
+                  <a href="#" data-role="button">버튼1</a>
+                  <!-- 2.스타일을 지정해서 버튼의 넓이를 설정이 가능하다. -->
+                  <table class="ui-table-width">
+                      <tr>
+                          <td><a href="#" data-role="button">버튼2</a></td>
+                          <td><a href="#" data-role="button">버튼3</a></td>
+                      </tr>
+                  </table>
+                  <!-- 3.버튼의 넓이를 지정(브라우저의 넓이와 상관없이 버튼 글자길이에 맞추어서 버튼의 폭을
+                                                   지정? 
+                             1) data-inline="true"  2)스타일을 선언하고 강제로 적용-->
+                  <a href="#" data-role="button" data-inline="true">버튼4</a>
+                  <a href="#" data-role="button" class="ui-button-width">버튼5</a>
+            </div>
+           <div data-role="footer">
+                   <h1>화면하단</h1>
+            </div>
+     </div>
 
-</body>
-</html>
--------------------------------------------------------
-** 3.domob3.html (key,value) **
+=========================================
+03.buttionicon.html (다양한 버튼의 옵션에 대해서)
 
-<title>key,value값을 이용한 객체생성방법-3(JSON 표기법)</title>
-<script>
- /*
-   형식) var 객체명={
-		  속성명(=멤버변수명):값1, 
-		  속성명2:값2,
-		  ,,,
-		  함수명:function(매개변수~){내용기술}
-   }
- */
- //var person={}  내용이 없는 객체
- var person={
-		  name:'홍길동', //key(속성명):값(value)
-		  age:23,
-		  eat:function(food){
-			  alert(this.name+'은 오늘'+food+'을 먹을 예정입니다.');
-		  }
-   }
-   //객체명.속성명
-   document.write(person.name);
-   person.eat('도시락');
-</script>
-</head>
-<body>
+버튼의 속성->data-*                  속성              
+ 속성                    설명                                        값
+ data-corners    모서리를 둥글게 할것인지 여부    true(기본)|false
+ data-icon            아이콘             home | delete | plus,,,,, jquerymobile사이트
+ data-iconpos       아이콘위치       left|right|top|bottom|notext(글자만 출력)
+ data-iconshadow 아이콘그림자      true(기본)|false
+ data-shadow       버튼그림자      true(기본)|false
+ data-thema         버튼테마         letter(a~e)
 
-</body>
-</html>
-==================================
-** Ajax**
+ ************1.4.5 버전 변경사항들*********************************
 
-Asynchronous Javascript and XML
-(비동기적인)
+data-role="button" → class="ui-btn"
+data-theme="a" → class="ui-btn-a" (replace "a" by the actual theme swatch letter that you want to use)
+data-corners="true" → class="ui-corner-all"
+data-shadow="true" → class="ui-shadow"
+data-mini="true" → class="ui-mini"
+data-icon="home" → class="ui-icon-home" (replace "home" by the actual name of the icon that you want to use)
+data-iconpos="right" → class="ui-btn-icon-right" (replace "right" by the actual icon position that you want to use: right, left, top, or bottom)
+data-iconshadow="true" → class="ui-shadow-icon"
 
-기존 방식(모델1,모델2 방식)
-
-웹 브라우저가 서버에 Request 전송
-서버는 Request를 처리하여 Response를 사용자에게 전송
-웹 브라우저가 Response 내용을 표시
-
-
-**** Ajax의 4대 구성요소 ****
-
-**************************************************
-개요=>서버에 직접적으로 요청하지 않고 간접적으로 xhr객체를 통해서 요청하며
-         요청결과를 xhr객체를 통해서 브라우저로 실시간으로 전송을 받는다.
-        =>요청결과를 원하는 위치에 출력시켜주는 프로그래밍방식
 ***************************************************
-특징
+<div data-role="content">
+                 <a href="#" data-role="button" data-inline="true"
+                                    data-corners="false" data-icon="home">버튼1</a> 
+                 <table class="ui-table-width">
+                      <tr>
+                          <td><a href="#" data-role="button" data-inline="true"
+                                                    data-icon="delete">삭제</a></td>
+                          <td><a href="#" data-role="button" data-inline="true"
+                                                    data-icon="add" data-iconpos="right">추가</a></td>
+                      </tr>
+                  </table>
+                  <!-- 3.버튼의 넓이를 지정(브라우저의 넓이와 상관없이 버튼 글자길이에 맞추어서 버튼의 폭을
+                                                   지정? 
+                             1) data-inline="true"  2)스타일을 선언하고 강제로 적용-->
+                  <a href="#" data-role="button" data-inline="true"
+                                     data-icon="refresh" data-iconpos="top"
+                                     data-shadow="false">새로고침</a>
 
- 1) 서버와 직접 연결X->요청을 할 수 없다.(XHR 객체)
- 2) 페이지 이동이 없다.
+                  <a href="#" data-role="button" class="ui-button-width"
+                                     data-icon="search" data-iconpos="notext">버튼5(notext)</a> 
+                  <a href="#"  class="ui-btn" data-inline="true">버튼6</a>
+            </div>
+===========================================
+  04.buttongroup.html
 
+<!-- 
+       data-role="controlgroup" 버튼을 수직 또는 수평으로 그룹(수직이 기본)
+       data-type="horizontal | vertical"(수평,수직을 결정)
+   -->
+     <div  data-role="page">
+            <div data-role="header">
+                   <h1>버튼의 그룹</h1>
+            </div>
+           <div data-role="content">
+                   <div data-role="controlgroup"><!-- 기본(수직) -->
+                          ================
+                     <a href="#" data-role="button" data-icon="back">back버튼</a>
+                     <a href="#" data-role="button" data-icon="forward">forward버튼</a>
+                     <a href="#" data-role="button" data-icon="refresh">refresh버튼</a>
+                   </div>
+                   
+                   <div data-role="controlgroup" data-type="horizontal">
+                                                               ===============
+                     <a href="#" data-role="button" data-icon="back">back버튼</a>
+                     <a href="#" data-role="button" data-icon="forward">forward버튼</a>
+                     <a href="#" data-role="button" data-icon="refresh">refresh버튼</a>
+                   </div>
+            </div>
+==========================================
+05.prev.html
 
-1.XMLHttpRequest(=XHR객체)=>브라우저에서 만들어서 준다.
-    기능=>웹 서버와의 통신 담당      client----xhr객체----server
- 
-2.DOM(Document Object Model)=>클라이언트의 특정위치에 출력
-   문서 구조 담당
+<div  data-role="page">
+       <!-- 
+            1.header=>버튼은 data-role="button"을 생략해도 버튼이 생성된다.
+                              버튼이 만들어지면 자동->좌우배치
+                          강제로 일반버튼을 오른쪽에 배치->class="ui-btn-right" 부여
+                        기존의 오른쪽에 배치한 버튼은 다음줄에 자동으로 개행(이동)
+        -->
+            <div data-role="header">
+                   <h1>이전,다음버튼을 생성</h1>
+                   <a href="#" data-icon="arrow-l">이전버튼</a>
+                   <a href="#" data-icon="arrow-r">다음버튼</a>
+            </div>
+            <!--2.content지정(버튼을 생성할때 반드시 data-role="button"을 생략하면 안된다.)  -->
+           <div data-role="content">
+                <a href="#" data-icon="arrow-l">data-icon="arrow-l"</a>
+                <a href="#" data-role="button" data-icon="arrow-r">data-icon="arrow-r"</a>
+            </div>
+            <!-- 
+            3.Footer 지정
+               header와의 공통점->data-role="button"을 생략이 가능하다.
+                                    차이점->만들어진 버튼은 좌우로 자동으로 배치가 안된다.
+              =>수동으로는 가능->클래스 선택자를 부여 ui-btn-left, ui-btn-right(오른쪽 정렬)
+             -->
+           <div data-role="footer">
+                   <h1>화면하단</h1>
+                   <a href="#" data-icon="arrow-l" class="ui-btn-left">이전버튼</a>
+                   <a href="#" data-icon="arrow-r" class="ui-btn-right">다음버튼</a>
+            </div>
+     </div>
+=========================================
+ch2-form->form.html
 
-3.CSS =>화면 디자인
-글자색, 배경색 등의 UI 담당
-
-4.자바스크립트=>이벤트를 연결
-
-사용자의 동작 감지, XMLHttpRequest와 DOM, CSS 사이의 중개
-*************************************************
-   ** Ajax 프로그래밍 작성 순서 **  
-
-Step 1 : XMLHttpRequest 객체 구하기
-Step 2 : 웹 서버에 요청 전송하기
-Step 3 : 웹 서버의 응답을 화면에 반영하기
-
-=======================================
- 4.domajax.html
-
-  function test(){
-	   /*
-	     IE(ActiveXObject 속성),IE외의 chrome,firefox,,,(XMLHttpRequest속성)
-	     //IE7 이후부터,IE외의 다른 브라우저->XMLHttpRequest속성
-	   */
-	   if(window.XMLHttpRequest){
-		   var xhrObject=new XMLHttpRequest();//객체를 생성->반환
-		   alert(xhrObject);//[xhr Object] =>주소값 표시 
-                                     $.ajax()=>jQuery에서 Ajax를 처리해주는 함수이름
-	   }
-   }
-</script>
-</head>
-<body onload="test()">
-==============================================
-4.domajax.html save as 5.domAjax2.html=>Ajax의 처리과정을 기술
-
-IE->?  chromse->다이아몬드 형태출력
-
-simple.txt  ->파일의 문서형태->utf-8 =>한글처리 OK
-
-simple2.txt ->ansi로 저장한 경우=>한글이 깨진다.
-
-==============================
-simple.jsp->charset=utf-8 =========>charset이 utf-8,euc-kr로 설정하면
-                  파일의 문서형태->utf-8                   한글처리 OK
-
-simple2.jsp->charset=euc-kr(옛날방식의 한글처리방법)
-                  파일의 문서형태->ansi
-
-============================
-
-<title>Ajax의 요청및 처리과정</title>
-<script>
-
-    var httpRequest=null;//xhr객체를 저장할 변수(전역변수의 성격)
-    
-    //1)xhr객체를 얻어오는 함수
-   function getXHR(){
-	   if(window.XMLHttpRequest){
-		   //httpRequest=new XMLHttpRequest();//객체를 생성->반환
-		   return new XMLHttpRequest();
-	   }
-   }
-    //2)요청을 받아서 처리해주는 함수
-   function load(url){//2.요청문서를 매개변수로 전달받아서 서버에 요청해주는 함수
-	   //1.xhr객체를 구해주는 구문
-	   httpRequest=getXHR();
-       //alert(httpRequest);
-       //2.서버요청할 준비->콜백함수를 지정
-       //콜백함수->특별한 조건이 만족하면 자동적으로 실행이 되는 함수
-       //2.형식)xhr객체명.onreadystatechange=콜백함수명;//() X ->함수이름만 쓸것
-       httpRequest.onreadystatechange=viewMessage;
-       //3.xhr객체명.open(3개의 매개변수를 지정)
-       //1)요청방식(get or post),2.요청문서명(url),3.처리방식(비동기방식(true) or 동기방식)
-       //비동기방식=>채팅,메일보내기(상대방이 결과를 보내주는것아 상관없이 다른일을 할 수 있는 방식)
-       httpRequest.open("GET",url,true);
-       //4.xhr객체명.send(null or 매개변수명)
-       httpRequest.send(null);//서버에게 요청하는 함수
-   }
-    //3)서버로부터 처리결과를 받아서 출력시켜주는 함수(=콜백함수)
-    function viewMessage(){
-    	//alert("viewMessage()호출됨!");
-    	//1)톰캣서버가 클라이언트의 요청을 다 받았는지 확인?->readyState=4(1,2,3 일부만 받은경우)
-    		if(httpRequest.readyState==4){
-    			//2.톰캣서버가 클라이언트에게 데이터를 다 전송했는지를 체크
-    			if(httpRequest.status==200){//404(페이지  X),500(문법에러),403(접근금지)
-    				//텍스트(text)->responseText 이용 xml(responseXml 속성을 이용),json
-    				alert(httpRequest.responseText);
-    			}else{//404(페이지  X),500(문법에러),403(접근금지)
-    				alert('실패:'+httpRequest.status);
-    			}
-    		}
-    }
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,
+                                                   maximum-scale=1.0,minimum-scale=1.0,
+                                                   user-scalable=no">
+<title>jQuery Mobile예제</title>
+<link href="../mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet">
+<script type="text/javascript" src="../mobile/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../mobile/jquery.mobile-1.4.5.min.js"></script>
 </head>
 <body>
-   <h2>텍스트파일에 대한 한글처리방법</h2><!-- 1.이벤트발생 -->
-   <input type="button" value="simple.txt" onclick="load('simple.txt')">
-   <input type="button" value="simple2.txt" onclick="load('simple2.txt')">
-   <input type="button" value="simple.jsp" onclick="load('simple.jsp')">
-   <input type="button" value="simple2.jsp" onclick="load('simple2.jsp')">
+<div  data-role="page">
+	<div data-role="header">
+	   <h1>form 입력폼</h1><!-- data-iconpos="notext" (버튼의 이미지만 출력)  -->
+	   <a href="#" data-icon="home" data-iconpos="notext">Home</a>
+	   <a href="#" data-icon="search" data-iconpos="notext">Search</a>
+	</div>
+	<!-- bootstrap(class="form-group") 대신에 data-role="fieldcontain"을 준다. -->
+	<div data-role="content">
+	    <!--이름  -->
+	    <div data-role="fieldcontain">
+	    	<label for="name">이름</label>
+	    	<input type="text" name="name" id="name">
+	    </div>
+	    <!-- 경력사항 boostrap과 다르게 cols="n"도 지정 가능 -->
+	    <div data-role="fieldcontain">
+	    	<label for="textarea">경력사항</label>
+	    	<textarea rows="8" cols="40" name="textarea" id="textarea"></textarea>
+	    </div>
+	    <!-- 검색(검색 전용 입력란 (내부에 검색표시,글자를 지울 수 있는 X표시 마크 생성) -->
+	    <div data-role="fieldcontain">
+	    	<label for="search">검색</label>
+	    	<input type="search" name="search" id="search">
+	    </div>
+	    <!--
+	        WiFi (Flip Switch)(on/off) data-role="slider"(전원스위치 생성기능)
+	      -->
+	    <div data-role="fieldcontain">
+	    	<label for="switch">Wi-FI:</label>
+	    	<select name="switch" id="switch" data-role="slider">
+	    	    <option value="off">Off</option>
+	    	    <option value="on">On</option>
+	    	</select>
+	    </div>
+	    <!-- 슬라이드바 생성(data-highlight="true" 선택배경을 파란색으로 설정) -->
+	     <div data-role="fieldcontain">
+	    	<label for="slider">SliderBar</label>
+	    	<input type="range" name="slider" id="slider" value="0"
+	    	           min="0" max="100" data-highlight="true">
+	     </div>
+	    <!-- 다중선택 -->
+	    <div data-role="fieldcontain">
+	    	<fieldset><!--선택할 부분을 묶어주는 역할  -->
+	    		<legend>취업 희망 직업</legend>
+	    		 <input type="checkbox" name="checkbox"  id="checkbox-a"
+	    		            value="웹프로그래머">
+	    		 <label for="checkbox-a">웹프로그래머</label>
+	    		 
+	    		 <input type="checkbox" name="checkbox"  id="checkbox-b"
+	    		            value="빅데이터분석가">
+	    		 <label for="checkbox-b">빅데이터분석가</label>
+	    	</fieldset>
+	    </div>
+	    <!-- checkbox을 수평으로 정렬(작게 설정) data-mini="true"(컴포넌트를 작게 설정) -->
+	    <fieldset data-role="controlgroup"  data-type="horizontal" data-mini="true">
+	    		<legend>글자스타일 모양</legend>
+	    		 <input type="checkbox" name="checkbox"  id="checkbox-1"
+	    		            value="B">
+	    		 <label for="checkbox-1">B</label>
+	    		 
+	    		 <input type="checkbox" name="checkbox"  id="checkbox-2"
+	    		            value="I">
+	    		 <label for="checkbox-2">I</label>
+	    		 
+	    		<input type="checkbox" name="checkbox"  id="checkbox-3"
+	    		            value="U">
+	    		 <label for="checkbox-3">U</label> 
+	    </fieldset>
+	    <!-- 콤보박스
+	           data-native-menu="false" 원래 html 스타일을 사용하지않고
+	           jQueryMobile에 적합한 스타일을 사용하겠다는 옵션
+	      -->
+	       <div data-role="fieldcontain">
+	    	<label for="select-choice-a">좋아하는 과목을 선택</label>
+	    	<select name="select-choice-a" id="select-choice-a"
+	    	           data-native-menu="false">
+	    	    <option>아래에서 선택</option>
+	    	    <option value="Java언어">Java언어</option>
+	    	    <option value="오라클">오라클</option>
+	    	    <option value="Jsp">Jsp</option>
+	    	    <option value="JQuery">JQuery</option>
+	    	    <option value="Bootstrap">Bootstrap</option>
+	    	</select>
+	    </div>
+	</div>
+   <div data-role="footer">
+	   <h1>화면하단</h1>
+	</div>
+</div>
 </body>
 </html>
-------------------------------------------------------------------------------------
-  ** 중복id를 체크 기능**
+===========================================
+ch3-theme->theme.html
+  폴더
 
-1.script.js에서 idCheck()함수의 사용X
- 
-//중복ID체크 해주는 자바스크립트함수 선언
-/*  작동되지 않도록 주석처리할 것.
-function idCheck(id){
-   if(id==""){
-	   alert("아이디를 먼저 입력하세요!");
-	   document.regForm.mem_id.focus();//document.폼객체명.입력양식객체명.함수명()
-   }else{//입력을 했다면 ->jsp파일에게 매개변수를 전달하는 방법
-	   //창을 실행->요청할 문서를 지정->매개변수도 같이 전달할 수있도록 코딩
-	   url="IdCheck.jsp?mem_id="+id //request.getParameter("mem_id")
-	   //1.불러올 문서명 2.창의 제목 3.창의 옵션
-	   window.open(url,"post","left=450,top=150,width=300,height=150")
-   }
-}
-*/
-
-
-
-  JspMember의 WebContent에 복사해서 사용할것.
-  Register.jsp -> Register2.jsp 복사 
-===========================
-html->dhtml->html+xml문서형태의 파일을 저장
-                         사용자정의 태그를 같이 사용
-                          XHTML
-
-Ajax를 같이 사용=>jsp=>html+선언문
-
-                         jsp=>xhtml+선언문 =>imtest.jsp
-
-Register.jsp save as Register2.jsp로 백업을 받을것.
-
-******************************************************
-2.Register.jsp에의 선언문을 xhmlt형식의 선언문으로 변경
-
-<?xml version="1.0" encoding="UTF-8" ?>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-
-<input type="text" name="mem_id"  id="mem_id"  size="15">
-                                                       ========
-		      <input type="button" value="ID중복확인" 
-                                     onClick="idCheck(this.form.mem_id.value)"></td>
-            <td id="ducheck" width="27%">아이디를 적어 주세요.</td>
-                  ========>특정 td정보를 얻어오기 위해서 필요
-============================================
-
-3.searchWord.js 따로 자바스크립트 파일 작성
-  Ajaxj의 전체처리코드
-
-4.prototype.js->jQuery를 배우기전의 나온 자바스크립트
-   배포                     라이브러리
-
-***********************************************
-function $(element) {
-  if (arguments.length > 1) {
-    for (var i = 0, elements = [], length = arguments.length; i < length; i++)
-      elements.push($(arguments[i]));
-    return elements;
-  }
-  if (Object.isString(element))
-    ===============================
-    element = document.getElementById(element);
-   ================================
-  return Element.extend(element);
-}
-*************************************************
-
-var test = document.getElementById("mem_id"); //태그정보
-               $("id값")=>$("mem_id")
-                       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"  content="width=device-width,initial-scale=1.0,
+                                                    maximum-scale=1.0,minimum-scale=1.0,
+                                                    user-scalable=no">
+<title>jQuery Mobile예제</title>
+<link href="../mobile/jquery.mobile-1.3.2.min.css" rel="stylesheet">
+<script type="text/javascript" src="../mobile/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../mobile/jquery.mobile-1.3.2.min.js"></script>
+</head>
+<body>
+<!--  
+	테마-> 영역별, 컴포넌트 다양한 색깔을 부여(data-theme(속성명)=속성값(a~e))
+	1.4.5(검정색) 버전에서는 색깔이 명확X -> 1.3.2버전(다양한 색깔) 확인가능
+	1.4.5(색깔의 흐림정도(a),색깔의 진함정도(b) 색이 흰색<->검정색 사이의 흐름정도)
+-->
+<div data-role="page">
+     <div data-role="header" data-theme="a">
+     	 <h1>Bar A</h1>
+     </div>
+     <div data-role="header" data-theme="b">
+     	 <h1>Bar B</h1>
+     </div>
+     <div data-role="header" data-theme="c">
+     	 <h1>Bar C</h1>
+     </div>
+     <div data-role="header" data-theme="d">
+     	 <h1>Bar D</h1>
+     </div>
+     <div data-role="header" data-theme="e">
+     	 <h1>Bar E</h1>
+     </div>
+     
+     <div data-role="content" data-theme="a">
+     	 content A
+     </div>
+     <div data-role="content" data-theme="b">
+     	 content B
+     </div>
+     <div data-role="content" data-theme="c">
+     	 content C
+     </div>
+     <div data-role="content" data-theme="d">
+     	 content D
+     </div>
+     <div data-role="content" data-theme="e">
+     	 content E
+     </div>
+     <!-- 3.footer(꼬리말) header와 footer의 색깔은 유사 -->
+    <div data-role="footer">
+     	 <h1>화면하단</h1>
+    <a href="#" data-role="button" data-theme="a">버튼 A</a>
+    <a href="#" data-role="button" data-theme="b">버튼 B</a>
+    <a href="#" data-role="button" data-theme="c">버튼 C</a>
+    <a href="#" data-role="button" data-theme="d">버튼 D</a>
+    <a href="#" data-role="button" data-theme="e">버튼 E</a>  
+    </div>
+</div>
+</body>
+</html>
