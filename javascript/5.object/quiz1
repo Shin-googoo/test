@@ -1,0 +1,2 @@
+const counter = new Couner(0);
+counter.increment();
