@@ -1,0 +1,444 @@
+
+ c:\webtest
+       9.react
+           1) typescript
+               typescript자료->ppt 참조
+
+7일 React=>TypeScript(class 개념) > Es6문법(class 개념X)
+6~8일 Vue.js =>Es6문법
+
+ =>1.5일~2일
+
+1~2일 Typescript설정 마무리=>Es6문법
+=====================================
+
+**1.Node.js 설치->npm명령어 이용=>프로그램을 설치
+        =>서버역할 =>웹프로그래밍->JSP(=>자바)
+                                     톰캣서버
+
+ node.js을 설치하는 목적
+
+ 1.설치명령어->npm package manager(프로그램 설치관리툴) 이 같이 설치
+                    Add to PATH에 자동으로 경로 인식
+ 2.서버목적   
+
+Microsoft Windows [Version 10.0.18362.418]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+C:\Users\kitcoop>node -v =>node.js 확인 명령어
+v16.14.2
+
+C:\Users\kitcoop>npm -v =>npm명령어 프로그램설치 및 삭제,업그레이드 기타
+8.5.0
+
+C:\Users\kitcoop>
+
+** 2.Typescript을 설치해야 한다.
+
+*************************************
+ 웹프로그래밍 개발 순서
+
+1.java 설치(언어) ------------------>TypeScript(언어)->npm명령어
+2.톰캣서버 설치 --------------------->node.js 설치(서버)
+3.이클립스설치  --------------------->Visual Studio Code(내장 콘솔을 가지고 있다.)
+
+********************************************
+
+C:\Users\kitcoop>npm install -g typescript@4.0.5    -> -g 전역설치 
+                     <->npm uninstall -g typescript@4.0.5
+                                                                ======설치해제
+
+C:\Users\kitcoop> npm install -g typescript  =>버전이름을 안주면 무조건 최신버전
+              ====                                            이 설치가 된다
+              계정명
+
+C:\Users\kitcoop\AppData\Roaming\npm\tsc -> C:\Users\kitcoop\AppData\Roaming\npm\node_modules\typescript\bin\tsc
+C:\Users\kitcoop\AppData\Roaming\npm\tsserver -> C:\Users\kitcoop\AppData\Roaming\npm\node_modules\typescript\bin\tsserver
++ typescript@4.0.5
+added 1 package from 1 contributor in 2.171s
+
+C:\Users\kitcoop>
+==========================
+C:\Users\KITCOOP>npm install -g typescript
+
+added 1 package, and audited 2 packages in 7s
+
+found 0 vulnerabilities
+npm notice
+npm notice New patch version of npm available! 8.5.0 -> 8.5.5
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v8.5.5
+npm notice Run npm install -g npm@8.5.5 to update!
+npm notice
+
+
+
+ 설치명령어   -g (O) 설치할 프로그래명=>전역
+                                           =>디렉토리의 위치에 상관없이 다 불러다 사용이 된다.
+================================================
+                -g (X) 설치할 프로그래명=>로컬(현재 폴더에 설치)
+                                         현재폴더를 벗어나면 사용X
+
+=>C:\Users\kitcoop\AppData\Roaming =>npm폴더
+=>C:\Users\kitcoop\AppData\Roaming\npm\node_modules\typescript\bin
+                                      =>tsc명령어<-->javac 명령어와 기능이 비슷
+                         =======>자바스크립트를 컴파일할때 필요로하는 실행파일명
+
+ 1.typescript
+         src----->test1.ts=>확장자가 ts =>test1.java와 비슷
+         dist
+
+
+ File =>auto save를 체크(클릭) - 자동저장
+       =>Preferences(기본설정)->Settings(설정)
+ ========================================
+                                                                   함수,class      class을 주로 사용
+                                                                     생성자           생성자
+                                                                   타입사용 X       타입사용 O
+ 1.client->html5,css3,javascript(es5)===>es6(React, =>TypeScript
+                      ===============        Vue.js)  (Angular)(X)
+      1.let.ts                                                              Java와
+                                                                          거의 문법이 동일
+
+ let x:string="test" //let 변수명:자료형="저장할값"
+  ===>var x="test" 자바스크립트 구문으로 변환
+           node test1.js
+
+console.log(x)   //컴파일  tsc 소스파일명.ts -> 소스파일명.js
+                      // 실행   node 소스파일명.js 
+                //src>tsc 1.let.ts   ->컴파일
+                //    node 1.let.js   ->실행
+        #
+==================================
+   맥os 폴더 권한 변경
+     src>chmod u=rwx,g=rwx,o=r . =>src폴더에 권한을 준다.
+            권한주기 u(유저)  g(그룹) o=다른그룹
+
+            콘솔> npm uninstall -g typescript
+            콘솔> npm install -g typescript
+
+
+               재설치한후 =>vs에서 다시 실습=>파워쉘 다시 적용시켜서 
+    
+=======React.js, Vue.js===================
+CLI=>Command Line Interface 환경
+====================================
+
+ src폴더에 
+1.let.ts
+
+/*
+   1.let.ts  형식) let 변수명=값 (변수를 선언할때 사용)
+*/
+var foo=123;
+console.log(foo);//123
+{
+    var foo=456;//중복선언이 가능하다.
+}
+console.log(foo);//456 불럭밖에서도 참조가 가능하다.
+
+let foo2=789;//자료형을 안쓰면 경고
+console.log(foo2);//789
+{
+    let foo2:number=456;//중복선언X ->똑같은 변수를 두번 선언 불가
+    let bar:number=456; //블럭범위내에서만 사용
+    console.log(bar);//456
+}
+console.log(foo2);//789 블럭내부에 선언된 let변수는 외부에서 불러다 사용X
+console.log(bar);//블럭범위 밖에서는 let으로 선언된 변수 참조X
+
+// typescript/src/tsc 1.let.ts
+//               /node 1.let.js
+
+===**** 차이점 ****===
+
+1. var 변수 =>중복선언이 가능 O , 블럭범위 밖에서 참조 가능 O
+              var foo=23;
+              var foo=45;=>나중에 저장이 되는 것임
+
+****************angular,react에서는 let 권장*************************
+
+ let 변수  =>중복선언이 X  , 블럭범위 밖에서 참조 가능 X =>블럭범위내에서는 사용이 가능 O
+
+====공통점======>둘다 변수를 선언할때 사용
+
+새로운 크로스 플랫폼 PowerShell 사용 https://aka.ms/pscore6
+
+123
+456
+789
+C:\webtest\1.typescript\src> tsc 1.let.ts
+1.let.ts:18:13 - error TS2304: Cannot find name 'bar'.
+18 console.log(bar);//블럭범위 밖에서는 let으로 선언된 변수 참조X
+               ~~~
+
+
+Found 1 error.
+
+PS C:\webtest\1.typescript\src> tsc 1.let.ts 
+PS C:\webtest\1.typescript\src> node 1.let.js
+123
+456
+789
+456
+789
+PS C:\webtest\1.typescript\src>
+PS C:\webtest\1.typescript\src> 
+
+2.const.ts
+
+/*
+  ts(기존의 자바스크립트구문+자료형 추가,클래스사용)  
+  js(자료형X 클래스사용X)
+
+ 2. const 상수화시킬때 사용=>react에서 많이 사용
+
+  1) const를 사용할때에는 반드시 상수화된 변수에 초기값을 설정해야 한다.
+  2) 중간에 값을 변경할 수 없다.(상수이기 때문에)
+  3) 중복선언이 가능하다. =>var 변수와 공통점
+
+*/
+const TOO=123;
+//TOO=456;
+{   //block level scope(블럭범위)
+    const TOO=100; //중복선언이 가능하다.
+    console.log(TOO);//100
+    const TOO2=45;
+}
+console.log(TOO);//123 블럭밖에서는 안쪽의 const변수값을 불러다 사용X
+//console.log(TOO2);//블럭밖에서는 TOO2을 불러다 사용X
+//tsc 2.const.ts ->node 2.const.js
+======================================================
+React,Vue.js -> es6,typescipt
+
+node.js -> tsc.exe -> typescript로 된 파일을 -> js로 변환시켜주는 역할
+	         (=javac.exe) => 메모리로 올릴 형태인 js로 변환 
+	         node.exe => 실제 메모리에 올려서 실행(=번역기)
+	         (=java.exe)	java HelloWorld => 실행
+				node 2.const.js
+
+======================================================
+  2.const2.ts
+
+/*
+const예약어는 객체에서도 사용이 가능=>key,value형태로 객체를 저장이 가능
+객체일때에는 주소값은 그대로 유지가 되면서(변경X) 키에 해당되는 데이터는 변경 O
+*/
+
+const obj={id:7890} //obj.id(객체명.key명(속성명))
+const obj2={bar:456}
+
+//react->es6문법
+const user={
+    name:'Lee',
+    address:{
+        city:'Seoul'
+    }
+};
+console.log(user)//객체내용 출력 {키명:값,키명2:값2}
+user.name='KIM';
+console.log(user);//주소는 불변,내용은 변경
+/*
+  tsc 2.const2.ts
+  node 2.const2.js
+
+  PS C:\webtest\9.web\1.typescript(es6)\src> node 2.const2.js
+{ name: 'Lee', address: { city: 'Seoul' } }
+{ name: 'KIM', address: { city: 'Seoul' } }
+PS C:\webtest\9.web\1.typescript(es6)\src> 
+*/
+
+3.template.ts
+=========
+
+/*
+  백틱문자열 ``
+  template string(탬플릿 리터럴) =>' '," ", 여러문장 =>+ 줄바꿈=>+ 줄바꿈 =>태그의 <pre>와 동일한 기능
+  `    `
+*/
+const template=` 템플릿 리터럴은
+ '작은 따옴표와' 과 "따옴표"를 
+ 혼용해서 사용이 가능합니다.`;
+ console.log(template);
+ const template2=`
+ <ul class="nav-item">
+   <li><a href="#home">Home</a></li>
+   <li><a href="#news">News</a></li>
+   <li><a href="#contact">Contact</a></li>
+   <li><a href="#about">About</a></li>
+ </ul>
+ `;
+ console.log(template2);
+ //tsc 3.template.ts ->node 3.template.js
+ /*
+PS C:\webtest\1.typescript\src> tsc 3.template.ts
+PS C:\webtest\1.typescript\src> node 3.template.js
+ 템플릿 리터럴은
+ '작은 따옴표와' 과 "따옴표"를
+ 혼용해서 사용이 가능합니다.
+
+ <ul class="nav-item">
+   <li><a href="#home">Home</a></li>      
+   <li><a href="#news">News</a></li>      
+   <li><a href="#contact">Contact</a></li>
+   <li><a href="#about">About</a></li>
+ </ul>
+
+PSC:\webtest\1.typescript\src>
+*/
+=======================================
+3.template2.ts
+
+/*
+`` 백틱문자열은 여러줄의 문장을 + 기호를 쓰지않고도 사용이 가능(편집이 편리)
+    출력형태도 사용이 가능 `${출력할 변수명 또는 수식}`
+*/
+
+const name2='테스트';
+const addr='서울시 강남구 세경빌딩 3층';
+
+//기존방법
+console.log('내이름은'+name2+'이고 주소는 '+addr+'입니다.');
+//el와 다른점 ${변수명}=>`${변수명}`  `` 안쪽에 ${변수명 또는 수식}
+console.log(`내이름은 ${name2} 이고 주소는 ${addr} 입니다.`);
+
+//표현식도 가능하지만 수식도(연산도 가능)
+console.log(`1+1=${1+1}`);
+const name3='imsi';
+console.log(`Hello ${name3.toUpperCase()}`);//대문자로 출력(함수도 호출)
+/*
+  tsc 3.template2.ts->node 3.template2.js
+  PS C:\webtest\9.web\1.typescript(es6)\src> node 3.template2.js
+내이름은테스트이고 주소는 서울시 강남구 세경빌딩 3층입니다.
+내이름은 테스트 이고 주소는 서울시 강남구 세경빌딩 3층 입니다.
+1+1=2
+Hello IMSI
+PS C:\webtest\9.web\1.typescript(es6)\src> 
+*/
+
+4.arrow.ts
+
+/*
+ arrow function(화살표 함수) => 자바의 람다함수(->) 와 기능이 같다.
+  함수형 언어(대세 파이썬(함수형언어)),자바스크립트(es6,ts)
+  형식) var or let 변수명=function(매개변수명:자료형,,,) {처리 구문}=>기본
+*/
+
+let pow=function(x:number){ //(int x)
+    console.log('x=>'+x);
+    return x*x;
+}
+console.log(pow(10));
+
+/*
+형식2) const 변수명=(매개변수,매개변수2)=> {처리 구문}
+  함수의 내용이 한문장이상 {  }처리, 매개변수도 한개면 ( )도 생략가능
+  매개변수의 자료형을 쓰지않으면 any(어떠한 자료형도 수행)=>권장X 반드시 자료형을 써라
+*/
+const pow2=x=>x*x;
+console.log(pow2(20));//20*20=400
+/*
+  tsc 4.arrow.ts -> node 4.arrow.js
+  PS C:\webtest\9.web\1.typescript(es6)\src> node 4.arrow.js
+x=>10
+100
+400
+*/
+
+4.arrow2.ts
+
+/*
+자바스크립트의 배열과 연관이 있는 함수 ->indexOf함수(특정한 값을 찾을때)
+
+*/
+let str:string[]=["테스트","연습","앵귤러"];
+//String str[]={"테스트","연습","앵귤러"} 자바
+let isExist=false; //찾았는지 유무
+
+for(let i=0;i<str.length;i++){
+    if(str[i]==="연습"){
+        isExist=true;
+        console.log('데이터 찾음=>',str[i]);
+    }else{
+        console.log('데이터 못찾음=>',str[i]);
+    }
+}
+//배열의 값중에서 원하는 데이터의 존재유무만 알고싶다.->배열명.indexOf(찾을값)!==-1
+let isExist2=(str.indexOf("연습")!==-1);
+console.log(`isExist2=> ${isExist2}`);
+//2.filter()=>JSON객체중에서 특정한 값만 추출(=filter)하고 싶다.->반환값 존재
+let arr=[{"name":"apple","count":2},
+         {"name":"orange","count":5},
+         {"name":"banana","count":3},
+         {"name":"orange","count":16}];
+/*
+  형식) let 변수명=json객체명.filter(function(매개변수(항목)){
+        return 반환값(항목.키명==='찾을값')
+  })
+*/
+const newArr=arr.filter(function(item){
+    return item.name==='orange' //return item.count===2
+})
+console.log('Filter results=>',newArr);
+//tsc 4.arrow2.ts->node 4.arrow2.js
+/*
+PS C:\webtest\9.web\1.typescript(es6)\src> node 4.arrow2.js
+데이터 못찾음=> 테스트
+데이터 찾음=> 연습
+데이터 못찾음=> 앵귤러
+isExist2=> true
+Filter results=> [ { name: 'orange', count: 5 }, { name: 'orange', count: 16 } ]
+*/
+
+4.arrow3.ts =>**map함수,reduce함수
+
+/*
+ 4.arrows3.ts(map,reduce,forEach함수)
+   3.map함수->기존의 배열의 요소들을 하나씩 읽어들여서 계산후 길이가 같은
+                   새로운 배열을 하나 만들어서 반환해주는 함수
+    공통점:콜백함수=>계산결과 길이가 똑같은 배열을 반환
+*/
+let arr2=[1,2,3]; //let arr2:number[]={1,2,3}
+let test=arr2.map(function(x){ //콜백함수=>호출하는 함수의 매개변수가 함수를 받아서 내부적으로 호출하는함수
+      return x+x;//[2,4,6]
+})
+console.log(`test-> ${test}`);//[1,2,3]->[2,4,6]
+const arr3=[6,7,8];
+const test2=arr3.map(x=>x+x);//es6문법
+console.log(`test2-> ${test2}`);//[12,14,16]
+//추가
+let a=[3,4,5,6,7];
+/*
+let c=a.map(function(v,i){  //1.v 배열의 항목 2.i 인덱스번호
+    console.log(v);
+    return v+1;
+}) */
+let c=a.map((v,i)=>{
+    console.log(v);
+    return v+2;
+})
+console.log(`c=> ${c}`);
+/*
+  tsc 4.arrow3.ts  ->node 4.arrow3.js
+  PS C:\webtest\9.web\1.typescript(es6)\src> tsc 4.arrow3.ts
+PS C:\webtest\9.web\1.typescript(es6)\src> node 4.arrow3.js
+test-> 2,4,6
+test2-> 12,14,16
+3
+4
+5
+6
+7
+c=> 5,6,7,8,9
+*/
+======================================
+5.rest 매개변수 ,6.디스트럭처링(배열),7.클래스,상속
+8.함수=>매개변수? ->의미? 9.library 내보기(export),불러오기 import
+10.import를 통해서 불러오기
+  =>react설치,환경설정
+======================================
+
+
+
+
+
+
