@@ -1,0 +1,489 @@
+2일차(typescript,es6 작성법)
+
+4.arrow2.ts
+
+/*
+  자바스크립트에서 가장 많이 사용하는 함수(배열과 연관) 1.indexOf 함수(검색할때 사용)
+*/
+var str:string[]=["테스트","연습","리액트"];//String str[]={"테스트","연습","리액트"}
+var isExist=false;//찾았는지 유무
+
+for(var i=0;i<str.length;i++){
+    if(str[i]==="연습"){
+        isExist=true;
+        console.log('데이터 찾음=>',str[i]);
+    }else{
+        console.log('데이터 못찾음->',str[i]);
+    }
+}
+//배열.indexOf("찾고자하는 값")!== -1 (못찾으면 -1을 리턴)
+var isExist2=(str.indexOf("연습")!==-1)
+console.log('isExist2=>',isExist2);
+//2.filter()=>JSON객체중에서 특정한 값만 추출=>반환
+var arr=[
+          {"name":"apple","count":2},
+          {"name":"orange","count":5},
+          {"name":"banana","count":3},
+          {"name":"orange","count":16}
+];
+var newArr=arr.filter(function(item){ //반환시켜줄수 있는 익명함수
+    return item.name==='orange' //return item.count===2
+    //return 매개변수(객체).특정한키명 === '찾을값'
+})
+console.log('Filter results=>',newArr);
+//scr>tsc 4.arrow2.ts ->4.arrow2.js
+//scr>node 4.arrow2.js ->콘솔로 결과확인
+/*
+데이터 못찾음-> 테스트
+데이터 찾음=> 연습
+데이터 못찾음-> 리액트
+isExist2=> true
+Filter results=> [ { name: 'orange', count: 5 }, { name: 'orange', count: 16 } ]
+PS C:\webtest\9.web\1.typesscript(es6)\src> 
+*/
+
+4.arrow3.ts 로 저장 =>**map**,reduce,forEach
+
+/*
+ map함수=>기존의 배열의 요소들을 하나씩 읽어들여서 계산후(+,-,*)
+          길이가 같은 새로운 배열을 하나 만들때 사용하는 함수
+*/
+var arr2=[1,2,3] //var arr2:number[]={1,2,3}
+var po3=arr2.map(function(x){
+    return x+x
+})
+console.log(po3)//[2,4,6]
+const arr3=[6,7,8]
+const po4=arr3.map(x=>x+x)//[12,14,16]
+console.log('po4->',po4)
+//
+const a=[3,4,5,6,7]
+/*
+const c=a.map(function(v,i){ //v (배열의 항목) ,i 인덱스번호
+  console.log(v)
+  return v+1;
+}) */
+const c=a.map((v,i)=>{
+    console.log(v)
+    return v+2;
+})
+//4.reduce함수=>콜백함수이용=>새로운 배열을 리턴
+//                          (앞의 매개변수,뒤의 매개변수)
+function addRounded(pre,current){//(1,2)=>(3,3)=>(6,4)
+    return pre+current;
+}
+var numbers=[1,2,3,4]
+//const or let 변수(새로운 배열)=기존의 배열명.reduce(함수명) or(함수명,매개변수)
+var result=numbers.reduce(addRounded,1)//1은 첫번째 매개변수가 된다
+console.log('result=>',result)//11
+//(1,1)=>(2,2)=>(4,3)=>(7,4)=11
+//5.forEach(객체와 연관(확장 for문))->for문
+const array=[1,2,3]
+array.forEach(function(v,i){
+    if(v===3){
+        console.log(v+":"+i) //v(배열항목) i(인덱스번호) 3:2
+    }
+})
+//tsc 4.arrow3.ts
+//node 4.arrow3.js
+
+PS C:\webtest\9.web\1.typesscript(es6)\src> node 4.arrow3.js
+[ 2, 4, 6 ]
+po4-> [ 12, 14, 16 ]
+3
+4
+5
+6
+7
+result=> 11
+3:2
+============================
+4.arrow4.ts 주의할점
+
+/*
+  객체를 생성하고 메서드를 내부에서 작성하는 경우=>화살표함수를 작성X
+*/
+const obj3={
+    name:'Lee',
+    //sayHello:()=>console.log(`Hi ${this.name}`)
+    
+    sayHello(){  //function 생략
+     console.log(`Hi ${this.name}`)  //Hi KIM
+    }
+}  //[]
+obj3.name='KIM'//객체명.키명=새로운값
+obj3.sayHello() //객체명.호출할 함수명()
+//tsc 4.arrow4.ts -> node 4.arrow4.js
+====================================
+5. rest 매개변수
+
+5.rest.ts
+
+/*
+함수를 작성하고 매개변수를 전달할때 ->만약에 전달 X (에러가 발생)
+만약에 매개변수를 전달 받지 못할경우에는 내부적으로 디폴트 매개변수값을
+지정할 수가 있다.=>rest 매개변수(정상적으로 매개변수값이 전달되면 적용X)
+*/
+function plus(x=8,y=9){  //x:number,y:number->default->any(기본 자료형)
+    return x+y;
+}
+console.log('plus()=>',plus())
+console.log('plus(1,2)=>',plus(1,2))//3
+//1.spread 연산자->react에서 많이 사용하는 연산자(...배열명)=>동적배열
+function ktest(...abc){
+    console.log(Array.isArray(abc))
+    //Array.isArray(배열명)->배열이면 true or false(배열X)
+    console.log('abc->',abc)
+}
+ktest(1,2,3,4,5,6,7)
+//2.주의할점 (매개변수를 전달받을때 순서가 정해져 있다.)
+//spread연산자는 맨 마지막에 위치
+function ktest2(param,...abc){
+    console.log('param=>',param)
+    console.log('abc->',abc)
+}
+ktest2(7,8,9,10,11,12)//7,[8,9~12]
+ktest2(13,14,15)//13,[14,15]
+
+function ktest3(param,param2,...abc){
+    console.log('param=>',param)
+    console.log('param2=>',param2)
+    console.log('abc->',abc)
+}
+ktest2(7,8,9,10,11,12)//7,8,[9~12]
+ktest2(13,14,15)//13,14,[15]
+console.log('===========================')
+//function ktest4(...abc,param1,param2,param3){} 맨앞에 위치X
+//tsc 5.rest.ts ->node 5.rest.js
+/*
+plus()=> 17  
+plus(1,2)=> 3
+true
+abc-> [      
+  1, 2, 3, 4,
+  5, 6, 7
+]
+param=> 7
+abc-> [ 8, 9, 10, 11, 12 ]
+param=> 13
+abc-> [ 14, 15 ]
+param=> 7
+abc-> [ 8, 9, 10, 11, 12 ]
+param=> 13
+abc-> [ 14, 15 ]
+===========================
+PS C:\webtest\9.web\1.typesscript(es6)\src> 
+*/
+
+** 디스트럭처링 **
+
+6.des.ts
+
+/*
+ 6.des.ts
+ 배열 디스트럭처링->배열의 각각의 요소를 분리->각각의 다른 변수에 저장
+                   시키는 방법
+*/
+let karr=['a','b','c']
+let one=karr[0];//let one='a';
+console.log(one,karr[1],karr[2])//a,b,c
+
+const karr2=['d','e','f']
+/*
+var one1=karr2[0];
+var two2=karr2[1];
+var three3=karr2[2];
+*/
+//형식) const [변수1,변수2,변수3]=배열명
+const [one1,two2,three3]=karr2;
+console.log(one1,two2,three3)//d,e,f
+
+let a2,b2,c2//변수를 ,로 구분해서 나열
+[a2,b2,c2]=[4,5,6]
+console.log(`a2값 ${a2} b2값 ${b2} c2값 ${c2}`)
+//tsc 6.des.ts  ->node 6.des.js
+/*
+a b c
+d e f
+a2값 4 b2값 5 c2값 6
+*/
+6.des2.ts
+
+/*
+6.des2.ts 형식) [변수,변수2,변수3]=배열명 or [값,값2,값3]
+                값을 전달X 디폴트값을 설정이 가능하다.
+*/
+let t1,y1,v1;
+[t1,y1]=['a',2]
+console.log(t1,y1);//a,2
+
+[t1,y1]=[1,null];//값을 저장하지 않아도 자리수는 맞춰야 한다.(ex insert into 테이블명 values(,,,))
+console.log(t1,y1);
+
+[t1,y1,v1=3]=[1,2];//v1은 값을 전달X 내부적으로 값이 3적용
+console.log(t1,y1,v1);//1,2,3
+
+[t1,y1=10,v1=3]=[1,null,9];
+console.log(t1,y1,v1);
+//spread연산자
+[t1,...y1]=[1,2,3,4];
+console.log(t1,y1);//1,[2,3,4]
+//tsc 6.des2.ts->node 6.des2.js
+/*
+PS C:\webtest\9.web\1.typescript(es6)\src> node 6.des2.js
+a 2
+1 null
+1 2 3
+1 null 9
+1 [ 2, 3, 4 ]
+PS C:\webtest\9.web\1.typescript(es6)\src> 
+*/
+
+6.des3.ts =>함수,객체에서도 적용
+
+/*
+6.des3.ts 배열+함수,객체에서도 사용이 가능
+ 형식) const {키명:값,키명2,값2,,,}={키명:저장할값,키명2;저장할값2}
+*/
+const {prop1:p1,prop2:p2}={prop1:'a',prop2:'b'}//p1='a' p2='b'
+console.log({prop1:p1,prop2:p2})//a,b
+//객체=>default value값 설정이 가능
+const {prop1,prop2,prop3='ccc'}={prop1:'ab',prop2:'bb'}
+//함수를 이용해서 값을 저장시킬 수 있다.
+function margin(){
+    const left=1,right=2,top=3,bottom=4;
+    return {left,right,top,bottom} //객체로 만들어서 반환
+}
+const {left,bottom}=margin()//={left,right,top,bottom}
+console.log(left,bottom)//1,4
+//tsc 6.des2.ts ->node 6.des2.js
+/*
+{ prop1: 'a', prop2: 'b' }
+1 4
+*/
+
+es1~es5(표준)=>es6문법(react,vue.js)->es7(TypeScript)=>Angular(한국에선 거의 X)
+                                                  1.자료형을 쓴다. 변수:자료형
+                                                  2.클래스를 사용(컴포넌트를 작성)
+                                                     생성자를 이용(저장)-state
+============================================
+7.class.ts=>자바와 다른점?
+
+ 원본 소스
+============================
+/*
+7.class.ts
+*/
+class Person{
+    //생성자=>클래스명과 동일(자바) Person(){}
+    //1.typescript=>생성자는 constructor() or constructor("")
+    //2.생성자는 절대로 한개이상 생성X
+    name
+    age
+    constructor(name,age){
+       this.name=name;//동적으로 멤버변수선언 
+       this.age=age;
+    }
+}
+class Person2{
+    //name
+    //age
+    address
+    //접근지정자 public을 부여하는 경우(속성 추가)
+    constructor(public name:string,public age:number){}
+    //constructor(){} 생성자는 한개이상 X
+}
+//tsc 7.class.ts  ->7.class.js를 열어볼것
+//tsc 7.class.ts   --target es6 =>7.class.js    ->es6부터 클래스개념 등장
+
+es5인 경우
+========================
+/*
+7.class.ts        
+*/
+var Person = /** @class */ (function () {  //클래스를 사용X
+    function Person(name, age) {           //함수로 매개변수를 전달받아서
+                                                     //데이터를 저장가능
+        this.name = name; //동적으로 멤버변수선언 
+        this.age = age;
+    }
+    return Person;
+}());
+var Person2 = /** @class */ (function () {
+    //접근지정자 public을 부여하는 경우(속성추가)
+    function Person2(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    return Person2;
+}());
+===================================
+tsc 7.class.ts --target es6  =>es6문법으로 컴파일 시켜달라
+                ========== defalut=>es5
+
+class Person {
+    constructor(name, age) {
+        this.name = name; //동적으로 멤버변수선언 
+        this.age = age;
+    }
+}
+class Person2 {
+    //접근지정자 public을 부여하는 경우(속성추가)
+    constructor(name, age) {
+        this.name = name;   //생성자를 통해서 클래스의 값을 저장
+        this.age = age;        //시킬 수 있다.
+    }
+}
+**************************************************************
+ es6에서는 클래스 사용이 가능=>생성자 constructor
+ 속성명을 멤버변수 형태로 선언해서 사용X
+***************************************************************
+7.classextend.ts =>클래스를 상속받을 수 있다.
+
+/*
+7.classextend.ts=>상속기법을 사용
+*/
+class Animal{
+    _weight:any;//저장되는 값에 따라서 자료형이 결정
+    constructor(weight){
+        this._weight=weight;//this.속성명(=멤버변수)(this생략 X)
+    }
+    weight(){
+        //this 생략 불가
+        console.log(this._weight)//메서드 내부에서 this.속성명
+    }
+    eat(){
+      console.log('Animal Eat!')  
+    }
+}
+class Human extends Animal{  //자식클래스 extends 부모클래스
+  _language:string;//언어
+  //_weight:any
+
+  constructor(weight,language){
+    //부모클래스의 값을 초기화를 먼저하고 나서 자식클래스값을 초기화
+    super(weight) //this._weight=weight super(props)
+    this._language=language
+  }
+  //오버라이딩->자식입장에서 부모클래스로부터 물려받은 메서드의 내용을
+  //수정
+  eat(){
+    console.log('Human eat!')
+  }
+  speak(){
+    console.log(`koreans speak ${this._language}`)
+  }
+}
+//형식) const 객체명=new 클래스명(인수1,인수2,,,)
+const korean=new Human(65,'korean')
+korean.weight()//객체명.메서드명()
+korean.eat()
+korean.speak()
+//형식) 객체명 instanceof 클래스명=true or false
+console.log(korean instanceof Human)//true
+console.log(korean instanceof Animal)//true
+//tsc 7.classextend.ts   node 7.classextend.js
+/*
+65
+Human eat!
+koreans speak korean
+true
+true
+PS C:\webtest\9.web\1.typesscript(es6)\src>
+*/
+===================================
+8.func.ts
+
+/*
+8.func.ts
+함수 호출시 함수의 매개변수명 뒤에 ?을 주면 함수의 실행을 위해서 매개변수
+를 강제로 전달하지 않아도 될때 사용한다.
+=>전달할값이 있으면 전달하고 전달할 값이 없으면 전달하지 않아도
+에러를 발생시키지 않도록 해주는 옵션
+*/
+function display_detail(id:number,name:string,mail_id?:string){
+    console.log('id->',id,'name->',name)
+    if(mail_id!=undefined){
+        console.log('mail_id->',mail_id)
+    }
+}
+display_detail(123,"John")
+display_detail(111,"Mary","mary@daum.net")
+//tsc 8.func.ts ->node 8.func.js
+/*
+id-> 123 name-> John   
+id-> 111 name-> Mary   
+mail_id-> mary@daum.net
+*/
+======================================
+ 외부에서 만들어진 클래스 또는 함수를 불러올 수가 있다. =>화면디자인을 조립(=컴포넌트)
+  es6=>import 구문 
+
+9.lib.ts=>클래스,함수
+
+/*
+ 자주 사용,반복적인 구문 (함수),상수,클래스도 불러다 사용이 가능
+  1.함수,상수,클래스명 앞에 일일이 export 키워드를 사용->import
+                                   공유
+*/
+/*
+export const pi=Math.PI;//3.141592~ =>import
+
+export function square(x){ //10.main.ts파일에서 불러다 사용
+    return x+x
+}
+console.log(square(10))//20
+
+export class Person3{  //10.main.ts=>import
+    name:string;//es6에서는 멤버변수->생성자를 통해서 초기화
+    constructor(name){
+        this.name=name;
+    }
+}
+*/
+//2.ts파일 밑에 한꺼번에 export를 지정해서 공유하는 방법
+ const pi=Math.PI;//3.141592~ =>import
+
+ function square(x){ //10.main.ts파일에서 불러다 사용
+    return x+x
+}
+console.log(square(10))//20
+
+ class Person3{  //10.main.ts=>import
+    name:string;//es6에서는 멤버변수->생성자를 통해서 초기화
+    constructor(name){
+        this.name=name;
+    }
+}
+//형식) export {상수명,함수명,클래스명,,,}
+export {pi,square,Person3};
+=====================================
+10.main.ts=>import 구문을 통해서 어떻게 불러오는지 확인?
+
+/*
+형식) import {불러올 클래스명,상수,함수} 
+                 from '상대경로 및 불러올 파일명'
+형식2) import * as 별칭명 from '상대경로 및 불러올 파일명'
+*/
+//import {pi,square,Person3} from './9.lib';//확장자 생략
+import * as lib from './9.lib';
+
+console.log(lib.pi)//console.log(pi) 별칭명.불러올 대상자
+console.log(lib.square(20))
+console.log(new lib.Person3('Lee'))//const 객체명=new 클래스명(매개변수명,)
+//tsc 10.main.ts ->node 10.main.js
+/*
+20
+3.141592653589793      
+40
+Person3 { name: 'Lee' }
+*/
+
+
+======================================
+
+ React 설치 및 환경설정=>구조,JSX(3장),state,props
+
+
+
+
