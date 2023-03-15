@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+<title>웹상에서 props전달,화살표함수 작성</title>
+</head>
+<body>
+
+<div id="root"></div>
+<script type="text/babel">
+//1.화살표함수로 컴포넌트를 정의(Book,TitleParts(제목),ContentParts(내용)
+//형식1) const 컴포넌트명=()=>(처리내용) 매개변수를 받지 않은 경우
+//형식2) const 컴포넌트명=(props)=>(처리내용) 매개변수를 받는 경우
+/*
+  class Book extends React.Component{
+   render(){
+     return(<div><h1>도서</h1></div>)
+   }
+}
+*/
+//자식
+  const TitleParts=(props)=>(
+     <div style={{backgroundColor:'red',color:'white'}}>
+        <h3>{props.title}</h3>
+	 </div>
+  )
+
+  const ContentParts=(props)=>(
+    <div style={{border:'1px solid blue',margin:15}}>
+        <h3>{props.body}</h3>
+	 </div>
+  )
+  //부모=>화살표함수를 사용하면=>this를 생략이 가능
+  const Book=(props)=>( /* title,body  */
+               <div>
+                  <TitleParts title={props.title} />
+				  <ContentParts body={props.body} />
+			   </div>
+  )
+
+ //전체 컴포넌트를 사용해서 배치시킬 내용을 담을 변수선언
+ const dom=<div>
+                     <Book title='삼국지' body='옛날 중국 영웅들의 이야기'/>
+					 <Book title='민수기' body='옛날 이스라엘 역사이야기'/>
+					 <Book title='서유기' body='옛날 손오공의 이야기'/>
+                  </div>
+
+   ReactDOM.render(dom,document.getElementById('root'))
+</script>
+</body>
+</html>
+
+
+

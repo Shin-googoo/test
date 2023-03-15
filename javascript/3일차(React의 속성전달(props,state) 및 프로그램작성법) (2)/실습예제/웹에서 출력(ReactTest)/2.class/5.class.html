@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+  <title>리액트클래스,함수사용을 구분</title>
+ </head>
+ <body>
+   <div id="root"></div>
+
+   <script type="text/babel">
+     /*
+      (1)클래스를 사용->props,state를 이용해서 데이터를 저장하는 경우=>생성자를 통해서 초기화
+	 
+     class Hello extends React.Component{
+          //함수선언->this.호출할 함수명=>생성자에서 this.함수명으로 연결
+		  //화살표 함수를 이용하는 경우->this 사용하지 않아도 된다.
+         render(){
+            const clickHandler=(e)=>{//const clickHandler=function(e){}
+                 alert('안녕하세요')       
+			}
+            return(
+			         <div onClick={clickHandler}><h1>Testing!!</h1></div>
+			       )
+		 }
+     }
+     */
+     /*(2)함수사용=>state을 사용해서 데이터 저장목적(X)
+	                       중첩된 컴포넌트에서 부모로부터 넘겨받은 매개변수를 받아서 출력(props)
+                           =>메모리 효율성을 따진다.
+	 */
+    const Hello=()=>{//const Hello=function(){}
+       //render(){ Component에 존재하는 함수기 때문에 사용X
+            const clickHandler=(e)=>{//const clickHandler=function(e){}
+                 alert('안녕하세요')       
+			}
+            return(
+			         <div onClick={clickHandler}><h1>Testing!!</h1></div>
+			       )
+		// }
+    }
+       ReactDOM.render(<Hello />,document.getElementById('root'))
+   </script>
+ </body>
+</html>
