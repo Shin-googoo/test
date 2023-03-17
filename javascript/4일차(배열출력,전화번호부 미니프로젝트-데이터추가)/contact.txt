@@ -1,0 +1,83 @@
+
+
+import React, { Component } from 'react';
+
+//추가
+import ContactInfo from './ContactInfo';
+
+//추가(배열의 추가,수정,삭제,조회)
+class Contact extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+           //추가
+           keyword:'', /* 실시간으로 입력할 데이터를 저장할 속성명 */
+           selectedKey:-1, //자세하게 보기위해서 클릭했는지 유무
+          //(2)배열의 초기화
+          contactData:[
+            //{name:'홍길동',phone:'010-123-0987',addr:'서울시',sung:'남',~}  
+             {name:'홍길동',phone:'010-123-0987'},
+             {name:'테스트',phone:'010-678-0987'},
+             {name:'임  시',phone:'010-111-0987'},
+             {name:'임테스트',phone:'010-123-2222'},
+             {name:'임시2',phone:'010-123-3333'}
+          ]
+        }
+        //이벤트 연결구문(생성자)
+        this.handleChange=this.handleChange.bind(this);
+        this.handleClick=this.handleClick.bind(this);
+    }//constructor
+    //이벤트 처리해주는 함수작성
+    handleChange(e){//event객체=>마우스의 클릭좌표값(x,y),키보드의 특정값
+       //jQuery->$(this)->event.target(이벤트가 발생된 객체)
+       this.setState({keyword:e.target.value})
+    }
+    //클릭했을때 key값을 변경
+    handleClick(key){
+        this.setState({selectedKey:key})
+        console.log(key,'is selected!!!')
+    }
+
+    render() {
+        //화살표함수를 이용->this 생략
+        const mapToComponents=(data)=>{
+           //추가(검색한 데이터를 찾아서 필터)->ContactInfo에게 전송
+           data=data.sort() //1.정렬을 먼저 설정
+           data=data.filter((contact)=>{
+               //2.정렬된 데이터중에서 찾은 데이터만 반환 못찾으면 -1 리턴
+               return contact.name.indexOf(this.state.keyword) > -1
+           })
+            console.log('검색한 data=>',data)
+           //새로운 배열을 받아서 리턴하는 함수 작성(배열명.map)
+           return data.map((contact,i)=>{
+              console.log('contact->',contact,'i->',i) 
+              //화면에 출력할 ContactInfo컴포넌트에 출력 (각 항목을 구분해서 출력)
+              //contact은 각 화면에 출력할 객체 key=>각 객체를 구분하는 내부구분자
+              return (<ContactInfo contact={contact} key={i}
+                        onClick={()=>this.handleClick(i)} />)
+           })
+        }
+        return (
+            <div>
+                <div class="form-group">
+                  <label for="Name">검색</label>
+                  <input name="keyword" placeholder="Search" 
+                        class="form-control"
+                        value={this.state.keyword}
+                    onChange={this.handleChange} />
+                </div>
+                <div>
+                {mapToComponents(this.state.contactData)}
+                {/* (1)
+                    <div>홍길동 010-123-0987</div>
+                    <div>테스트 010-678-0987</div>
+                    <div>임  시 010-123-1111</div>
+                    <div>임테스트 010-666-0987</div>
+                    <div>임시2 010-123-9999</div> */}
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Contact;

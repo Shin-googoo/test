@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+<title>리액트 첫번째예제</title>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+   //리스트 컴포넌트 형식) var 배열명=[배열요소,,,]
+   class RList extends React.Component{
+       render(){
+         //[Red,Green,Blue,White]->map함수
+		 const items=this.props.items.split(",") //split("분리시킬 기호") | ,
+		 const itemObj=items.map((e)=>{
+			 return <li>{e}</li>
+
+		 })
+		 //제목출력
+		 let title=this.props.title
+		 if(!title) title="LIST" //title매개변수를 못받았으면 디폴트로 LIST를 출력하라
+		 return(<div>
+		              <h3>{title}</h3>
+		              <ul>{itemObj}</ul>
+		          </div>)
+	   }
+   }
+
+
+   ReactDOM.render(<RList title="Colors" items="Red,Green,Blue,White" />,
+                             document.getElementById('root'))
+</script>
+</body>
+</html>
+
+
+
