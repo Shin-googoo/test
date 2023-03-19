@@ -1,0 +1,560 @@
+5일차(전화번호부 미니프로젝트(수정,삭제),라우터개요 및 작성법)
+
+-------------------------------------------------------
+**데이터(배열)를 추가=>ContactCreate.js에서 작업
+
+C:\webtest\9.web\2.react(es6)\react-telphone>
+
+-------------------------------------------------------------------------------------
+ 1)데이터 추가할때 이 구문을 사용
+
+this.setState({
+    list:update(
+    ==
+    contactData
+          this.state.list, //처리해야할 배열이나 객체(첫인수)
+           {            ==contactData
+            $push:[newObj,newObj2,,,] //처리명령어 객체 =>$push키를 이용 [저장할값,,]
+                //$push를 이용해서 newObj,newObj2 두개를
+                //한 개의 객체를 추가해도 배열형태로 감싸줘
+                //야 된다.
+            }
+      });
+============================================
+2.데이터를 삭제시키는 방법
+-------------------------------
+this.setState({
+    list:update(
+          this.state.list, //처리해야할 배열이나 객체(첫인수)
+           {        //1.시작하는 인덱스 2.몇 개나 삭제
+            ===========================
+            $splice:[[index,1]] //list배열이 index부터 시작
+               //해서 1개의 데이터를 제거한다는 의미
+              //배열을 지니고 있는 배열을 감싸준다.
+            ===========================
+            }
+      });
+-------------------------------
+3.데이터를 수정하는 방법
+
+this.setState({
+    list:update(
+          this.state.list, //이 부분이 배열이 아니라 객체도 괜찮다
+           {  //객체라면 index가 아닌 그 객체의 키가 들어간다.       
+            [index]:{ //list배열의 index번째 아이템의
+                       //field1, field2를 변경하는 코드
+               field:{ $set: “value”},  ->이름 =>$set:"수정할데이터"
+               field2:{ $set: “value2”},->전번=>$set:"수정할데이터"
+               ,,,                                 ->주소=>$set:"수정할데이터"
+                                                  ->성별,,,=>$set:"수정할데이터"
+            }  //field2도 키가 들어가면 그 부분의 특정부분만
+          }    //변경이 가능하게 된다.
+      });
+--------------------------------------------------------------------------------
+ ContactCreate->화면디자인 및 코딩
+
+export default class ContactCreate extends React.Component{
+    //JSX문법(JavaScript Expression)->내부적으로 js로 변환=>한꺼번에 묶어서 메모리에 로드
+    //Webpack(js을 모두 묶어서 메모리에 로드->실행),바벨(babel)->es6을 지원해주기위해 필요(라이브러리)
+    ==============
+    constructor(props){
+        super(props);
+        this.state={
+            name:'',
+            phone:''//,
+            //addr:'',,,
+        }
+    }
+   ==============
+    render(){ //화면에 보여주는 역할
+        return(<div>
+          <p>
+            <input type="text" name="name" placeholder="name 입력요망"  
+                      value={this.state.name} />
+                       ==============입력한 부분 연결시켜주는 구문
+            <input type="text" name="phone" placeholder="phone 입력요망"
+                     value={this.state.phone} />
+          </p>
+          <button>Create</button>
+        </div>)
+    }
+}
+============================================
+ Contact.js에서 추가,수정,삭제시킬 함수를 작성->ContactCreate.js에서 이 함수를 호출
+                        추가할 데이터가 존재하니깐                                                 작업
+
+ 생성자에 추가
+
+  //배열에 데이터를 추가,수정,삭제시켜주는 함수를 미리 연결하는 구문을 작성
+        this.handleCreate=this.handleCreate.bind(this);//추가
+        this.handleRemove=this.handleRemove.bind(this);//삭제
+        this.handleEdit=this.handleEdit.bind(this);//수정
+        //--------------------------------------------------
+    }
+
+
+  render() 함수위에 추가
+
+  //추가
+    handleCreate(contact){
+      this.setState({  //1.집어넣을 데이터 2.$push 이용->한개라도 [ ]로 묶어줘야 된다.
+         contactData:update(this.state.contactData,{$push:[contact]})
+      })
+    }
+
+    handleRemove(){ //삭제할 인덱스=>selectKey가 필요
+      this.setState({  //1.삭제할 데이터 2.$splice함수를 이용해서 선택된 키부터 1개를 삭제=>역시배열 []
+                        //this.state.selectKey(0),1->0번째 데이터 삭제
+                        //this.state.selectKey(0),2->0,1번째 데이터 삭제
+                        //this.state.selectKey(1),2->1,2번째 데이터 삭제
+         contactData:update(this.state.contactData,{$splice:[[this.state.selectKey,1]]}),
+         selectKey:-1 //추가코딩으로 -1로 설정 ->다시 처음 사용할 수있도록 초기화
+      })
+    }
+
+    handleEdit(name,phone){
+      this.setState({
+         contactData:update(this.state.contactData,
+         {
+           [this.state.selectKey]:{  //1.수정할 인덱스번호에 해당하는 키
+              name:{$set:name}, //키명:{$set:키에 해당하는 수정할값}
+              phone:{$set:phone}
+           }
+         })
+      })//this.setState(~)
+    }
+------------------------------------------------------------------------------
+
+  ContactCreate.js에서 실시간으로 입력한 값은 this.state에 저장하도록 코딩?
+
+    //render()함수 밖에 선언된 함수는 연결하는 구문을 반드시 사용해야 한다.(생성자에서 )
+        this.handleChange=this.handleChange.bind(this);
+    }
+    //추가->입력한 값을 위에 설정한 state에 자동으로 데이터를 연결해서 저장하는 구문작성->onChange
+    handleChange(e){//event객체를 왜 받아오는 함수를 작성->어디에서 입력했는지 구분이 가능
+      let nextState = {} //빈객체 생성
+      /*
+        nextState ={
+            name:'홍길동',
+            phone:'010-333-0987'
+        }
+      */
+     nextState[e.target.name]=e.target.value;//nextState[name]='홍길동' e.target.name->input의 name속성
+     this.setState(nextState);//수정하기위해서 setState메서드 호출을 한다.
+    }
+==============================================
+  Contact.js=>데이터를 추가시킬 수있는 함수이름을 props로 전달
+
+    =><ContactCreate  onCreate={this.handleCreate}/> 
+                                  ===================
+
+  ContactCreate.js=>이 함수를 매개변수로 전달->이벤트에 연결
+
+     //render()함수 밖에 선언된 함수는 연결하는 구문을 반드시 사용해야 한다.(생성자에서 )
+        this.handleChange=this.handleChange.bind(this);
+        ===========================
+        this.handleClick=this.handleClick.bind(this);
+        ===========================
+ =>
+    //추가=>버튼을 클릭해서 부모컴포넌트의 데이터추가시켜주는 함수를 호출하는 자식컴포넌트의 함수를 작성
+    handleClick(){ //매개변수가 있는 경우에 자식클래스의 함수를 작성->전달
+        //부모함수에게 전달할 내용을 저장
+        const contact={
+            name:this.state.name,//name:'홍길동',
+            phone:this.state.phone//phone:'010-333-0987'
+        }
+        this.props.onCreate(contact);//this.props.매개변수(=부모의 호출할 함수명)(저장할값)
+        //저장하고나서 위의 name,phone은 다음값을 저장시키기위해서 초기화작업
+        this.setState({
+            name:'',
+            phone:''
+        })
+    }
+----------------------------------------------------------------
+** 삭제,수정 **
+
+1.ContactDetail.js (글 상세보기)
+
+ 버튼 추가
+  return(<div>
+             {this.props.isSelected?details:blank}
+             <button>Remove</button>
+           </div>
+           )
+================================================
+
+2.Contact.js=>삭제시킬 함수를 매개변수로 전달->매개변수를 입력받아서 처리X
+                                                        =>ContactDetail.js에서 이벤트 연결만 시키면
+                                                             된다.
+
+    <ContactDetail isSelected={this.state.selectKey!=-1}
+                            contact={this.state.contactData[this.state.selectKey]}
+                            =====================
+                            onRemove={this.handleRemove}/>
+                            =======  ============부모의 호출할 함수명
+              <ContactCreate  onCreate={this.handleCreate}/>  
+=================================================
+
+  ContactDetail.js에서는 삭제시킬 함수만 연결시키면 된다.
+
+  return(<div>
+             {this.props.isSelected?details:blank}
+             <button onClick={this.props.onRemove}>Remove</button>
+           </div>     ====    ======= ======(this.handRemove)을 호출
+           )
+
+//추가->처음에는 선택을 할 수 없기때문에 에러발생->''초기값을 설정
+ContactDetail.defaultProps={
+    contact:{
+        name:'',
+        phone:''
+    },
+    onRemove:()=>{console.log('onRemove매개변수가 전달이 안됐습니다.')}
+    매개변수(함수명):익명함수형태(화살표함수를 이용해서 문제점을 출력이 가능하다.)
+};
+============================================
+
+  Contact.js에서 추가코딩을 하면 된다.(삭제함수)
+
+handleRemove(){ //삭제할 인덱스=>selectKey가 필요
+      //삭제하기전에 먼저 항목을 선택했는지 안했는지를 체크
+      if(this.state.selectKey < 0){
+         return;
+      }
+     //=================================
+      //this.state.selectKey가 무조건 -1보다 크다는 조건
+      this.setState({  //1.삭제할 데이터 2.$splice함수를 이용해서 선택된 키부터 1개를 삭제=>역시배열 []
+                        //this.state.selectKey(0),1->0번째 데이터 삭제
+                        //this.state.selectKey(0),2->0,1번째 데이터 삭제
+                        //this.state.selectKey(1),2->1,2번째 데이터 삭제
+         contactData:update(this.state.contactData,{$splice:[[this.state.selectKey,1]]}),
+         selectKey:-1 //추가코딩으로 -1로 설정 ->다시 처음 사용할 수있도록 초기화
+      })
+    }
+=================================================
+ **** 수정 ****
+
+1.ContactDetail.js에서 편집버튼 추가
+
+              <p>
+                <button>Edit</button>
+                ===============
+                <button onClick={this.props.onRemove}>Remove</button>
+             </p>
+
+2.편집상태인지 아닌지를 체크해서 화면에 따로 보여줄 수 있는 디자인을 해야 한다.
+=============================================
+  <div *ngIf="false"> =>편집상태가 아닌경우 =>*ngIf="true" (앵귤러의 경우)
+
+ </div>
+==============================================
+
+   }
+     this.handleToggle=this.handleToggle.bind(this);//연결코딩
+  }
+  //전환시켜주는 함수작성
+  handleToggle(){
+    this.setState({
+      isEdit:!this.state.isEdit
+    });
+    console.log(!this.state.isEdit)//앞에 !을 부여하는 이유->변경돼서 들어가는값을 그대로 console에 출력하기위해
+  }
+ //--------------------------------------------------------------------------------------
+  render(){
+    //추가 특정 인덱스번호를 클릭시 화면에 보여줄 항목과 그렇지못한 항목을 구분해서 출력
+    const details=(<div>
+                <p>{this.props.contact.name}</p>
+                <p>{this.props.contact.phone}</p>
+                  </div>)
+    const blank=(<div>Not Selected!</div>)
+    return(<div>
+             {this.props.isSelected?details:blank}
+             <p>
+                =================================
+                <button onClick={this.handleToggle}>Edit</button>
+                 =================================
+                <button onClick={this.props.onRemove}>Remove</button>
+             </p>
+           </div>
+           )
+  }
+}
+=============================================
+
+** 토글버튼에 따른 화면전환 기능을 구현 **
+
+  ContactDetail.js
+
+ //참인경우 새로 디자인할 부분 변수로 만들어서 관리(ContactCreate.js에서 복사해온 부분)
+      const edit=(<div>
+                   <p>
+                      <input type="text" name="name" placeholder="name 입력요망"  value={this.state.name} 
+                            onChange={this.handleChange} />
+                      <input type="text" name="phone" placeholder="phone 입력요망" value={this.state.phone} 
+                            onChange={this.handleChange} />
+                   </p>
+                 </div>)
+
+    //추가1(항목을 선택이 된상태에서 편집버튼을 누른경우)
+    const view=this.state.isEdit?edit:details;
+    //-------------------------------------------------
+
+    const blank=(<div>Not Selected!</div>)
+    return(<div>
+             {this.props.isSelected?view:blank}  {/* details->view (추가2) */}
+             <p>                           ===
+                <button onClick={this.handleToggle}>
+                  =================================
+                  {this.state.isEdit?'OK':'Edit'} {/* Edit->OK (추가3) */}
+                  =================================
+                </button>
+                <button onClick={this.props.onRemove}>Remove</button>
+             </p>
+           </div>
+           )
+  }
+}
+
+===============================================
+//전환시켜주는 함수작성->Edit을 누른경우(OK로 변환)
+  handleToggle(){
+    //글상세보기로 넘어온 name,phone =>자식(ContactDetail)의 name,phone에 저장
+    if(!this.state.isEdit){
+      this.setState({
+        name:this.props.contact.name,
+        phone:this.props.contact.phone
+      });
+    }
+    //-------------------------------
+    this.setState({
+      isEdit:!this.state.isEdit
+    });
+    console.log(!this.state.isEdit)//앞에 !을 부여하는 이유->변경돼서 들어가는값을 그대로 console에 출력하기위해
+  }
+--------------------------------------------------------------------------------------
+
+ 편집<-->글상세보기 상태로의 전환
+=====================
+ Contact.js->글수정에 대한 함수를 매개변수로 전달==>자식 컴포넌트
+                    handleEdit(수정할데이터)                       =>따로 함수를 만들어서
+                                                                                  부모의 전달받은 함수를 
+                                                                                  호출하면서 매개변수를 전달
+
+<ContactDetail isSelected={this.state.selectKey!=-1}
+                            contact={this.state.contactData[this.state.selectKey]}
+                            onRemove={this.handleRemove}
+                            ==================
+                            onEdit={this.handleEdit}/>
+                                         ===부모의 함수전달
+==================================================
+   //추가3
+     this.handleEdit=this.handleEdit.bind(this);
+  }
+  //handleChange()를 ContactCreate에서 복사해 온다.
+  handleChange(e){//event객체를 왜 받아오는 함수를 작성->어디에서 입력했는지 구분이 가능
+    let nextState = {} //빈객체 생성
+   nextState[e.target.name]=e.target.value;//nextState[name]='홍길동' e.target.name->input의 name속성
+   this.setState(nextState);//수정하기위해서 setState메서드 호출을 한다.
+  }
+  //부모함수를 따로 호출해주는 함수를 작성
+  handleEdit(){
+     this.props.onEdit(this.state.name,this.state.phone);//Contact.js의 handleEdit(수정할값)
+  }
+  //전환시켜주는 함수작성->Edit을 누른경우(OK로 변환)
+  handleToggle(){
+    //글상세보기로 넘어온 name,phone =>자식(ContactDetail)의 name,phone에 저장
+    if(!this.state.isEdit){ //편집버튼을 눌렀다면->OK버튼으로 변환
+      this.setState({
+        name:this.props.contact.name,
+        phone:this.props.contact.phone
+      });
+    }else{ //OK->사용자가 입력을 하고 ->수정이 되면서 Edit버튼으로 전환->부모의 함수를 호출
+      this.handleEdit()//this.props.onEdit(this.state.name,this.state.phone);
+    }
+    //-------------------------------
+    this.setState({
+      isEdit:!this.state.isEdit
+    });
+    console.log(!this.state.isEdit)//앞에 !을 부여하는 이유->변경돼서 들어가는값을 그대로 console에 출력하기위해
+  }
+-------------------------------------------------------------------------
+   ** 엑스트라 기능 **
+
+버튼클릭->데이터 추가->입력다 하고나서 enter키를 누른경우
+  ->동일한 기능을 부여하고자?
+
+ContactCreate.js에서 부여
+===================
+
+     //추가(생성자 연결)
+        this.handleKeyPress=this.handleKeyPress.bind(this);
+    }
+    handleKeyPress(e){//키를 입력->키코드값(e.charCode함수를 이용하면 어떤키를 눌렀는지 알 수있다.)->13번
+      if(e.charCode==13){//enter키
+          this.handleClick();//입력버튼
+      }
+    }
+
+   <input type="text" name="phone" placeholder="phone 입력요망" value={this.state.phone} 
+                   onChange={this.handleChange} 
+                   onKeyPress={this.handleKeyPress}/>
+                   =======>어느 특정한 키를 눌렀을때 발생하는 이벤트종류
+
+--------------------------------------------------
+ keydown ->타이핑하기위해서 키를 눌렀을때 발생
+ keypress->어떤 특정키를 눌렀을때 발생(특수한 키를)=>Ctrl,Alt,Enter,,,
+ keyup ->누른키를 손을 놓을때 발생 =>실시간 검색을 할때 사용
+-----------------------------------------------
+전화번호부 미니 프로젝트=>DB연동(오라클 or MySQL (X)
+                             =>로컬 스트러지 사용(html5 특성)=>DB연동
+
+ 라우터=>요청을 받아서 어떻게 처리하는가?(ppt로 정리) 
+ ===============================
+
+클라이언트의 정보를 저장하는 역할을 하는 것에는 크게 스토리지와 쿠키(jsp)가 있다.
+
+***스토리지(저장소) 개요***=>HTML5=>기능
+
+=>브라우저에서 제공되는 간단한 데이터를 저장하는 저장소
+  (5MB~10MB이하) -->용량-->DB에 저장(MySQL or Oracle,,,)
+
+스토리지는 말그대로 저장소를 이야기 하는데, 
+데이터를 저장하는 역할을 한다.
+========== ======
+
+HTML5에서 추가된 스펙으로 키와 벨류가 쌍으로 저장되는 키-벨류 스토리지이다.
+==================================(사물함 구조)
+
+*** 종류 ***
+
+1) 로컬 스토리지 =브라우저(chrome) 자체에 저장=>삭제하지 않은 이상 존재(저장)
+2) 세션 스토리지 =브라우저에 연결이 되어있는 동안 저장(휘발성)
+
+두 스토리지의 차이점은 영구성이다.
+====================
+
+로컬스토리지는 특별히 지우지 않는 한 계속 브라우저에 남아있는 스토리지(저장 공간)
+
+세션스토리지는 브라우저가 닫힐 경우 제거된다.
+              일시적인 기억장소(휘발성 메모리성격)
+===========================================================
+
+이런 특징 때문에 서로 사용처들이 다른데, 
+용도=>로컬스토리지는 보통 지속적으로 필요한 자동 로그인이나 설정값 데이터등을 저장
+                           ============================
+      세션스토리지에는 간단한 입력폼 정보라던가를 저장해서 문제시 복구하는 기능으로 사용되곤한다.
+                            ===================================
+
+물론 클라이언트의 저장소에 저장하는 것이기 때문에 민감한 정보(비밀번호 등)는 저장하지 않는 것이 좋다.
+===============================================
+
+쿠키
+
+쿠키도 역시 키-벨류 저장소인데, 만료기한도 함께 있는 저장소이다. HTTP요청시 사용자의 쿠키 정보가 서버로 전달되어 사용자를 구별하곤한다.
+
+쿠키의 단점
+
+
+그렇다면 왜 쿠키라는 기능이 있는데 스토리지를 만든 것일까?
+
+용량
+
+먼저, 쿠키는 사이즈가 매우 작다. 쿠키는 4kb의 용량을 한계로 가지고 있는 저장소로, 많은 양의 데이터를 저장할 수 없다.
+========================================================
+
+속도
+
+쿠키는 매 HTTP요청마다 포함되어 서버에 전달된다. 물론 쿠키는 4kb의 매우 작은 용량이지만 매요청마다 필요하지 않은 데이터가 전달 되는 것은 낭비이다.
+
+보안
+
+쿠키는 사용자의 로컬에도 저장되고, 매 HTTP요청마다 전달된다. 쿠키는 별도의 암호화 없이 전달되기 때문에 로컬또는 요청이 도청당하면 사용자의 정보가 쉽게 도난당할 수 있다. 
+
+================================================
+
+local-json.html
+
+<fieldset>
+   <legend>로그인</legend>
+   <label for="name">사용자명</label>
+   <input type="text" id="name">
+   <button id="login">로그인</button>
+</fieldset>
+
+ <fieldset>
+   <legend>개인화 설정2</legend>
+   
+   <label for="color">선호색상</label>
+   <input type="text" id="color">
+   
+   <label for="fontSize">폰트크기</label>
+   <input type="text" id="fontSize">
+   <button id="save">저장</button>
+   <button id="remove">삭제</button>
+ </fieldset>
+
+ local-json.js
+
+$(function(){
+	var storage=localStorage;//로컬스트러지객체
+	var body=document.querySelector("body")//배경색상때문
+	var nameField=document.getElementById("name")//$('#name')
+	var colorField=document.getElementById("color")
+	var fontSizeField=document.getElementById("fontSize")
+	
+	//맨처음 로그인했을때 기본배경색상,글자크기
+	var defaultBackground="#ffffff";
+	var defaultFontSize=15;
+	
+	//1.storage에 저장
+	$('#save').click(function(){
+		//로컬스토러지객체명.setItem("키명",저장할값)<->getItem("키명")
+		/* 개별로 하나씩 저장
+		storage.setItem("name",nameField.value)
+		storage.setItem("fcolor",colorField.value)
+		storage.setItem("fsize",fontSizeField.value)
+		*/
+		var user={
+				name:nameField.value,
+				color:colorField.value,
+				size:fontSizeField.value
+		}
+		//객체->문자열로 변환(로컬스토러지에 저장할려고)->JSON.stringfy(객체명)
+		storage.setItem(nameField.value,JSON.stringify(user));
+		//화면에 반영
+		updateUserInfo(nameField.value,colorField.value,fontSizeField.value)
+	})
+	//2.storage에서 제거(저장된 내용)
+	$('#remove').click(function(){
+		//storage.clear()//모두 삭제
+		//형식) 로컬스토러지객체명.removeItem(키명);
+		storage.removeItem(nameField.value)
+		//화면도 기본화면으로 다시 초기화
+		updateUserInfo("",defaultBackground,defaultFontSize)
+	})
+	//3.id,color,size 설정해주는 함수작성
+	function updateUserInfo(id,color,size){
+		//DB에 저장된 값을 화면에 출력(양방향 동기화)
+		nameField.value=id;
+		colorField.value=color;
+		fontSizeField.value=size;
+		//화면에 반영
+		body.style.background=color;
+		body.style.fontSize=size+"px";//단위설정
+	}
+	//4.처음 로그인시 반영할 초기화 설정해주는 함수(=생성자역할)
+	//var init=function()~
+	$('#login').click(function(){
+		//1.로컬스토러지객체명.getItem("키명")<->setItem("키명",설정할값)
+		var userStr=storage.getItem(nameField.value);//계정명
+		if(userStr){ //계정이 존재->설정된 대로 화면을 다시 보여달라
+			//저장된 문자열-->객체로 다시 변환시켜서 화면에 반영
+			//형식)JSON.parse(문자열)==>객체로 변환
+			var userObj=JSON.parse(userStr)
+			updateUserInfo(userObj.name,userObj.color,userObj.size)//객체명.키명=>저장된값 전달
+		}else{//저장된 것이 없기에 초기값 설정
+			updateUserInfo("",defaultBackground,defaultFontSize)//계정없고, 흰색,15px
+		}
+	})
+})
+
