@@ -1,0 +1,767 @@
+6일차(로컬스토러지 작성법2,라우터개요 및 작성법)
+
+ local-json.html
+
+<fieldset>
+   <legend>로그인</legend>
+   <label for="name">사용자명</label>
+   <input type="text" id="name">
+   <button id="login">로그인</button>
+</fieldset>
+
+ <fieldset>
+   <legend>개인화 설정2</legend>
+   
+   <label for="color">선호색상</label>
+   <input type="text" id="color">
+   
+   <label for="fontSize">폰트크기</label>
+   <input type="text" id="fontSize">
+   <button id="save">저장</button>
+   <button id="remove">삭제</button>
+ </fieldset>
+
+ local-json.js
+======================
+
+$(function(){
+	var storage=localStorage;//로컬스트러지객체
+	var body=document.querySelector("body")//배경색상때문
+	var nameField=document.getElementById("name")//$('#name')
+	var colorField=document.getElementById("color")
+	var fontSizeField=document.getElementById("fontSize")
+	
+	//맨처음 로그인했을때 기본배경색상,글자크기
+	var defaultBackground="#ffffff";
+	var defaultFontSize=15;
+	
+	//1.storage에 저장
+	$('#save').click(function(){
+		//로컬스토러지객체명.setItem("키명",저장할값)<->getItem("키명")
+		/* 개별로 하나씩 저장
+		storage.setItem("name",nameField.value)
+		storage.setItem("fcolor",colorField.value)
+		storage.setItem("fsize",fontSizeField.value)
+		*/
+		var user={
+				name:nameField.value,
+				color:colorField.value,
+				size:fontSizeField.value
+		}
+		//객체->문자열로 변환(로컬스토러지에 저장할려고)->JSON.stringfy(객체명)
+		storage.setItem(nameField.value,JSON.stringify(user));
+		//화면에 반영
+		updateUserInfo(nameField.value,colorField.value,fontSizeField.value)
+	})
+	//2.storage에서 제거(저장된 내용)
+	$('#remove').click(function(){
+		//storage.clear()//모두 삭제
+		//형식) 로컬스토러지객체명.removeItem(키명);
+		storage.removeItem(nameField.value)
+		//화면도 기본화면으로 다시 초기화
+		updateUserInfo("",defaultBackground,defaultFontSize)
+	})
+	//3.id,color,size 설정해주는 함수작성
+	function updateUserInfo(id,color,size){
+		//DB에 저장된 값을 화면에 출력(양방향 동기화)
+		nameField.value=id;
+		colorField.value=color;
+		fontSizeField.value=size;
+		//화면에 반영
+		body.style.background=color;
+		body.style.fontSize=size+"px";//단위설정
+	}
+	//4.처음 로그인시 반영할 초기화 설정해주는 함수(=생성자역할)
+	//var init=function()~
+	$('#login').click(function(){
+		//1.로컬스토러지객체명.getItem("키명")<->setItem("키명",설정할값)
+		var userStr=storage.getItem(nameField.value);//계정명
+		if(userStr){ //계정이 존재->설정된 대로 화면을 다시 보여달라
+			//저장된 문자열-->객체로 다시 변환시켜서 화면에 반영
+			//형식)JSON.parse(문자열)==>객체로 변환
+			var userObj=JSON.parse(userStr)
+			updateUserInfo(userObj.name,userObj.color,userObj.size)//객체명.키명=>저장된값 전달
+		}else{//저장된 것이 없기에 초기값 설정
+			updateUserInfo("",defaultBackground,defaultFontSize)//계정없고, 흰색,15px
+		}
+	})
+})
+---------------------------------------------------------------------------
+  리액트의 생명주기+localStorage개념(DB대용으로 사용하는 방법)=>적용
+
+  componentWillMount()
+  render()=>화면에 보여주는 부분
+ 
+
+ 수정=>화면에 변화=>componentDidUpdate()
+=========================================
+ Contact.js에서 추가코딩
+
+//-render()함수전에 호출되는 초기화함수=>DB에 저장된 데이터를 가져와서 출력
+    componentWillMount(){ //localStorage.키명(contactData)
+       const contactData=localStorage.contactData;
+       if(contactData){//불러올 데이터가 존재한다면
+         this.setState({
+            contactData:JSON.parse(contactData)//문자열->객체로 변환해서 저장
+         })
+       }
+       console.log('componentWillMount()호출됨')
+    }
+    //화면에 데이터를 수정할때마다 호출
+    componentDidUpdate(prevProps,prevState){//prevState(이전의 state값)
+       //이미 저장된 과거의 데이터와 현재 데이터가 다르면
+       if(JSON.stringify(prevState.contactData)!=JSON.stringify(this.state.contactData)){
+          //전의 로컬저장소에 다시 새로운 내용으로 변경
+          localStorage.contactData=JSON.stringify(this.state.contactData);
+       }
+       console.log('componentDidUpdate()호출됨')
+    }
+==============================================
+
+1.ContactDetail.js =>키를 눌러서 수정이 가능하게 설정
+
+ 1)//추가2(생성자 내부에서 코딩)
+    this.handleKeyPress=this.handleKeyPress.bind(this);
+
+ 2)//추가->render()위에 추가
+  handleKeyPress(e){//키를 입력->키코드값(e.charCode)->13번
+    if(e.charCode==13){
+       this.handleToggle();//입력버튼을 클릭
+    }       ==============
+   }
+
+ 3)<input teyp="text" name="phone" placeholder="phone"
+               value={this.state.phone}
+               onChange={this.handleChange}
+               onKeyPress={this.handleKeyPress} />  
+               ================================
+
+  6일차->my-react-router 프로젝트(or my-router)
+             ===============
+
+*****************************************
+라우팅(routing)=>어떻게 요청=>어떤 경로를 통해서 화면에
+                        원하는 페이지를 보여줄것인가를 결정해주는
+                        요소
+***************************************************
+ =>/list.do->ListController->list.jsp(스프링의 내부적인 요청처리방식)
+
+           필수모듈=>
+                     *******************************
+리액트=>구현=>react(컴포넌트정보),react-dom(화면에 출력)
+                      *****************************
+                             +
+     routing에 관련된 모듈을 새로 설치
+ ====================>react-router-dom@4.3.1버전을 기준
+
+ npm install -g 설치할 프로그램@버전명
+------------------------------------------
+1)
+C:\webtest\9.web\3.react\my-react-router>yarn add react-router-dom@4.3.1
+
+yarn add 설치할 프로그램@버전명<->npm install react-router-dom@4.3.1
+                                                =======================
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.0.6: The platform "win32" is incompatible with this module.
+info "fsevents@2.0.6" is an optional dependency and failed compatibility check.
+Excluding it from installation.
+info fsevents@1.2.8: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.8" is an optional dependency and failed compatibility check.
+Excluding it from installation.
+[3/4] Linking dependencies...
+warning "react-scripts > @typescript-eslint/eslint-plugin@1.6.0" has unmet peer
+dependency "typescript@*".
+warning "react-scripts > @typescript-eslint/parser@1.6.0" has unmet peer depende
+ncy "typescript@*".
+warning "react-scripts > @typescript-eslint/eslint-plugin > @typescript-eslint/t
+ypescript-estree@1.6.0" has unmet peer dependency "typescript@*".
+warning "react-scripts > @typescript-eslint/eslint-plugin > tsutils@3.10.0" has
+unmet peer dependency "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >=
+3.4.0-dev".
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 10 new dependencies.
+info Direct dependencies
+├─ react-dom@16.8.6=>react-dom@16.12.0
+├─ react-router-dom@4.3.1
+└─ react@16.8.6=> react@16.12.0
+======================버전번호를 기억을 할것.
+
+   버전관리를 해주는 환경설정 파일이름->package.json파일(자동 생성)
+   =>npm install=>create-react-app(최신버전이 버그 O)=>전의 버전
+                           복사X ->현재 폴더를 인식X
+
+=============================================
+
+  "dependencies": {  //->설치된 모듈명과 버전을 확인
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "4.3.1",
+    "react-scripts": "3.0.1"
+  },
+
+   npm install -g --save 설치할 프로그램명
+                        ====어디다 기록=>여기에 기록이 된다.
+============================================
+info All dependencies
+├─ hoist-non-react-statics@2.5.5
+├─ path-to-regexp@1.7.0
+├─ react-dom@16.8.6
+├─ react-router-dom@4.3.1
+├─ react-router@4.3.1
+├─ react@16.8.6
+├─ resolve-pathname@2.2.0
+├─ tiny-invariant@1.0.4
+├─ tiny-warning@1.0.2
+└─ value-equal@0.4.0
+Done in 29.61s.
+
+2)
+C:\webtest\9.web\3.react\my-react-router>yarn add cross-env@5.2.0 --dev 버그있음 사용X
+----------------------------------------------------------------------------
+  import 클래스명 form '../폴더명/파일명';
+                                ===========상대경로를 쓰지 않고도 폴더명으로 구분해서
+                                                      특정 모듈을 가져올 수 있도록 설계된 라이브러리
+                                           =>환경설정을 해야 한다. 어디 package.json파일(수동)
+
+yarn add v1.15.2
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.0.6: The platform "win32" is incompatible with this module.
+info "fsevents@2.0.6" is an optional dependency and failed compatibility check.
+Excluding it from installation.
+info fsevents@1.2.8: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.8" is an optional dependency and failed compatibility check.
+Excluding it from installation.
+[3/4] Linking dependencies...
+warning "react-scripts > @typescript-eslint/eslint-plugin@1.6.0" has unmet peer
+dependency "typescript@*".
+warning "react-scripts > @typescript-eslint/parser@1.6.0" has unmet peer depende
+ncy "typescript@*".
+warning "react-scripts > @typescript-eslint/eslint-plugin > @typescript-eslint/t
+ypescript-estree@1.6.0" has unmet peer dependency "typescript@*".
+warning "react-scripts > @typescript-eslint/eslint-plugin > tsutils@3.10.0" has
+unmet peer dependency "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >=
+3.4.0-dev".
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 1 new dependency.
+info Direct dependencies
+└─ cross-env@5.2.0  =>cross-env모듈의 버전이름 확인(5.2.0)
+info All dependencies
+└─ cross-env@5.2.0
+Done in 8.29s.
+
+3)
+C:\webtest\9.web\3.react\my-react-router>yarn add query-string@6.5.0
+                                                            ========>요청을 받아서 처리
+                                                                              요청문자열 처리모듈
+    /list.do or /list/abc/test/list.do
+
+yarn add v1.15.2
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@2.0.6: The platform "win32" is incompatible with this module.
+info "fsevents@2.0.6" is an optional dependency and failed compatibility check.
+Excluding it from installation.
+info fsevents@1.2.8: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.8" is an optional dependency and failed compatibility check.
+Excluding it from installation.
+[3/4] Linking dependencies...
+warning "react-scripts > @typescript-eslint/eslint-plugin@1.6.0" has unmet peer
+dependency "typescript@*".
+warning "react-scripts > @typescript-eslint/parser@1.6.0" has unmet peer depend
+ncy "typescript@*".
+warning "react-scripts > @typescript-eslint/eslint-plugin > @typescript-eslint/
+ypescript-estree@1.6.0" has unmet peer dependency "typescript@*".
+warning "react-scripts > @typescript-eslint/eslint-plugin > tsutils@3.10.0" has
+unmet peer dependency "typescript@>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >=
+3.4.0-dev".
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 3 new dependencies.
+info Direct dependencies
+└─ query-string@6.5.0
+info All dependencies
+├─ query-string@6.5.0  =>버전을 확인 (6.5.0)
+├─ split-on-first@1.1.0
+└─ strict-uri-encode@2.0.0
+Done in 6.70s.
+
+****************새로 업그레이드  할 예정**********************
+"scripts": {  
+    "start": "cross-env NODE_PATH=src react-scripts start", =>yarn start(서버가동시킬때
+                                환경변수=맨처음 찾을 위치를 지정                                                           사용하는 자바스크립트명령어)
+    "build": "cross-env NODE_PATH=src react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+
+***************************************
+
+
+1)2)3) 다 설치한 후에  package.json파일 내용
+
+ "dependencies": {
+    "query-string": "^6.5.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "4.3.1",
+    "react-scripts": "3.0.1"
+  },
+
+
+==============================================
+C:\webtest\9.web>npm init  =>package.json파일을 수동으로 만드는 명령어
+                            =====
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help json` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (9.web) my-test22  (프로젝트 이름)
+version: (1.0.0) 1.1.3 (버전명)
+description: testing   (간단한 설명)
+entry point: (index.js) ->중요한 실행파일(웹팩)->다른 이름으로 부여해서 작업
+test command:
+git repository:->git의 http
+keywords: testing (중요한 키워드)
+author: yeansu lee (영문 이름)
+license: (ISC) (라이센스=>enter)
+About to write to C:\webtest\9.web\package.json:
+
+{
+  "name": "my-test22",
+  "version": "1.1.3",
+  "description": "testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "testing"
+  ],
+  "author": "yeansu lee",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes) yes
+
+C:\webtest\9.web>npm install --save jquery =>버전명X ->가장 최신버전설치
+npm notice created a lockfile as package-lock.json. You should commit th
+
+npm WARN my-test22@1.1.3 No repository field.
+
++ jquery@3.4.1
+added 1 package from 1 contributor and audited 1 package in 9.883s
+found 0 vulnerabilities
+
+C:\webtest\9.web>type package.json =>type 파일명=>파일의 내용을 확인할때
+{                                                                                 사용
+  "name": "my-test22",
+  "version": "1.1.3",
+  "description": "testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "testing"
+  ],
+  "author": "yeansu lee",
+  "license": "ISC",
+  ===============
+  "dependencies": {      
+    "jquery": "^3.4.1"  =>설치한 프로그램이 자동으로 등록
+  }
+  ==============
+}
+
+===============================
+React-router-dom  
+
+브라우저에서 사용되는 리액트 라우터 =>/list.do=action.ListAction=>list.jsp
+
+
+cross-env
+
+프로젝트에서 NODE_PATH를 사용하여 절대경로로
+파일을 불러오기 위하여 환경변수를 설정할때 운영체제마다  
+다 방식이 다르므로 공통적인 방법으로 설정할 
+                          ==============
+수 있게 해주는 라이브러리
+===============
+
+  프로젝트명
+        |
+         -board
+        |
+         -style
+         -Webapp(/)
+           |
+            -WEB-INF
+               |
+                -lib->~.jar
+=======================
+ src/components (컴포넌트) 
+ src/Pages (라우터 위치)
+ src/client(브라우저에서 사용)=>외부
+ src/server(서버에서 사용할코드==>Node.js에서 처리(서버 기능)
+ src/shared=>App.js (공통)  =>공통으로 사용할 컴포넌트        
+ src/lib=>추후 웹연동 구연시 필요
+
+  src
+    components=>요청시 보여주는 컴포넌트
+    client->Root.js 작성=>App.js를 반드시 거치도록 설정
+    pages->요청시 보여주는 컴포넌트
+    shared->App.js  => /* =>어떠한 요청이든지 처리
+    (공통의 요청경로를 지정)
+
+"scripts": {   업그레이드가 되는 관계->사용X
+   =================================
+              cross-env NODE_PATH(환경변수명)=src(최상위폴더명 지정)
+    "start": "cross-env NODE_PATH=src react-scripts start",
+    "build": "cross-env NODE_PATH=src react-scripts build",
+    "test": "cross-env NODE_PATH=src react-scripts test",
+   ==================================
+    "eject": "react-scripts eject"
+  },
+=======================================
+1. src/shared/App.js
+
+
+import React,{Component} from 'react';//react.js(1)
+
+//import React from 'react';
+//class App extends React.Component{
+  class App extends Component {
+  
+  render(){
+    
+    return(<div>
+            <h1>Hello! React-Router </h1>
+           </div>
+           )
+  }
+}
+
+export default App;
+===========================
+src(/)
+    components
+    client->Root.js
+**************************************************************
+    pages=>Home.js, About.js=>index.js(추가되는 모든 컴포넌트의 경로를 짧게 별칭부여)
+***************************************************************
+    shared->App.js ->Root.js
+=========================
+
+   src/client/Root.js저장 <- App.js을 save as
+
+2.메인페이지->App=>Root.js로 변경했을때의 코딩
+
+import React from 'react';
+
+import {BrowserRouter} from 'react-router-dom'; /* 요청을 해서 처리해야할 router정보 */
+
+import App from 'shared/App'; //App클래스 필요
+
+//class Root extends React.Component{
+//형식) const 컴포넌트명 = ()=>()
+//<BrowserRoter>최상위 컴포넌트(/)<BrowserRoter>
+const Root =()=>(
+     <BrowserRouter>
+        <App />  
+     </BrowserRouter>
+);
+
+export default Root;
+
+3.index.js
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+//import App from './components/App';  App->Root로 컴포넌트를 부착
+import Root from './client/Root';
+
+ReactDOM.render(<Root />, document.getElementById('root'));
+
+//-> 최신버전으로 변경했을 경우의 소스코드(18.x.x) 버전
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render( //화면에 출력시켜주는 함수(부착시킬 컴포넌트)
+  <React.StrictMode>
+    <Root />
+  </React.StrictMode>
+);
+----------------------------------------------------------------------------
+C:\webtest\9.web\3.React\my-router>yarn start
+
+yarn run v1.19.1
+$ cross-env NODE_PATH=src react-scripts start
+  ================= ============>package.json에 설정된 서버가동시키면서
+                                                                        경로인식이 가능하게 설정
+
+Setting NODE_PATH to resolve modules absolutely has been deprecated in favor of setting baseUrl in jsconfig.json (or tsconfig.json if you are using TypeScript) 
+and will be removed in a future major release of create-react-app.
+
+http://localhost:3000/=><BrowserRouter>
+                                      <App /> ==>/ 포함해서 다른 경로->지정
+                                   </BrowserRouter>
+
+** 요청경로를 한개 이상 작업시->화면에 출력할 컴포넌트를 작성 **
+ 
+http://localhost:3000/about =>요청경로가 변경->매치되는 컴포넌트를 화면에 출력
+http://localhost:3000/home
+================================================
+
+ src/pages/About.js
+                Home.js 
+                ,,,,
+
+
+/* src/pages/Home.js */
+
+import React from 'react';
+
+const Home=()=>{
+    return(
+        <div>
+            <h2>Home</h2>
+        </div>
+    );
+}
+export default Home;
+
+=========================
+ save as About.js
+
+/* src/pages/Home.js */
+
+import React from 'react';
+
+const About=()=>{
+    return(
+        <div>
+            <h2>About</h2>
+        </div>
+    );
+}
+export default About;
+----------------------------
+ src/pages/index.js
+
+/*  src/pages/index.js ->외부에서 불러다 사용하는 파일이 경로가 다르기에 따로 별칭을 부여 
+  형식) export { default as 불러올 클래스의 별칭} from '상대경로를 통한 실제 파일명'
+*/
+export {default as Home} from './Home'
+export {default as About} from './About'
+// import {불러올 항목(Home,About,,,)} from '상위폴더명(pages)'
+------------------------------------------------------------------------------
+
+App.js에서 요청경로->해당 컴포넌트를 지정
+
+
+import React,{Component} from 'react';//react.js(1)
+
+//추가
+import {Route} from 'react-router-dom';
+import {Home,About } from 'pages';//서버가 가동  src/pages/Heme,About 인식가능
+                                           
+//import React from 'react';
+//class App extends React.Component{
+  class App extends Component {
+  
+  render(){
+    return(<div>
+            {/*<h1>Hello! React-Router </h1> */}
+            <Route exact path="/" component={Home} />
+                        ===>중복되는 경로를 일치하는 경로로 만들어주는 역할( exact ->path="/"
+                                                                                                           /만 찾기)
+                          path="요청경로명" component={컴포넌트의 별칭명}
+            <Route path="/about" component={About} />
+           </div>
+           )
+  }
+}
+
+export default App;
+=====================================================
+ ** 파라미터값을 넘겨서 전달하고 싶다. **
+     :매개변수=>리액트도 비슷
+
+1.History->push,replace를 통해 다른 경로로 이동하거나 앞,뒤 페이지로 전환 
+
+2.Location-> 현재 경로에 대한 정보를 지니고 있고 URL쿼리(/about?foo=bar)정보도 가지고 있다.
+                      =>ex)/요청경로?매개변수명=전달할값~ =>정적인 개념
+
+3.Match-> 어떤 라우트에 매칭이 되었는지에 대한 정보 있고,
+              params(/about/:name)정보를 가지고 있다  =>동적인 개념
+************************************************************************
+
+
+import React,{Component} from 'react';//react.js(1)
+
+//추가
+import {Route,Switch} from 'react-router-dom';
+import {Home,About } from 'pages';//서버가 가동  src/pages/Heme,About 인식가능
+
+//import React from 'react';
+//class App extends React.Component{
+  class App extends Component {
+  
+  render(){
+    return(<div>
+            {/*<h1>Hello! React-Router </h1> */}
+            <Route exact path="/" component={Home} />
+            <Switch>=>중복경로는 Switch로 묶어주기(맨 먼저 동적인 매개변수전달 받는것을 먼저
+                                                                          기입)
+              <Route path="/about/:name" component={About} />
+              <Route path="/about" component={About} />
+            </Switch>
+           </div>
+           )
+  }
+}
+
+export default App;
+=====================================================
+ 링크->하나의 항목->동적 매개변수를 전달=>결과를 출력
+
+Post.js <-Heme.js파일을 save as
+
+/* src/pages/Post.js
+  동적으로 매개변수를 받아서 출력시켜주는 컴포넌트
+*/
+import React from 'react';
+
+const Post=({match})=>{  // /Post/:id
+    return(
+        <div>
+            포스트 {match.params.id} 을 받음
+        </div>
+    )
+}
+export default Post;
+==============================
+Posts.js
+
+/* src/pages/Posts.js =>Post/:매개변수->
+    링크를 걸어서 이동해주는 페이지를 지정해주는 파일
+*/
+import React from 'react';
+import {Link,Route} from 'react-router-dom';
+//추가
+import {Post} from 'pages';//src 바로 밑의 폴더를 자동 찾기 pages
+const Posts=()=>{
+    return(
+        <div>
+            <h2>Post List</h2>
+            <ul>  {/* match.url(라우팅경로) */}
+                <li><Link to={`${match.url}/1`}>Post #1</Link></li>
+                <li><Link to={`${match.url}/2`}>Post #2</Link></li>
+                <li><Link to={`${match.url}/3`}>Post #3</Link></li>
+                <li><Link to={`${match.url}/4`}>Post #4</Link></li> 
+            </ul>
+            {/* component={컴포넌트} (따로 컴포넌트를 만들어서 출력)   */}
+            <Route exact path={match.url} 
+                         render={()=>{<h3>포스트중 하나 선택하시오</h3>}} />
+                         =============>component속성대신에 render속성을 이용
+                        =>화살표함수로 직접적으로 출력시켜주는 구문을 작성하기위해서
+                         render속성을 이용한다.
+
+            <Route path={`${match.url}/:id`} component={Post} />
+        </div>
+    )
+}
+export default Posts;
+===========================================
+Posts.js
+
+/* src/pages/Posts.js =>Post/:매개변수->
+    링크를 걸어서 이동해주는 페이지를 지정해주는 파일
+*/
+import React from 'react';
+import {Link,Route} from 'react-router-dom';
+//추가
+import {Post} from 'pages';//src 바로 밑의 폴더를 자동 찾기 pages
+const Posts=()=>{
+    return(
+        <div>
+            <h2>Post List</h2>
+            <ul>  {/* match.url(라우팅경로) */}
+                <li><Link to={`${match.url}/1`}>Post #1</Link></li>
+                <li><Link to={`${match.url}/2`}>Post #2</Link></li>
+                <li><Link to={`${match.url}/3`}>Post #3</Link></li>
+                <li><Link to={`${match.url}/4`}>Post #4</Link></li> 
+            </ul>
+            {/* component={컴포넌트} (따로 컴포넌트를 만들어서 출력)   */}
+            <Route exact path={match.url} 
+                         render={()=>{<h3>포스트중 하나 선택하시오</h3>}} />
+            <Route path={`${match.url}/:id`} component={Post} />
+        </div>
+    )
+}
+export default Posts;
+============================================
+  shared/App.js에서 연결해서 불러오기
+
+ src/pages/index.js=>Post.js,Posts.js
+
+/* src/pages->요청에 따라서 화면에 보여주는 컴포넌트 저장
+ 앞으로 불러올 컴포넌트의 경로를 편하게 별칭을 부여하기위해서 만들어진
+  환경설정파일
+  import Home from './Home'
+  형식) export { default as 별칭이름 } from '경로포함해서 파일명'
+        /pages/Home =>상위폴더명을 지정(하위는 자동인식)
+*/
+export {default as Home} from './Home';
+export {default as About} from './About';
+
+***************추가***********************
+export {default as Posts}  from './Posts';
+export {default as Post} from './Post';
+**************************************
+
+src/shared/App.js=>Posts=>Post
+                         링크1        링크2
+
+===============================
+Menu2.js
+
+/* src/components/Menu.js  ,Menu2.js
+    링크를 걸어서 이동해주는 페이지를 지정해주는 파일
+*/
+import React from 'react';
+import {NavLink} from 'react-router-dom';
+
+const Menu2=()=>{
+    const activeStyle={
+        color:'green',
+        fontSize:'2rem'
+    }
+    return(
+        <div> {/* activeStyle(스타일적용시킬때 사용하는 속성)
+                <Link> 단순하게 이동 <NavLink> 스타일적용 및 이동
+                */}
+            <ul>
+        <li><NavLink to="/" activeStyle={activeStyle}>Home</NavLink></li>
+        <li><NavLink to="/about" activeStyle={activeStyle} >About</NavLink></li>
+        <li><NavLink to="/about/test" activeStyle={activeStyle}>About,test</NavLink></li> 
+        <li><NavLink to="/posts" activeStyle={activeStyle}>Posts</NavLink></li>     
+            </ul>
+        </div>
+    )
+}
+export default Menu2;
+==============================================
+
+
+

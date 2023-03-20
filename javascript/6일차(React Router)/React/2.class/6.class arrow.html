@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+    <title>웹상에서 props전달</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+     //1.화살표함수로 컴포너트를 정의
+     /*
+    형식1) const 컴포넌트명=()=>(처리내용) 매개변수X
+    형식2) const 컴포넌트명=(props)=>(처리내용) 매개변수 O
+     */
+    const TitleParts=(props)=>(
+        <div style={{backgroundColor:'red',color:'white'}}>
+          <h3>{props.title}</h3>
+        </div>
+    )
+    const ContentParts=(props)=>(
+        <div style={{border:'1px solid blue',margin:15}}>
+          <h3>{props.body}</h3>
+        </div>
+    )
+     //부모=>화살표함수를 사용=>this를 생략이 가능(자동연결)
+    const Book=(props)=>(//const Book=function(proprs){}
+           <div>
+             <TitleParts title={props.title} />
+             <ContentParts body={props.body} />
+           </div>
+     )
+     //2.컴포넌트를 사용(매개변수를 전달(props))
+    const dom=<div>
+        <Book title='삼국지' body='옛날 중국영웅들 이야기' />
+        <Book title='민수기' body='옛날 이스라엘 역사 이야기' />
+        <Book title='서유기' body='옛날 손오공의 이야기' />
+               </div>
+     ReactDOM.render(dom,document.getElementById('root'))   
+    </script>
+</body>
+</html>
