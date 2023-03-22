@@ -1,0 +1,29 @@
+
+
+ 소스들을 잘 분석=>jsp에 copy=>실행(index.html->index.jsp)
+
+es5->require()함수
+
+es6에서는 import 
+
+import 'React' from 'react'
+import 'ReactDOM' from 'react-dom'
+import {HashRouter,Route,Switch,Link} from 'react-router-dom'
+
+
+모든 예제는 index.html을 실행시키면 된다.
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet"/>
+  </head>  ==>부트스트랩 적용
+  <body>
+    <div class="container-fluid">
+      <div id="content" class=""></div>
+    </div>
+    <script src="js/bundle.js"></script>=>앞에서 작성한 모듈들을 전부 불러와서
+                                                                 합쳐서 메모리에 올려주는 역할
+                                                                 모듈번들러
+  </body>
+</html>
