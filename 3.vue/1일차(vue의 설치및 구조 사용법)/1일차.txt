@@ -1,0 +1,453 @@
+1일차(vue의 설치및 구조 사용법)
+
+*****************************************
+(https://vuejs.org/v2/guide/ )->v3 업그레이드
+************************************************
+Angular 와 React의 장점만 가진 프레임워크.
+*************************************************
+
+Angular=>{{출력할 변수명}}
+                    +
+부모->자식컴포넌트로 데이터를 매개변수로 전달
+        props(React)
+
+자식->컴포넌트->이벤트처리
+=========================
+
+ Vue.js를 사용할 조건
+
+***************************************
+Vue ClL는 최소 Node.js 8.9 버전이상을 설치해야 한다.=>13버전
+ 8.11.0 버전을 권장한다.
+**************************************
+
+npm install -g @vue/cli@3.8.4 ->5.0.4(최신버전)->버그가 존재 O
+
+C:\webtest\12.vue\src>npm install -g @vue/cli@3.8.4
+**********************************************
+
+C:\Users\kitcoop\AppData\Roaming\npm\vue -> C:\Users\kitcoop\AppData\Roaming\npm\node_modules\@vue\cli\bin\vue.js
+
+> core-js@3.4.7 postinstall C:\Users\kitcoop\AppData\Roaming\npm\node_modules\@vue\cli\node_modules\core-js
+> node -e "try{require('./postinstall')}catch(e){}"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon:
+> https://opencollective.com/core-js
+> https://www.patreon.com/zloirock
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.9 (node_modules\@vue\cli\node_modules\fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.9: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})
+
++ @vue/cli@3.8.4
+removed 4 packages and updated 6 packages in 65.422s
+
+C:\webtest\12.vue\src>
+C:\webtest\12.vue\src>vue --version =>yarn global add~
+3.8.4                                                    설치시 인식버그가 있는경우
+                                                        =>yarn remove
+C:\webtest\12.vue\src>                     =>npm 으로 재설치
+
+                                  src> vue create myapp2
+                                    enter
+                                    enter->yarn을 선택하고나서 
+Vue CLI v3.8.4
+┌───────────────────────────┐
+│  Update available: 4.1.1  │
+└───────────────────────────┘
+? Please pick a preset:
+> default (babel, eslint)
+  Manually select features     enter
+
+Vue CLI v3.8.4
+✨  Creating project in C:\webtest\12.vue\src\my-app.
+⚙  Installing CLI plugins. This might take a while...
+
+yarn install v1.19.1
+info No lockfile found.
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@1.2.9: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+                                                                                            success Saved lockfile.
+Done in 106.24s.
+🚀  Invoking generators...
+📦  Installing additional dependencies...
+
+yarn install v1.19.1
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@1.2.9: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.9" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Saved lockfile.
+Done in 19.30s.
+⚓  Running completion hooks...
+
+📄  Generating README.md...
+
+🎉  Successfully created project my-app.
+👉  Get started with the following commands:
+
+ $ cd myapp  ->프로젝트로 이동
+ $ yarn serve  ->vue의 서버가동  <->react 서버(yarn start)
+===============================
+   브라우저->vscode에서 ctrl+http://localhost:8080
+                                        =============클릭
+   브라우저 실행->node.js와 비슷한 형태로 실행
+******************************************
+  yarn serve  ->vue의 서버가동
+  react 서버가동->npm start->yarn start
+===============================
+
+  기본구조->react를 모델
+
+  myapp
+     |
+      -public ->index.html=><div id="app"></div>
+                                   컴포넌트가 부착되는 위치 <App />
+     |
+      -src
+         assets=>Angular처럼 이미지를 주로 저장하는 장소
+                   =>** 이미지를 다른데 저장하면 인식X **
+                    images폴더생성->이미지 저장~.png,~.gif
+
+         components=>화면에 출력할 컴포넌트가 저장된 장소
+               HelloWorld.vue(확장자->vue) =>자식 컴포넌트
+                                          ~.js
+               ,,,,=>화면디자인이 복잡->vue파일이 많아질 수 있다.
+
+         App.vue=>최상위 부모 컴포넌트(App.js)
+
+        main.js=>vue객체를 생성해서 특정위치에 컴포넌트를 부착시키는
+                       코드가 작성           ====
+                                       <div id="app"></div>
+
+               =>react.js에서의 src/index.js와 기능이 같다.
+
+C:\webtest\12.vue\src>
+***************************************************
+*** vue.js의 특징 ***
+
+1.컴포넌트 기반 프레임워크->코드를 재사용하기가 쉽기때문
+2.리액트의 장점(단방향)과 앵귤러의 장점(양방향 데이터 바인딩)을 모두 가진 프레임워크
+3.빠른 화면 랜더링을 위해 리액트의 가상돔을 사용한다(가상 돔)
+
+***************************************************
+***뷰파일의 구조 설명 *** =>3대구성요소
+   HelloWorld.vue파일
+
+<template>
+   <!-- 1.화면에 출력하는 부분(template) (reactDOM와 연관)
+        <h1>{this.props.msg}</h1> 리액트로 표현을 하면-->
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+  </div>
+</template>
+
+<script>
+// script 안쪽에는 자바의 주석처럼 사용할 수가 있다.
+/* template와 연관이 되어있는 컴포넌트 정보영역
+   자바스크립트코드를 사용하는 영역(함수,속성값 저장)  */
+export default {
+  name: 'HelloWorld', //컴포넌트 이름 (selector:'HelloWorld)
+  props: {   //부모컴포넌트로부터 매개변수를 전달받았을때 처리부분
+    msg: String  //속성명:자료형->react(string(소문자))
+  }
+}
+</script>
+
+<!-- template영역에 출력할 스타일시트를 적용시키는 영역 -->
+<style scoped>
+h1 {
+  background-Color:yellow;
+  color:red;
+  font-size:18pt;
+}
+
+</style>
+======================================
+App.vue
+
+<template>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <!-- 자식태그(중첩) msg(전달할매개변수명="전달할값") -->
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld msg="두번째" />
+  </div>
+</template>
+==================리엑트===================
+   class App~
+     render(
+         return (<div>
+                    <HelloWorld /> =>자식컴포넌트 부착
+                   </div>)
+========================================
+
+<script>
+//import 불러올 컴포넌트명(자식) from '경로포함해서 파일명~.vue'
+import HelloWorld from './components/HelloWorld.vue'
+
+export default {
+  name: 'app', //부모컴포넌트 이름 <app />(태그로 표시)
+  components: {  //부모컴포넌트 입장->중첩시킬 컴포넌트 목록을 표시
+    HelloWorld
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+====================================
+3.main.js
+
+import Vue from 'vue'//import React from 'react'와 비슷(vue정보)
+//main.js->public/index.html에 최종적으로 부착시킬 컴포넌트를 불러옴
+import App from './App.vue' //화면에 출력시킬 부모컴포넌트
+
+//vue.config->vue의 전역설정부분
+Vue.config.productionTip = false //배포할때의 팁을 출력시킬유무
+
+//뷰객체를 만드는 소스코드->특정위치에 특정컴포넌트를 부착시키는 구문
+new Vue({
+  render: h => h(App),//render함수->화면에 출력할 컴포넌트를 등록
+}).$mount('#app')//public/index.html <div id="app"></div>
+//id가 app인 특정위치를 찾아서 여기에 <App />을 render를 이용해서 출력
+//ReactDOM.render(<App />,document.getElementById('app'))
+=======================================
+ 프로젝트생성 vue create 생성할 프로젝트명=>편집
+                  create-react-app 생성할 프로젝트명->편집
+===================================
+ 2.my-multi=>중첩컴포넌트,매개변수를 전달하는 방법
+
+
+리액트 =>중첩 컴포넌트
+
+  render(){
+   return (
+     <div>
+       <Test />
+       <imsi /> 
+     </div>
+    )
+  }
+
+  src>vue create myapp-multi
+         babel
+         yarn
+========================
+Vue.js
+
+<template>
+    <div>
+          =>컴포넌트명  =>부착시킬 컴포넌트를 묶어서 하나의 태그
+    </div>                     만들어서 출력해야 한다.
+</template>
+
+ App.vue->HelloWorld.vue->
+                 Happy.vue->
+                 Child.vue(중첩)
+
+               
+========================
+App.vue=>HelloWorld.vue 매개변수 전달
+            =>Happy 매개변수 전달
+
+ <Happy test="전달이요"/>
+             매개변수="전달할값"
+          
+             [매개변수]="전달할값" =>Angular
+              속성지시자
+
+             구조지시자->*ngIf,*ngFor,*ngSwitch
+                             v-if,v-for
+================================
+부모컴포넌트->App.vue
+자식컴포넌트->HelloWorld.vue
+                   Happy.vue =>부모
+                   child.vue  =>자식 만들면서 매개변수를 전달?
+
+C:\webtest\9.web\3.vue\src\myapp-multi\src\components\Child.vue
+  =>컴포넌트명을 부여할때 가능한 이름을 한단어로 사용하지말고 두개이상의 단어를 사용
+   Happy,Child  ,HelloWorld (O)
+
+***************3.8.4버전, 5.0.4 적용(O)  4.1.1버전에서는 적용(X)*******
+
+1.   eslint을 설치 (자바스크립트 문법을 체크해주는 기능)=>환경설정파일에서 설정
+          .eslintrc.js  에 설정
+
+    rules: {
+    'vue/multi-word-component-names': 'off', =>무시해달라
+  },
+
+2.vue.config.js  => 이미 존재하는 파일
+
+module.exports = defineConfig({
+  ....
+  lintOnSave: false  =>무시해달라=>vscode를 재가동
+})
+=====================================
+
+  11:8  error  Component name "Child" should always be multi-word  vue/multi-word-component-names
+
+C:\webtest\9.web\3.vue\src\myapp-multi\src\components\Happy.vue
+  11:8  error  Component name "Happy" should always be multi-word  vue/multi-word-component-names
+
+===================================
+ **두번째 예제**
+
+App.vue
+
+<template>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <!-- 자식태그(중첩) msg(전달할매개변수명="전달할값")
+         같은 태그를 여러개 사용이 가능
+         매개변수를 전달하지 않았다고해서 에러발생X -->
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld msg="Testing"/>
+    <HelloWorld />
+    <Happy test="전달이요"/>
+    <!-- 전달하는 매개변수가 한개이상(배열로 인식) -->
+    <child username="임시" age="20" my-address="서울" />
+  </div>
+  <!--  <Happy /> div태그 밖에 컴포넌트 사용X -->
+</template>
+
+<script>
+//import 불러올 컴포넌트명(자식) from '경로포함해서 파일명~.vue'
+import HelloWorld from './components/HelloWorld.vue'
+//추가
+import Happy from './components/Happ.vue'
+import child from './components/child.vue'
+
+export default {
+  name: 'app', //부모컴포넌트 이름 <app />(태그로 표시)
+  //부모컴포넌트쪽에서 자식등록 사용하는 속성
+  components: {  //부모컴포넌트 입장->중첩시킬 컴포넌트 목록을 표시
+    HelloWorld,
+    Happy,
+    child
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+=================================
+2.HelloWorld.vue
+
+<template>
+   <!-- 1.화면에 출력하는 부분(template) (reactDOM와 연관)  -->
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+  </div>
+</template>
+
+<script>
+//
+/* template와 연관이 되어있는 컴포넌트 정보영역
+   자바스크립트코드를 사용하는 영역(함수,속성값 저장)  */
+export default {
+  name: 'HelloWorld', //컴포넌트 이름 (selector:'HelloWorld)
+  props: {   //부모컴포넌트로부터 매개변수를 전달받았을때 처리부분
+    msg: String  //속성명:자료형->react(string(소문자))
+  }
+}
+</script>
+
+<!-- template영역에 출력할 스타일시트를 적용시키는 영역 -->
+<style scoped>
+h1 {
+  background-Color:yellow;
+  color:red;
+  font-size:18pt;
+}
+
+</style>
+=====================================
+3.Happy.vue
+
+<template>
+  <div class="happy">
+       <!-- {this.props.test} 리액트라면  -->
+      <h1>자식컴포넌트 Happy,{{test}}</h1>
+      <child />
+  </div>
+</template>
+
+<script>
+import child from './child.vue' //1.불러오기
+
+export default { //컴포넌트 정보->name(이름)
+  name:'Happy',  //<Happy />
+  props:{
+      test:String //App.vue->test매개변수를 전달받음 상태
+  },
+  components: { //자식컴포넌트 등록
+    child
+  }
+}
+</script>
+
+<style>
+</style>
+=============================
+4.child.vue->가능한 파일명의 첫글자는 대문자로 쓸것.(관례)
+
+<template>
+    <div>
+       <h1>Child {{username}} {{age}} {{myAddress}}</h1> 
+    </div>
+</template>
+
+<script>
+export default {
+    name:'child',  //<child />
+    props:['username','age','myAddress']
+}
+</script>
+<style>
+
+</style>
+===================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
