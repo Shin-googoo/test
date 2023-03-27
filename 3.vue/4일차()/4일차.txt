@@ -1,0 +1,356 @@
+4일차(디렉티브 사용법2,컴포넌트 다양한 속성)
+
+ src>vue create my-directive2 프로젝트 =>Valid.vue,Control.vue
+
+ Vue 지시자2
+ HelloWorld.vue
+
+<template>
+   <!-- 1.화면에 출력하는 부분(template) (reactDOM와 연관)  -->
+  <div class="hello">
+    <h1>구조지시자(v-부분(v-if,v-show,v-for))</h1>
+    <!--v-if->조건에 만족하지 않으면 랜더링 안됨->화면에 출력X
+        v-show->랜더링은 되지만 화면에 안보임(화면에 출력X)
+                display:none 스타일속성으로 동작
+                조건에 만족하지 않아도 랜더링은 되는데 화면에 X
+        형식)v-if or v-show=조건식 or 불린값을 설정가능
+     -->
+    <Valid />
+    <p v-show=true>A</p>
+    <p v-show="true">A1</p>
+    <p v-show="flag">A2</p>
+    <p v-show="!flag">A3</p>
+    <p v-show="false">A4</p>
+    <p v-show=false>A5</p>
+    <hr />
+    <p v-if="amount==1">Hello1</p>
+    <p v-show="amount==1">Hello2</p>
+    <p v-if="amount==2">Hello3</p>
+    <p v-show="amount==2">Hello4</p>
+    <hr />
+    <!-- 비교연산자 -->
+    <p v-if="3>1">Hello1</p>
+    <p v-show="num>=num2">Hello2</p>
+    <p v-if="num<num2">Hello3</p>
+    <p v-show="num > num2 && 3==3">Hello4</p>
+    <p v-show="num < num2 || 3==3">Hello5</p>
+  </div>
+</template>
+
+<script>
+//
+/* template와 연관이 되어있는 컴포넌트 정보영역
+   자바스크립트코드를 사용하는 영역(함수,속성값 저장)  */
+import Valid from './Valid.vue'
+
+export default {
+  name: 'HelloWorld', //컴포넌트 이름 (selector:'HelloWorld)
+  data:function(){
+    return{
+      flag:true,//v-if 조건식을 사용(불린값)
+      amount:1,
+      num:10,
+      num2:5
+    }
+  },
+  components:{
+    Valid
+  }
+}
+</script>
+
+<!-- template영역에 출력할 스타일시트를 적용시키는 영역 -->
+<style>
+h1 {
+  background-Color:yellow;
+  color:red;
+  font-size:18pt;
+}
+
+</style>
+===================================
+Valid.vue
+
+<template>
+ <div class="hello">
+  <input type="text" v-model="amount">
+  <span v-if="amount < 100">100 보다 큰 값만 입력이 가능.</span>
+  <hr />
+  이름:<input type="text" v-model="username">
+  <span v-if="username.length < 2">이름은 2글자 이상입니다.</span><hr>
+  나이:<input type="text" v-model="age">
+  <span v-if="age < 10 || age >120">
+  나이는 10세이상,120세 이하만 가능합니다.</span><br>
+  <hr />
+  점수:<input type="text" v-model="grade">
+  <p v-if="grade > 90">A학점</p>
+  <p v-else-if="grade > 80">B학점</p>
+  <p v-else-if="grade > 70">C학점</p>
+  <p v-else>F학점</p>
+ </div>
+</template>
+
+<script>
+export default {
+    name:'Valid',
+    data:function(){
+        return{
+            amount:100,
+            username:'임시',
+            age:10,
+            grade:50
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>
+=============================
+ Control.vue
+
+<template>
+  <div class="hello">
+    <h1>index 없이</h1>
+    <!--v-for="출력변수 in 배열명" :key="구분해서 출력할 값지정" -->
+    <ul>
+      <li v-for="name in names" :key="name">
+         {{name}}
+      </li>
+    </ul>
+    <h1>index 지정</h1>
+    <!--v-for="(출력변수,인덱스번호) in 배열명" :key="인덱스번호" -->
+    <ul>
+      <li v-for="(name,idx) in names" :key="idx">
+         {{idx+1}}&nbsp;{{name}}
+      </li>
+    </ul>
+    <hr />
+    <h1>객체인데 index 없이 출력</h1>
+    <ul>
+        <!--v-for=(출력값,키명) in 객체명  :key="키명" -->
+      <li v-for="(v,k) in person" :key="k">
+         {{k}}&nbsp;{{v}}
+      </li>
+    </ul>
+    <!-- 인덱스가 부여된 객체값 출력 -->
+    <h1>객체면서 index 값 출력</h1>
+    <ul>
+        <!--v-for=(출력값,키명,인덱스번호) in 객체명  :key="인덱스번호" -->
+      <li v-for="(v,k,idx) in person" :key="idx">
+         {{idx+1}}&nbsp;{{k}}&nbsp;{{v}}
+      </li>
+    </ul>
+    <hr />
+    과일 선택:
+    <select v-model="selectedFruit">
+      <option disabled selected>과일을 선택하세요</option>
+      <!-- v-for(출력값,키명,인덱스번호)   :key=인덱스번호
+              v-bind:value="객체의 키명과 연결-->
+      <option v-for="(v,k,idx) in fruits" :key="idx" :value="k">
+          {{v}}
+      </option>
+    </select>
+  </div>
+</template>
+
+<script>
+export default {
+  name:'Control',
+  data:function(){
+      return{
+          //배열인 경우
+          names:['임시','테스트','테스트2'],
+          //객체도 출력
+          person:{
+              username:'테스트33',
+              age:30,
+              sal:150,
+              job:'대리'
+          },
+          fruits:{
+              apple:'사과',
+              banana:'바나나',
+              melon:'멜론'
+          },
+          selectedFruit:'banana'
+      }
+  }
+}
+</script>
+
+<style>
+
+</style>
+
+===============================
+ 4:05
+  체크리스트이름 UI구현 테스트(4:05~4:15)=>각자 프로젝트 작업한 내용
+                                                            2개 올릴것.
+  시        험:UI 디자인(4:15)~5:45분까지 완료
+
+===============================
+  **Vue.js에서의 이벤트 처리하는 방법**
+  =======================
+  src>vue create my-vueevent 프로젝트를 백업본에서 복사를 해온다.
+
+  9.my-vueevent2=>종합
+ HelloWorld.vue 작성
+
+<template>
+   <!-- 1.화면에 출력하는 부분(template) (reactDOM와 연관)  -->
+  <div class="hello">
+    <h1>{{num}}</h1>
+    {{xxx()}} {{xxx()}}
+    {{yyy}} {{yyy}} <!--yyy()이라고 주면 함수가 아니라는 에러발생-->
+    {{change()}}
+    <hr />
+    <Watch />
+  </div>
+</template>
+
+<script>
+//
+/* template와 연관이 되어있는 컴포넌트 정보영역
+   자바스크립트코드를 사용하는 영역(함수,속성값 저장)  */
+import Watch from './Watch.vue';
+export default {
+  name: 'HelloWorld', //컴포넌트 이름 (selector:'HelloWorld)
+  data:function(){ //데이터 저장
+    return {
+      num:10
+    }
+  },
+  //methods 함수를 작성->매번 호출이 가능하며,캐싱기능이 없다.
+  methods:{
+    xxx:function(){
+      console.log("xxx함수호출",this.num)
+     },
+  //추가
+    change:function(){
+      this.num=20;
+      console.log("change함수 호출")
+    }
+  },
+  computed:{    //computed 계산속성->한번만 호출이 가능하다.
+                //화면에 여러번 출력이 가능하나 호출은 한번만
+    yyy:function(){  //return 구문이 있어야 한다.
+      console.log("yyy",this.num)
+      return "yyy"+this.num
+    }
+  },
+  components:{
+    Watch
+  }  
+}
+</script>
+
+<!-- template영역에 출력할 스타일시트를 적용시키는 영역 -->
+<style scoped>
+h1 {
+  background-Color:yellow;
+  color:red;
+  font-size:18pt;
+}
+
+</style>
+=================================================
+Watch.vue 작성
+
+<template>
+  <div class="hello">
+     <h1>watch 속성</h1>
+     <!-- inputbox의 값을 수시로 변경할때마다 함수호출을 콘솔에서 확인가능 -->
+     값:<input type="text" v-model="num" >
+  </div>
+</template>
+<script>
+export default {
+  name: 'HelloWorld',
+  data:function(){
+    return {
+      num:10
+    }
+  },
+  watch:{ //주로 긴시간이 필요로하는 비동기처리에 주로 사용
+          //데이터가 변경되었을때 함수가 자동호출된다.
+          //반드시 함수명과 data속성명이 일치해야 한다.
+          //화면상에서는 에러가 발생하지않지만 콘솔에서 변경된값을
+          //호출하지 않음을 확인할 수있다.
+    num2:function(changeValue){
+      console.log(this.num, changeValue);
+    }
+  }
+}
+</script>
+
+<style>
+</style>
+==========================================
+Event.vue 작성->HelloWorld.vue에서 import로 불러올 수 있도록 컴포넌트 등록하고 불러올것.
+
+<template>
+  <div id="app">
+    <!-- v-on:이벤트명=“메서드명”  ,   @이벤트명=“메서드명”
+         @이벤트명=“메서드명(매개변수,~)”
+      -->
+      <button v-on:click="x">ok</button>
+      <button @click="y">cancel</button>
+      <button @click="z('홍길동',$event)">data입력</button>
+  </div>
+</template>
+<script>
+export default {
+  name:'Event',
+  data:function(){
+    return {
+      num:10
+    }
+  },
+  methods:{
+      x:function(){
+          console.log("OK"+this.num)
+      },
+      y:function(e){
+          console.log(e.target.textContent)
+      },
+      z:function(data,e){
+          console.log('data->',data,'e->',e)
+      }
+  }
+}
+</script>
+
+<style>
+
+</style>
+================================
+HelloWorld.vue에 추가할 내용
+
+<template>
+   <!-- 1.화면에 출력하는 부분(template) (reactDOM와 연관)  -->
+  <div class="hello">
+    <h1>{{num}}</h1>
+    {{xxx()}} {{xxx()}}
+    {{yyy}} {{yyy}} <!--yyy()이라고 주면 함수가 아니라는 에러발생-->
+    {{change()}}
+    <hr />
+    <Watch />
+    <Event />==>추가
+  </div>
+</template>
+
+========================
+import Watch from './Watch.vue';
+import Event from './Event.vue';==>추가
+
+export default {
+
+,,,
+ },
+  components:{
+    Watch,Event ===>추가할것.=>최종결과 볼것.
+  }  
+}
+</script>
