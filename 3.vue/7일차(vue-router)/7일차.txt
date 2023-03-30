@@ -1,0 +1,660 @@
+
+~3.vue>vue create 14.my-router1_basic =>vue create my-router
+
+ 프로젝트를 생성하고나서 프로젝트로 이동=>rouer모듈을 따로 설치 ->router 3,4.x버전이 다르다.
+
+C:\webtest\3.vue\14.my-router1_basic>npm install vue-router@3.1.6
+npm WARN deprecated request@2.88.2: request has been deprecated, see https://github.com/request/request/issues/3142
+npm WARN deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+npm WARN deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+npm WARN deprecated chokidar@2.1.8: Chokidar 2 will break on node v14+. Upgrade to chokidar 3 with 15x less dependencies.
+npm WARN deprecated fsevents@1.2.13: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+
+> yorkie@2.0.0 uninstall C:\webtest\3.vue\18.my-router1_basic\node_modules\yorkie
+> node bin/uninstall.js
+
+husky
+uninstalling Git hooks
+done
+
+npm WARN rm not removing C:\webtest\3.vue\18.my-router1_basic\node_modules\.bin\rimraf.cmd as it wasn't installed by C:\webtest\3.vue\18.my-router1_basic\node_modules\rimraf
+npm WARN rm not removing C:\webtest\3.vue\18.my-router1_basic\node_modules\.bin\rimraf as it wasn't installed by C:\webtest\3.vue\18.my-router1_basic\node_modules\rimraf
+npm WARN rm not removing C:\webtest\3.vue\18.my-router1_basic\node_modules\.bin\semver.cmd as it wasn't installed by C:\webtest\3.vue\18.my-router1_basic\node_modules\semver
+npm WARN rm not removing C:\webtest\3.vue\18.my-router1_basic\node_modules\.bin\semver as it wasn't installed by C:\webtest\3.vue\18.my-router1_basic\node_modules\semver
+npm WARN rm not removing C:\webtest\3.vue\18.my-router1_basic\node_modules\.bin\json5.cmd as it wasn't installed by C:\webtest\3.vue\18.my-router1_basic\node_modules\json5
+npm WARN rm not removing C:\webtest\3.vue\18.my-router1_basic\node_modules\.bin\json5 as it wasn't installed by C:\webtest\3.vue\18.my-router1_basic\node_modules\json5
+
+> yorkie@2.0.0 install C:\webtest\3.vue\18.my-router1_basic\node_modules\yorkie
+> node bin/install.js
+
+setting up Git hooks
+can't find .git directory, skipping Git hooks installation
+
+> core-js@3.6.5 postinstall C:\webtest\3.vue\18.my-router1_basic\node_modules\@vue\babel-preset-app\node_modules\core-js
+> node -e "try{require('./postinstall')}catch(e){}"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon:
+> https://opencollective.com/core-js
+> https://www.patreon.com/zloirock
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+
+> ejs@2.7.4 postinstall C:\webtest\3.vue\18.my-router1_basic\node_modules\ejs
+> node ./postinstall.js
+
+Thank you for installing EJS: built with the Jake JavaScript build tool (https://jakejs.com/)
+
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@~2.1.2 (node_modules\watchpack\node_modules\chokidar\node_modules\fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.1.3: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@^1.2.7 (node_modules\chokidar\node_modules\fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.13: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})
+
++ vue-router@3.1.6  ------------------------>버전명이 요즘에는 X
+=================>최신버전
+
+added 101 packages from 30 contributors, removed 63 packages, updated 1126 packages and audited 1237 packages in 408.376s
+found 2 vulnerabilities (1 low, 1 high)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+C:\webtest\3.vue\18.my-router1_basic>
+
+src/components=>라우터방식=>Angular 사용방식(여러개의 컴포넌트작성)
+
+
+1.Bar.vue
+====================
+<template>
+  <div class="hello">
+    <h1>Bar</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Bar'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+=================================
+2.Foo.vue
+
+<template>
+  <div class="hello">
+   <h1>Foo</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Foo'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+========================================
+3.NotFound.vue =>요청시 에러가 유발될때 처리해주는 컴포넌트
+
+<template>
+  <div class="hello">
+    <h1>NotFound</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'NotFound'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+========================================
+4.src/router.js==>각각의 컴포넌트를 불러올 컴포넌트와 링크를 걸어준다.
+
+import Vue from 'vue'
+import VueRouter from 'vue-router' //VueRouter클래스 불러옴
+
+import Bar from './components/Bar.vue';
+import Foo from './components/Foo.vue';
+import NotFound from './components/NotFound.vue';
+
+Vue.use(VueRouter);//Vue객체와 VueRouter객체를 user함수로 연결함
+
+//경로 지정
+const routes =  [  //path:경로, component:컴포넌트명 name:이름 지정
+    { path: '/', component: Bar, name: "Bar" },
+    { path: '/login', component: Foo, name: "Foo" },
+    { path: '*', component: NotFound, name: "NotFound" }
+]
+//router객체 생성
+const router = new VueRouter({
+    routes
+})
+
+export default router;//외부에서 불러올 수 있도록 export
+=============================================
+5.main.js 작성 ->Router객체를 불러올 수있도록 코딩
+
+import Vue from 'vue'
+import App from './App.vue'
+//추가
+import router from './router.js'
+=======================
+
+Vue.config.productionTip = false
+
+new Vue({
+  router, //router객체 추가시킴
+  //====================>
+  render: h => h(App),
+}).$mount('#app')
+
+=====================================
+6.App.vue 작성
+
+<template>
+  <div class="hello">
+      <!-- router-link로 경로지정해준다. -->
+      <router-link to="/">Home</router-link>
+      <router-link to="/login">login</router-link>
+      <router-view></router-view> <!--화면에 출력하는 부분 -->
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+
+</style>
+===========================================
+
+기존의 Router예제에 파라미터값을 전달해 보자
+
+추가 코딩
+==========================
+
+1.Foo.vue에 파라미터값을 받았을때의 값을 추가시킨다.
+
+<template>
+  <div class="hello">
+   <h1>Foo</h1>
+====================>
+   {{$route.params.id}}
+=====================>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Foo'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+============================================
+
+2.Baz.vue 새로 작성
+
+<template>
+  <div class="hello">
+   <h1>Baz</h1>
+===========
+   {{pw}}
+===========>암호 문자열을 전송받아서 출력시킨다.
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Baz',
+  props:{
+    pw:String  //pw를 하나 매개변수를 받아온다.
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+===================================
+
+3.knu.vue작성
+
+<template>
+  <div class="hello">
+   <h1>Knu</h1>
+================이름과 attrs를 받아온다.====
+   {{username}}<br>
+   {{$attrs}}<br>
+====================
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Knu',
+  props:{
+    username:String  //사용자이름을 전달 받아온다.
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+========================================
+4.main.js에서는 거의 소스코드가 변화가 없다.
+
+import Vue from 'vue'
+import App from './App.vue'
+
+import router from './router.js'
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')
+
+그대로 사용
+=======================================
+5.router.js에 소스코드를 추가시켜준다.
+
+import Vue from 'vue'
+import VueRouter from 'vue-router' //VueRouter클래스 불러옴
+import Bar from './components/Bar.vue';
+import Foo from './components/Foo.vue';
+import NotFound from './components/NotFound.vue';
+//매개변수를 전달하는 새로운 컴포넌트를 추가시킨다.
+import Baz from './components/Baz.vue';
+import Knu from './components/Knu.vue';
+//===============================================
+
+Vue.use(VueRouter);//Vue객체와 VueRouter객체를 user함수로 연결함
+//경로 지정
+const routes =  [  //path:경로, component:컴포넌트명 name:이름 지정
+    { path: '/', component: Bar, name: "Bar" },
+    { path: '/login/:id', component: Foo, name: "Foo" },
+   ==========================================
+    { path: '/my/:pw', component: Baz, name: "Baz" , props:true }, // props 속성 이용
+    { path: '/knu', component: Knu, name: "Knu" , props:{username:'강감찬'} }, //static
+   ================================================
+    { path: '*', component: NotFound, name: "NotFound" }
+]
+//router객체 생성
+const router = new VueRouter({
+    routes
+})
+
+export default router;//외부에서 불러올 수 있도록 export
+==================================
+6.App.vue 작성
+
+<template>
+  <div class="hello">
+      <!-- router-link로 경로지정해준다. -->
+      <router-link to="/">Home</router-link>
+    ===============================
+      <router-link to="/login/홍길동">login</router-link> =>이름 전달
+      <router-link to="/my/1234">pw</router-link>   ===>암호 전달
+      <router-link to="/knu">knu</router-link>
+    =================================
+      <router-view></router-view> <!--화면에 출력하는 부분 -->
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+
+</style>
+=======================>yarn serve 실행시킨다.
+
+19.my-router2-query=> 고려중(별로 중요하지 않은것 같음)
+=====================================
+20.my-router3-named-routes =>path속성대신에 name속성을 이용할 수 있다.
+
+1.main.js
+
+import Vue from 'vue'
+import App from './App.vue'
+
+import router from './router.js'
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')
+
+=====================================
+2.router.js
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+import Bar from './components/Bar.vue';
+import Foo from './components/Foo.vue';
+import Baz from './components/Baz.vue';
+import NotFound from './components/NotFound.vue';
+
+Vue.use(VueRouter);
+
+const routes =  [
+    { path: '/', component: Bar, name: "Bar" },
+    { path: '/login', component: Foo, name: "Foo" },
+    { path: '/my:id', component: Baz, name: "Baz" , props:true },
+    { path: '*', component: NotFound, name: "NotFound" }
+]
+
+const router = new VueRouter({
+    routes
+})
+
+export default router;
+================================
+3.App.vue
+
+<template>
+  <div class="hello">
+      <!-- path가 아닌 name으로 사용-->
+=========================================
+      <router-link :to="{name:'Bar'}">Home</router-link>
+      <router-link :to="{name:'Foo'}">login</router-link>
+      <router-link :to="{name:'Baz', params: { id: 'kkkk' }}">my</router-link>
+================================================
+      <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+
+</style>
+==================================================
+4.Bar.vue
+
+<template>
+  <div class="hello">
+    <h1>Bar</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Bar'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+
+=======================================
+5.Baz.vue
+
+<template>
+  <div class="hello">
+   <h1>Baz</h1>
+   {{ $route.params.id }}<br>
+=========================
+   {{id}}
+==========================>id 전달
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Baz',
+  props:{
+    id:String
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+==========================================
+3.Foo.vue=>전의 소스코드와 별차이없다.
+
+<template>
+  <div class="hello">
+   <h1>Foo</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Foo'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+=========================================
+4.NotFound.vue작성 =>별차이 없다
+
+<template>
+  <div class="hello">
+    <h1>NotFound</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'NotFound'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+
+===========================================
+21.my-router-children=>14.my-router-basic에 통합
+
+1.router.js 에서 서브 경로를 설정한다.
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+import Bar from './components/Bar.vue';
+import Foo from './components/Foo.vue';
+import NotFound from './components/NotFound.vue';
+///추가
+import FooChild1 from './components/FooChild1.vue';
+import FooChild2 from './components/FooChild2.vue';
+
+Vue.use(VueRouter);
+
+const routes =  [
+    { path: '/', component: Bar, name: "Bar"},
+    { path: '/foo', component: Foo, name: "Foo",
+      children:[
+        {path:'/fooChild1' , component:FooChild1},
+       {path:'/fooChild2' , component:FooChild2}
+      ]  
+    },
+    { path: '*', component: NotFound, name: "NotFound" }
+]
+
+const router = new VueRouter({
+    routes
+})
+
+export default router;
+--------------------------------------------------------------
+2.main.js는 소스 그대로 작성
+
+import Vue from 'vue'
+import App from './App.vue'
+
+import router from './router.js'
+
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')
+======================================
+3.App.vue 작성
+
+<template>
+  <div class="hello">
+   ========================= 이 부분을 다시 재설정 코딩한다.
+      <router-link to="/">Home</router-link>
+      <router-link to="/foo">foo</router-link>
+      <router-view></router-view>
+   =========================
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'app'
+}
+</script>
+
+<style>
+
+</style>
+
+======================================================
+4.Foo.vue에 새로 서브 경로 설정한다.
+
+<template>
+     <div>
+      <h1>Foo</h1>
+     ============Foo를 선택할 시 나올 서브 경로를 설정한다.=======================
+      <router-link to="/fooChild1">Foo child1</router-link>
+      <router-link to="/fooChild2">Foo child2</router-link>
+      <router-view></router-view>
+      =======================================
+    </div>
+  </template>
+
+<script>
+export default {
+  name: 'Foo'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+========================================
+5.FooChild1.vue 작성
+
+<template>
+  <div class="hello">
+    <h1>BarChild1</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BarChild1'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+===========================================
+6.FooChild2.vue 작성
+
+<template>
+  <div class="hello">
+    <h1>BarChild1</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BarChild1'
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+</style>
+
+============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

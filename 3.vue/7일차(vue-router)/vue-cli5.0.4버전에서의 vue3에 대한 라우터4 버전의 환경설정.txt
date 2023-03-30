@@ -1,0 +1,71 @@
+vue-cli 5.0.4 버전
+
+ vue3인경우 다음과 같이 수정을 한다.
+1.
+C:\webtest\10.vue\src\my-vuerouter>npm i vue-router@next =>다시 재설치
+
+2.main.js파일에 내용을 추가
+
+import { createApp } from 'vue'
+import App from './App.vue'
+//추가
+import router from './router' //내용 추가
+
+//createApp(App).mount('#app') 이 부분을 아래와 같이 수정을 한다.
+const app = createApp(App);
+app.use(router); // 사용 설정 하기
+app.mount('#app');
+
+
+3. router.js 추가
+
+/*
+ src/router.js(요청을 받아서 처리해주는 경로를 지정=>export)
+*/
+import Vue from 'vue'  //Vue객체는 기본적으로 필요->라우터와 연결하기때문에
+//import VueRouter from 'vue-router'//라우터 객체필요 vue2
+import {createRouter, createWebHistory } from 'vue-router'
+//1.요청받아서 처리할 컴포넌트를 불러오기
+import Bar from './components/Bar.vue'
+import Foo from './components/Foo.vue'
+import NotFound from './components/NotFound.vue'
+//2.추가(매개변수를 전달)
+import Baz from './components/Baz.vue'
+import Knu from './components/Knu.vue'
+//3.서브 vue추가
+import FooChild1 from './components/FooChild1.vue'
+import FooChild2 from './components/FooChild2.vue'
+
+//Vue.use(VueRouter)//1.Vue객체와 vueRouter객체를 use함수로 연결함 vue2
+
+//2.요청경로에 따라서 어떤 컴포넌트를 거쳐서 특정위치에 출력을 할지 설정한다.
+const routes=[ //path:경로 ,component:컴포넌트명 name:컴포넌트별칭
+              {path:'/',component:Bar, name:"Bar"},
+              /* (1)
+              {path:'/login/:id',component:Foo, name:"Foo"}, */
+              {path:'/foo',component:Foo, name:"Foo",
+                   children:[
+                       {path:'/fooChild1',component:FooChild1},
+                       {path:'/fooChild2',component:FooChild2}
+                   ]
+                },
+              {path:'/my/:pw',component:Baz, name:"Baz",props:true},//props속성을 이용->출력
+              {path:'/my/:id',component:Baz, name:"Baz",props:true},
+              {path:'/knu',component:Knu, name:"Knu",props:{username:'임시'}}
+            /* {path:'*',component:NotFound, name:"NotFound"} vue3에서는 * 사용 금지*/
+            ]
+
+//3.router객체를 만들면서 요청경로를 같이 설정한다.(생성자에 요청경로정보 넣어준다.)
+/*  vue2
+const router=new VueRouter({ 
+    routes
+}) */
+//vue3로 써서 변경하는 경우
+const router=createRouter({
+   history:createWebHistory(),
+   routes
+})
+//4.이러한 정보를 가진 라우터객체를 외부에 배포(export)->src/main.js에서 불러오게 하기위해서
+export default router;
+
+############################################
