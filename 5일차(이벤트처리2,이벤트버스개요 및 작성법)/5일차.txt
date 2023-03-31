@@ -1,0 +1,556 @@
+5일차(이벤트처리2,이벤트버스개요 및 작성법)
+
+ 9.my-vueevent2 프로젝트=>8.my-vueevent
+
+App.vue=>전체 컴포넌트를 부착시키는 역할(이벤트 총정리)
+
+<template>
+  <div id="app">
+    <center><table border="1">
+      <tr><th colspan="2">이벤트 실습종합</th></tr>
+      <tr>
+        <td><HelloWorld /></td><td><Cal /></td>
+      </tr>
+      <tr>
+        <td><Price /></td><td><Book /></td>
+      </tr>
+    </table></center>
+  </div>
+</template>
+<script>
+//import 불러올 컴포넌트명(자식) from '경로포함해서 파일명~.vue'
+import HelloWorld from './components/HelloWorld.vue'
+import Cal from './components/Cal.vue'
+import Price from './components/Price.vue'
+import Book from './components/Book.vue'
+
+export default {
+  name: 'app', //부모컴포넌트 이름 <app />(태그로 표시)
+  components: {  //부모컴포넌트 입장->중첩시킬 컴포넌트 목록을 표시
+    HelloWorld,Cal,Price,Book
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>
+===========================================
+HelloWorld.vue  =>여기서부터 실습예제를 작성해야 한다.
+
+<template>
+  <div class="hello">
+    <button v-on:[aaa]="handleEvent">OK-bind</button>
+    <button @[bbb]="handleEvent">OK-bind2</button>
+    <button v-on:click="message.push('Outer')">OK-bind2</button>
+    <button v-on:click="handleEvent2" 
+        data-my="100" data-my2='{"a":200,"b":300}'>OK2</button><br>
+    <p />
+    message의 값출력:{{message}}
+    <hr />
+    <Event />
+  </div>
+</template>
+
+<script>
+***********************************************
+import Event from './Event.vue'
+//import Event from './Cal.vue';//파일명과 컴포넌트이 다를수가 있다.
+*************************************************
+
+export default {
+  name: 'HelloWorld', //컴포넌트 이름 (selector:'HelloWorld)
+  data:function(){
+    return{
+      aaa:'click', //속성(키명):발생시킬 이벤트종류명
+      bbb:'mouseover', /* mouseover이벤트발생 콘솔에서 확인할것*/
+      ccc:'mouseleave',/* 마우스벗어날때 호출되는 이벤트처리 확인*/
+      message:[] //데이터가 저장될 배열객체
+    }
+  },
+  methods:{
+    handleEvent(){
+      console.log('이벤트 종류 확인')
+    },
+    handleEvent2:function(e){
+      console.log(e,e.target.dataset.my);//버튼에 연결된 값가져오기
+      var x = JSON.parse(e.target.dataset.my2);
+      console.log(x.a, x.b);//가져온 객체의 속성별로 구분해서 출력
+    }
+  },
+  components:{
+   Event
+  }
+}
+</script>
+<!-- template영역에 출력할 스타일시트를 적용시키는 영역 -->
+<style scoped>
+h1 {
+  background-Color:yellow;
+  color:red;
+  font-size:18pt;
+}
+
+</style>
+========================================
+Event.vue
+
+<template>
+  <div class="hello">
+     <h1>이벤트 실습</h1>
+     값1:<input type="text" v-model="num1"><br>
+     값2:<input type="text" v-model="num2"><br>
+     <button v-on:click="sum">+</button>
+     <br>
+     결과값:{{total}}
+  </div>
+</template>
+
+<script>
+export default {
+ name: 'Event',
+  data:function(){
+    return {
+      num1:'',
+      num2:'',
+      total:''
+    }
+  },
+  methods:{
+    sum:function(){
+      this.total = Number.parseInt(this.num1) + Number.parseInt(this.num2);
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
+==================================================
+Cal.vue 작성
+
+<template>
+  <div class="hello">
+     <h1>이벤트 실습2</h1>
+     값1:<input type="text" v-model="num1"><br>
+     값2:<input type="text" v-model="num2"><br>
+     <button v-on:click="sum">+</button>
+     <button v-on:click="sum">-</button>
+     <button v-on:click="sum">*</button>
+     <button v-on:click="sum">/</button>
+     <br>
+     결과값:{{total}}
+  </div>
+</template>
+
+<script>
+export default {
+ name: 'Event', 
+  data:function(){
+    return {
+      num1:'',
+      num2:'',
+      total:''
+    }
+  },
+  methods:{
+    sum:function(e){
+      var action = e.target.innerText;
+      switch(action){
+        case "+":
+        this.total = Number.parseInt(this.num1) 
+                   + Number.parseInt(this.num2);break;
+        case "-":
+        this.total = Number.parseInt(this.num1) 
+                   - Number.parseInt(this.num2);break;
+        case "*":
+        this.total = Number.parseInt(this.num1) 
+                   * Number.parseInt(this.num2);break;
+        case "/":
+        this.total = Number.parseInt(this.num1) 
+                   / Number.parseInt(this.num2);break;
+      }//end switch
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
+========================================
+Book.vue
+
+<template>
+  <div class="hello">
+     <h1>교재 정보</h1>
+     <div v-for="(book,idx) in bookList" :key="idx">
+      <input type="checkbox" v-model="books" :value="book.name">
+       {{book.name}}<span>{{book.price}}</span>
+      <button v-on:click="del" :data-idx="idx">삭제</button>
+     </div><p>  
+     <hr> 
+     <button v-on:click="delAll">전체 삭제</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Book',
+  data:function(){
+    return {
+      bookList:[
+        {name:'자바의 정석',price:2000},
+        {name:'JSP의 정석',price:3000},
+        {name:'Spring의 정석',price:1500},
+        {name:'jQuery의 정석',price:1000},
+        {name:'Angular의 정석',price:5000}
+      ],
+      books:[]
+    }
+ },
+ methods:{
+    del:function(e){
+       var delIdx = e.target.dataset.idx;
+       console.log(delIdx);//delIdx값 출력
+       this.bookList.splice(delIdx,1);//기준점으로 1개삭제
+    },
+    delAll:function(){
+      var xx = this.bookList;
+       this.books.map(function(ele){
+         xx.map(function(e,i){
+           if(e.name==ele){
+             xx.splice(i,1);
+           }//if
+         })//inner map
+       })//out map
+    }//delAll
+  }//methods
+}
+</script>
+
+<style>
+
+</style>
+=================================
+Price.vue작성
+
+<template>
+  <div class="hello">
+    가격:<input type="text" v-model="price"><br>
+    갯수:
+    <select v-on:change="sum"  v-model="quantity">
+      <option value="10">10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+    </select><p>
+    <hr />  
+    결과:{{total}}
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Price',
+  data:function(){
+    return {   //값을 저장하는 목적
+      price:'',
+      quantity:'',
+      total:''
+    }
+  },
+  methods:{
+    sum:function(){
+     this.total = Number.parseInt(this.price) 
+                * Number.parseInt(this.quantity);
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
+============================================
+PS C:\webtest\3.vue\9.my-vueevent2> yarn serve =>실행
+
+
+  App running at:
+  - Local:   http://localhost:8080/  =>ctrl키를 누른상태에서 클릭해서 화면에 출력시킨다.
+  - Network: http://192.168.35.15:8080/
+
+==============================
+10.my-vueevent3 프로젝트 작성=>
+
+vue create 9.my-vueevent2 프로젝트
+
+********************React와 Vue의 차이점*******************
+
+                   props=============>{this.props.전달변수명}
+  부모컴포넌트--->자식컴포넌트
+                         자식-->부모컴포넌트로 데이터를 전송(O)=>Vue <-Angular
+                         자식-->부모컴포넌트로 데이터를 전송(X)=>React
+                 <---- 이벤트 발생시켜서 데이터를 전송
+
+**************************************************************
+  이벤트 수식어에 관련된 용어 정리예제=>jQuery와 연관이 있는 부분
+   Child,Event.vue
+  ===================================
+1.HelloWorld.vue 작성
+
+<template>
+  <div class="hello">
+    <h1>1.기본 이벤트 처리 방지</h1>
+    <a href="http://www.daum.net" v-on:click.prevent="x">다음</a>
+    <hr />                                                     ======
+    <h1>2.이벤트 전파 방지</h1>
+    <div style="background-color:yellow" v-on:click="aaa">
+      aaa
+      <div style="background-color:green" v-on:click.stop="bbb">
+         bbb                                                              ====
+      </div> 
+    </div> 
+    <hr />
+    <Event /> 
+    <p />
+    <hr />
+    <!--1.부모=>자식에게 데이터를 전달
+        2.자식->부모 this.$emit('xyz',"홍길동",100)
+        3.무모입장 
+  <자식컴포넌트 v-on:이벤트종류명(=전달받은 항목)="호출함수명"/>
+     -->
+    <Child msg="자식에게 데이터를 전달"
+          v-on:xyz="receive" />
+    <hr />
+    {{name}} {{num}}
+========================================
+  </div>
+</template>
+<script>
+import Event from './Event.vue'
+//추가
+import Child from './Child.vue'
+
+export default {
+  name: 'HelloWorld', //컴포넌트 이름 (selector:'HelloWorld)
+  methods:{
+    x:function(e){
+      //e.preventDefault()
+      console.log('e->',e)//mouseevnet발생함을 콘솔에서 확인이 가능
+    },
+    aaa:function(e){
+      console.log("aaa"+e);
+    },
+    bbb:function(e){
+      console.log("bbb"+e);
+      //e.stopPropagation();//이벤트 전파를 방지하기위해서는 
+                          //e.stopPropagation()를 호출해야 한다.
+    },
+    /*
+    receive:function(){//매개변수가 없는 경우
+       console.log("parent.receive=>") */
+      receive:function(n,a){ //자식으로 전달받아 호출할 함수 선언
+      console.log("parent.receive=>",n,a)
+      
+    }
+  },
+  components:{
+    Event,Child
+  },
+  data:function(){
+    return{
+      name:'',
+      num:0
+    }
+  }
+  //-----------------------------
+}
+</script>
+<style scoped>
+h1 {
+  background-Color:yellow;
+  color:red;
+  font-size:18pt;
+}
+</style>
+===============================
+2.Event.vue
+
+<template>
+  <div id="app">
+      <!--.once (한번만 이벤트가 발생할때 호출할 함수명(x)) -->
+     <button v-on:click.once="x">OK</button>
+     num:<input type="text" @keyup.enter="y" /><br>
+      <!-- keyup이벤트를 발생시키고 enter를 칠때 호출할 함수명(y) -->
+  </div>
+</template>
+<script>
+export default {
+  name:'Event',
+  data:function(){
+      return{
+          num:10 //num의 값을 출력
+      }
+  },
+  methods:{
+      x:function(){
+          console.log("OK"+this.num)
+      },
+      y:function(){
+          console.log("enter")
+      }
+  }
+}
+</script>
+
+<style>
+</style>
+===========================
+3.Child.vue
+
+<template>
+  <div>
+   <button @click="send">child</button>
+  </div>
+</template>
+<script>
+export default {
+   name:'Child',
+   methods:{
+       send:function(e){
+           console.log('e->',e)
+           this.$emit('xyz',"홍길동",100)//부모에게 이벤트발신
+           //this.$emit('xyz')
+       }
+   }
+}
+</script>
+
+<style>
+
+</style>
+==========HelloWorld.vue에 추가===================
+receive:function(n,a){
+      console.log("parent receive!!=>",n,a)
+      this.name=n  //{{name}}
+      this.num=a   //{{num}}
+    }
+  },
+///////////////추가///////////////////
+  data:function(){
+    return{
+      name:'',
+      num:0
+    }
+  }
+===================
+화면에 출력하는 코드
+
+<Child v-on:xyz="receive" />
+    <hr />
+    {{name}} {{num}} =>data속성에 저장된 값을 출력구문
+=============================
+ 11.my-bookexam=>vue create 10.my-bookexam
+
+ 1.BookList.vue
+
+ <template>
+  <div class="hello">
+    <ul>
+ <li v-for="(book,idx) in bookList" :key="idx">
+  <a v-on:click="x" > 
+ <img :src="require(`@/assets/image/${book.img}.jpg`)" width="100" height="100"
+      :data-xxx="book.name"> 
+  {{book.name}}
+  </a> 
+ </li>
+</ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'BookList',
+  props:{
+    bookList:Array
+  },
+  methods:{
+    x:function(e){
+      console.log(e);
+        this.$emit('xyz', e.target.dataset.xxx);
+    }                                                   =====
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+   ul{
+     list-style-type:none;
+   }
+</style>
+=============================
+App.vue
+
+<template>
+  <div id="app">
+  <h1>도서 목록 {{list.length}}권</h1>
+  <!-- 자식컴포넌트(BookList가 보내준 xyz를 통한 y함수를 통해서
+      전달받은 bookname을 inputbox의 v-model로 연결시킴)  -->
+   선택된 도서:<input type="text" v-model="bookName" ><br>
+    <BookList :bookList="list"   v-on:xyz="y"/>
+  </div>                                         ===임의의 값(=-마음대로 변경가능)
+</template>
+
+<script>
+import BookList from './components/BookList.vue'
+
+export default {
+  name: 'app',
+  components: {
+    BookList
+  },
+  data:function(){
+    return {
+  list:[
+    {id:'p01',name:'위험한 식탁',price:2000,date:'20170401',img:'a'},
+    {id:'p02',name:'공부의 비결',price:3000,date:'20170402',img:'b'},
+    {id:'p03',name:'오메르타',   price:2500,date:'20170401',img:'c'},
+    {id:'p04',name:'행복한 여행',price:4000,date:'20170401',img:'d'},
+    {id:'p05',name:'해커스 토익',price:2000,date:'20170401',img:'e'},
+    {id:'p06',name:'도로 안내서',price:2000,date:'20170401',img:'f'},
+   ],
+   bookName:''
+    }
+  },
+  methods:{
+    y:function(x){
+      console.log(x);
+       this.bookName = x;
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>
+===============================
+
+   4월 5일 최종 프로젝트의 설계 및 기획 =>보완(리허설) 체크리스트(개인프로젝트별)
+   4월 12일 최종 프로젝트의 소스및 ppt =>최종자료를 업로드
+   4월 13일 수료할때 최종 발표(오후 4시)
+
+================================
+
+
+
+
