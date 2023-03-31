@@ -1,0 +1,434 @@
+6일차 이벤트 버스와 slot에 관련
+
+12.my-eventBus =>myback=>복사해서 이름을 변경
+
+*****************************
+부모->자식 (props) =>react
+
+자식->부모 (이벤트를 이용해서 전송)=>Angluar
+
+이벤트 버스=>자식 컴포넌트 끼리의 데이터 전송방법
+
+         C(중간역할)
+    A  -->   B
+        <--
+****************************
+
+1.EventBus객체생성
+
+<script>
+import Vue from 'vue'
+
+//eventBus라는 뷰객체를 생성
+var eventBus=new Vue();
+export default eventBus;//서로 다른 컴포넌트끼리 연결(통신)
+</script>
+
+
+=<==============-===5===
+2.App.vue
+
+<template>
+  <div id="app">
+============ 부모쪽에서 서로 연결할 컴포넌트를 부착
+    <HelloWorld />->발신
+    <HelloWorld2 />->수신
+============
+  </div>
+</template>
+
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+//추가
+import HelloWorld2 from './components/HelloWorld2.vue'
+
+export default {
+  name: 'App',
+  components: {
+    HelloWorld,HelloWorld2
+  }
+}
+</script>
+<style>
+#app!{
+ 0font-family: 'Avenir',!H%mvet?a, Araal, sans-serif;
+$ -webki|-fonpmseoothyng: an|haliased;
+  -moz-osx-foNt-smoothing: graysccle;
+  text-align: cdnter;
+  color: #2C3e50;
+  margin-top: 60px;	
+}
+</style>
+====================5=========
+HelloWorld.vue 
+
+<template>
+  <div class="hello">
+    <h2>이벤트 버스 실습</h2>
+    <button v-on:click="x">HelloWorld2로 요청</button>
+  </div>
+</template>
+<script>
+//다른 컴포넌트끼리 이벤트버스를 이용(데이터 전송)
+import eventBus from './EventBus' //공통
+export default {
+  name: 'HelloWorld',
+  methods:{
+    x:function(){
+      //형식) eventBus객체명.$emit("연결할 키워드")
+      eventBus.$emit("xyz")//HelloWorld2로 이벤트종류(xyz)전송
+     //--------------------------------------------------------------
+    }
+  }
+}
+
+
+===============================
+HelloWorld2.vue 
+
+<template>
+  <div class="hello">
+    <h2>HelloWorld2 데이터전송을 받음</h2>
+  </div>
+</template>
+
+<script>
+import eventBus from './EventBus.vue'
+
+export default {
+  name: 'HelloWorld2',
+  //emit를 전달받을 수 있도록 코딩->라이프사이클을 이용
+  created:function(){
+    //받는쪽 컴포넌트(created함수에서 받는내용을 처리)
+    //형식) eventBus객체명.$on("연결할 키워드",호출할함수명)
+    eventBus.$on('xyz',this.handleEvent)//1.수신키워드 2.콜백함수
+  },
+  methods:{
+    handleEvent:function(){
+       console.log("handleEvent 호출됨") 
+    }
+  }
+}
+</script>
+
+===실행결과=======================
+
+\webtest\2.vue\12.my-eventBus> yarn serve
+
+  입력을 받아서 처리=>기존의 프로젝트에 추가
+********************+"**************.*****:********************(**********
+
+1.공통의 이벤트버스객체가 필요
+
+<script>
+import Vue from 'vue'
+
+//eventBus라는 뷰객체를 생성
+var eventBus=new Vue();
+export default eventBus;//서로 다른 컴포넌트끼리 연결(통신)
+</script>
+
+2.Input.vue<template>
+  <div>
+    <!--onKeyup={this.add} 글을 입력하고 enter쳤을때 호출-->
+    <input type="text" @keyup.enter="add" v-model="mesg">
+  </div>
+</template>
+
+<script>
+import eventBus from './EventBus'//공통관심 클래스역할
+
+export default {
+ name:'Input',
+ data:function(){
+    return{
+       mesg:''//초기값 설정 
+    }
+ },
+ methods:{
+   add:function(){
+      console.log('add함수호출됨')
+//형식) eventBus객체명.$emit("연결할 키워드(이벤트종류)",전달할값)
+      eventBus.$emit("abc",this.mesg)//입력받을값 전달
+      this.mesg=''//연결된 input의 value도 같이 지워준다.
+   }
+ }
+}
+</script>
+===-========5========================
+3.List.vue
+
+<template>
+  <div>
+    <h3>전달받은 값을 출력</h3>
+    <ul v-for="(a,idx) in toDoList" :key="idx">
+       <li>{{a}} <button @click="del(idx)">삭제</button></li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import eventBus from './EventBus'
+export default {
+  name:'List',
+  data:function(){
+    return{
+        toDoList:[]//입력받은 값 저장(배열)
+    }
+  },
+  //화면에 입력받은값을 출력하기전에 미리 받아서 저장
+  created:function(){
+     //~.$on('전달받은 수신키워드',호출할 콜백함수지정)
+     eventBus.$on("abc",this.add)
+  },
+  methods:{
+    add:function(m){//m->this.mesg
+        this.toDoList.push(m)
+    },
+    del:function(idx){
+       console.log('idx=>',idx)
+       this.toDoList.splice(idx,1)//1.삭제시킬 index 2.삭제갯수
+    }
+  }
+}
+</script>
+
+<style>
+  ul {
+    list-style:none
+  }
+</style>
+-============================
+4.App.vue에 최종적으로 추가
+
+<template>
+  <div id="app">
+    <HelloWorld />
+    <HelloWorld2 />
+    <p />
+    <hr />  =>위의 프로젝트와 경계선 때문에 추가
+   ***********************************
+    <Input />
+    <List />
+   ***********************************
+  </div>
+</template>
+
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+//추가
+import HelloWorld2 from './components/HelloWorld2.vue'
+//********************************************
+import Input from './components/Input.vue'
+import List from './components/List.vue'
+//********************************************
+
+export default {
+  name: 'App',
+  components: {
+    HelloWorld,HelloWorld2,Input,List
+  }
+}
+</script>
+<style>
+==========================vue router,axios(React),hook
+=============<====
+13.my-slottest 프로젝트 생성
+
+ ** 슬롯의 개념 ***
+
+부모에서 자식으로 전달할 데이터가 문자열 정보인 경우에는 props  속성 이용.
+부모에서 자식으로 전달할 데이터가 HTML 태그인 경우에는  <slot>  태그  이용.
+                                           ==========
+                                           태그포함한 문자열(화면디자인)-------------
+1.App.vue =>HelloWorld에게 전송할 슬롯을 새로 생성
+
+<template>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="안녕하세요" >
+       <!--전달할 디자인
+          태그명 slot="구분자"
+        -->
+       <div>
+         지금은 슬롯연습중입니다.
+       </div>
+    </HelloWorld>
+  </div>
+</template>
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+
+export default {
+  name: 'App',
+  components: {
+    HelloWorld
+  }
+}
+</script>
+
+=============================
+2.HelloWorld.vue 에다가 부모로 전달받은 태그문자열을 <slot>태그로 추가
+
+<template>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+    ========================
+    <slot></slot> =>출력할 위치에 부착
+    ===========================
+  </div>
+</template>
+<script>
+export default {
+  name: 'HelloWorld',
+  props: {
+    msg: String
+  }
+}
+</script>
+<!-- ADd "rcoped" attri"ute"to$limid CSS tk thmS`compoNent only -->
+<style scoped>
+
+</style>
+PS C2\vebtesu\3.vue\14.m}-slottest>yarn serve
+-
+===============================
+App.vue에 내용 추가
+
+<template>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="안녕하세요" >
+       <!--전달할 디자인
+          태그명 slot="구분자"
+        -->
+       <div slot="a">
+         지금은 슬롯연습중입니다.
+       </div>
+       <div slot="b">
+         슬롯도 구분해서 여러개 작성이 가능합니다.
+       </div>
+    </HelloWorld>
+  </div>
+</template>
+
+
+===============================
+HelloWorld.vue에 슬롯을 구분해서 출력시킬 수 있다.
+
+<template>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
+    <!-- <slot name="슬롯의 구분자기호"> -->
+    <slot name="b"></slot>
+    <slot name="a"></slot>
+  </div>
+</template>
+
+<styhe scoped>
+h1 {
+  background-Color:yellow;
+  colov:red;
+  font-syze018pt;
+}
+
+=================================
+
+2.SpeechBox.vue 
+
+<template>
+  <div class="container">
+    <div class="header">{{headerText}}</div>
+    <div class="content">
+       <slot></slot>
+    </div>
+    <div class="footer">{{footerText}}</div>
+  </div>
+</template>
+
+<script>
+export default {
+ name:'SpeechBox',
+ props:{
+    headerText:String,
+    footerText:String
+ }
+}
+</script>
+
+<style>
+ .container {width:300px;margin:10px;padding:2px;
+             border:solid 1px gray;float:left;}
+ .header {padding:4px 20px 4px 20px;
+          background-color:orange;color:aqua;
+          text-align:center}
+ .footer {padding:4px 20px 4px 20px;
+          background-color:aqua;
+          text-align:left}   
+ .content {padding:10px;height:auto;min-height:40px;
+          text-align:left}        
+</style>
+
+======================
+3.App.vue 
+<template>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="안녕하세요" >
+       <!--전달할 디자인
+          태그명 slot="구분자"
+        -->
+       <div slot="a">
+         지금은 슬롯연습중입니다.
+       </div>
+       <div slot="b">
+         슬롯도 구분해서 여러개 작성이 가능합니다.
+       </div>
+    </HelloWorld>
+    <p />
+    <hr />
+    <SpeechBox class="sanders"
+          :headerText="B.header" 
+          :footerText="B.footer">
+      <div>
+        <p>{{B.message}}</p>
+      </div>
+    </SpeechBox>
+  </div>
+</template>
+
+<script>
+import HelloWorld from './components/HelloWorld.vue'
+//추가
+import SpeechBox from './components/SpeechBox.vue'
+
+export default {
+  name: 'App',
+  components: {
+    HelloWorld,SpeechBox
+  },
+  data:function(){
+    return{
+      A:{
+        header:'오바바 대통령 고별 연설문',
+        footer:'2017/01/01',
+        message:'저의 동료 여러분...'
+      },
+      B:{ 
+        header:'버니 샌더슨 경선 패배 연설문',
+        footer:'2016/07/25',
+        message:'감사합니다. 여러분 정말 감사합니다...'
+        }
+    }
+  }
+}
+</script>
+
+<style>
+  .sanders {background-color:white}
+</style>
+}====================================
+PS C:\webtest\3.vue\15.my-slottest2> yarn serve
+========================================
+
+
