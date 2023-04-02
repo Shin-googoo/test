@@ -1,0 +1,3 @@
+[{"deptno":1,"dname":'영업부',"loc":'서울'},
+  {"deptno":2,"dname":'관리부',"loc":'마산'},
+  {"deptno":3,"dname":'개발부',"loc":'인천'}]

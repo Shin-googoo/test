@@ -1,0 +1,429 @@
+ 13.my-router-basic을 복사해서 14.my-router-children으로 프로젝트 생성(통합)
+ =>마무리
+
+ 15.my-axios-dept 프로젝트를 하나 생성
+ 
+ src>vue create my-axios-dept
+
+  src>cd my-axios-dept
+   src\my-axios-dept>npm install axios  =>0.26.x 가장 최신버전=>1.3.4 버전
+
+ 3.vue>vue create my-axios-dept  <->create-react-app my-axios-dept
+                        test                                                  test
+
+  백엔드=>서버(톰캣서버)=>상용서버=>이클립스(자바 기반) 8080->8090
+  FrontEnd=>VSCode(리액트,Vue)=>자체 개발서버->3000,8080
+
+***********************************************
+ 서로 다른 환경의 개발서버끼리의 통신하는 방법(도메인X, 포트번호 X)=>JSONP 프로토콜
+ axios=> 데이터(json 파일)
+***********************************************
+
+      화면 디자인
+  리액트(웹에 요청)<---->스프링(요청->DB접속)=>컨트롤러(16장)
+                                                                RestController=>json데이터
+                                  jQuery를 이용(자체 화면 디자인)
+                         <----
+  뷰<=====>jsp
+
+  설치후 package.json파일 확인
+
+ "dependencies": {
+    "axios": "^0.26.1", =>가장 최신버전
+    "core-js": "^3.8.3", =>map함수 문제가 발생->다시 재설치 npm install core-js
+    "vue": "^2.6.14"     =>vue 2.6.14->vue 3=>문제 없음.
+  },
+===>map함수가 함수가 아니다 =>인식불가
+ src\my-axios-dept>npm install core-js =>설치를 한후
+
+  ~my-axios-dept>yarn serve
+====================================
+
+
+================================================
+
+   eclipse 가동=>my-axios-dept 서버와 연돌할 프로젝트생성 ->VueTest
+
+   1)외부서버 접속1) 
+
+https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json
+
+{
+	"fe1": "Angular",
+	"fe2": "React",
+	"fe3": "Vue.js",
+	"fe4": "Backbone.js",
+	"be1": "Spring",
+	"be2": "Django",
+	"be3": "Node.js"
+}
+======================================
+axiostest.html=>VueTest 웹프로젝트->jsp
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!--vue  -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js" ></script>
+    <!--엑시오스 CDN -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Http 통신, 뷰 리소스</title>
+  </head>
+  <body>
+    <div id="app1">
+        <button v-on:click="getData"> 호출 </button>
+    </div>
+ 
+    <script>
+      new Vue({
+        el: '#app1', //el: 컴포넌트 부착위치
+        methods:{ //매번 함수를 호출이 가능 캐싱기능X
+                  getData: function(){
+                    axios.get('https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json')
+                    .then(function(response){
+                        alert(response);
+                        console.log(response); // 객체 형태로 반환. 파싱작업 불필요
+                    });
+                  }
+                }
+      });
+    </script>
+ 
+  </body>
+</html>
+
+http://localhost:8090/VueTest/getPersonList.jsp
+
+ StringBuffer str=new StringBuffer();
+ str.append("select * from board ")
+ str.append("where num=?")
+
+http://localhost:8090/VueTest/addPerson.jsp?name=테스트김&age=34
+http://localhost:8090/VueTest/deletePerson.jsp?id=5
+http://localhost:8090/VueTest/getPerson.jsp?id=3 =>3번 레코드만
+ ,,,
+===================================================
+   2)외부서버 접속=>eclipse에서 새로 작성해서 불러올것.
+    
+     Person.java
+
+     package com.data;
+
+//Person테이블을 작성(DTO)
+public class Person {
+   
+	private String id;//회원id
+	private String name;//회원명
+	private int age;//나이
+	
+	public Person(String id, String name, int age) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
+	public Person() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+}
+
+getPersonList.jsp 작성=>json표기법으로 반환시켜주는 역할
+
+  src>vue create vuejsbbs
+================================
+1.글목록보기
+
+ Read 컴포넌트의 내용을 출력
+
+<template>
+    <div>
+       <!-- Read -->
+       <table>
+         <tr>
+            <td>글쓴이</td> <td>제 목</td><td>내 용</td>
+         </tr><!--{this.state.키명.value값}  -->
+         <tr :key="index" v-for="(value,index) in data" >
+            <td>{{value.writer}}</td>
+            <td>{{value.title}}</td>
+            <td>{{value.content}}</td>
+         </tr>
+       </table>
+    </div>
+</template>
+
+<script>
+//추가
+import data from'../data/index'//import 했으면 반드시 사용->에러유발(React 에러유발X)
+//import data from '@/data' ->npm install --save @ 를 먼저 설치해야 가능
+export default {
+    name:'Read',
+    data:function(){
+        return {
+           data:data  //속성명:출력할값 
+        }
+    }
+}
+</script>
+============================================
+2.글쓰기->Create 컴포넌트를 작성->router의 index.js에 경로를 지정
+
+<template>
+    <div>
+      <input v-model="writer" placeholder="글쓴이" /><br>
+                ===========
+      <input v-model="title" placeholder="글제목" /><br>
+                ===========
+      <textarea v-model="content" placeholder="글내용" /><br>
+                  =============
+      <button @click="write">작성</button>
+    </div>     =========
+</template>
+<script>
+//기존의 data/index.js에 동적으로 값을 저장할 수 있도록 불러와야 한다.
+import data from '../data/index'
+export default {
+    name:'Create',
+    data:function(){
+      return{
+        data:data,
+        writer:'',
+        title:'',
+        content:''
+      }
+    },
+    methods:{
+      write(){
+        this.data.push({  //새로운값 저장
+          writer:this.writer,  //키명:inputbox에 양방향으로 연결된 데이터값을 저장
+          title:this.title,
+          content:this.content
+        })
+        this.$router.push({ //글을 다쓴뒤에 /로 이동 (response.sendRedirect(이동경로))
+          path:'/'  
+        })
+      }//write
+    }
+}
+</script>
+============================
+3.글상세보기 =>Detail 컴포넌트를 작성
+
+<template>
+    <div>Detail</div>
+</template>
+<script>
+export default {
+    name:'Detail'
+}
+</script>
+
+3-1.router/index.js에 연결(경로 추가)
+
+{  //detail.do?num=3으로 매개변수 전달(jsp)
+    path: '/detail/:contentid',
+    name:'Detail',
+    component:Detail
+  },
+
+3-2.Detail 컴포넌트 편집
+
+<template>
+    <div>
+        <div>{{data.writer}}</div>
+        <div>{{data.title}}</div>
+        <div>{{data.content}}</div>
+    </div>
+</template>
+<script>
+import data from '../data/index'
+
+export default {
+    name:'Detail',
+    data:function(){
+        //http://localhost:8080/detail/0
+        //this.$router.push(이동경로)와 비슷하지만 혼동하지 않도록 주의
+        const index=this.$route.params.contentid//this.$route.params.매개변수명
+        console.log('Detail의 index=>',index)
+        return{
+            data:data[index] //전달받은 인덱스에 해당되는 데이터만 출력
+        }
+    }
+}
+</script>
+===================================
+4.수정 과 삭제 구현
+
+ ***삭제의 경우***
+
+<div>
+        <div>{{data.writer}}</div>
+        <div>{{data.title}}</div>
+        <div>{{data.content}}</div><p />
+        <button @click="updateData">수정</button>
+        <button @click="deleteData">삭제</button>
+    </div>
+
+,,,
+
+data:function(){
+        //http://localhost:8080/detail/0
+        //this.$router.push(이동경로)와 비슷하지만 혼동하지 않도록 주의
+        const index=this.$route.params.contentid//this.$route.params.매개변수명
+        console.log('Detail의 index=>',index)
+        return{
+            data:data[index], //전달받은 인덱스에 해당되는 데이터만 출력
+            index:index //index키명에 전달받은 인덱스번호를 저장
+        }
+    },
+    methods:{
+        deleteData(){//배열명.splice(현재 인덱스번호,삭제할 갯수(1))
+            data.splice(this.index,1)
+            this.$router.push({
+                path:'/'
+            })
+        }
+    }
+}
+</script>
+========================================
+글쓰기폼을 글수정폼과 함께 사용할 수있도록 설정
+  router/index.js에서 동적매개변수를 이용해서 구분
+
+
+Detail 컴포넌트에서
+
+updateData(){//수정->현재 보고있는 데이터의 인덱스번호를 create컴포넌트에 전달
+          this.$router.push({
+              name:'Create',
+              params:{
+                 contentid:this.index
+              }//params   =======
+          })
+        }//update함수
+==========================
+ 파라미터값이 전달이 안되면 글쓰기 폼이 안나온다.
+ =>무조건 파라미터값을 전달해야 되는 경우때문이다.
+
+ 파라미터값이 전달X ==>글쓰기폼
+ 파라미터값이 전달O ==>글수정폼
+==================================
+Create 컴포넌트에 작성
+
+<template>
+    <div>
+      <input v-model="writer" placeholder="글쓴이" /><br>
+      <input v-model="title" placeholder="글제목" /><br>
+      <textarea v-model="content" placeholder="글내용" /><br>
+      <!--일반적인 함수호출시 함수명 ()X
+        삼항연산자를 통해서 조건에 만족하는 함수를 호출할때에는 함수명() (O)
+       -->
+      <button @click="index!==undefined? update():write()">
+              {{index!==undefined?'수정':'작성'}}</button>
+    </div>
+</template>
+<script>
+//기존의 data/index.js에 동적으로 값을 저장할 수 있도록 불러와야 한다.
+import data from '../data/index'
+export default {
+    name:'Create',
+    data:function(){
+      //매개변수 전달유무 contentid에 따라서 처리
+      const index=this.$route.params.contentid
+      return{
+        data:data,
+        //추가(전달받은 인덱스번호에 해당되는 데이터의 키명으로 inputbox와 연결)
+        index:index,
+        writer:index!==undefined?data[index].writer:'',
+        title:index!==undefined?data[index].title:'',
+        content:index!==undefined?data[index].content:''
+      }
+    },
+    methods:{
+      write(){
+        this.data.push({  //새로운값 저장
+          writer:this.writer,  //키명:inputbox에 양방향으로 연결된 데이터값을 저장
+          title:this.title,
+          content:this.content
+        })
+        this.$router.push({ //글을 다쓴뒤에 /로 이동 (response.sendRedirect(이동경로))
+          path:'/'  
+        })
+      }//write
+    }
+}
+</script>
+=========================================
+Create 편집 부분
+
+<template>
+    <div>
+      <input v-model="writer" placeholder="글쓴이" /><br>
+      <input v-model="title" placeholder="글제목" /><br>
+      <textarea v-model="content" placeholder="글내용" /><br>
+      <!--일반적인 함수호출시 함수명 ()X
+        삼항연산자를 통해서 조건에 만족하는 함수를 호출할때에는 함수명() (O)
+       -->
+      <button @click="index!==undefined? update():write()">
+              {{index!==undefined?'수정':'작성'}}</button>
+    </div>
+</template>
+<script>
+//기존의 data/index.js에 동적으로 값을 저장할 수 있도록 불러와야 한다.
+import data from '../data/index'
+export default {
+    name:'Create',
+    data:function(){
+      //매개변수 전달유무 contentid에 따라서 처리
+      const index=this.$route.params.contentid
+      return{
+        data:data,
+        //추가(전달받은 인덱스번호에 해당되는 데이터의 키명으로 inputbox와 연결)
+        index:index,
+        //===============================
+        writer:index!==undefined?data[index].writer:'',
+        title:index!==undefined?data[index].title:'',
+        content:index!==undefined?data[index].content:''
+      }
+    },
+    methods:{
+      write(){
+        this.data.push({  //새로운값 저장
+          writer:this.writer,  //키명:inputbox에 양방향으로 연결된 데이터값을 저장
+          title:this.title,
+          content:this.content
+        })
+        this.$router.push({ //글을 다쓴뒤에 /로 이동 (response.sendRedirect(이동경로))
+          path:'/'  
+        })
+      },//write
+      update(){//입력한 값이 선택된 인덱스번호의 각각의 키명에 해당되는 데이터에 저장
+        data[this.index].writer=this.writer,
+        data[this.index].title=this.title,
+        data[this.index].content=this.content
+        this.$router.push({
+          path:'/'  //글목록보기로 이동
+        })
+      }
+    }
+}
+</script>
