@@ -1,0 +1,472 @@
+1일차(환경설정 및 스프링 작성법)
+
+  2/9일 =>체크리스트 시험(4개 Ajax,jQuery 1~4일차)
+  2/10일 발표=>화면구현(설계)->3번째(업무)
+  2/17일 =>체크리스트 시험(jQuery 5일차~6,7,8일차 ,부트스트립1~2일)
+  2/20일 발표=>4번재 발표                                       class명?
+  **2/27일 스프링 시험(이론 시험)
+
+
+   웹프로그래밍(JSP)+환경설정(xml문법)=>스프링
+      모델2
+
+**********************************************************
+xml=>환경설정만 한다.=>(특정한 태그)=>어노테이션
+json 문서(javascript)
+**********************************************************
+
+  프로젝트 코딩->DB연동->데이터 불러오기
+
+ 스프링->오라클 사용->todo툴(상용)=>이클립스에서 통합
+             MySQL,Maria DB
+
+   ** 이클립스에서 플러그인을 사용하는 방법 2가지 **
+
+   **플러그인=>게임의 확장판처럼 추가기능을 지원해주는 보조 프로그램
+ ----------------------------------------------------------------------
+
+ 1.plugin을 설치하는 방법->가장 보편적인 방법(다운받음)
+                                  ->설치는 되는데 실행X (가끔 버그)
+
+->확장(DB연동->mysql,oracle)->** Qutum DB plugin
+                                                   SQL Explorer
+
+->http://quantum.sourceforge.net/update-site
+
+->사이트 주소도 수시로 변경이 되기때문에 나중에 혹 사용
+하는 경우에는 url경로 확인할것.(구글검색)
+
+->경로 지정->설치 모듈을 확인->동의->설치->경고(확인) install anyway->
+->이클립스 재부팅(yes)?
+
+ windows->perspective->open perspective->other
+                                                                   ->설치된 plugin이 등록된다
+   =>설치된 목록이 안나오는 경우->지우고 다시 설치
+    help->About Eclispe IDE->install detail로 클릭->설치 목록을 확인이 가능
+                                                    잘못 설치된 것을 지정->지우고(uninstall) 나서 처음부터
+                                                   다시 설치
+ *****************************************************
+->선택해서 실행->사용하는 방법->doc파일을 참조
+->Eclipse에 plugin을 설치하기(사용법위주)
+----------------------------------------------------------
+
+** 2.스프링->첫번째 방법으로는 안된다.=>따로 sts을 설치 **
+                                                     (spring tool suit 4)
+
+   help->Eclipse Marketplace를 이용해서 검색어를 입력해서 찾는 방법
+---------------------------------------------------------------------
+2.웹상에서 스프링프로그램을 검색->다운로드 받는 방법->대세(sts)->3.9.21 버전
+   ->스프링은 sts을 검색해서 사용
+   ->3.9.22버전대를 사용해서 (70~80%를 이용)
+===================================
+   ->4.17.2->스프링 부트를 이용해서 작성하는 방법(20~30%정도 사용)
+
+Spring legacy Project 선택
+
+1.Simple Java->자바 app=>Maven을 사용X =>default
+2.Simple Spring Maven=>자바 app=>Maven을 사용 O
+ (1장의 환경설정)
+
+3.Simple Spring Web Maven=>스프링으로 웹프로그래밍(버그)
+
+********************************************
+스프링=>1.자바 Application 개발 가능(기본개념,DI 개념)
+            ****2.웹프로그래밍 개발 가능
+*******************************************
+
+  jsp(모델1 기본)->소규모 사이트
+
+ 스프링(모델2 기반)->대규모 사이트(이직)->인맥
+
+*** 스프링의 특성 ****
+
+  대규모 프로젝트->서버->분산처리(백업용)->EJB(무겁고 속도느림)
+                       ->스프링
+
+- 스프링 프레임워크는 경량의 프레임워크이다. (가볍다->속도가 빠르다)
+                            (EJB->Spring)
+
+- 스프링 프레임워크는 MVC 프레임워크를 제공하고 있다.
+                        ->모델2 기반(흐름)(MVC 패턴으로 작업)
+
+- 스프링 프레임워크는 DI(Dependency Injection)를 지원한다. 
+                            ->의존성 관계
+
+   OOP(객체지향 프로그래밍방식)
+- 스프링 프레임워크는 AOP(Aspect Oriented 
+                             Programming)를 지원한다.  ->공통모듈을 관리
+
+- 스프링 프레임워크는 POJO(Plain Old Java Objects)를 ->웹상에서 작업
+  지원한다.               ===독립적인 웹어플리케이션을 작성==
+                                   독립적인 자바클래스를 작성
+
+- 스프링 프레임워크는 트랜잭션 처리를 위한 일괄된 방법을  
+   제공한다. =>@Transaional 어노테이션을 이용해서
+
+- 스프링 프레임워크는 영속성과 관련된 다양한 API 를 
+  제공한다.       (DB연동->Mybatis(국내),JPA(외국)
+
+- 스프링 프레임워크는 다양한 API 에 대한 연동을 지원한다.
+--------------------------------------------------------------------------- 
+
+
+ Spring MVC Project=>스프링으로 웹프로그래밍
+----------------------
+  스프링방식의 코딩으로 전환
+
+  lee
+         Message1->sayHello(name)=>설계목적
+         Message2->sayHello(name)
+         AppMain->main()=>실행
+
+
+요구분석
+
+ DB설계->테이블 설계->10,20개->필드X->자바소스 코드 전부 변경
+             클래스 설계-->클래스 ---클래스 연결해서 사용(has a 관계)
+
+  A클래스 수정--->B,C,D,,,,,,(전부 수정)->의존성이 크다(결합도가 높다)
+-----------------------------------------------------------------------------
+
+-->유지보수가 어려워진다.->대규모 프로젝트(유연성이 중요하다)
+-->클래스+인터페이스 필요                       ->쉽게 수정이 가능해야 된다.
+                =========            결합도를 낮추기위해서는 
+
+->수정-->이와 관련된 다른 클래스에게 영향을 받지 않도록 설계
+              (결합도가 낮다)->Ioc (역지사지)
+                   ->유연성이 좋아진다.
+
+             lee
+Message1 ,Message2,AppMain->클래스끼리 결합
+
+==============================
+  스프링 방식=>객체를 만들어서 처리->xml파일을 만들어서 관리
+=================================
+
+            spring
+         MessageInter
+            sayHello()
+ Message1        Message2 ,HelloApp (main())를 이용 작업
++
+xml파일이 반드시 필요->프로그램을 실행->xml파일 읽어들일 수 있도록 코딩
+
+ 컨테이너역할을 해주는 환경설정파일을 작성(xml)
+applicationContext.xml (default 이름)
+
+->이름은 프로젝트에 맞게 알아서 정해준다.
+----------------------------------------------
+
+  HelloApp.java
+
+package spring;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+==>버전에 상관없이 classpath에 등록을 해야 불러올 수 있다.
+==>프로젝트를 새로 작성해서 예제를 실행해볼것.(프로젝트 자체에도 문제가 발생 가능성)
+                                                              있기때문에
+         ->import문제
+
+//자바코드 ->미리 객체를 만들어서 관리(=컨테이너)->환경설정파일을 통해서 불러와서 작업
+//외부 패키지를 가져올 수 있도록 처리
+
+public class HelloApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+     //1.xml파일의 위치를 불러오는 방법->절대경로(FileSystemResource)
+		/*
+		Resource resource=new FileSystemResource
+		("C:/webtest/5.Ajax & JQuery & bootstrap/sou2/SpringTest/src/spring/applicationContext.xml");
+	    */
+		Resource resource=new ClassPathResource("/spring/applicationContext.xml");
+	   //2.빈즈공장을 불러와서 객체를 생성
+		BeanFactory factory=new XmlBeanFactory(resource);//xml파일의 정보->메모리에 올림
+	 //3.factory에서 getBean("불러올 객체를 가져올 id값을 지정")
+		//Message1 me=new Message1();
+		//Message1 me=(Message1)factory.getBean("test");//메모리상 저장(Object)->원래값 전환
+		//Message2 me=(Message2)factory.getBean("test2");
+		MessageInter me=(MessageInter)factory.getBean("test2");
+		me.sayHello("테스트");
+	}
+}
+====================================
+3장,4장=>예습
+
+p60 스프링 컨테이너 종류
+
+p63 <bean> 태그의 특성?->p68 ****scope속성 =>객체를 몇개 생성?
+
+의존성 주입(DI) =>의존성 관계
+                         생성자 인젝션-> p75~80=>생성자를 통해서 넣어주는 방법
+                         Setter 인젝션=>메서드로 객체를 넣어주는 방법
+                         p90=>p네임스페이스
+                         p92~나머지 다
+**********************************************************
+
+***********************사이트의 규모에 따라서 *************************
+
+일반적이고 보편적인 개인프로젝트, 중소규모의 프로젝트에서 사용하는 빈즈 
+   =>모델1 수준의 프로젝트
+
+<jsp:useBean id="빈즈객체명"  class="패키지명....클래스명"/> =>액션태그
+-----------------------------------------------------------------------------------
+ 빈즈객체(대규모 큰 프로젝트에서 사용하는 빈즈객체)
+=>대기업,국가(국책사업),금융(은행,증권)->모델2 수준의 프로젝트
+                                                         스프링(모델2 구성)
+
+<bean id="객체를 구분하는 인자번호" class="패키지명..클래스명"/>
+*********************************************************************************
+
+<bean id="test"  class="spring.Message1" />
+<bean id="test2"  class="spring.Message2" />
+
+Exception in thread "main" org.springframework.beans.factory.BeanDefinitionStoreException: IOException parsing XML document from class path resource [applicationContext.xml]; nested exception is java.io.FileNotFoundException: class path resource [applicationContext.xml] 
+cannot be opened because it does not exist
+
+xml파일을 불러올때 경로문제 생각
+
+4월 01, 2019 2:40:11 오후 org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+정보: Loading XML bean definitions from file [C:\webtest\4.jsp\sou2\SpringTest\src\spring\applicationContext.xml]
+안녕!테스트씨!
+
+스프링 관련 API 사이트 위치
+
+http://gardentree.tistory.com/21
+======================
+
+2번째 스프링+Maven을 설정=>DI=>SpringTest2
+==============================
+스프링->라이브러리를 만들어서 불러온다.(spring4)->실무X
+
+***메이븐(Maven)은 pom.xml의 <dependencies /> 설정을 통해서 필요한 
+라이브러리를 다운받아서 저장소에 관리하는 역할을 한다. 
+
+******************************************************************
+ =>자동으로 라이브러리를 다운로드 받아서 처리해주는 툴
+******************************************************************
+
+기존 Dynamic Web Project에서는 프로젝트의 라이브러리를 사용하기 
+위해서 lib 폴더에 직접 라이브러리 파일(*.jar)을 넣어주는 방식으로 작업했다
+
+==========================>버전관리=============
+
+   SprintTest2
+         |
+          -src/main/java=>소스파일 저장->xml파일 저장(로컬)
+           src/main/resource=>** xml파일은 여기에 저장(전역)
+           src/test/java
+                     =>트리가 형성(패키지)
+           src
+           target
+        **   pom.xml==>라이브러리파일을 설정->자동적으로 다운로드
+ 
+**********************************************************************
+ ** 해결책 **-> 1.자기 컴퓨터의 방화벽 설정->해제
+                       2.사용자->.m2의 repository폴더내부를 삭제시킨후 다시 실행(pom.xml 다시 설정)
+
+  pom.xml파일 편집 =>원하는 라이브러리를 추가,삭제하는지 실습
+===============================================
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.springframework.samples</groupId>
+  <artifactId>SpringTest2</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+
+		<!-- Generic properties -->
+		<java.version>1.6</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Spring -->
+		<spring-framework.version>3.2.3.RELEASE</spring-framework.version>
+
+		<!-- Hibernate / JPA -->
+		<hibernate.version>4.2.1.Final</hibernate.version>
+
+		<!-- Logging -->
+		<logback.version>1.0.13</logback.version>
+		<slf4j.version>1.7.5</slf4j.version>
+
+		<!-- Test -->
+		<junit.version>4.11</junit.version>
+
+	</properties>
+	
+	<dependencies>
+		<!-- 다운로드를 받을 수 있도록 설정(~.jar) -->
+-------------------------------------------------------------------
+<properties> ->버전관리때문에 필요
+
+		<!-- Generic properties -->
+		<java.version>1.6(1.8)</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+</properties>
+		<!-- Spring -->
+		<spring-framework.version>4.2.5.RELEASE</spring-framework.version>
+ 
+구글 사이트->mysql(라이브러리명) maven=>검색->찾아줘서 
+                 <dependency> ~</dependency> 사이를 복사해서
+                  pom.xml에 붙여넣은 뒤 저장->다운로드가 시작이 된다.
+
+*************************편집하는 방법**************************
+<dependency>
+	<groupId>상위패키지명.하위패키지명...</groupId>
+	<artifactId>jar파일의 이름</artifactId> =>관련된 파일도 같이 다운(의존성 때문에)
+	<version>3.2.3-Release(버전이름)</version>
+</dependency>
+
+-------------------------------------------------------------------
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>     ${환경변수명}<---버전관리 (자동)
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring-framework.version}</version>
+		</dependency>
+
+		<!-- Logging with SLF4J & LogBack -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		
+		<!-- Test Artifacts -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring-framework.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>	
+</project>
+
+============================================
+   DI의 개요 및 종류를 기술하시오.
+
+=>DI(의존성 주입)->필요로하는 객체를 만들어서 원하는 위치에 넣어주는(주입) 기능
+                                                                멤버변수에 저장=>생성자,메서드
+------------------------------------------------------------------
+          의존성 객체를 특정한 위치(멤버변수)에 알아서 넣어주는 기능=>DI                                      
+-------------------------------------------------------------------
+ A객체-->B객체를 먼저 만들어야 된다.=>바늘,실
+-----------------------------------
+     spring2
+ 1.MessageBeanDI.java  (인터페이스)
+
+public interface MessageBeanDI {
+     void sayHello();
+}
+--------------------------------------------
+
+2.MessageBeanImplDI
+
+  MessageBeanImplDI mbi=new MessageBeanIMplDI("aab","bbb");
+   mbi.setGreeting("test");
+
+ =>xml문법으로 설정을 할 수가 있다.
+
+ ** DI의 종류 **
+
+1) 생성자를 이용->객체를 얻어와서 넣어준다.=>p80
+    constructor injection
+
+2) 멤버변수와 연관->Setter Method를 이용해서 객체를 매개변수로
+    받아서 넣어주는 경우가 있다.
+   setter Injection=============>p84
+                                                             p98~99 getBeans()
+
+  insert into board values(?,?,?,,,)
+
+   pstmt.setString(1,"홍길동")
+
+   <jsp:setProperty name="객체명"  property="멤버변수" value="값" />
+
+------------------------------------------------------------------
+   <property name="멤버변수명">
+      <value>매개변수값 </value>=>문자열 과 숫자를 넘겨줄때 <value>태그
+  </propety>
+----------------------------------------------------------------------
+   initContext.xml를 작성
+
+<bean id="mBean" class="spring2.MessageBeanImplDI" >
+     <constructor-arg index="0">
+                            ======매개변수의 첫번째(속성명)
+        <value>대한민국</value>
+     </constructor-arg>
+     <constructor-arg index="1">
+         <value>서울</value>
+     </constructor-arg>
+     <property name="greeting">
+                             ======>호출할 멤버변수명
+                          =>setGreeting("안녕,");
+         <value>안녕,</value>
+     </property>
+</bean>
+========================
+package spring2;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+//자바코드 ->미리 객체를 만들어서 관리(=컨테이너)->환경설정파일을 통해서 불러와서 작업
+//외부 패키지를 가져올 수 있도록 처리
+
+public class HelloApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+     //1.xml파일의 위치를 불러오는 방법
+		Resource resource=new ClassPathResource("/spring2/initContext.xml");
+	   //2.빈즈공장을 불러와서 객체를 생성
+		BeanFactory factory=new XmlBeanFactory(resource);//xml파일의 정보->메모리에 올림
+	 //3.factory에서 getBean("불러올 객체를 가져올 id값을 지정")
+		
+		MessageBeanDI bean=(MessageBeanDI)factory.getBean("mBean");
+		bean.sayHello();
+	}
+}
+
+======================
+MessageBeanImplDi 생성자 호출됨!
+setGreeting() 호출됨!
+bean=>spring2.MessageBeanImplDI@27f674d
+message=>안녕,대한민국,서울!
+
+-------------------------------------------------
