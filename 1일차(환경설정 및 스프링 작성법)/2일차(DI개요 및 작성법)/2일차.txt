@@ -1,0 +1,200 @@
+2일차(DI의 개요 및 작성법)
+
+
+**********************************************************************************
+ xml 용도-> 1.스프링 환경설정 목적
+                2.자바 코딩 대신사용-><property >태그 적용=>객체명.메서드호출
+                    =>소스코드 줄어드는 효과->개발시간을 단축
+**********************************************************************************
+
+   객체명.setGreeting("안녕"); 호출
+**************************************************
+한 개이상의 클래스끼리의 어떻게 연결(has a 관계)->xml파일 설정(ref 속성을 이용)
+**************************************************
+
+     MessageBeanDI                OutFile ->out(String message)
+                |                                   |
+     MessageBeanImplDI   <-->OutFileImpl
+                                    has a 관계
+             
+            sayhello()--------->out()=>파일을 생성->문자열을 입력받아 파일에
+                                                                 저장
+
+import java.io.IOException;
+//파일에 문자열을 입력을 받아서 출력시켜주는 공통의 추상메서드 선언
+public interface OutFile {
+   void out(String message) throws IOException;
+}
+-------------------------------------------------------------
+//파일을 생성->파일내부에 문자열을 출력시켜주는 프로그램
+public class OutFileImpl implements OutFile {
+	
+	private String filePath;//경로명 및 만들어질 파일명저장
+	
+	//setFilePath
+	public void setFilePath(String filePath) {//<property>
+		this.filePath = filePath;
+		System.out.println("setFilePath()호출됨=>"+filePath);
+	}
+
+	//MessageBeanImplDI->sayHello(message)=>out(messae)
+	//                                                                파일에 내용을 넣어주는 기능
+	@Override
+	public void out(String message) throws IOException {
+		// TODO Auto-generated method stub
+       //한글데이터를 저장->FileOutputStream(영문),FileWriter(한글전용)
+		FileWriter fw=new FileWriter(filePath);//c:/webtest/good.txt
+		fw.write(message);
+		fw.close();//종료
+	}
+
+}
+
+-----------------------------------------------------------------
+     MessageBeanImplDi->sayHello()=>파일을 생성->안녕,대한민국,서울 출력
+                                                      어떤경로,파일명(OutFile)
+                                                              OutFileImpl(out())->
+                                                                파일을 생성->안녕,대한민국,서울 출력
+     의존적인 관계
+
+          public void setOutF(OutFile outF) {
+		this.outF = outF;
+		System.out.println("setOutF()호출됨(outF)=>"+outF);
+	}
+
+   ->
+****************************************************
+    <property name="outF">
+         <ref bean="outFile" />==>OutFile outF
+                                         <ref bean="상대방의 참조할 bean id값" />
+     </property>
+
+ =>
+
+  <property name="outF"  ref="outFile">=>ref="상대방의 참조할 bean id값"
+        <!--  <ref bean="outFile" /> -->대신에 
+    </property>
+*******************************************************
+
+<최종 실행결과>
+
+MessageBeanImDI 생성자 호출됨
+setFilePath()호출됨=>c:/webtest/good.txt
+setGreeting() 호출됨
+setOutF() 호출됨=>spring2.OutFileImpl@710f4dc7
+bean=>spring2.MessageBeanImplDI@1ff4931d
+message=>안녕,대한민국,서울!
+---------------------------------------------------------------------------------------
+Dependency Injection(의존성 객체주입)-->MessageBeanImpl입장에서 OutFile의 객체가 필요
+                                                   얻어와서 원하는 위치(멤버변수)에 자동적으로
+                                                    넣어주는 기법
+-----------------------------------------------------------------------------------------
+ p48 스프링은 객체 컨테이너다.
+
+   클래스에 맞게 객체를 생성=>담아놓은 커다란 공장(factory) 
+ 
+p49 클래스의 상속관계도
+
+생성자,메서드의 매개변수로 다양한 객체의 자료형을 넣어주는 연습
+->List,Set,Map,,,
+---------------------------------------------------------------------
+spring3
+   SmsSender
+   SystemMoniter
+   Main
+
+SystemMoniter
+ p84
+//Setter Method-><property>
+	public void setPeriodTime(long periodTime) {
+		this.periodTime = periodTime;//this.periodTime=10;
+		System.out.println("setPeriodTime() 호출됨!");
+	}
+	public void setSender(SmsSender sender) {//callByRef
+		this.sender = sender;
+		System.out.println("setSender() 호출됨=>!"+sender);//sender.toString()
+	}
+
+ Main.java
+
+*********************************************************
+  SystemMoniter moniter=(SystemMoniter)context.getBean("moniter");
+  System.out.println("moniter=>"+moniter);//~toString()
+*******************************************************
+<실행결과>
+
+setPeriodTime() 호출됨!
+setSender() 호출됨=>!SmsSender를 호출
+moniter=>SystemMoniter[periodTime=10,sender=SmsSender를 호출]
+
+
+moniter=>SystemMoniter[periodTime=0,sender=null]
+           =>Setter Method()가 호출X  ->값을 저장시킬수가 없다.
+====================================
+
+bean의 id값==> 정해준 단어가 없으면 클래스명을 부여(관례)->첫글자는 소문자
+*******************************************
+<!-- xml p네임스페이스(태그를 추가)
+   p:멤버변수명="값" p:멤버변수명-ref="상대방 빈즈의 id값"
+ -->                         (객체인 경우)
+********************************************
+<bean id="moniter" class="spring3.SystemMoniter"
+           p:periodTime="20" p:sender-ref="smsSender">
+   =>p네임스페이스를 이용해서 설정하는 방법
+    <!-- <property name="periodTime">
+        <value>10</value>
+    </property>
+    <property name="sender">
+          <ref bean="smsSender" />
+    </property> -->
+</bean>
+
+<bean id="smsSender"  class="spring3.SmsSender" />
+----------------------------------------------------------------
+ spring4
+   SmsSender
+   SystemMoniter
+   Main
+
+  SystemMoniter
+
+ **********************************************
+   //생성자를 이용=>c네임스페이스를 이용해서 설정이 가능
+	public SystemMoniter(long periodTime, SmsSender sender) {
+		this.periodTime = periodTime;
+		this.sender = sender;
+		System.out.println("SystemMoniter() 생성자 호출됨!!");
+	}
+ **********************************************
+   applicationContext.xml
+
+<!-- 생성자 injection
+  index를 부여하지 않으면 입력순서대로 적용이 된다.(매개변수 순서가 적용)
+  -->
+ p80
+<!-- spring4 c네임스페이스를 이용-->
+<bean id="moniter2" class="spring4.SystemMoniter"
+           c:periodTime="30" c:sender-ref="smsSender2">
+   <!-- 
+   <constructor-arg value="10" /> =>기본형 멤버변수
+   <constructor-arg ref="smsSender2" /> =>객체형 멤버변수
+   -->                    ==
+</bean>
+<bean id="smsSender2"  class="spring4.SmsSender" />
+------------------------------------------------------------------
+ <constructor-arg ref="userRepository" />
+
+-------------------------------------------------
+ List,Map,Set,,,,
+
+//4.객체를 의존성 주입->2.5방식의 코딩->3.x버전대부터 소스변경
+****
+		//SystemMoniter moniter=(SystemMoniter)context.getBean("moniter");
+		//getBean("의존성객체를 얻어올 id",형변환을 할 클래스명.class)
+		SystemMoniter moniter3=context.getBean("moniter3",SystemMoniter.class);
+		System.out.println("moniter3=>"+moniter3);
+==============================================
+ 예습->p92~98 다양한 객체에 따른 태그명이 다르기에 예습->태그명?
+
+    @Component  @Autowired @Resource,,,
+ 
