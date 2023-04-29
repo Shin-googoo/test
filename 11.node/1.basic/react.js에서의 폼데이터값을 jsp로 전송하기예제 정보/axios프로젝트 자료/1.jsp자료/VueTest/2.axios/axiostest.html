@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="kr">
+  <head>
+    <!--vue  -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js" ></script>
+    <!--엑시오스 CDN -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Http 통신, 뷰 리소스</title>
+  </head>
+  <body>
+    <div id="app1">
+        <button v-on:click="getData"> 호출 </button>
+    </div>
+    <script>
+      new Vue({
+        el: '#app1',
+        methods:{
+                  getData: function(){
+                    axios.get('https://raw.githubusercontent.com/joshua1988/doit-vuejs/master/data/demo.json')
+                    .then(function(response){
+                        alert(response);
+                        console.log(response); // 객체 형태로 반환. 파싱작업 불필요
+                    });
+                  }
+                }
+      });
+    </script>
+
+  </body>
+</html>

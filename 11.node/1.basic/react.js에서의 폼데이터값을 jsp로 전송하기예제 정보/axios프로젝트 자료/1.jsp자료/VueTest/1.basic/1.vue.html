@@ -1,0 +1,29 @@
+<html>
+  <head>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <title>Vue Sample</title>
+    
+  </head>
+  <body>
+    <div id="app">
+        <!--  인스턴스의 유효범위라고 한다. -->
+        <h1>{{ message }}</h1>
+    </div>
+     <!-- <h1>{{ message }}</h1> -->
+    <script>
+    /*
+      new Vue({  뷰인스턴스 생성=> Vue를 생성자라고 한다.(뷰라이브러리를 로딩하고 나면 접근할 수있다.)
+    	              생성자를 사용하는 이유는 뷰로 개발할때 필요한 기능들을 생성자에 미리 정의해 놓고 사용자가 그기능을
+    	             재정의하여 편리하게 사용하도록 하기위해서 이다.
+      })
+    
+    */
+      new Vue({
+        el: '#app',  //e1속성->뷰로 만든 화면이 그려지는 시작점을 의미한다.
+        data: {      //화면에 출력할 부분을 지정(치환돼서 출력할 부분임)
+          message: 'Hello Vue.js!'
+        }
+      });
+    </script>
+  </body>
+</html>

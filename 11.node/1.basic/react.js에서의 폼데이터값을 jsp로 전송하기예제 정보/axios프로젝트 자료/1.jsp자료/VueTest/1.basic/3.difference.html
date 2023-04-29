@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>유효사용범위</title>
+</head>
+<body>
+   <div id="app">
+      <h3>첫 번째 인스턴스 영역</h3>
+      <my-global-component></my-global-component>
+      <my-local-component></my-local-component>
+    </div>
+    <hr>
+    
+    <div id="app2">
+      <h3>두 번째 인스턴스 영역</h3>
+      <my-global-component></my-global-component>
+      <my-local-component></my-local-component> <!-- 두번째 영역에는 지역컴포넌트는 출력X -->
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.2/dist/vue.js"></script>
+    <script>
+      // 전역 컴포넌트 등록->인스턴스를 새로 생성할때 마다 인스턴스에 components속성으로 등록할 필요가 없이 한번 등록하면
+      //어느 인스턴스에서든지 사용할 수 있다.
+      Vue.component('my-global-component', {
+        template: '<div>전역 컴포넌트 입니다.</div>'
+      });
+
+      // 지역 컴포넌트 내용
+      var cmp = {
+        template: '<div>지역 컴포넌트 입니다.</div>'
+      };
+
+      new Vue({
+        el: '#app',
+        // 지역 컴포넌트 등록=>새인스턴스를 생성할때마다 등록해줘야 한다.(이게 차이점이다.)
+        components: {
+          'my-local-component': cmp
+        }
+      });
+      // 두 번째 인스턴스
+      new Vue({
+        el: '#app2'
+      });
+    </script>
+</body>
+</html>
