@@ -1,0 +1,25 @@
+{
+  "ww":{
+    "prefix":"ww",
+    "body":[
+      "<!DOCTYPE html>",
+      "<html lang=\"ko\">",
+      "<head>",
+      "<meta charset=\"UTF-8\">",
+      "<script src=\"https://unpkg.com/react@15/dist/react.min.js\"></script>",
+      "<script src=\"https://unpkg.com/react-dom@15/dist/react-dom.min.js\"></script>",
+      "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js\"></script>",
+      "\t<title>${1:react}</title>",
+      "</head>",
+      "<body>",
+      "\t<div id=\"disp\"></div>",
+      "\t<script type=\"text/babel\">",
+        
+      "\t</script>",
+      "</body>",
+      "</html>"
+    ],
+    "description":"우리웹 HTML 템플릿",
+    "scope":"text.html"
+  }
+}
