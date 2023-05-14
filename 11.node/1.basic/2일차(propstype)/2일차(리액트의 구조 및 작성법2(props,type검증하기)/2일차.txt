@@ -1,0 +1,514 @@
+﻿2일차(리액트의 구조 및 작성법2)
+
+ *** yarn start 실행시 서버오류 발생 ****
+
+1.프로젝트 내부에 있는 node_modules폴더,yarn.lock파일 삭제
+  
+2.myapp2>npm cache clear --force         (메모리 해제)
+
+3.myapp2>npm install  ->package.json에 등록된 프로그램 재설치
+
+4.myapp2>yarn start
+
+
+========================================================================
+ create-react-app@3.4.1 설치,yarn을 설치
+
+1.웹상에서 바로 출력->html,jsp에 바로 출력(jQuery)->간단한 어플리케이션
+                                                                                특정부분
+                                  ->단점:에러잡기가 좀 수월X (요소검사)
+
+2.MVC구조형태로 작업->출력->복잡한 어플리케이션 구현
+                                 ->장점:에러잡기가 수월
+
+******JSX(JavaScript Expression)문법 ****************
+
+1.반드시 화면에 데이터를 출력할때에는 하나의 태그를 사용해야 한다.(규칙)->부모태그로 묶음
+  어떠한 태그도 상관없지만 보통은 <div></div>을 자주사용한다.
+
+2.변수를 선언=>화면에 변수의 값출력=>형식) let 변수명=값 =>{변수명}
+                                           angular=>{{변수명}}
+
+                                           Vue.js=>{{변수명}}=>angular,react 장점
+======================================================================
+3.이벤트 처리함수는 어떻게 선언하고 호출하는가?=>클래스 내부에서 작성
+
+ <button onclick={this.sayHello()}>Click me</button>
+                           형식) {this.호출할함수명()}
+                                                         =>함수호출하라  =>() (X)
+                           이벤트를 발생시키지 않아도 자동적으로 호출이 되는것을 막기위해서
+                           ->props,state
+
+            onclick(X) =>onClick=>on이벤트종류(첫글자는 반드시 대문자를 사용할것)
+            =========================================
+
+4.리액트에서 스타일시트를 적용시키는 방법 2가지
+
+App.css
+
+.App-title {
+  text-align: center;
+  font-size:1.5em;
+  color:red;
+  background-color:yellow;
+}
+,,,
+
+
+
+1).스타일시트가 복잡->css파일을 만들어서 import로 불러온다.
+
+  <태그명 className="클래스명"~> =>권장
+              class="클래스명" =>둘다 다 적용
+
+2)스타일시트가 적용이 된 camelCase Object=> let 객체명={속성명:속성값~}
+
+  <태그명 style={스타일객체명}
+====================================================================
+5.화면상에 디자인->if사용X =>삼항연산자를 사용해서 해결
+  =>return(화면출력->if X)
+
+    <p *ngIf="false">True</p> (앵귤러)
+
+***********************************************
+ 1==1=>단순히 변수의 값을 비교할때 사용
+ 1===1=>변수의 값 type,null을 체크할때 사용
+***********************************************
+6.주석을 달때 주의할점
+
+ 주석을 다는곳이 정해져 있다.
+ 태그와 태그 사이의 주석을 달때에는 {  }안에 주석을 표시한다.
+======================================
+   {   }
+
+ 리엑트 교과서 ->p90~105
+=======================================
+ jsp->html(react,vue.js)가능
+
+************************html 문서************************
+
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리(cdn)  -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+
+<title>리액트 두번째예제</title>
+</head>
+<body>
+  <div id="disp"></div>
+  <div id="disp2"></div>
+ 
+  <script type="text/babel">
+  //화면에 출력할 컴포넌트가 복잡=>함수를 작성하거나 클래스를 작성->출력
+   const root=document.querySelector('#disp2')
+   const msg=getGreeting()
+
+    ReactDOM.render(msg,root)
+
+   function getGreeting(){
+     const r=Math.floor(Math.random()*3) /* 소수점(1.2222)=1(소수점->정수)  */
+     if(r==0) return <h1>react 연습중</h1>
+     if(r==1) return <h1>웹상에서 실행하는 리액트연습</h1>
+     if(r==2) return <h1>자동화된 툴을 사용하는 리액트연습</h1>
+  }
+  </script>
+=================================
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리(cdn)  -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+
+<title>리액트예제</title>
+</head>
+<body>
+  <div id="root"></div>
+ 
+  <script type="text/babel">
+    //MVC ->render() 내부에서 선언
+
+    const sangpum="노트북"
+    const value=25000
+    const title="웹상에서 불러오기"
+    const imgUrl="http://uta.pw/shodou/img/28/214.png"
+     //복잡한 화면디자인은 변수로 선언해서 부착
+     //" or ' or ` 을 사용해서 msg값을 묶으면 안된다.
+    const msg=<div>
+                        <h1>{sangpum}-{value}</h1>
+                        <h1>{title}</h1>
+                        <p><img src={imgUrl} /></p>
+                    </div>
+
+    ReactDOM.render(msg,document.getElementById('root'))
+  </script>
+</body>
+======================================
+  4.react-jsx.html
+
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+<!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+  <title>리액트 4번째예제(스타일 적용)</title>
+ </head>
+ <body>
+   <div id="root"></div>
+   <script type="text/babel">
+    //출력하는 부분이 복잡=>변수선언,함수를 선언
+    ReactDOM.render(getDOM(),document.getElementById('root'))
+
+	function getDOM(){
+        //형식) const 객체명={키명:저장할값}
+		const css1={
+		   "color":'red',
+		   "background-color":'#f0f0ff',
+           "font-size":'2em'
+		}
+		const css2={
+		   "color":'blue',
+		   "background-color":'#f0f0ff',
+           "font-size":'2em'
+		}
+	   return(
+	     <div>
+            <p style={css1}>React의 웹상의 구조 확인</p>
+			<p style={css2}>React의 JSX문법 정리(변수,스타일적용,이벤트처리,주석까지)</p>
+		 </div>
+	   )
+	}
+
+   </script>
+ </body>
+</html>
+--------------------------------------------------------------
+해결책 ->npm install -g 설치할 프로그램명 =>전역(경로 상관없이 다 사용)
+         ->npm install =>package.json에 기록된 프로그램이 자동적으로
+                                실행
+             package.json(프로그램 설치 및 환경설정할때 필요)
+
+   최신
+
+"dependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "react": "^17.0.1",  --------------->npm install =>에러유발
+    "react-dom": "^17.0.1",              /webtest/2.react/. 이 발견X
+    "react-scripts": "4.0.0",
+    "web-vitals": "^0.2.4"
+  },
+     ======================>17.0.2 버전에서는 수정이 된거 같다.
+
+   최신의 바로 밑의 버전
+"dependencies": {
+    "react": "^16.8.6",    -------------->npm install 이 적용
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.0"
+  },
+---------------------------------------------------------------------------------
+  2.class폴더->5.class.html
+
+   배열디스트릭처링 const [변수,,,]=배열 or [객체명.함수명(),객체명.함수명2(),~]
+
+      01~09->10,11
+
+====================
+  2.class폴더->5.class.html
+====================
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+  <title>리액트클래스,함수사용을 구분</title>
+ </head>
+ <body>
+   <div id="root"></div>
+
+   <script type="text/babel">
+     /*
+      (1)클래스를 사용->props,state를 이용해서 데이터를 저장하는 경우=>생성자를 통해서 초기화
+	 
+     class Hello extends React.Component{
+          //함수선언->this.호출할 함수명=>생성자에서 this.함수명으로 연결
+		  //화살표 함수를 이용하는 경우->this 사용하지 않아도 된다.
+         render(){
+            const clickHandler=(e)=>{//const clickHandler=function(e){}
+                 alert('안녕하세요')       
+			}
+            return(
+			         <div onClick={clickHandler}><h1>Testing!!</h1></div>
+			       )
+		 }
+     }
+     */
+     /*(2)함수사용=>state을 사용해서 데이터 저장목적(X)
+	                       중첩된 컴포넌트에서 부모로부터 넘겨받은 매개변수를 받아서 출력(props)
+                           =>메모리 효율성을 따진다.
+	 */
+    const Hello=()=>{//const Hello=function(){}
+       //render(){ Component에 존재하는 함수기 때문에 사용X
+            const clickHandler=(e)=>{//const clickHandler=function(e){}
+                 alert('안녕하세요')       
+			}
+            return(
+			         <div onClick={clickHandler}><h1>Testing!!</h1></div>
+			       )
+		// }
+    }
+       ReactDOM.render(<Hello />,document.getElementById('root'))
+   </script>
+ </body>
+</html>
+
+        
+************************************************
+   ReactTest(Dynamic Web Project)
+        |
+         -WebContent
+              |
+               1.basic->1.reacttemplate.html~4개
+               2.class
+=============================================
+ 리액트설치 및 JSX 문법정리
+
+=====================================================
+ 화면에 컴포넌트를 배치시키는 방법(=중첩)+모듈화(파일로 분리)=>매개변수 전달
+====================================================
+
+//export default class로 시작 ->클래스 끝부분에 배포시켜주는 구문생략 가능
+class App2 extends React.Component{ //App2는 부모컴포넌트
+    render(){
+        return(<div>
+                {/*
+                <h1>Header</h1> =>자식 컴포넌트
+                <h1>Content</h1> =>자식 컴포넌트
+                */}
+                <Header />
+                <Content />
+              </div>)
+    }
+}
+//Header클래스
+class Header extends React.Component{
+    render(){
+        return(<div>
+                <h1>Header</h1>
+              </div>)
+    }
+}
+
+//Content클래스
+class Content extends React.Component{
+    render(){
+        return(<div>
+                <h1>Content</h1>
+              </div>)
+    }
+}
+export default App2;
+
+src/index.js
+
+import App from './components/App';    //불러올 컴포넌트명
+import App2 from './components/App2';
+//형식) import 불러올클래스명 또는 함수명 from '경로포함해서 불러올파일명'
+//-----------------------------
+//import * as serviceWorker from './serviceWorker';
+
+//동적으로 웹상에 출력시켜주는 문장(1.부착시킬컴포넌트명 2.부착위치)
+const rootElement=document.getElementById('root')
+const rootElement2=document.getElementById('root2')
+
+ReactDOM.render(<App />,rootElement);
+ReactDOM.render(<App2 />,rootElement2);
+===================================
+
+  public /index.html
+
+    <div id="root2"></div>
+====================================
+ 컴포넌트도 중첩이 가능하다.(부모,자식컴포넌트를 연결해서 디자인이 가능)
+
+********************************************************************************************************
+리액트의 모듈화=>공통관심클래스를 작성
+                       자주 사용이 되거나 반복적인 구문을 가진 클래스를 따로 파일로 만들어서
+                        불러오는 방법  =>화면 디자인상의 수정부분이 많아지면 파일로 분리->작업유리
+*********************************************************************************************************
+
+  중첩컴포넌트
+
+  ***props****
+
+   String pageNum=request.getParameter("pageNum");
+   if(pageNum==null) pageNum="1"; //디폴트기본 설정값
+
+1.컴포넌트에서 사용할 데이터 중 변동되지 않는 데이터를 다룰 때 사용됩니다. 
+                                       ==================
+                                       저장할 목적X =>내 컴포넌트 출력->다른 자식컴포넌트에게
+                                                              전달목적
+============================================
+2.parent 컴포넌트에서 child 컴포넌트로 데이터를 전달할 때 props 가 사용됩니다.
+
+   부모컴포넌트---데이터를 전송-->자식컴포넌트
+
+ 앵귤러=><자식태그 [전달할 매개변수명]="전달할값(속성명)" ~ />
+ --------------------------------------------------------------
+ 리액트=><자식태그 전달할 매개변수명(속성명)="전달할값" ~>
+
+----------------------------------------------------------------
+ 앵귤러=>자식 컴포넌트=> @Input() 전달받을값을 저장할변수명:자료형
+ 리액트=>형식) {this.props.전달받은 매개변수명}
+=====================================
+
+  public /index.html
+                       <div id="root"></div>
+
+
+ src/index.js ===>
+
+ ReactDOM.render(<App headerTitle="전달연습1" />,rootElement);
+                                    =======(매개변수)=값
+  ->jsp <%=request.getParameter("headerTitle")%> 
+           =>{this.props.headerTitle}
+                                ========
+
+ ReactDOM.render(<App2 contentTitle="전달연습2" 
+                       contentBody="부모에서 자식에게 전달함" />,rootElement2);
+============================================
+ReactDOM.render(<App headerTitle="전달연습1" />,rootElement);
+ReactDOM.render(<App2 contentTitle="전달연습2" 
+                      contentBody="부모에서 자식에게 전달함" />,rootElement2);
+
+App.js
+************************
+return(
+        <div>
+         <h1 class="App">리액트 구조 및 환경설정파일확인</h1>
+         <p style={pStyle}>스타일 적용연습1</p>
+         <h1 className="App">리액트의 JSX문법 규칙확인 {text}</h1>
+         <p style={pStyle}>{1===1?'True':'False'}</p>
+          {/* {조건식?참인값:거짓인값} */}
+          *****************************************
+         <h1>전달받은 매개변수명:{this.props.headerTitle}</h1>
+          *****************************************
+         <button onClick={this.sayHello}>Click me</button>
+        </div>
+         )
+************************
+
+App2.js
+
+
+  부모--->자식--->자식--->자식
+              부모      부모
+=========================================
+   String pageNum=request.getParameter("pageNum")
+   pageNum=null ->1페이지
+
+  if(pageNum==null){
+     pageNum="1"; //매개변수를 못받았다면 기본설정값으로 설정이 가능하다.
+  }
+==========================================
+자식이 매개변수를 전달 못받았다면 기본값을 설정할 수 있다.
+ index.js
+
+ReactDOM.render(<App headerTitle="전달연습1" />,rootElement);
+ReactDOM.render(<App2 contentTitle="전달연습2" 
+                      contentBody="부모에서 자식에게 전달함" />,rootElement2);
+============================================
+
+ App.js
+
+  <p style={pStyle}>{1===1?'True':'False'}</p>
+          {/* {조건식?참인값:거짓인값} */}
+         ====================================
+         <h1>전달받은 매개변수명:{this.props.headerTitle}</h1>
+         ====================================
+         <button onClick={this.sayHello}>Click me</button>
+
+
+App2.js
+
+                <h1>{this.props.contentTitle}</h1>
+                <h1>{this.props.contentBody}</h1>
+                {/* App2->Header (title)->{this.props.title}  */}
+                <Header title={this.props.contentTitle} />
+                <Content body={this.props.contentBody}/>
+              </div>)
+
+ 부모---->자식-->손자(자식)
+ 할         아버지      아들
+
+
+========================================
+ **  전달받지 못한경우  **
+
+/*
+ 자식입장에서 부모한테 못받았기에 대신 디폴트값을 설정
+ 형식) 자식클래스명.defaultProps={
+     전달받을 매개변수명:다른값(문자,숫자,함수),,,
+ }
+*/
+App2.defaultProps={
+    contentTitle:'기본값 title',
+    contentBody:'기본값 body'
+}
+
+***************************************************
+  App=>매개변수X  =>App.js에서 디폴트값을 설정=>"전달받지 못해서 대신 기본값출력값"
+
+App.defaultProps={
+  headerTitle:'전달받지 못해서 대신 기본값출력값'
+}
+export default App;
+==============================================
+  
+  *** Type 검증하기 ***
+
+ String pageNum=request.getParameter("pageNum")
+   pageNum=null ->1페이지
+
+  if(pageNum==null){
+     pageNum="1"; //매개변수를 못받았다면 기본설정값으로 설정이 가능하다.
+  }
+
+ 페이징처리해주는 pageNum=>숫자=>"1"->1
+  currentPage=Integer.parseInt("1")=>1
+
+   특정 매개변수=>문자,숫자=>전달받은 매개변수의 자료형이 잘못되었을때 에러메세지를
+                             출력할 수 있도록 설정하고 싶다.
+***********************************************************************************************
+
+  JSX 문법(6가지), component의 모듈화(파일로 분리)=>중첩=>props=>유효성검사
+=============================================================================
+
+ =>내일 state 개념,사용법, ** 이벤트처리(props,state 종합) **
+ =>컴포넌트의 life Cycle 사이클(메서드의 기본능)
+ =>프로젝트(예제=>배열(crud)) 
+
+=============================================================================
+
+
+
+
+
+
+

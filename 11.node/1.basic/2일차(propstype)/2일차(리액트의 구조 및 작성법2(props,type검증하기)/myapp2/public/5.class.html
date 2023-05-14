@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+    <title>클래스,함수사용을 구분</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    /* (1)
+     클래스를 사용->props,state를 이용해서 데이터를 저장할 경우
+      생성자를 통해서 작성이 가능(=>함수로도 가능)
+    
+    class Hello extends React.Component{
+    //함수선언->this.호출할 함수명=>생성자에서 this.함수명으로 연결
+        render(){
+          //화살표함수를 이용->this를 사용하지 않아도 이벤트처리가 된다
+          const clickHandler=(e)=>{
+              //clickHandler=function(e){}
+              alert('안녕하세요!!')
+          }
+          return(
+              <div onClick={clickHandler}><h1>Testing!</h1></div>
+          )  
+        }
+    }*/
+    //(2) 함수사용->화면디자인,데이터 저장목적(X)->지금은 가능하다.(hook)
+    
+    const Hello=()=>{ //const Hello=function(){}
+    //함수선언->this.호출할 함수명=>생성자에서 this.함수명으로 연결
+        //render(){ Component클래스를 상속을 받을경우에만 사용
+          //화살표함수를 이용->this를 사용하지 않아도 이벤트처리가 된다
+          const clickHandler=(e)=>{
+              //clickHandler=function(e){}
+              alert('안녕하세요!!')
+          }
+          return(
+              <div onClick={clickHandler}><h1>Testing!</h1></div>
+          )  
+       // }
+    }
+
+    ReactDOM.render(<Hello />,document.getElementById('root'))
+    </script>
+</body>
+</html>
