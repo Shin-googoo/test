@@ -1,0 +1,543 @@
+3일차(React의 속성전달(props,state) 및 프로그램작성법)=>전달방식,** 이벤트처리방법 **
+                                                                              배열처리
+
+===========*** state 개요 ***==================================
+
+1.컴포넌트에서 유동적인 데이터를 다룰 때, state 를 사용합니다. 
+
+*********************************************************
+  props(데이터 변동사용X(저장 목적)->데이터를 전달목적(이벤트처리도 같이)
+  state=>데이터 저장목적으로 사용=>ex) 클래스 목적(멤버변수에 값을 저장시킬려고)
+         =>이벤트처리도 같이 처리
+*********************************************************
+
+React.js 어플리케이션을 만들 땐, state를 사용하는 컴포넌트의 갯수를 최소화 하는 것 을
+ 노력해야합니다. =>적게 사용할것.(메모리 사용을 절약목적)
+
+예를들어, 10 개의 컴포넌트에서 유동적인 데이터를 사용하게 될 땐, (state 10개)
+각 데이터에 state를 사용 할 게 아니라, 
+props 를 사용하고 10 개의 컴포넌트를 포함시키는
+ container 컴포넌트를 사용하는것이 효율적입니다
+
+  메모리를 적게 사용(state 갯수가 많으면 많은 메모리를 차지한다.
+  props를 많이 사용=>메모리를 적게 사용한다.
+
+**************************************************************************
+=>결론) state는 필요한것만 선언하고 나머지는 props을 적극 활용하라=>메모리를 적게 사용하기위해서
+**************************************************************************
+
+ ***state의 특성(사용법)**
+
+1.state 의 초기 값을 설정 할 때는 
+   constructor(생성자) 메소드에서 this.state= { } 를 통하여 설정합니다.
+
+2.state값을 화면에 출력시킬려면 { this.state.stateName } 을 사용
+                                                         =======키명
+
+3.state 를 업데이트 할 때는 this.setState() 메소드를 사용
+   =>자바의 캡슐화개념=>직접적인 접근X=>성능에 문제가 발생가능성이 있기에 사용자제 할것.
+
+    ES6 class에선 auto binding이 되지 않으므로, setState 메소드를 사용 하게 될 메소드를
+    bind 해주어야 합니다. 
+
+(bind 하지 않으면 React Component 가 가지고있는 멤버 함수 및 객체에 접근 할 수 없습니다.)
+=>이벤트처리함수를 호출할때 연결시켜주는 구문이 필요
+=================================================
+1.App2.js에서 소스코드 state선언,updateValue()선언
+
+class App2 extends React.Component{
+    //데이터를 저장
+    constructor(props){
+        super(props);//부모의 생성자먼저 호출하면서 props에게 전달
+        //초기 state 설정->동적 속성 =>형식) this.state={키명:저장할값,~}
+        this.state={  //출력형식) this.state.속성명(=키명)
+            value:Math.round(Math.random()*100) //0~99사이의 랜덤값(임의값)
+        }
+    }
+    //값을 변경=>this.state.속성명(=키명)=저장할값(X)=>this.setState(저장할값)
+    updateValue(rnadomValue){
+        this.setState({
+            value:randomValue  //키명:넘겨받은 매개변수명
+        })
+    }
+////////////////////////////////////////////////////////
+   <Header title={this.props.contentTitle} />
+                <Content body={this.props.contentBody}/>
+                <RandomNumber />=>중첩
+-------------------------------------------------------------
+2.RandomNumbr.js
+
+/*
+  화면에 랜덤의 값을 출력목적으로 사용(이벤트 발생)->부모컴포넌트와 연결
+*/
+import React from 'react';
+
+class RandomNumber extends React.Component{
+
+    //버튼을 클릭했을때 호출해주는 함수
+    updateNumber(){
+
+    }
+    constructor(props){
+        super(props);
+        //생성자->속성의 값을 초기화,이벤트처리함수를 연결시켜주는 구문작성
+    }
+
+    render(){
+        return(<div>
+                <h1>랜덤값:</h1>
+                <button onClick={this.updateNumber}>랜덤값 출력</button>
+              </div>)
+    }
+}
+export default RandomNumber;
+==================================
+ 기본화면에 출력 확인
+
+  부모----------자식
+  App2          RandomNumber
+   state======>출력=>이벤트발생(자식)
+           <=========
+                props=>호출할 함수를 매개변수로 전달
+                부모(버튼X)->자식에게 부모의 함수를 전달
+==================================
+
+App2.js
+
+<h1>자기값 출력:{this.state.value}</h1>
+<RandomNumber number={this.state.value}/>=>{this.props.number}
+=============================================
+
+   <RandomNumber number={this.state.value}
+                              onUpdate={this.updateValue}/> =>{this.props.onUpdate}
+                                               =>this.부모의함수명=>매개변수로 전달
+                               이 함수를 호출할 방법이 없기때문에 화면디자인에 버튼이 자식컴포넌트에게
+                               부모대신 호출할 함수를 매개변수로 전달
+===============================================
+ *** 리액트에서 함수를 호출할때 주의할점 ***
+
+1.단순히 이벤트를 발생시키는 함수 ->sayHello() { alert('Test');}  
+     =>on이벤트={this.호출할함수명} =>ex) onClick={this.sayHell}
+
+2.state값을 변경(저장)시킬 목적으로 이벤트를 발생시키는 함수=>
+            on이벤트={this.호출할함수명} (X)
+
+  함수인식,state저장X=>** 생성자에서 호출할 함수를 연결시켜주는 구문을 반드시 작성**
+                               자동으로 연결(=binding)이 안되기때문에
+**********************************************************************************************
+App2.js
+
+//매개변수가 없는 함수호출
+    test(){
+       alert('매개변수가 없는 부모함수 호출됨!') 
+    }
+
+<RandomNumber number={this.state.value}
+                              onUpdate={this.updateValue}
+                              onTest={this.test} />=>{this.호출할 함수명}
+                              ====매개변수===>this.props.onTest
+=============================================
+RandomNumber.js
+
+render(){
+        return(<div>
+                <h1>랜덤값:{this.props.number}</h1>
+                <button onClick={this.updateNumber}>랜덤값 출력</button>
+                 ===========================================
+                <button onClick={this.props.onTest}> 매개변수없는 함수호출</button>
+                 ===========================================
+              </div>)
+    }
+===============================================
+*** 결론 ***
+
+부모->호출->처리(X)
+
+  매개변수 O =========>자식에 전달할때=>자식함수를 호출해서
+                                    매개변수를 전달해서 호출해야 된다.
+                                    this.props.매개변수명(=부모함수)()=>매개변수넣어줌
+  
+  매개변수 X ===>직접 이벤트에 연결시켜서 호출
+                               onClick={this.props.매개변수(=부모함수)}
+
+===============================================
+   html=>props,state,이벤트 처리
+=========================
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+    /* props,state를 이용해서 데이터를 저장(생성자 초기화) */
+    /* (1)
+    class Hello extends React.Component{
+        //함수선언->this.호출할함수명=>생성자에서 this.함수명으로 연결
+        //화살표함수를 이용하는 경우->this 사용하지 않아도 된다.
+        render(){
+          const clickHandler=(e)=>{//const clickHandler=function(e){
+                alert('안녕하세요')
+          }
+          return(<div onClick={clickHandler}><h1>Testing!</h1></div>)
+        }
+    } */
+    //함수사용->state를 사용해서 데이터 저장목적X
+    //중첩된 컴포넌트에서 부모로붙 넘겨받은 매개변수를 출력,이벤트
+    const Hello=()=>{//const Hello=function(){}//function Hello(){}
+       //render() Component에 존재하는 함수기때문에 사용X
+       const clickHandler=(e)=>{//const clickHandler=function(e){
+                alert('안녕하세요 함수호출!!!')
+          }
+       return(<div onClick={clickHandler}><h1>Testing22!</h1></div>)
+    }
+    ReactDOM.render(<Hello />,document.getElementById('root'))
+    </script>
+</body>
+=========================
+   1.class.html save as 2.class.props.html
+
+  <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+<title>웹상에서의 props전달</title>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+     //자식컴포넌트
+     class Greeting extends React.Component{
+         render(){
+            const clickHandler=(e)=>{//const clickHandler=function(e){}
+                 alert('안녕하세요')       
+			}
+            return(
+			         <div onClick={clickHandler}><h1>{this.props.type}</h1></div>
+			       )
+		 }
+     }
+	 //2.컴포넌트를 사용(매개변수를 전달(props))
+	 const dom=<div>
+                          <Greeting type="Hello!!" />
+		<Greeting type="Good Morning!!" />
+	                  </div>
+        //부모
+       ReactDOM.render(dom,document.getElementById('root'))
+   </script>
+</body>
+</html>
+=========================================
+       중첩컴포넌트+props를 이용
+3.class-arrow.html ->template사용할것.
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+<title>웹상에서 props전달,화살표함수 작성</title>
+</head>
+<body>
+
+<div id="root"></div>
+<script type="text/babel">
+//1.화살표함수로 컴포넌트를 정의(Book,TitleParts(제목),ContentParts(내용)
+//형식1) const 컴포넌트명=()=>(처리내용) 매개변수를 받지 않은 경우
+//형식2) const 컴포넌트명=(props)=>(처리내용) 매개변수를 받는 경우
+/*
+  class Book extends React.Component{
+   render(){
+     return(<div><h1>도서</h1></div>)
+   }
+}
+*/
+//자식
+  const TitleParts=(props)=>(
+     <div style={{backgroundColor:'red',color:'white'}}>
+        <h3>{props.title}</h3>
+	 </div>
+  )
+
+  const ContentParts=(props)=>(
+    <div style={{border:'1px solid blue',margin:15}}>
+        <h3>{props.body}</h3>
+	 </div>
+  )
+  //부모=>화살표함수를 사용하면=>this를 생략이 가능
+  const Book=(props)=>( /* title,body  */
+               <div>
+                  <TitleParts title={props.title} />
+				  <ContentParts body={props.body} />
+			   </div>
+  )
+
+ //전체 컴포넌트를 사용해서 배치시킬 내용을 담을 변수선언
+ const dom=<div>
+                     <Book title='삼국지' body='옛날 중국 영웅들의 이야기'/>
+	        <Book title='민수기' body='옛날 이스라엘 역사이야기'/>
+	        <Book title='서유기' body='옛날 손오공의 이야기'/>
+                  </div>
+
+   ReactDOM.render(dom,document.getElementById('root'))
+</script>
+</body>
+</html>
+======================================
+4.class2.html(화살표)=>이벤트 처리까지
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- 1.라이브러리 지정(cdn)(react,react-dom),babel 필요(es6 언어를 지원해주는 라이브러리사용) -->
+<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.38/browser.min.js"></script>
+<title>웹상에서도 클래스작성2</title>
+</head>
+<body>
+
+<div id="root"></div>
+<script type="text/babel">
+
+  class Hello extends React.Component{  //const Hello=(props)=>( {props.name})
+	   //생성자를 통해서 초기화작업
+	   constructor(props){
+                       super(props)
+	     //this.clickHandler=this.clickHandler.bind(this)// setState()를 이용한 이벤트처리함사용
+	   }
+
+	   render(){
+		   //render함수내부에 화살표 함수를 이용해서 이벤트 처리
+		   const clickHandler=(e)=>{
+                               const name=this.props.name
+				 alert(`${name} 님 안녕하세요?`)
+		   }
+           return (<div onClick={clickHandler}>
+		                <h1>{this.props.name}</h1>
+		             </div>)
+	   }
+  }
+    //추가
+    const dom=<div>
+                     <Hello name="테스트김" />
+	        <Hello name="임시" />
+	        <Hello name="임시테스트" />
+                  </div>
+
+   ReactDOM.render(dom,document.getElementById('root'))
+</script>
+</body>
+</html>
+
+===================================
+
+
+ 화살표 함수로 작성한 경우
+ const Greeting=(props)=>(<h1>{props.type}</h1>)
+
+*****************최종 결론**************************************************
+
+화살표함수를 이용해서 이벤트를 처리하는 경우가 아니라면
+무조건 생성자함수내부에서 호출하는 함수를 연결(=bind)구문을 
+작성해야 한다.
+
+********************************************************************************
+ create-react-app my-template=>원하지 않은 다른항목들도 존재
+
+  App.js->함수로=>클래스
+
+  미리 기본편집이 완료된 프로젝트를 복사해서 사용하는것이 조금 더 좋은방법
+=======================================
+ 컴포넌트의 라이프 사이클을 이용=>좀더 고급적인 프로그램기법 사용이 가능
+                  DB연동 =>my-template 이름을 변경=>my-lifecycle
+
+ 2.react>create-react-app my-lifecycle
+=========================
+  my-lifecycle
+     public 
+          index.html
+
+     src/components->App.js
+     index.js
+
+=======================================
+
+ 리액트에서 이벤트 처리하는 방법 2가지
+
+1.render()내부에 이벤트핸들러 작성->bind()연결 필요없다.
+                      =>** 화살표함수이용(주로)->bind 연결이 필요없다. **
+
+2.클래스 내부에 함수를 이용->bind()연결시키는 구문이 필요(생성자에서)
+
+========================================
+import React from 'react';//react.js(1)
+
+class App extends React.Component{
+
+  //1.속성 초기화(생성자)
+  constructor(props){
+    super(props);//부모에게 먼저 부모꺼 먼저 초기화->자식데이터 초기화
+    this.state={//외부에서 직접 접근X->this.state.data=5;(X)
+      data:0     //setState()이용해서 수정(권장)
+    }
+    console.log('constructor()호출됨')
+    //생성자 내부에 state값을 수정해주는 이벤트함수 연결
+    this.setNewNumber=this.setNewNumber.bind(this)
+  }
+  //2.증가
+   setNewNumber(){
+     if(this.state.data > 10){
+       alert('더 이상 증가시킬 수 없습니다.')
+       return;
+     }else{ //10미만
+       this.setState({data:this.state.data+1})
+     }
+   }
+  //3.감소
+  setDownNumber(){
+    if(this.state.data < -10){
+      alert('더 이상 감소시킬 수 없습니다.')
+      return;
+    }else{ //-10미만
+      this.setState({data:this.state.data-1})
+    }
+  }
+  render(){
+    console.log('App의 render() 호출됨!')
+    return(<div>
+            <h1>{this.state.data}</h1>
+            <button onClick={this.setNewNumber}>증가</button>
+            {/* on이벤트종류={this.함수명.bind(this)} 직접연결도 가능  */}
+            <button onClick={this.setDownNumber.bind(this)}>감소</button>
+            <Content myNumber={this.state.data}/>
+           </div>
+           )
+  }
+}
+
+//추가(LifeCycle 흐름확인)
+class Content extends React.Component{
+
+  //1.화면에 보여주는 부분
+  componentWillMount(){
+    console.log('컴포넌트가 DOM과 연결되기전에 호출(componentWillMount)')
+  }
+
+  componentDidMount(){
+    console.log('컴포넌트가 DOM과 연결된후에 호출(componentDidMount)')
+  }
+  render(){
+    console.log('Content클래스의 화면에 보여주는 역할함수(render()호출)')
+      return(<div>
+              {this.props.myNumber < 10?
+              <h3>{this.props.myNumber}</h3>:
+              <h3>더 이상 값을 증가시킬 수가 없습니다.</h3>}
+            </div>)
+    }
+    //화면에 보여준뒤에 수정전 or 수정후에 따라서 호출되는 함수가 다르다.
+    shouldComponentUpdate(newProps,newState){
+      //내부적으로 값이 변경이 되면 =>화면에 반영->render()호출
+      console.log('return false이면 render()호출이 안된다.(shouldComponentUpdate)')
+      return false;//return true;
+    }
+    componentWillUpdate(){
+      console.log(`컴포넌트가 수정되기전에 호출(componentWillUpdate)`)
+    }
+    componentDidUpdate(){
+      console.log(`컴포넌트가 수정된후에 호출(componentDidUpdate)`)
+    }
+    //새로운 props값을 받았을때 호출
+    componentWillReceiveProps(newPros){
+    console.log(`newPros값을 받았을 때 호출,componentWillReceiveProps ${newPros} `)
+    }
+}
+
+export default App;
+=======실행결과===================
+
+App의 render() 호출됨! =>부모컴포넌트 먼저 호출
+중첩 자식컴포넌트가 호출
+App.js:50 Content의 생성자 호출됨!
+App.js:54 컴포넌트가 DOM과 연결되기전에 호출(componentWillMount)
+
+============>DB에 대한 자료를 render()호출전에 연결해서 보여
+                        줘야 된다.
+
+App.js:74 Content의 render() 호출됨!=>화면에 보여준다.
+
+컴포넌트가 DOM과 연결후에 호출(componentDidMount)
+======================================>맨 처음
+
+ 증가 또는 감소버튼을 눌렀을 경우
+
+App의 render() 호출됨!
+App.js:62 return false이면 render()호출이 취소
+=>shouldComponentUpdate()를 먼저 호출이 된다. 사실=>render()호출
+0=>1
+App.js:67 컴포넌트가 수정되기전에 호출(componentWillUpdate)
+App.js:74 Content의 render() 호출됨!=>새로 고침의 기능
+App.js:71 컴포넌트가 수정후에 호출(componentDidUpdate)
+
+      <div><h1>Hello World!</h1></div>
+<h1 test={this.props}></h1>
+=======================================
+  프로젝트(my-telephone)<-my-template를 복사한 후 이름변경
+
+  전화번호부 관리
+============================================
+1.App.js
+
+import React from 'react';//react.js(1)
+
+class App extends React.Component{
+  
+  render(){
+    
+    return(<div>
+            <h1>전화번호부</h1>
+             {/* (1) -><Contact />
+             <div>홍길동 010-123-0987</div>
+             <div>테스트 010-666-8888</div>
+             <div>임 시  010-444-0987</div>
+             <div>임 시2 010-123-9999</div>
+             <div>테스트김 010-123-1111</div>
+             <div>이현우 010-888-2222</div> */}
+             <Contact />
+           </div>
+           )
+  }
+}
+
+export default App;
+
+============================
+2.Contact.js (소스코드가 변경되기 전의 예제)
+
+//전화번호부 목록,검색목적
+import React from 'react';
+
+class Contact extends React.Component{
+  
+  render(){
+    
+    return(<div>     
+             <div>홍길동 010-123-0987</div>
+             <div>테스트 010-666-8888</div>
+             <div>임 시  010-444-0987</div>
+             <div>임 시2 010-123-9999</div>
+             <div>테스트김 010-123-1111</div>
+             <div>이현우 010-888-2222</div>
+           </div>
+           )
+  }
+}
+
+export default Contact;
+==============================
