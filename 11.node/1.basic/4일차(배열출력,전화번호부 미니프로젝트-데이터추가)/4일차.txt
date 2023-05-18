@@ -1,0 +1,404 @@
+4일차(배열출력,전화번호부 미니프로젝트)
+
+C:\webtest\9.web\2.react>create-react-app my-telephone
+                                          (react-telephone)
+   src
+    |
+     -components->App.js
+========================================
+부트스트랩 3,4(복잡,버그 O?)
+
+                 형식) yarn add 설치할 프로그램명(최신버전) or 프로그램명@버전
+                 ==================================
+ index.js-> yarn add bootstrap@3.4.1<->yarn remove bootstrap@3.4.1
+                       =>yarn add react-addons-update@15.6.2 ->배열의 사용방법때문
+		  
+		  npm install --save react-addons-update@15.6.2
+                                 --save =>설치하면서 package.json파일에 기록이 되도록
+                                                해주는 옵션
+	     
+
+---------------------------------------------------------------------------
+                import 'bootstrap/dist/css/bootstrap.css';
+                
+======================================
+
+1.배열의 값을 화면에 출력(App->Contact->ContactInfo)=>전체 또는 일부(검색)
+                                                         ContactInfo.js
+//전화번호부 목록,검색목적
+import React from 'react';
+//추가
+import ContactInfo from './ContactInfo';
+
+class Contact extends React.Component{
+  //1.데이터관리(추가,수정,삭제,조회)->생성자를 통해서 초기화
+  constructor(props){
+      super(props);
+      this.state={
+          //(2)배열의 초기화
+          contactData:[
+            {name:'홍길동',phone:'010-123-0987'},
+            {name:'테스트',phone:'010-666-8888'},
+            {name:'임  시',phone:'010-444-0987'},
+            {name:'임 시2',phone:'010-123-9999'},
+            {name:'테스트김',phone:'010-123-1111'},
+            {name:'이현우',phone:'010-888-2222'}
+          ]
+      }
+  }
+  render(){
+    //화살표함수를 이용->하나씩 분리해서 인덱스별로 출력
+*************************************************
+    const mapToComponents=(data)=>{
+       //배열의 각각의 값을 분리->map함수를 이용 리턴(i)
+       return data.map((contact,i)=>{
+         //contact(배열의 요소각각을 의미)  i=>i는 요소의 인덱스번호
+         console.log('contact->',contact,'i->',i)
+           //key->배열의 내부적으로 구분하는 구분자로써 필수
+           return(<ContactInfo contact={contact} key={i} />)
+       })                               =====>{this.props.contact}
+    }
+**********************************************
+    return(<div>   
+            {mapToComponents(this.state.contactData)}
+              ***********************************
+              {/* (1)  
+             <div>홍길동 010-123-0987</div>
+             <div>테스트 010-666-8888</div>
+             <div>임 시  010-444-0987</div>
+             <div>임 시2 010-123-9999</div>
+             <div>테스트김 010-123-1111</div>
+             <div>이현우 010-888-2222</div> */}
+           </div>
+           )
+  }
+}
+
+export default Contact;
+=============================
+ContactInfo.js
+
+/* ContactInfo.js */
+import React from 'react';//react.js(1)
+
+export default class ContactInfo extends React.Component{
+  render(){
+    return(<div>
+         {/* this.props.contact(전달된 배열요소값)*/}
+        {this.props.contact.name} {this.props.contact.phone}
+           </div>
+           )
+  }
+}
+
+=>bootstrap 적용까지 미리
+
+return (<div className="container">
+            <table className="table table-bordered">
+             <tr className="success">
+               <td>{this.props.contact.name}</td> 
+               <td>{this.props.contact.phone}</td>
+             </tr>
+            </table>
+            </div>
+        )
+=================================================================
+2.검색기능을 추가(Contact.js)
+
+constructor(props){
+      super(props);
+      this.state={
+        //추가
+        keyword:'', /* 실시간으로 입력할 데이터를 저장할 속성명   */
+          //(2)배열의 초기화
+          contactData:[
+            {name:'홍길동',phone:'010-123-0987'},
+            {name:'테스트',phone:'010-666-8888'},
+            {name:'임  시',phone:'010-444-0987'},
+            {name:'임 시2',phone:'010-123-9999'},
+            {name:'테스트김',phone:'010-123-1111'},
+            {name:'이현우',phone:'010-888-2222'}
+          ]
+      }
+      //이벤트 연결구문 작성
+      this.handleChange=this.handleChange.bind(this);
+  }//생성자
+  //이벤트처리해주는 함수작성
+  handleChange(e){ //event객체->이벤트 정보
+      //jQuery->$(this)->event.target(이벤트가 발생된객체)
+    this.setState({keyword:e.target.value})
+  }
+  render(){
+    //화살표함수를 이용->하나씩 분리해서 인덱스별로 출력
+    const mapToComponents=(data)=>{
+       //--추가(검색한 데이터를 찾아서 필터->(ContactInfo)에게 전송--------------------------------------------
+       data=data.sort()//1.이미 정렬이 된 상태
+       data=data.filter( //2.정렬된 데이터중에서 찾은 데이터만 반환
+           (contact)=>{
+             //검색할 데이터가 없다면 indexOf()->-1을 반환해준다.
+             return contact.name.indexOf(this.state.keyword) > -1;
+           }
+       )
+        console.log('검색한 data=>',data)
+,,,
+====================================================================
+** 전화번호부의 선택기능 **
+
+1.Contact.js
+
+         selectedKey:-1, /* 어떤항목을 자세히 보길원하는지 체크    */
+        //(2)배열의 초기화
+          contactData:[
+            //{name:'홍길동',phone:'010-123-0987',addr:'서울시',sung:'남',,,},
+            {name:'홍길동',phone:'010-123-0987'},
+            {name:'테스트',phone:'010-666-8888'},
+            {name:'임  시',phone:'010-444-0987'},
+            {name:'임 시2',phone:'010-123-9999'},
+            {name:'테스트김',phone:'010-123-1111'},
+            {name:'이현우',phone:'010-888-2222'}
+          ]
+      }
+      //이벤트 연결구문 작성
+      this.handleChange=this.handleChange.bind(this);
+      this.handleClick=this.handleClick.bind(this);
+  }//생성자
+  //이벤트처리해주는 함수작성
+  handleChange(e){ //event객체->이벤트 정보
+      //jQuery->$(this)->event.target(이벤트가 발생된객체)
+    this.setState({keyword:e.target.value})
+  }
+  //key값을 매개변수로 받아서 처리해주는 함수->수정
+  handleClick(key){
+    this.setState({selectedKey:key})
+    console.log(key,'is selected!')
+  }
+,,,
+ 
+return(<ContactInfo contact={contact} key={i} 
+                       onClick={()=>this.handleClick(i)}/>)
+                                     ================
+***화살표함수를 이용해서 이벤트가 발생시 부모함수를 호출하면서 ****
+     매개변수를 전달하는 구문을 미리 작성했기때문에
+
+ ContactInfo.js에서 {this.props.onClick}
+
+  onClick이벤트를 발생시 자식의 클래스에서 함수를 작성->부모의 함수를
+ 호출하는 문장을 사용해야 되는데 그 부분을 생략한 것임.
+
+   ()=>this.handleClick(i)
+
+ ex)
+  var test=function(){
+     handleClick(i)
+  }
+
+  test()
+**********************************************
+    글상세보기 처럼 원하는 항목을 클릭=>특정위치에 출력시켜주는 컴포넌트
+                                        (DOM) 페이지 이동X
+
+   App.js를 save as ContactDetails.js =>rcc 단축키
+
+import React from 'react';//react.js(1)
+
+export default class ContactDetails extends React.Component{
+  
+  render(){
+    return(<div>
+             ContactDetails
+           </div>
+           )
+  }
+}
+=================================
+ Contact.js에서 ContactDetails.js를 불러올 수 있도록 처리
+=================================
+
+ {mapToComponents(this.state.contactData)}
+  ************************************************
+    <ContactDetails isSelected={this.state.selectedKey!=-1}/>
+  ************************************************
+  isSelected 매개변수를 전달=>선택했을경우의 내부적인 키의 인덱스번호전달
+
+
+import React from 'react';//react.js(1)
+
+export default class ContactDetails extends React.Component{
+  
+  render(){
+      //항목을 선택유무에 따라서 다른 디자인의 화면을 보여줘야된다.
+    const details=(<div>Selected!!</div>)
+    const blank=(<div>Not Selected!!!</div>)
+    //--------------------------------------------------
+    return(<div>
+             {this.props.isSelected?details:blank}
+              =======================
+           </div>
+           )
+  }
+}
+=================================
+Contact.js
+ContactDetails.js
+ContactInfo.js
+
+ ppt 중에서 오타발생
+
+==============================
+ 선택한 항목을 클릭=>선택한 내용이 자세히 출력 코딩 변경
+==============================
+//추가
+npm install --save react-addons-update =>최신버전을 설치
+                                       16.8.6 버전에서 문제발생
+
+  package.json파일에 설치하면서 기록하라는 옵션 --save
+npm uninstall react-addons-update
+
+npm install --save react-addons-update@15.6.2 =>
+ 만약에 문제가 생기면 최신버전을 삭제하고 다시 설치할것
+ =>yarn start
+
+**********************************************************************
+npm install --save react-addons-update@15.6.2 =>update함수때문에 설치
+*********************************************************************
+
+            ====>설치된 라이브러리의 이름,버전명을 기록하라(파일로 기록)
+               package.json에 기록
+
+
+ 입력폼=>App.js을 save as ContactCreate.js
+
+import React from 'react';//react.js(1)
+
+export default class ContactCreate extends React.Component{
+  
+  render(){
+    return(<div>
+            <p>
+    <input type="text" name="name" placeholder="이름 입력"/>
+    <input type="text" name="phone" placeholder="전번 입력"/>
+            </p>
+            <button>Create</button>
+           </div>
+           )
+  }
+}
+
+=>Contact.js에서 불러오기
+
+//----------------------------------------
+  handleCreate(contact){ //데이터추가
+    this.setState({ //1.집어넣을 데이터 2.$push이용 []로 묶어줄것
+      contactData:update(this.state.contactData,{$push:[contact]})
+    })
+  }
+  handleEdit(name,phone){//데이터수정(~,addr)
+    this.setState({
+      contactData:update(this.state.contactData,{
+        //2.수정할값에 대한 인덱스번호
+        [this.state.selectedKey]:{
+          name:{$set:name},  //형식) name(키명):{$set:저장할값}
+          phone:{$set:phone}//,addr:{$set:addr},,
+        }
+      })
+    })
+  }
+  handleRemove(){//데이터삭제
+     this.setState({
+       contactData:update(this.state.contactData,
+        //$splice메서드를 이용해서 선택된키부터 몇개를 삭제?
+        //삭제할 대상자도 배열로 묶어준다.[]
+        {$splice:[[this.state.selectedKey,1]]}),
+        selectedKey:-1 //다시 삭제시킬 대상자를 선택하기위해서 초기화
+     })
+  }
+=====================================
+
+부모 Contact.js
+
+<ContactCreate onCreate={this.handleCreate}/>
+                        ======
+
+ContactCreate에서 {this.props.onCreate}=>부모의 함수호출
+===================================
+import React from 'react';//react.js(1)
+
+export default class ContactCreate extends React.Component{
+  //자식컴포넌트->데이터를 입력->부모에게 전달
+  constructor(props){
+    super(props)
+    this.state={
+      name:'',
+      phone:''//, addr:'',sung:'',,,
+    }
+    //생성자에서 함수호출
+    this.handleChange=this.handleChange.bind(this);
+    this.handleClick=this.handleClick.bind(this);
+  }
+  //추가
+  handleChange(e){//event.target=>이벤트처리객체
+    let nextState = {}//한개이상이기에 빈객체를 먼저생성
+    //name:연습     name    : 연습
+    nextState[e.target.name]=e.target.value;
+    this.setState(nextState)
+  }
+  //추가2
+  handleClick(){
+    const contact={
+      name:this.state.name,  //이름
+      phone:this.state.phone  //전화입력
+    }
+    //부모(Contact.js의 ContactCreate()호출)
+    this.props.onCreate(contact);//부모함수호출
+    this.setState({
+      name:'',
+      phone:''
+    })
+  }
+  render(){
+    return(<div>
+            <p>
+    <input type="text" name="name" placeholder="이름 입력"
+           value={this.state.name}
+           onChange={this.handleChange}/>
+    <input type="text" name="phone" placeholder="전번 입력"
+           value={this.state.phone} 
+           onChange={this.handleChange}/>
+            </p>
+            <button onClick={this.handleClick}>Create</button>
+           </div>
+           )
+  }
+}
+=========================================================================
+         각자 맡은 프로젝트에서 가장 자신부분을 올려주세요
+
+ 예) backend         frontend(디자인)=>화면 웹상에 올림(hrd 체크리스트)
+     스프링
+
+     게시판->화면,소스
+
+ UI 구현
+==========================================================================
+
+ yarn 설치 =>npm uninstall -g yarn
+
+             npm install -g yarn
+
+ create-react-app 설치
+
+            npm uninstall -g create-react-app@3.4.1(버전확인)
+            
+ =>가장 최신버전으로 설치할것.
+ npm install -g create-react-app =>4.0.3
+
+ 확인) create-react-app 프로젝트명(myapp5)
+
+   제대로 생성->yarn start=>서버가동되면서 실행이 되는지확인?
+
+  npm install --save react-addons-update =>버전명없이 가장최신 버전
+  yarn add react-addons-update@15.6.2
+
+
+
+
