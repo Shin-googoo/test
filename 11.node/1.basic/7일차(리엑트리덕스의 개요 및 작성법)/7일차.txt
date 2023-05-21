@@ -1,0 +1,252 @@
+** 리엑트 리덕스의 개요 및 작성법 **
+
+C:\webtest\9.web\2.react>create-react-app redux-counter
+
+Creating a new React app in C:\webtest\9.web\2.react\redux-counter.
+
+Installing packages. This might take a couple of minutes.
+Installing react, react-dom, and react-scripts with cra-template.
+
+C:\webtest\9.web\2.react\redux-counter>yarn add react-redux@7.0.3
+                                                                                     ============
+success Saved 3 new dependencies.
+info Direct dependencies
+└─ react-redux@7.0.3
+info All dependencies
+├─ hoist-non-react-statics@3.3.2
+├─ invariant@2.2.4
+└─ react-redux@7.0.3
+Done in 5.98s.
+
+C:\webtest\9.web\2.react\redux-counter>yarn add redux@4.0.1
+success Saved 2 new dependencies.                      =========
+info Direct dependencies                                  createStore 때문에
+└─ redux@4.0.1
+info All dependencies
+├─ redux@4.0.1
+└─ symbol-observable@1.2.0
+Done in 5.36s.
+
+  redux-counter
+        |
+         -src
+           actions=>어떤 기능을 구현할지를 설계(ex 인터페이스 처럼)
+           components=>스토어에 저장된 데이터를 받아서 화면에 출력(컴포넌트)
+                              ex)Getter Method 역할
+           containers=>스토어와 연관된 컴포넌트 저장(App,스토어 데이터 받아옴)                                                  ==============
+           lib                ex)Setter Method 역할
+           reducers=>기능을 처리할 항목(함수들)
+================================================
+actions – 액션타입과 액션 생성자 파일을 저장
+
+components – 컴포넌트의 뷰가 어떻게 생길지만 담당                    
+                       하는 프리젠테이셔널 컴포넌트를 저장                     
+                   주로 함수형 컴포넌트로 작성(스타일 적용)
+
+containers – 스토어에 있는 상태를 props로 받아 오는                 
+              컨테이너 컴포넌트들을 저장(리덕스에 직접 접근)
+
+reducers – 스토어의 기본 상태값과 상태의 업데이터를               
+             담당하는 리듀서 파일들을 저장
+
+*** App.js ***
+import React, { Component } from 'react';
+//추가
+import Counter from '../components/Counter';
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <Counter />
+      </div>
+    );
+  }
+}
+
+export default App;
+==================
+
+*components/Counter.js
+
+import React from 'react';
+//추가
+import './Counter.css';//스타일시트 적용
+import PropTypes from 'prop-types';//전달받은 값을 체크
+
+//Store(저장)->App->CounterContainer(store)->Counter(props받아서) 출력
+const Counter = ({number,color,onIncrement,onDecrement,onSetColor}) => {
+    return (
+        <div className="Counter"
+             onClick={onIncrement}
+             onContextMenu={(e)=>{
+                 e.preventDefault() //팝업메뉴 방지
+                 onDecrement()//하나 감소
+             }}
+             onDoubleClick={onSetColor}
+             style={{
+                 backgroundColor:color
+             }}>
+            {number}
+        </div>
+    );
+};
+//props의 전달받은 매개변수 자료형 초기화
+Counter.prototypes={
+    number:PropTypes.number,//증가,감소되는 숫자
+    color:PropTypes.string,//색깔
+    onIncrement:PropTypes.func,//함수자료형
+    onDecrement:PropTypes.func,
+    onSetColor:PropTypes.func
+}
+//props의 기본설정값
+Counter.defaultProps={
+    number:0,
+    color:'black',
+    onIncrement:()=>console.warn('onIncrement not defined!'),
+    onDecrement:()=>console.warn('onDecrement not defined!'),
+    onSetColor:()=>console.warn('onSetColor not defined!')
+}
+export default Counter;
+=========================================
+ yarn strat 중간점검
+==============
+
+/*
+actions/ActionTypes.js
+이벤트를 발생시켰을때 어떠한 기능(=함수)을 구현할것인지를 액션타입으로 설정
+*/
+export const INCREMENT='INCREMENT';//증가(자바의 정적상수)
+export const DECREMENT='DECREMENT';//감소
+export const SET_COLOR='SET_COLOR';//색깔을 변경
+
+/*
+ action(타입)을 객체로 만들어서 처리해주는 액션타입함수 선언
+  =>전달 목적
+*/
+import * as types from './ActionType';//액션을 불러와서 types이름
+
+export const increment=()=>({
+    type:types.INCREMENT   //키명(type):전달할 액션타입
+})
+
+export const decrement=()=>({
+    type:types.DECREMENT
+})
+
+export const setColor=(color)=>({
+    type:types.SET_COLOR,
+    color
+})
+=================================
+/*
+src/reducers/index.js 리듀서(스토어에 있는 값을 추가,수정,삭제,조회)
+                    ex)자바의 DTO(Setter,Getter 역할)
+*/
+import * as types from '../actions/ActionType';
+//초기 상태를 정의
+
+const initialState={
+    color:'black',//원의 기본색깔은 검정
+    number:0 //초기값은 0
+}
+/*
+리듀서함수->1.state,action을 파라미터을 받는 함수
+           2.함수 내부에서 action.type에 따라 새로운 상태를 만들어서
+             반환(기존의 값을 변경시킨값)
+           3.state를 직접 수정하면 안되고 기존의 값을 변경된 값으로
+             덮어쓴 새로운 객체를 만들어서 반환(순수함수)
+*/
+function counter(state=initialState,action){
+    switch (action.type){
+        //1.증가
+        case types.INCREMENT:
+        return {
+           ...state,//배열을 의미
+           number:state.number+1
+        };
+        //2.감소
+        case types.DECREMENT:
+        return {
+           ...state,//배열을 의미
+           number:state.number-1
+        };
+        //3.색깔변경
+        case types.SET_COLOR:
+        return {
+           ...state,//배열을 의미
+           color:action.color
+        };
+       default:
+           return state;//state=initialState이 값이 그대로 유지
+    }
+}
+export default counter;
+
+
+============================
+/*
+  ...배열-> [1,2,3]+[4,5,6,7]=>[1,2,3,4,5,6,7]->concat(+)
+*/
+const arr4=[1,2,3];
+console.log([...arr4,4,5,6,7])
+
+//배열에 값을 추가 push()<->pop() 꺼내기(배열의 요소값 삭제)
+const arr5=[7,8,9];
+const arr6=[10,11,12];
+//형식)  기존배열객체명.push(추가시킬 배열객체)
+arr5.push(... arr6);//[7,8,9,10,11,12]=>arr5,arr6도 아닌 새로운배열 생성
+console.log('arr5->',arr5);
+
+const colors = [
+      '#495057','#f03e3e','#d6336c','#ae3ec9',
+      '#7048e8','#4263eb','#1c7cd6','#1098ad',
+      '#0ca678','#37b24d','#74b816','#f59f00',
+      '#f76707'
+  ];
+================================
+/*
+ 실질적으로 스토어에 저장,출력 처리해주는 함수를 작성=>컴포넌트와 연결
+*/
+import React from 'react';
+//추가
+import Counter from '../components/Counter';//연결시킬 컴포넌트
+import * as actions from '../actions'; //액션타입불러옴
+import {connect} from 'react-redux';//스토어--connect--컴포넌트
+
+//13가지의 색상중 랜덤으로 선택하는 함수
+export function getRandomColor(){
+    const colors=[
+      '#495057','#f03e3e','#d6336c','#ae3ec9',
+      '#7048e8','#4263eb','#1c7cd6','#1098ad',
+      '#0ca678','#37b24d','#74b816','#f59f00',
+      '#f76707'
+    ];
+    //0~12에서 인덱스번호 반환
+    const random=Math.floor(Math.random()*13)
+    return colors[random]
+}
+
+//1.store안의 state값을 props로 연결시켜주는 함수
+const mapStateToProps=(state)=>({
+    color:state.color,/* black */
+    number:state.number /* 0 */
+})
+//2.액션생성함수를 사용->액션->전달(=dispatch)=>props로 연결함수
+//액션타입:()=>dispatch(액션타입에 해당하는 함수명())
+const mapDispatchToProps=(dispatch)=>({
+     onIncrement:()=>dispatch(actions.increment()),
+     onDecrement:()=>dispatch(actions.decrement()),
+     onSetColor:()=>{
+         //매개변수가 필요따로 매개변수값을 설정=>함수호출
+         const color=getRandomColor()//변경시킬 색상
+         dispatch(actions.setColor(color))
+     }
+})
+
+const CouterContainer=connect( //스토어에 저장된 값을  props전달함수
+     //1.변경된 state 가져오기  2.액션타입에 따라 함수호출
+    mapStateToProps,mapDispatchToProps
+)(Counter)//{number,color,onIncrement,onDecrement,onSetColor}
+export default CouterContainer;
+===========================================
