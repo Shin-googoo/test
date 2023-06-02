@@ -1,0 +1,278 @@
+4일차(mongoDB개요 및 작성법)
+
+ mongodb의 설치경로 기억
+
+C:\Program Files\MongoDB\Server\4.0\data\ =>수동으로 경로지정
+                                                                         path
+                                                                        데이터 저장장소
+
+;C:\Program Files\MongoDB\Server\4.0\bin =>mongodb를 실행
+                                                                    하기위한 명령어
+                                                                    mongo.exe
+
+******************************************
+ 레코드 단위(행)저장--------------->Document로 저장(행)
+
+[
+  {
+    "title": "article01",  =>키명:저장할값
+    "content": "content01",
+    "writer": "Velopert",
+    "likes": 0,
+    "comments": []
+  },
+  {
+    "title": "article02",
+    "content": "content02",
+    "writer": "Alpha",
+    "likes": 23,
+    "comments": [
+      {
+        "name": "Bravo",
+        "message": "Hey Man!"
+      }
+    ]
+  },
+  {
+    "title": "article03",
+    "content": "content03",
+    "writer": "Bravo",
+    "likes": 40,
+    "comments": [
+      {
+        "name": "Charlie",
+        "message": "Hey Man!"
+      },
+      {
+        "name": "Delta",
+        "message": "Hey Man!"
+      }
+    ]
+  }
+]
+===================================
+Table(행들의 집합)=>Document들의 집합=>Collection(=table)
+
+ Database에 저장 =================Database에 저장
+                                                                   서버에 저장
+-------------------------------------------------------------------
+      MongoDB 데이터 저장단위
+
+  서버
+    데이터베이스
+       컬렉션=====>스키마(테이블의 구조)가 없다.
+                              정형화된 틀이 없다.(데이터 저장 방식이 자유롭다)
+          도큐먼트
+              key,value================테이블의 필드
+
+     ** MongoDB의 장점 **
+
+1.정형화된 틀이 없다.(저장 형식이 조금 자유)
+2.복잡한 조인 구문이 없다.
+3.강력한 SQL 성능을 낼 수 있다.
+4.조인구문 대신에 내부적으로 중첩해서 사용이 가능하다.
+====================================
+
+ 실습
+
+콘솔에서 몽고DB 실행->데이터 저장,검색,수정,삭제
+----------------------------------------------------
+ node.js+express서버+mongoDB
+============================
+
+1.기존의 데이테베이스 저장 확인 명령어(목록)
+
+show dbs
+
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+2.데이터베이스 생성
+
+  use 생성할 DB이름
+
+>use mongodb_tutorial
+switched to db mongodb_tutorial =>전환
+
+3.현재 사용중인 데이터벵스 확인 명령어
+  db
+
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+** 데이터베이스가 만들어져 있어도 데이터가 한개라도 존재하지 않으면
+    데이터베이스 확인명령어에 나오지 않는다.
+-----------------------------------------------------------------------
+ document생성(행)->행을 생성->컬렉션도 같이 생성
+
+형식)db.컬렉션명(테이블명).insert({키명:저장할값,키명2;값2,,,})
+
+ create table 테이블생성->insert into 테이블명 values(~)
+
+db.book.insert({"name":"MongoDB","writer":"testkim"});
+    -----컬렉션    ----------------Document-----------------
+
+> db.book.insert({"name":"MongoDB","writer":"testkim"});
+WriteResult({ "nInserted" : 1 }) =>데이터 생성을 의미
+
+>show dbs
+
+> show dbs
+admin             0.000GB
+config            0.000GB
+local             0.000GB
+mongodb_tutorial  0.000GB
+
+삭제시켜주는 DB명령어
+
+db.dropDatabase();
+           =
+
+> db.dropDatabase();
+{ "dropped" : "mongodb_tutorial", "ok" : 1 }
+
+ Document를 추가하면서 자동으로 people이라는 컬렉션을 생성
+
+> db.people.insert({"name":"yeansu lee"});
+WriteResult({ "nInserted" : 1 })
+-------------------------------------------------------------
+ show collections=>만들어진 컬렉션 목록 확인
+
+ books  =>db.books.drop()
+ people =>db.people.drop()
+                     ====삭제시킬 컬렉션명
+--------------------------------------------------------------
+> db.people.insert([
+... {"name":"Java","writer":"lee"},
+... {"name":"Jsp"}  =>키와 값의 갯수는 마음대로 설정
+... ]);                      =>저장형식이 자유롭다.(스키마 구조 없다)
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 2,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+
+=>db.people.find()
+                    ===
+
+> db.people.find();=>3개 다 출력(전부 출력)
+
+{ "_id" : ObjectId("5cec987703bd54e98369f942"), "name" : "yeansu
+  ====primary key(키명)=>자동으로 생성->저장
+{ "_id" : ObjectId("5cec9dd103bd54e98369f943"), "name" : "Java",
+" }
+{ "_id" : ObjectId("5cec9dd103bd54e98369f944"), "name" : "Jsp" }
+>
+
+  db.people.find({"name":"Java"})
+
+{ "_id" : ObjectId("5cec9dd103bd54e98369f943"), "name" : "Java", "writer" : "lee
+" }
+----------------------------------------------------------
+db.people.remove({"name":"Java"})
+     ====
+     document가 들어있는 컬렉션    
+WriteResult({ "nRemoved" : 1 })
+                     데이터 삭제 성공 표시
+                      반환값이 1이 된다.
+=====================
+12.db.articles.find().pretty()=>세로로 정렬
+  키와 값 양식이 많아야 표시가 된다.
+ 
+> db.articles.insert([
+...   {
+...     "title": "article01",
+...     "content": "content01",
+...     "writer": "Velopert",
+...     "likes": 0,
+...     "comments": []
+...   },
+...   {
+...     "title": "article02",
+...     "content": "content02",
+...     "writer": "Alpha",
+...     "likes": 23,
+...     "comments": [
+...       {
+...         "name": "Bravo",
+...         "message": "Hey Man!"
+...       }
+...     ]
+...   },
+...   {
+...     "title": "article03",
+...     "content": "content03",
+...     "writer": "Bravo",
+...     "likes": 40,
+...     "comments": [
+...       {
+...         "name": "Charlie",
+...         "message": "Hey Man!"
+...       },
+...       {
+...         "name": "Delta",
+...         "message": "Hey Man!"
+...       }
+...     ]
+...   }
+... ]);
+BulkWriteResult({
+        "writeErrors" : [ ],
+        "writeConcernErrors" : [ ],
+        "nInserted" : 3,
+        "nUpserted" : 0,
+        "nMatched" : 0,
+        "nModified" : 0,
+        "nRemoved" : 0,
+        "upserted" : [ ]
+})
+>
+> db.articles.find().pretty();
+{
+        "_id" : ObjectId("5ceca25d03bd54e98369f945"),
+        "title" : "article01",
+        "content" : "content01",
+        "writer" : "Velopert",
+        "likes" : 0,
+        "comments" : [ ]
+}
+{
+        "_id" : ObjectId("5ceca25d03bd54e98369f946"),
+        "title" : "article02",
+        "content" : "content02",
+        "writer" : "Alpha",
+        "likes" : 23,
+        "comments" : [
+                {
+                        "name" : "Bravo",
+                        "message" : "Hey Man!"
+                }
+        ]
+}
+{
+        "_id" : ObjectId("5ceca25d03bd54e98369f947"),
+        "title" : "article03",
+        "content" : "content03",
+        "writer" : "Bravo",
+        "likes" : 40,
+        "comments" : [
+                {
+                        "name" : "Charlie",
+                        "message" : "Hey Man!"
+                },
+                {
+                        "name" : "Delta",
+                        "message" : "Hey Man!"
+                }
+        ]
+}
+>
