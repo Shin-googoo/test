@@ -1,0 +1,41 @@
+HTML
+
+<section>
+  <h2 class="hide">광고/배너</h2>
+  <div class="section_ad">
+    <a href=""><img src="images/@ad_btm.png" alt="파생상품 대표 거래앱, 리베선물 모바일 국내,해외,FX마진 거래를 하나의 앱으로!"></a>
+  </div>
+  <div class="section_ad2">  /* --------> 배경색*/
+    <div class="clear"> /* -----> 가운데 정렬*/
+      <div class="ico1"> /* --------> 아이콘, float left*/
+        <a href="">
+          <strong>기업 환리스크관리센터</strong>
+          <p>삼성선물이기업회원의 환위험관리를 지원합니다</p>
+        </a>
+      </div>
+      <div class="ico2">   /*--------> 아이콘, float right  */
+        <a href="">
+          <strong>기업 원자재센터</strong>
+          <p>국제 원자재시장에 대한 최적의 전략을 제시합니다</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+----------------------------------------------------------------------------------------------------
+CSS
+/* 광고 */
+.section_ad {  background:#f4f4f4; text-align: center;}
+.section_ad2 {margin:100px 0; background: linear-gradient(to right, #f5f7f8, #f5f7f8 50%, #ffffff 50%, #ffffff );}
+.section_ad2 > div { margin:0 auto; width:1200px;}
+.section_ad2 > div > div { float: left;  width:50%}
+.section_ad2 > div > div a {display: flex; flex-direction: column; justify-content: center; 
+padding: 0 0 0 40px; height:120px;}
+.section_ad2 > div > div a strong { font-size: 19px; color:#081b50;}
+.section_ad2 > div > div a strong:after { content:url(../images/bu_arrow_right2.png); padding:0 0 0 8px;}
+.section_ad2 > div > div a p {font-size: 17px; color:#081b50;}
+.section_ad2 .ico1 { background:url(../images/ico_ad_btm1.png) no-repeat right 55px center;}
+.section_ad2 .ico2 { background:url(../images/ico_ad_btm2.png) no-repeat right 55px center;}
+
+
