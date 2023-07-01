@@ -1,5 +1,6 @@
 header {position: absolute; left: 50%; padding: 48px 0 0; width: 1200px; transform: translate(-50%);}
-header h1 { float: left; width:86px; height:40px; background:url(../images/h1_logo.png) no-repeat;}
+header h1 { float: left; }
+header h1 a {display: block; width:86px; height:40px; background:url(../images/h1_logo.png) no-repeat;}
 header .gnb { float: left; padding: 0 0 0 185px;}
 header .gnb li { float: left; padding: 0 50px 0 0;}
 header .gnb a {font-size: 23px; color: #fff; font-weight: bold;}
@@ -12,11 +13,51 @@ header .util { position: absolute; right: 0; top: 0; }
 header .util li {float: left; padding: 0 0 0 20px;}
 header .util a {color: #fff; font-size: 13px; font-weight: bold; line-height: 48px;}
 
-
 /* 
 내가 여백을 주고자 하는 영역에 선이나 배경이 있으면 margin
 그 전엔 무조건 padding부터 준다.
 padding, margin 
 */
-
+/* 비주얼 */
 .visual { height: 435px; background: linear-gradient(to right, #5d11db, #6d00c9);}
+.visual > div {margin: 0 auto; width:1200px;}
+.section_start {background: linear-gradient(to right, #3d0eaf, #4a00a1);}
+.section_start > div {margin:0 auto; width: 1200px;}
+.section_start > div h2 {display: flex; flex-direction: column; float: left; font-size: 28px; color: #fff; height: 120px; justify-content: center;}
+/*  
+h2요소는 자식으로 블럭요소를 둘 수 없어 인라인 요소인 span을 주고
+span요소를 블럭요소 바꿔줘 줄을 내려준다.
+*/
+.section_start > div h2 span {font-size: 14px; color:#77eaff; letter-spacing: -0.2px;}
+.section_start > div img {float: right;}
+.section_notice {margin:0 auto; width: 1200px;}
+/* float 준 부모의 높이가 사라지므로 부모 위치에 clear 준다. */
+.section_notice h2 {padding: 0 24px 0 0; float: left; background: url(../images/bu_arrow_right.png) no-repeat right; line-height: 88px; font-size: 18px; color: #0c1a3c;}
+.section_notice img {float: right;}
+
+/* 리서치 */
+.section_research {background: #ecf1f5;}
+.section_research > div {position:relative; margin: 0 auto; padding:0 0 78px; width: 1200px;}
+.section_research h2 {padding: 84px 0 30px; font-size: 30px; color: #0c1a3c; line-height: 1;}
+.section_research li {float: left; }
+.section_research li a {display: block; position:relative; padding:40px 30px; width: 288px; height:330px; border: 1px solid #fff; background:#fff; box-sizing: border-box; transition:all .5s;}
+.section_research li  ~ li {margin: 0 0 0 16px;}
+.section_research li span {line-height: 1; font-size: 15px; color: #067fd9; font-weight: 500;}
+.section_research li strong { display: block; padding:20px 0 0; font-size: 23px; color: #010101; line-height: 33px; letter-spacing: 0.25px;} /* 줄을 내리기위해서 */
+.section_research li .info {position:absolute; left: 30px; bottom: 40px;}             
+.section_research li .info em {display: block; padding: 0 0 30px; font-size: 14px; color:#010101; letter-spacing: -0.25px; line-height: 1;}             
+.section_research li .info em i { display: inline-block; margin:0 7px; height: 17px; border-right:1px solid #e4e8eb; vertical-align: -3px;}
+.section_research .btn_more {
+  position:absolute; top: 102px; padding: 0 17px 0 0; background: url(../images/bu_arrow_right2.png)no-repeat right; right: 8px; font-size:17px; color: #000; font-weight: bold;
+}
+.section_research a:hover {box-shadow: 0 0 13px 4px rgba(4,0,0,0.11); border: 1px solid #067fd9;}
+
+
+
+
+
+
+
+
+
+
