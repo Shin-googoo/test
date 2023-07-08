@@ -1,0 +1,6 @@
+.CounerList { /* 페이지에 일정하게 나열이 된다. */
+   margin-top:2rem;
+   display:flex;
+   justify-content:center;
+   flex-wrap:wrap;
+}
