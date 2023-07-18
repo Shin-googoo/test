@@ -75,6 +75,16 @@ span요소를 블럭요소 바꿔줘 줄을 내려준다.
 
 /* 광고 */
 .section_ad {text-align: center; background-color:#f6f6f6;}
+.section_ad2 {margin: 100px 0 0; background: linear-gradient(to right, #f5f7f8, #f5f7f8 50%, #ffffff 50%, #ffffff);}
+.section_ad2 > div {margin: 0 auto; width: 1200px;}
+.section_ad2 > div > div {float: left; width: 50%;}
+.section_ad2 > div > div a {display: flex; flex-direction: column; justify-content: center; padding: 0 0 0 40px; height:120px;}
+.section_ad2 > div > div a strong { font-size: 19px; color: #081b50;}
+.section_ad2 > div > div a strong:after {content:url(../images/bu_arrow_right2.png); padding: 0 0 0 8px;}
+.section_ad2 > div > div a p {font-size: 17px; color: #081b50;}
+.section_ad2 .ico1 {background: url(../images/ico_ad_btm1.png) no-repeat right 55px center; }
+.section_ad2 .ico2 {background: url(../images/ico_ad_btm2.png) no-repeat right 55px center; }
+
 
 /* 스타일가이드*/
 .h2 { padding: 85px 0 30px; line-height: 1; font-size: 30px; color:#0c1a3c;}
