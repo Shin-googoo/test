@@ -1,0 +1,54 @@
+/* sub */
+header {position: relative; margin: 0 auto; padding: 48px 0 24px; width: 1200px;}
+header h1 a {display: block; width:86px; height:40px; background:url(../images/h1_logo2.png) no-repeat;}
+header .gnb { float: left; padding: 0 0 0 185px;}
+header .gnb li { float: left; padding: 0 50px 0 0;}
+header .gnb a {font-size: 23px; color: #060606; font-weight: bold;}
+header .menu { float: right; }
+header .menu .btn_mypage { display: inline-block; width: 40px; height: 40px; background: url(../images/ico_mypage2.png) no-repeat center;} 
+/* a태그는 인라인요소이므로 인라인 블록요소로 바꿔 크기를 줘야한다. */
+header .menu .btn_search {width: 40px; height: 40px; background: url(../images/ico_search2.png) no-repeat center;}
+header .menu .btn_menu { height:40px; padding: 0 0 0 37px; background: url(../images/ico_menu2.png) no-repeat left; font-size: 15px; font-weight: bold; color: #060606;}
+header .util { position: absolute; right: 0; top: 0; }
+header .util li {float: left; padding: 0 0 0 20px;}
+header .util a {color: #060606; font-size: 13px; font-weight: bold; line-height: 48px;}
+
+/* footer */
+footer {padding: 0 0 70px;}
+footer .stock {background: #0a1f55; text-align: center; font-size: 19px; color:#1dddfd; line-height: 72px;}
+footer .stock:before {content:url(../images/ico_footer_clock.png); padding:0 10px 0 0; vertical-align: -2px;}
+footer .tel_list {background: #f4f4f4; text-align: center;}
+footer .tel_list li {display: inline-block; position: relative; padding: 0 41px; line-height: 67px;}
+footer .tel_list li ~ li:after { content:''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width:1px; height: 17px; background: #e8e8e8;}
+footer .info {margin: 0 auto; padding:15px 0 0; width: 1200px;}
+footer .nav {float: left;}
+footer .nav li {float: left; padding: 0 28px 0 0;}
+footer .nav li a {font-size:15px; color:#000; font-weight:bold; line-height:50px;}
+footer .sns {float: right;}
+footer .sns li {float: left; padding:0 8px;}
+footer .sns a {display:block; width:50px; height:50px; background:no-repeat center;}
+footer .sns .ico1 { background-image: url(../images/ico_footer_blog.png);}
+footer .sns .ico2 { background-image: url(../images/ico_footer_kakao.png);}
+footer .sns .ico3 { background-image: url(../images/ico_footer_youtube.png);}
+footer .address {padding: 9px 0 0 217px; background: url(../images/ico_footer_logo.png) no-repeat 0 22px;}
+footer .address ul {line-height:42px;}
+footer .address li {float: left; padding: 0 22px 0 0;}
+footer .address li a,
+footer .address li {font-size: 13px; font-weight: bold; color:#000;}
+footer .address li:first-child a {color:#067fd9;}
+footer .address p {font-size: 13px; color:#66666a; }
+
+/* 서브페이지 공통 */
+main {border: 1px solid #dadada;}
+.location {margin: 0 auto; padding: 23px 0 32px; width: 1200px;}
+.location li {float: left; font-size: 11px; color: #000;}
+.location li ~ li {padding: 0 0 0 27px; background:url(../images/bu_arrow_right3.png)no-repeat 14px center;}
+.h2 {padding: 0 0 30px; text-align: center; font-size: 30px; color: #000;}
+
+
+
+
+
+
+
+
