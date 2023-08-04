@@ -47,7 +47,7 @@
       </ul>
     </div>
     <h2 class='h2'>데일리시황</h2>
-    <nav>
+    <nav class='tab_type1 '>
       <ul>
         <li><a href="">글로벌채권</a></li>
         <li><a href="">외환</a></li>
@@ -57,126 +57,132 @@
     <form>
       <fieldset>
         <legend>검색</legend>
-        <input type="search">
-        <button>검색</button>
+        <div class='board_search' >
+          <input type="search" placeholder='검색어를 입력하세요'>
+          <button><span class="hide">검색</span></button>
+        </div>
       </fieldset>
     </form>
-    <nav>
-      <ul>
-        <li><button>통화</button></li>
-        <li><button>지수</button></li>
-        <li><button>금리</button></li>
-        <li><button>원자재</button></li>
-        <li><button>농산물</button></li>
-      </ul>
-    </nav>
-    <div>
-      <div>총 4183건</div>
-      <div>
+    <div class="contents">
+      <nav class='tab_type2'>
         <ul>
-          <li><button>리스트</button></li>
-          <li><button>카드</button></li>
+          <li><button>통화</button></li>
+          <li class='active'><button>지수</button></li>
+          <li><button>금리</button></li>
+          <li><button>원자재</button></li>
+          <li><button>농산물</button></li>
         </ul>
+      </nav>
+      <div class='align_justify clear board_info'>
+        <div class='txt'>총 4183건</div>
+        <div class='align'>
+          <ul>
+            <li><button class='list'>리스트</button></li>
+            <li><button class='card'>카드</button></li>
+          </ul>
+        </div>
+      </div>
+      <table class='table_type1'>
+        <caption>
+          글로벌 채권 지수 리스트
+          <div>첨부파일, 제목, 날짜를 제공하는 표</div>
+        </caption>
+        <colgroup>
+          <col style='width:85px;'>
+          <col>
+          <col style='width: 114px;'>
+        </colgroup>
+        <tbody>
+          <tr>
+            <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
+            <td class='tit'>
+              <a href="">
+                미국 대선 일주일전, 부양책 교착 속 대기모드
+                <img src="images/ico_new.png" alt="새글">
+                <div>
+                  허태오
+                  <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
+                </div>
+              </a>
+            </td>
+            <td class='date'>2022-10-26</td>
+          </tr>
+          <tr>
+            <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
+            <td class='tit'>
+              <a href="">
+                미국 대선 일주일전, 부양책 교착 속 대기모드
+                <img src="images/ico_new.png" alt="새글">
+                <div>
+                  허태오
+                  <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
+                </div>
+              </a>
+            </td>
+            <td class='date'>2022-10-26</td>
+          </tr>
+          <tr>
+            <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
+            <td class='tit'>
+              <a href="">
+                미국 대선 일주일전, 부양책 교착 속 대기모드
+                <img src="images/ico_new.png" alt="새글">
+                <div>
+                  허태오
+                  <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
+                </div>
+              </a>
+            </td>
+            <td class='date'>2022-10-26</td>
+          </tr>
+          <tr>
+            <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
+            <td class='tit'>
+              <a href="">
+                미국 대선 일주일전, 부양책 교착 속 대기모드
+                <img src="images/ico_new.png" alt="새글">
+                <div>
+                  허태오
+                  <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
+                </div>
+              </a>
+            </td>
+            <td class='date'>2022-10-26</td>
+          </tr>
+          <tr>
+            <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
+            <td class='tit'>
+              <a href="">
+                미국 대선 일주일전, 부양책 교착 속 대기모드
+                <img src="images/ico_new.png" alt="새글">
+                <div>
+                  허태오
+                  <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
+                </div>
+              </a>
+            </td>
+            <td class='date'>2022-10-26</td>
+          </tr>
+          <tr>
+            <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
+            <td class='tit'>
+              <a href="">
+                미국 대선 일주일전, 부양책 교착 속 대기모드
+                <img src="images/ico_new.png" alt="새글">
+                <div>
+                  허태오
+                  <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
+                </div>
+              </a>
+            </td>
+            <td class='date'>2022-10-26</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="align_center">
+        <button class='btn_more'>더보기</button>
       </div>
     </div>
-    <table>
-      <caption>
-        글로벌 채권 지수 리스트
-        <div>첨부파일, 제목, 날짜를 제공하는 표</div>
-      </caption>
-      <colgroup>
-        <col style='width:85px;'>
-        <col>
-        <col style='width: 114px;'>
-      </colgroup>
-      <tbody>
-        <tr>
-          <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
-          <td>
-            <a href="">
-              미국 대선 일주일전, 부양책 교착 속 대기모드
-              <img src="images/ico_new.png" alt="새글">
-              <div>
-                허태오
-                <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
-              </div>
-            </a>
-          </td>
-          <td>2022-10-26</td>
-        </tr>
-        <tr>
-          <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
-          <td>
-            <a href="">
-              미국 대선 일주일전, 부양책 교착 속 대기모드
-              <img src="images/ico_new.png" alt="새글">
-              <div>
-                허태오
-                <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
-              </div>
-            </a>
-          </td>
-          <td>2022-10-26</td>
-        </tr>
-        <tr>
-          <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
-          <td>
-            <a href="">
-              미국 대선 일주일전, 부양책 교착 속 대기모드
-              <img src="images/ico_new.png" alt="새글">
-              <div>
-                허태오
-                <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
-              </div>
-            </a>
-          </td>
-          <td>2022-10-26</td>
-        </tr>
-        <tr>
-          <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
-          <td>
-            <a href="">
-              미국 대선 일주일전, 부양책 교착 속 대기모드
-              <img src="images/ico_new.png" alt="새글">
-              <div>
-                허태오
-                <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
-              </div>
-            </a>
-          </td>
-          <td>2022-10-26</td>
-        </tr>
-        <tr>
-          <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
-          <td>
-            <a href="">
-              미국 대선 일주일전, 부양책 교착 속 대기모드
-              <img src="images/ico_new.png" alt="새글">
-              <div>
-                허태오
-                <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
-              </div>
-            </a>
-          </td>
-          <td>2022-10-26</td>
-        </tr>
-        <tr>
-          <td><img src="images/ico_pdf.png" alt="pdf파일"></td>
-          <td>
-            <a href="">
-              미국 대선 일주일전, 부양책 교착 속 대기모드
-              <img src="images/ico_new.png" alt="새글">
-              <div>
-                허태오
-                <span>#바이든 우위 #상원 불확실 #부양책 교착</span>
-              </div>
-            </a>
-          </td>
-          <td>2022-10-26</td>
-        </tr>
-      </tbody>
-    </table>
-    <button>더보기</button>
   </main>
   <footer>
     <h2 class="hide">전화번호안내</h2>

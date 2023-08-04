@@ -38,6 +38,8 @@ footer .address li {font-size: 13px; font-weight: bold; color:#000;}
 footer .address li:first-child a {color:#067fd9;}
 footer .address p {font-size: 13px; color:#66666a; }
 
+.contents {margin: 0 auto 40px; width: 996px;}
+
 /* 서브페이지 공통 */
 main {border: 1px solid #dadada;}
 .location {margin: 0 auto; padding: 23px 0 32px; width: 1200px;}
@@ -45,10 +47,50 @@ main {border: 1px solid #dadada;}
 .location li ~ li {padding: 0 0 0 27px; background:url(../images/bu_arrow_right3.png)no-repeat 14px center;}
 .h2 {padding: 0 0 30px; text-align: center; font-size: 30px; color: #000;}
 
+.tab_type1 { text-align:center; font-size: 0;}
+.tab_type1 li { display: inline-block; padding: 0 33px;}
+.tab_type1 li a {display: block; position: relative; line-height: 48px; font-size: 18px; color: #000;}
+.tab_type1 li a:after {content: ""; position: absolute; left:0; bottom:0; width:0; background: #010101; height:2px; transition: all .4s;}
+.tab_type1 li.active a {font-weight: bold;}
+.tab_type1 li.active a:after,
+.tab_type1 li a:hover:after {width: 100%;}
+
+.tab_type2 {padding: 84px 0; text-align: center; font-size: 0;}
+.tab_type2 li {display: inline-block; margin: 0 0 0 -1px;}
+.tab_type2 li button {background: #fafafa; border: 1px solid #e4e8eb; width: 184px; height: 48px; font-size:15px; color: #000;}
+.tab_type2 li.active {position: relative;}
+.tab_type2 li.active button {border: 1px solid #000; background:#fff ;}
 
 
+.board_search {line-height: 128px; background: #067fd9; text-align:center;}
+.board_search input { width: 590px;  height: 40px; background: #067fd9; text-indent: 7px; color:rgba(255,255,255,.7); font-size: 19px;}
+.board_search input::placeholder {color:rgba(255,255,255,.7);}
+.board_search button { width:40px; height: 40px; background:url(../images/ico_search.png)no-repeat center;}
 
+/* 정렬 전용 */
+.align_justify > :first-child {float: left;}
+.align_justify > :last-child {float: right;}
+.align_center {text-align: center;}
 
+.board_info {padding:0 0 26px;}
+.board_info .txt {font-size:15px; color: #000;}
+.board_info .align {font-size: 0;}
+.board_info .align li {float: left; position: relative; padding: 0 0 0 25px;}
+.board_info .align li ~ li:after {content: ""; position: absolute; left: 11px; top: 50%; height: 12px; border-right:1px solid #e4e8eb; transform: translateY(-50%);}
+.board_info .align button {padding:0 0 0 20px; height: 24px; font-size:15px; color: #000;}
+.board_info .align .list { background: url(../images/ico_list.png)no-repeat left;}
+.board_info .align .card { background: url(../images/ico_card.png)no-repeat left;}
 
+.table_type1 {margin: 0 0 29px; border-top:2px solid #000;}
+.table_type1 tr {border-bottom:1px solid #e4e8eb;}
+.table_type1 td {height: 80px; text-align: center;}
+.table_type1 .date {font-size: 13px; color:#000;}
+.table_type1 .tit {text-align: left;}
+.table_type1 .tit a {font-size: 17px; color: #000; line-height: 1;}
+.table_type1 .tit a div {padding: 13px 0 0 ; font-size: 13px;}
+.table_type1 .tit a div span {display:inline-block; margin: 0 0 0 6px; padding: 0 0 0 8px; border-left: 1px solid #e4e8eb; color:#0041b2; line-height: 17px;}
+
+.btn_more { width: 120px; height: 50px; background: none;}
+.btn_more:after {content:url(../images/bu_arrow_down.png); padding: 0 0 0 10px;}
 
 
