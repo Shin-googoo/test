@@ -14,7 +14,7 @@ header .util li {float: left; padding: 0 0 0 20px;}
 header .util a {color: #060606; font-size: 13px; font-weight: bold; line-height: 48px;}
 
 /* footer */
-footer {padding: 0 0 70px;}
+footer {padding: 40px 0 70px;}
 footer .stock {background: #0a1f55; text-align: center; font-size: 19px; color:#1dddfd; line-height: 72px;}
 footer .stock:before {content:url(../images/ico_footer_clock.png); padding:0 10px 0 0; vertical-align: -2px;}
 footer .tel_list {background: #f4f4f4; text-align: center;}
@@ -38,7 +38,7 @@ footer .address li {font-size: 13px; font-weight: bold; color:#000;}
 footer .address li:first-child a {color:#067fd9;}
 footer .address p {font-size: 13px; color:#66666a; }
 
-.contents {margin: 0 auto 40px; width: 996px;}
+.contents {margin: 0 auto; width: 996px;}
 
 /* 서브페이지 공통 */
 main {border: 1px solid #dadada;}
@@ -92,5 +92,13 @@ main {border: 1px solid #dadada;}
 
 .btn_more { width: 120px; height: 50px; background: none;}
 .btn_more:after {content:url(../images/bu_arrow_down.png); padding: 0 0 0 10px;}
+.btn_type1 {width: 142px; height: 56px; background:#9da1a5; color: #fff; font-size: 17px; font-weight:bold;}
+
+.notice {padding:9px 0 0; margin: 0 auto; width: 1028px;}
+.notice h2 button {padding: 0 0 0 28px; width: 100%; height:87px;  background:url(../images/ico_info.png) no-repeat left 4px center, url(../images/bu_arrow_up.png) no-repeat right 26px center; border-bottom: 1px solid #e4e8eb; text-align: left; font-size: 15px; color:#000; font-weight: bold;}
+.notice ul {padding: 20px 20px 5px; line-height: 24px;}
+.notice ul li {position: relative; padding: 0 0 24px 7px;}
+.notice ul li:after {content: ""; position:absolute; left:0; top:10px; width: 3px; height: 3px; background: #000;}
+
 
 
