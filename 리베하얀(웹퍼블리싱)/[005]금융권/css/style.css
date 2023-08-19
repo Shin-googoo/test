@@ -65,8 +65,8 @@ main {border: 1px solid #dadada;}
 /* 정렬 전용 */
 .align_justify > :first-child {float: left;}
 .align_justify > :last-child {float: right;}
-.align_center {text-align: center;}
-
+.align_center {text-align: center; font-size: 0;}
+.align_center > * {margin: 0 10px;}
 /* 게시판 */
 .board_search {line-height: 128px; background: #067fd9; text-align:center;}
 .board_search input { width: 590px;  height: 40px; background: #067fd9; text-indent: 7px; color:rgba(255,255,255,.7); font-size: 19px;}
@@ -96,6 +96,8 @@ main {border: 1px solid #dadada;}
 .btn_more { width: 120px; height: 50px; background: none;}
 .btn_more:after {content:url(../images/bu_arrow_down.png); padding: 0 0 0 10px;}
 .btn_type1 {width: 142px; height: 56px; background:#9da1a5; color: #fff; font-size: 17px; font-weight:bold;}
+.btn_type2 {width: 142px; height: 56px; background:#081b50; color: #fff; font-size: 17px; font-weight:bold;}
+.btn_type3 {width: 86px; height: 48px; background: #fff; border:1px solid #081b50; font-size: 15px; color:#00003f;}
 
 /* 유의사항 */
 .notice {padding:9px 0 0; margin: 0 auto; width: 1028px;}
@@ -110,3 +112,8 @@ main {border: 1px solid #dadada;}
 .checkbox_type1 + label:after {content: ""; position:absolute; left: 0; top: 0; width: 18px; height: 18px; border: 1px solid #d9d9d9;}
 .checkbox_type1:checked + label:after {content:"v"; text-align: center; line-height: 18px;}
 
+/* 레이아웃  */
+.flex_layout {display: flex;}
+.flex_layout > div {flex: 1;}
+.flex_layout > .flexnone {flex:none;}
+.flex_layout > .flexnone.dash {width: 30px; line-height: 48px; text-align: center;}

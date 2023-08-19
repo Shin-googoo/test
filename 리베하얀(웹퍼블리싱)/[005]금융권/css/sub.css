@@ -1,8 +1,13 @@
 /* 회원가입 및 로그인 */
 .join {padding:40px 0; background: #f4f4f4; border-top:1px solid #e4e8eb;}
 .join > div { padding:40px; margin: 0 auto; width: 640px; background: #fff; box-sizing: border-box;}
+.join select,
+.join input[type="email"],
+.join input[type="tel"],
+.join input[type="number"],
 .join input[type="text"],
 .join input[type="password"] {width: 100%; height: 48px; border: 1px solid #e4e8eb; box-sizing:border-box; text-indent:12px; font-size:15px; color: #000;}
+.join input[readonly] {background: #f7f9fa;}
 .join input::placeholder {color:#000;}
 
 .join.login {padding: 64px 40px 40px;}
@@ -34,6 +39,20 @@
 .join.agree .view_list li a {position: absolute; right: 0; top: 0; width: 64px; height: 37px; text-align: center; line-height: 37px;}
 .join.agree .check_list {padding: 0 18px; border: 1px solid #e4e8eb; border-top: none;}
 .join.agree .check_list li {float:left; padding: 0 25px 0 0; line-height: 82px;}
+
+.join_table {margin: 0 0 18px;}
+.join_table th {padding: 16px 0 0; vertical-align: top; font-size: 15px; color: #00003f; font-weight: normal; text-align: left; line-height: 1;}
+.join_table th span {color: #f85d00; font-size:30px; vertical-align: -14px;}
+.join_table td {padding: 0 0 40px;}
+.join_table .list {line-height:28px; font-size: 14px; color: #747474; letter-spacing: -0.5;}
+.join_table .flexnone button {margin: 0 0 0 8px;}
+.join_table .input_list > div ~ div {padding: 12px 0 0;}
+
+
+
+
+
+
 
 
 
