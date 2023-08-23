@@ -1,0 +1,21 @@
+/* 가변형 레이아웃 예시 */
+.layout1 {display: flex; }
+.layout1 :first-child {flex:1; border: 1px solid blue;}
+.layout1 :last-child {flex:none; width: 100px; border: 1px solid red;}
+
+.layout2 {display: table; width: 100%; margin: 40px 0;}
+.layout2 div {display: table-cell;}
+.layout2 :first-child { width:80px; border: 1px solid red;}
+.layout2 :last-child {border: 1px solid blue;}
+
+/* .layout3 {position:relative; padding: 0 80px;}
+.layout3 :first-child{position:absolute; left: 0; top: 0; width:80px; border: 1px solid red;}
+.layout3 :last-child{position:absolute; right: 0; top: 0; width:80px; border: 1px solid red;}
+.layout3 :nth-child(2) { border: 1px solid blue;} */
+
+/* 3번 flex 버전 */
+.layout3 {display: flex;}
+.layout3 > div {flex: 1;}
+.layout3 > div:first-child {flex: none; width:80px; border: 1px solid red;}
+.layout3 > div:last-child {flex: none; width:80px; border: 1px solid red;}
+.layout3 > div:nth-child(2) {border: 1px solid blue;}
