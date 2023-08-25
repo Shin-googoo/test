@@ -1,0 +1,19 @@
+html {font-size: 20px;}
+body {font-size: 1rem;}
+
+.list_type1 {padding: 1rem 1.333rem; background: #F7F7F9;}
+.list_type1 h2 {padding: 0 0 .583rem; font-size:.883rem; line-height: 1.3rem;}
+.list_type1 h2 ~ h2 {padding-top: .666rem;} 
+.list_type1 .list a {display: block; background:url(../images/bu_arrow_right.png)no-repeat right .733rem center /.215rem auto #fff; line-height:2.266rem; text-indent:.716rem; font-size:.75rem; color:#000;}
+.list_type1 .list li ~ li {padding: .333rem 0 0;}
+.list_type1 .list li.col2 {width: calc(50% - .2rem);}
+.list_type1 .list li.col2:nth-child(add) {float: left;}
+.list_type1 .list li.col2:nth-child(even) {float:right;}
+
+
+
+
+
+
+
+
