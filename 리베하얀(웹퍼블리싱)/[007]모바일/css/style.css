@@ -10,10 +10,16 @@ body {font-size: 1rem;}
 .list_type1 .list li.col2:nth-child(add) {float: left;}
 .list_type1 .list li.col2:nth-child(even) {float:right;}
 
+.list_type2 {padding: 1.066rem 0 0; background: #F0F0F0;}
+.list_type2 .list {background: #FFF; border-top: 1px solid #E1E1E2; border-left: #E1E1E2;}
+.list_type2 .list il {float: left; width:50%;} 
+/* li에 display:block 넣으면 box-sizing을 넣어야 하므로 a요소에 넣는다. */
+.list_type2 .list a {display: block; line-height: 2.041rem;}
 
-
-
-
-
+/* .list_type2 .list li.col2 {}
+.list_type2 .list li.col2 .new {background: url(../images/ico_new.png) no-repeat right .733rem center;}
+.list_type2 .list li.col2:nth-child(add) {float: left;}
+.list_type2 .list li.col2:nth-child(even) {float:right;}
+.list_type2 .list li ~ li {border: .016rem solid #E1E1E2; box-sizing: border-box;} */
 
 
