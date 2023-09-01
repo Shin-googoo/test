@@ -1,6 +1,6 @@
 html {font-size: 20px;}
 body {font-size: 1rem;}
-
+/* 리스트1 */
 .list_type1 {padding: 1rem 1.333rem; background: #F7F7F9;}
 .list_type1 h2 {padding: 0 0 .583rem; font-size:.883rem; line-height: 1.3rem;}
 .list_type1 h2 ~ h2 {padding-top: .666rem;} 
@@ -10,6 +10,8 @@ body {font-size: 1rem;}
 .list_type1 .list li.col2:nth-child(add) {float: left;}
 .list_type1 .list li.col2:nth-child(even) {float:right;}
 
+
+/* 리스트2 */
 .list_type2 {padding: 1.066rem 0 0; background: #F0F0F0;}
 .list_type2 .list {position: relative; background: #FFF; border-top: 1px solid #E1E1E2; border-left: #E1E1E2;}
 .list_type2 .list:after {content: ""; position:absolute; left: 0; bottom: 0; right: 0; border-bottom:1px solid #E1E1E2;}
@@ -20,11 +22,35 @@ body {font-size: 1rem;}
 
 
 
+.list_type3 {padding: .733rem 1rem; background:#E6E6E6;}
+.list_type3 li {margin:.333rem; padding: .45rem 1.466rem; width: 50%; background: #FFF; border: 3px solid #B2B2B2; border-radius: .2rem;}
+.list_type3 li a {font-size: .75rem;   text-align: center; color: #000;}
+.list_type3 .list li ~ li {padding: .333rem 0 0;}
+.list_type3 .list li.col2 {width: calc(50% - .2rem);}
+.list_type3 .list li.col2:nth-child(add) {float: left;}
+.list_type3 .list li.col2:nth-child(even) {float:right;}
 
-/* .list_type2 .list li.col2 {}
-.list_type2 .list li.col2 .new {background: url(../images/ico_new.png) no-repeat right .733rem center;}
-.list_type2 .list li.col2:nth-child(add) {float: left;}
-.list_type2 .list li.col2:nth-child(even) {float:right;}
-.list_type2 .list li ~ li {border: .016rem solid #E1E1E2; box-sizing: border-box;} */
+/* 리스트5 */
+.list_type5 .product_list {padding: .666rem .8rem;}
+.list_type5 .product_list li {padding: 0 0 2.083rem; min-height:14rem; position: relative; width:calc(50% - .2rem); box-sizing: border-box;}
+.list_type5 .product_list li img {width: 100%;}
+.list_type5 .product_list li .icon {position: absolute; top: 0; left: 0; width: 1.866rem; height: 0.933rem; font-size: .416rem; color: #fff; text-align: center; line-height: 0.933rem;}
+.list_type5 .product_list li .icon.ico1 {background:#363636;}
+.list_type5 .product_list li .icon.ico2 {background:#B08A47;}
+.list_type5 .product_list li:nth-child(odd) {float: left;}
+.list_type5 .product_list li:nth-child(even) {float: right;}
+.list_type5 .product_list li .category {display: inline-block; padding:.1rem .333rem; border: 1px solid #D1D1D1; line-height: .933rem; font-size: .5rem; color:#5F5F5F;}
+.list_type5 .product_list li p { font-size: .633rem; color: #5F5F5F;}
+.list_type5 .product_list li strong {position: absolute; left: 0; bottom: 1.084rem; font-size: .75rem; color: #5F5F5F;}
 
 
+.list_type6 {padding: .4rem .533rem; background:#F5F5F5;}
+.list_type6 .list ul {padding: .716rem .966rem .533rem; background:#FFF; border: 2px solid #D1D1D1;
+border-radius: .4rem;}
+.list_type6 .list ul li {display: flex; justify-content: space-between; font-size: .616rem; color:#262626; line-height: 1.33rem; }
+.list_type6 .list ul li strong {font-weight: normal;}
+.list_type6 .list ul li span {text-align: right;}
+.list_type6 .list ul li i {font-size: .5rem;}
+.list_type6 .list ul li em {display:block;}
+.list_type6 .list ul li.result {margin: .533rem 0 0; padding: .533rem 0 0; border-top:1px solid #858585;}
+.list_type6 .list button {margin: .4rem 0 0; width: 100%; background: #005E5E; height: 1.733rem; border-radius: .866rem; color:#fff; font-size: .7rem;}
