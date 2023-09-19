@@ -1,0 +1,8 @@
+body {font-size:30px; color:#fff;}
+.wrap {width: 1200px; margin: 0 auto;}
+.wrap .box1 {height:300px; background: purple;}
+.wrap .box2 {float: left; width: 50%; height:200px; background:blue;}
+.wrap .box3 {float: left; width: 50%; height:200px; background:orange;}
+
+
+

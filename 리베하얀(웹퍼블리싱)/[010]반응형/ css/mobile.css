@@ -1,0 +1,4 @@
+.wrap {width: 100%;}
+.wrap .box1 {height: 600px;}
+.wrap .box2 {float: none; width: 100%; height:400px;}
+.wrap .box3 {float: none; width: 100%; height:400px;}
