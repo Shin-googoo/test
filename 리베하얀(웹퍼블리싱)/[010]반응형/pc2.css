@@ -1,0 +1,9 @@
+body {font-size:30px; color:#fff;}
+.wrap {position: relative; height:100vh; padding: 0 300px;} 
+/* 100vh 디바이스 크기만큼의 높이*/
+.wrap .box1 {height:100vh; background: purple;}
+.wrap .box2 {position: absolute; left: 0; top: 0; bottom: 0; width: 300px; background: blue;}
+.wrap .box3 {position: absolute; right: 0; top: 0; bottom: 0; width: 300px; background: orange;}
+
+
+
