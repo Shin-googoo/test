@@ -4,5 +4,6 @@
 .wrap .box3 {clear:both; position: static; width: 100%; height:200px;}
 
 @media (min-width:600px) and (max-width:750px) {
-
+  .wrap .box1 {float:none; width:100%;}
+  .wrap .box2 {float:none; width:100%; height:200px;}
 }
