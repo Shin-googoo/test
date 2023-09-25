@@ -1,0 +1,11 @@
+body {font-size:30px; color:#fff;}
+.wrap {width: 1200px; margin: 0 auto; display: flex;} 
+.wrap > div {flex:1; height:300px;}
+.wrap > div:nth-child(1) {background:blue;}
+.wrap > div:nth-child(2) {background:purple;}
+.wrap > div:nth-child(3) {background:orange;}
+.wrap > div:nth-child(4) {background:gray;}
+
+
+
+
