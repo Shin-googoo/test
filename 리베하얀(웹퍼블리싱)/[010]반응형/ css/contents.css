@@ -1,0 +1,13 @@
+html {font-size: 20px;}
+body {padding:50px; font-size: 1rem;}
+/* 모바일에선 3배 큰 이미지를 받아 20*3=60을 나눠 1rem을 산출했지만 반응형은 pc이기에 그냥 20인 font-size 크기만큼 나눠서 산출한다. */
+.content1 {width: 55rem; }
+.content1 > h2 {float: left; width:13.8rem; font-size:1.65rem; line-height:2.4rem;}
+.content1 > div {float:right; width:calc(100% - 13.8rem);}
+.content1 p {padding: 0 0 3.9rem; font-size:1.1rem; line-height: 1.8rem;}
+.content1 h3 { font-size: 1.25rem; line-height: 1;}
+.content1 h3 + p {padding: 1.25rem 0 1.55rem; font-size:1rem; color:#0e2ac9; line-height:1;}
+.content1 div {padding: 0 0 4.26rem; line-height:1.55rem; font-size: .9rem;}
+
+
+

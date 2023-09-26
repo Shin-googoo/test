@@ -1,0 +1,14 @@
+body {padding:.5rem}
+
+.content1 {width: 100%;}
+.content1 > h2 {float: none; width:100%; font-size:1.2rem; line-height:1.7rem;}
+.content1 > h2 br:first-of-type {display:none;} 
+/* html의 첫번째 <br> 삭제 */
+.content1 > div {float: none; width: 100%;}
+.content1 p {padding: 1.2rem 0 3.9rem; font-size:.8rem; line-height:1.3rem;}
+.content1 h3 { font-size: .9rem;}
+.content1 h3 + p {padding: 1rem 0; font-size:.8rem;}
+.content1 div {padding: 0 0 2.6rem; line-height:1.2rem; font-size: .7rem;}
+
+
+
