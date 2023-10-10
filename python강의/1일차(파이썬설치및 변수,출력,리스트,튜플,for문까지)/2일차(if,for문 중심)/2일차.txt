@@ -1,0 +1,287 @@
+ 다음 명령 프롬프트에서 수행하시오.
+
+1.Documents 폴더에 python이라는 이름의 폴더를 생성.
+
+2. 1에서 생성한 폴더를 현재 경로로 설정->chdir
+3. 1에서 생성한 폴더에 hello.py파일 생성 (편집기 사용->메모장)
+4. 3에서 생성한 파일에서 다음의 내용이 출력이 되도록 작성
+
+  hello, python
+
+5. 4번에서 작성한 스크립트를  실행하시오.
+
+=>Idle 을 실행시켜서 작업을 한다.
+
+==================================
+>>> print('something something something')
+something something something
+>>> print(""" something
+           something
+               something""")
+ something
+           something
+               something
+>>> lang='python'
+>>> lang[0::2]
+'pto'
+>>> lang[0:2]
+'py'
+>>> lang[-1:-3]
+''
+>>> lang[-2:]
+'on'
+>>> lang[:2]
+'py'
+>>> lang[0:2]
+'py'
+>>> lang
+'python'
+>>> x=1
+>>> x
+1
+>>> x='1'
+>>> x
+'1'
+>>> print(x)//문자
+1
+>>> x=1
+>>> print(x)//숫자
+1
+>>> type(x) ->type(변수명)-->변수의 자료형을 표시해준다.
+<class 'int'>
+>>> x=3.14
+>>> type(x)
+<class 'float'>
+>>> 
+>>> x='1'
+>>> type(x)
+<class 'str'>
+>>> 1/2
+0.5
+>>> 1/3
+0.3333333333333333
+>>> 1//3
+0
+>>> 1//3
+0
+>>> 1//2
+0
+>>> 5/2
+2.5
+>>> 5//2
+2
+>>> ================================ RESTART ================================
+>>> 
+5보다 값이 큽니다.
+>>> ================================ RESTART ================================
+>>> 
+>>> ================================ RESTART ================================
+>>> 
+>>> ================================ RESTART ================================
+>>> 
+5보다 값이 큽니다.
+>>> ================================ RESTART ================================
+>>> 
+5보다 값이 작습니다
+>>> 
+====before====
+if 6 < hour < 12:
+     print('맥모닝')
+if 12<= hour <18:
+    print('밥은 먹고 다니냐?')
+if hour==16:
+   print('저녁까지 못 기다리지')
+if 18<=hour <24:
+     print('자자')
+===================
+--------------------------->hour=16인경우
+if 6 < hour < 12:
+     print('맥모닝')
+elif 12<= hour <18:
+    print('밥은 먹고 다니냐?')
+elif hour==16:             ======>순서를 바꿔야 실행이 된다.(특수한 경우임)
+   print('저녁까지 못 기다리지')
+elif 18<=hour <24:
+     print('자자')
+=================
+
+ 들여쓰기->2,4개자리가 섞이면 에러가 유발이 된다.
+             =>탭키를 이용해서 자리수를 맞춰줘야 된다.(주의)
+ 특히 첫문장을 쓸때 주의 할것
+ 
+===================================
+ #네 과목 성적에 따른 A,B,C,D 학점 출력
+ #각 과목의 명칭도 같이 출력
+ #만약,해당 과목의 교수님과 친하면 10% 가산점을 부여하는 경우
+=====================================
+#p28 list에 대한 내용
+p70 반복문
+
+# else 18<=hour<24 -->else구문에서는 조건식이 들어가면 안된다.
+     print('자자')
+
+# p66페이지 참조
+
+#네 과목 성적에 따른 A,B,C,D 학점 출력
+#각 과목의 명칭도 같이 출력
+#만약,해당 과목의 교수님과 친하면 10% 가산점을 부여하는 경우
+
+scores=['programming',60,3]
+# print(scores[0][1])
+if 90<= scores[1] <=100:
+  print(scores[0],'A')
+elif 80<=scores[1]<=89:
+  print(scores[0],'B')
+elif 70<=scores[1]<=79:
+  print(scores[0],'C')
+elif 60<=scores[1]<=69:
+  print(scores[0],'D')
+====================
+=>실행시키면
+>>> 
+5보다 값이 작습니다
+밥은 먹고 다니냐?
+programming D
+>>> 
+
+1. 1<[2]
+2. if x=x+1
+  ->if에는 연산을 수행하는 구문을 잘 쓰지않음
+  ->if x-->if 2=>0이 아니면 참으로 인식
+  ->원하는 구문이 실행이 안될수도 있다.
+
+3. for i in x
+
+>>> for i in [1,2,3]:
+	print(i)
+
+	
+1
+2
+3
+>>> 
+
+>>> for i in [1,2,3]:
+	print(i)
+
+	
+1
+2
+3
+>>> 
+
+>>> for i in [1]  //하나만 출력할때 리스트로 만듬
+SyntaxError: invalid syntax
+>>> for i in [1]:
+	print(i)
+
+	
+1
+>>> 
+=======================
+4.score 와 Score=>변수는 대,소문자구분이
+                             있다.(주의)
+
+>>> 1<1
+False
+>>> 1<2
+True
+>>> 1<[2]  //숫자와 리스트를 비교했기때문에 안됨
+Traceback (most recent call last):
+  File "<pyshell#37>", line 1, in <module>
+    1<[2]
+TypeError: unorderable types: int() < list()
+>>> 
+==>숫자는 반복적이지 않다.
+
+TypeError: 'int' object is not iterable
+
+ myFriend=>낙타 come법(낙타의 혹처럼)
+               =>중간에 글자변경시 대문자표현
+my_friend
+MyFriend
+
+scores=['프로그래밍',75]
+# print(scores[0][1])
+if 90<= scores[1] <=100:
+  print(scores[0],'A')
+elif 80<=scores[1]<=89:
+  print(scores[0],'B')
+elif 70<=scores[1]<=79:
+  print(scores[0],'C')
+elif 60<=scores[1]<=69:
+  print(scores[0],'D')
+else:
+  print(scores[0],'F')
+
+====
+scores=[['프로그래밍',75],['수학',94],['생명공학',85]]
+# print(scores[0][1])
+
+for subject in scores:
+    
+ if 90<= subject[1] <=100:
+  print(subject[0],'A')
+ elif 80<=subject[1]<=89:
+  print(subject[0],'B')
+ elif 70<=subject[1]<=79:
+  print(subject[0],'C')
+ elif 60<=subject[1]<=69:
+  print(subject[0],'D')
+ else:
+  print(subject[0],'F')
+
+===========
+scores=[['프로그래밍',75],['수학',94],['생명공학',85]]
+# print(scores[0][1])
+
+for subject in scores:
+    
+ if 90<= subject[1] <=100:
+    grade='A'
+ elif 80<=subject[1]<=89:
+    grade='B'
+ elif 70<=subject[1]<=79:
+    grade='C'
+ elif 60<=subject[1]<=69:
+    grade='D'
+ else:
+    grade='F'
+
+ print(subject[0],grade)
+==================
+ 친밀도에 따라서 데이터를  추가시킨다.
+
+최종 소스
+
+scores=[['프로그래밍',75,5],['수학',94,3],['생명공학',85,2]]
+# print(scores[0][1])
+
+for subject in scores:
+    #가점 반영
+ if subject[2] > 3:
+        subject[1]=subject[1]*1.1;
+        print('가점 반영 후 점수',subject[1])
+        
+    #등급(grade)평가
+ if 90<= subject[1] <=100:
+    grade='A'
+ elif 80<=subject[1]<=89:
+    grade='B'
+ elif 70<=subject[1]<=79:
+    grade='C'
+ elif 60<=subject[1]<=69:
+    grade='D'
+ else:
+    grade='F'
+ print(subject[0],grade)
+========================
+ 5보다 값이 작습니다
+밥은 먹고 다니냐?
+A
+1
+가점 반영 후 점수 82.5
+프로그래밍 B
+수학 A
+생명공학 B
+>>> 
