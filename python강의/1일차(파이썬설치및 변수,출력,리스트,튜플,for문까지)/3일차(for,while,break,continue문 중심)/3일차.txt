@@ -1,0 +1,296 @@
+
+>>> nums=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+>>> for n in nums:
+...  if n%3==0:
+...   msg='짝'
+...  else:
+...   msg=n
+...  print(msg,end=' ')
+...
+1 2 짝 4 5 짝 7 8 짝 10 11 짝 13 14 짝 16 17 짝 19 20 >>>
+
+... break 없이 for문이 정상적으로 종료
+>>> list(range(5,10))
+[5, 6, 7, 8, 9]
+>>> list(range(0,10,2))
+[0, 2, 4, 6, 8]
+>>> list(10,0,-1))
+SyntaxError: invalid syntax
+>>> list(range(10,0,-1))
+[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+>>> ================================ RESTART ================================
+>>> 
+사과
+오렌지
+바나나
+>>> ================================ RESTART ================================
+>>> 
+Traceback (most recent call last):
+  File "C:/python강의/3일차/fruits.py", line 3, in <module>
+    print(index+1,value)
+NameError: name 'index' is not defined
+>>> ================================ RESTART ================================
+>>> 
+1 사과
+2 오렌지
+3 바나나
+>>> ================================ RESTART ================================
+>>> 파일로 저장한 경우
+fruits=['사과','오렌지','바나나']
+#enumerate->index번호에 인덱스번호 담아준다.
+#value->저장된 값을 불러준다.
+for index,value in enumerate(fruits):
+    print(index+1,value)
+
+1 사과
+2 오렌지
+3 바나나
+>>> 
+=======================================
+ 세 과목의 성적을 다음과 같이 출력하시오.
+
+ 1 프로그래밍 90
+ 2 수학 95
+ 3 영어 75
+=============
+>>> sung=[['프로그래밍',90],['수학',95],['영어',75]]
+>>> for i,v in enumerate(sung):
+	print(i+1,v)
+
+	
+1 ['프로그래밍', 90]
+2 ['수학', 95]
+3 ['영어', 75]
+>>> 
+
+52장의 포커 카드가 있다. 이 카드를 사용해
+블랙잭 게임을 한다.
+블랙잭 게임은 각 참가자가 처음에 두장의
+카드를 받는다.
+
+각 카드의 숫자를 모두 더해서 21인지 확인한다
+
+-21이면 블랙잭! 게임이 종료되고 승리한다.
+-숫자의 합이 21보다 작으면 한 장의 카드를
+ 더 받는다.
+-숫자의 합이 21보다 크면 게임에서 패배한다.
+
+#52장의 카드 덱 생성
+
+deck=[]
+
+ranks=list(range(2,11))+['J','Q','K','A']
+suits=['Spade','Heart','Diamond','Clover']
+for s in suits:
+    for r in ranks:
+        deck.append([s,r])
+
+#블랙잭 게임 시작
+#잘섞기(근데 어떻게)
+import random #ToolBox
+random.shuffle(deck)
+
+#카드 두장을 받기(손에 쥐기때문에)->실제 deck에서는 없애져야 된다.
+#0~51->p29
+#hand=deck[0:2] #[deck[0],deck[1]]해도 된다.
+hand=[deck.pop(),deck.pop()]
+print(hand)
+
+>>> ================================ RESTART ================================
+>>> 파일로 저장해서 여러번 실행시킴
+---->랜덤하게 출력이 된다.
+
+[['Clover', 3], ['Clover', 'Q']]
+>>> ================================ RESTART ================================
+>>> 
+[['Heart', 10], ['Clover', 9]]
+>>> ================================ RESTART ================================
+>>> 
+[['Diamond', 3], ['Heart', 6]]
+>>> 
+
+#print(hand)-->통째로 나온다.->기존의 값들이 있는 상태에서 출력
+print(hand[0][0],hand[0][1],hand[1][0],hand[1][1])
+
+>>> 
+Spade Q Spade 5
+>>> ================================ RESTART ================================
+>>> 
+Clover 3 Heart K
+>>> ================================ RESTART ================================
+>>> 
+Diamond 9 Clover 7
+>>> 
+=============
+#52장의 카드 덱 생성
+
+deck=[]
+
+ranks=list(range(2,11))+['J','Q','K','A']
+suits=['Spade','Heart','Diamond','Clover']
+for s in suits:
+    for r in ranks:
+        deck.append([s,r])
+
+#블랙잭 게임 시작
+#잘섞기(근데 어떻게)
+import random #ToolBox
+random.shuffle(deck)
+
+#카드 두장을 받기(손에 쥐기때문에)->실제 deck에서는 없애져야 된다.
+#0~51->p29
+#hand=deck[0:2] #[deck[0],deck[1]]해도 된다.
+hand=[deck.pop(),deck.pop()]
+#print(hand)-->통째로 나온다.
+print(hand[0][0],hand[0][1],hand[1][0],hand[1][1])
+
+#현재 hand의 카드의 숫자를 모두 더한다.
+#J(11),Q(12),K(13),A(14)
+#card=hand[0] ->카드 한장의 경우
+
+total=0
+for card in hand:
+    if card[1]=='A':
+        total=total+14
+    elif card[1]=='K':
+        total=total+14
+    elif card[1]=='J':
+        total=total+11
+    elif card[1]=='Q':
+        total=total+12
+    else:
+    #숫자인 경우는 그냥 더해준다.
+        total=total+card[1]
+if total==21:
+    result='블랙잭!!!!'
+elif total > 21:
+    result='돈 잃었다'
+elif total < 21:
+    result='인생을 계속 살아봐야 아는 거지 .. 한장 더'
+print(result)
+=========
+==>여기까지 코딩한 후 실행 시킨 후
+>>> 
+Clover 7 Diamond 3
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+>>> ================================ RESTART ================================
+>>> 
+Diamond 5 Clover J
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+>>> ================================ RESTART ================================
+>>> 
+Clover 4 Diamond 5
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+>>> 
+
+중간에 while구문을 배운다.
+
+>>> value=5
+>>> while value < 100: =>조건에 만족하면
+	print(value)
+	value=value**2 ->제곱
+
+	
+5
+25
+>>> 
+
+=최종 소스=
+#52장의 카드 덱 생성
+
+deck=[]
+
+ranks=list(range(2,11))+['J','Q','K','A']
+suits=['Spade','Heart','Diamond','Clover']
+for s in suits:
+    for r in ranks:
+        deck.append([s,r])
+
+#블랙잭 게임 시작
+#잘섞기(근데 어떻게)
+import random #ToolBox->공구를 빼낸다
+random.shuffle(deck)
+
+#카드 두장을 받기(손에 쥐기때문에)->실제 deck에서는 없애져야 된다.
+#0~51->p29
+#hand=deck[0:2] #[deck[0],deck[1]]해도 된다.
+hand=[deck.pop(),deck.pop()]
+#print(hand)-->통째로 나온다.
+#print(hand[0][0],hand[0][1],hand[1][0],hand[1][1])
+
+#현재 hand의 카드의 숫자를 모두 더한다.
+#J(11),Q(12),K(13),A(14)
+#card=hand[0] ->카드 한장의 경우
+
+#total=0
+#이부분을 추가->while구문을 실행
+while True:
+    #현재 hand의 카드의 숫자를 모두 더한다.
+    total=0
+    for card in hand:
+        #현재 카드를 출력한다.
+        print(card[0],card[1],end=' ')
+        if card[1]=='A':
+            total=total+14
+        elif card[1]=='K':
+            total=total+13
+        elif card[1]=='J':
+            total=total+11
+        elif card[1]=='Q':
+            total=total+12
+        else:
+        #숫자인 경우는 그냥 더해준다.
+            total=total+card[1]
+    print('Total ',total)
+    #판별
+    if total==21:
+        result='블랙잭!!!!'
+        print(result)
+        break
+    elif total > 21:
+        result='돈 잃었다'
+        print(result)
+        break
+    elif total < 21:
+        #카드를 하나 더 받는다.
+        hand.append(deck.pop())
+        #-----------------------------
+        result='인생을 계속 살아봐야 아는 거지 .. 한장 더'
+        print(result)#ex)돈 잃었다.
+        #print(total)#ex)23
+    
+최종실습 결과->여러번 반복
+
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+Spade 8 Diamond 3 Diamond K Total  24
+돈 잃었다
+>>> ================================ RESTART ================================
+>>> 
+Heart K Heart Q Total  25
+돈 잃었다
+>>> ================================ RESTART ================================
+>>> 
+Heart A Spade 6 Total  20
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+Heart A Spade 6 Heart Q Total  32
+돈 잃었다
+>>> ================================ RESTART ================================
+>>> 
+Clover 3 Heart J Total  14
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+Clover 3 Heart J Clover 5 Total  19
+인생을 계속 살아봐야 아는 거지 .. 한장 더
+Clover 3 Heart J Clover 5 Clover 7 Total  26
+돈 잃었다
+>>> 
+
+
+  x=5
+if True:
+  print(x) ->항상 실행이 된다.
+
+while True:
+ print('Love')->영원한 사랑
+
+while False:
+ print('Love')->한번도 실행이 안된다.
