@@ -1,0 +1,464 @@
+
+>>> list(range(10**6))[0:10] =>백만개중에서 10개만
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> 
+
+range(1억)->보여주기만 하기때문에 시간이 오래 걸리지 않음.
+======================================
+list(range(10**8))[0:10] ->list(range(1억)) ->시간이 오래 걸림
+=>실제로 만들어서 보여주기에 시간이 오래 걸림
+range(1억)
+
+p217 ->문자열 다루기
+p278 ->random모듈
+p69 while문 
+p70 for문 p72 break,continue,else
+p74->range p33->dic(사전)
+==================================
+사전(교재 p33)
+
+각 사람은 이름,성별,나이의 정보를 갖는다. 이 사람들의 정보를 
+  {name:..,email:...,age:...}와 같은 형태로 표현한다.
+세 명의 사람의 정보를 설정하시오.
+
+a. 전화번호 정보를 추가하시오.
+b. 모든 사람의 나이에 1을 더해 정보를 갱신하시오.
+
+>>> person1 = { 'name':'홍길동','email':'test@daum.net',age:21}
+Traceback (most recent call last):
+  File "<pyshell#1>", line 1, in <module>
+    person1 = { 'name':'홍길동','email':'test@daum.net',age:21}
+NameError: name 'age' is not defined
+>>> person1 = { 'name':'홍길동','email':'test@daum.net','age':21}
+>>> person2 = { 'name':'이길수','email':'test2@daum.net','age':29}
+>>> person2 = { 'name':'테스트','email':'test3@daum.net','age':27}
+>>> print(person2('email'))
+Traceback (most recent call last):
+  File "<pyshell#5>", line 1, in <module>
+    print(person2('email'))
+TypeError: 'dict' object is not callable
+>>> print(person2['email'])
+test3@daum.net
+>>> person3['email']='sa@gmail.net'
+Traceback (most recent call last):
+  File "<pyshell#7>", line 1, in <module>
+    person3['email']='sa@gmail.net'
+NameError: name 'person3' is not defined
+>>> person2['email']='sa@gmail.net'
+>>> print(person2['email'])
+sa@gmail.net
+>>> person3 = { 'name':'테스트','email':'test3@daum.net','age':27}
+>>> 
+
+phone을 추가->없으면 만들어 주고 있으면 수정해 준다.
+=================================
+>>> person3 = { 'name':'테스트','email':'test3@daum.net','age':27}
+>>> person2['phone']='01045671234'
+>>> print(person2)
+{'age': 27, 'email': 'sa@gmail.net', 'phone': '01045671234', 'name': '테스트'}
+=>나오는 출력형태는 정해져 있지 않다.
+
+모든 사람의 나이에 1을 더해 정보를 갱신하시오.
+
+person3['age']=person3['age']+1 =>한 사람의 나이를 수정하는 경우
+
+#모든 사람
+
+ for p in [person1,person2,person3]:
+   p['age']=p['age']+1   #p의 dic중에서 age부분만 변경을 시켜준다.
+   print(p)
+
+{'age': 23, 'email': 'test@daum.net', 'name': '홍길동'}
+{'age': 29, 'email': 'sa@gmail.net', 'phone': '01045671234', 'name': '테스트'}
+{'age': 30, 'email': 'test3@daum.net', 'name': '테스트'}
+
+ 주의할점 ->키값은 반드시 문자열로 지정해야 한다.
+
+>>> person={name:'홍길동'}
+Traceback (most recent call last):
+  File "<pyshell#24>", line 1, in <module>
+    person={name:'홍길동'}
+NameError: name 'name' is not defined
+
+#'홍길동은 5살, 이메일은  hong@email.com'
+ for p in [person1,person2,person3]:
+         print(p['name'],'은 ',p['age'],'살.',sep=' ')
+
+홍길동 은  23 살.
+테스트 은  29 살.
+테스트 은  30 살.
+
+============================
+>>> person={'이름':'이성주'}
+>>> print(person['email'])
+Traceback (most recent call last):
+  File "<pyshell#28>", line 1, in <module>
+    print(person['email'])
+KeyError: 'email'  =>dic의 키가 없을때 발생하는 에러
+>>> print(person.keys())
+dict_keys(['이름'])
+
+=============================
+
+
+강의장에 있는 사람들은 각각 이름,성별,나이의 정보를 갖는다. 남자친구가
+ 있는 사람은 그 사람의 이름을 애인 이라고 지정
+
+{'이름':'방자','성별':'남자', '나이':20}
+{'이름':'홍길동','성별':'남자', '나이':21, '애인':'성춘향'}
+{'이름':'성춘향','성별':'여자', '나이':20, '애인':'홍길동'}
+
+예시: 
+      홍길동의 여친은 성춘향입니다.
+      성춘향의 남친은 홍길동입니다.
+      방자는 모태 솔로입니다.
+<해결>
+
+python_class=[]
+
+python_class.append({'이름':'방자','성별':'남자','나이':20,'애인':''})
+python_class.append({'이름':'홍길동','성별':'남자','나이':21,'애인':'성춘향'})
+python_class.append({'이름':'성춘향','성별':'여자','나이':20,'애인':'홍길동'})
+python_class.append({'이름':'이길숙','성별':'여자','나이':20,'애인':''})
+python_class.append({'이름':'박형준','성별':'남자','나이':22,'애인':''})
+
+for person in python_class:
+    #애인 유무 확인
+    if not person['애인']=='':
+       print(person['이름'],'의 애인은',person['애인'],sep=' ')
+    else:
+        #없는 경우
+       print(person['이름'],'는 모태 솔로 입니다.',sep=' ')
+
+>>>
+ 방자 는 모태 솔로 입니다.
+홍길동 의 애인은 성춘향
+성춘향 의 애인은 홍길동
+이길숙 는 모태 솔로 입니다.
+박형준 는 모태 솔로 입니다.
+==========================
+<문제2>
+
+python_class=[]
+
+python_class.append({'이름':'방자','성별':'남자','나이':20,'애인':''})
+python_class.append({'이름':'홍길동','성별':'남자','나이':21,'애인':'성춘향'})
+python_class.append({'이름':'성춘향','성별':'여자','나이':20,'애인':'홍길동'})
+python_class.append({'이름':'이길숙','성별':'여자','나이':20,'애인':''})
+python_class.append({'이름':'박형준','성별':'남자','나이':22,'애인':''})
+
+for person in python_class:
+    #애인 유무 확인
+    if not person['애인']=='':
+       #남자인 경우는 '여친'으로 출력
+       #여자인 경우는 '남친'으로 출력
+       if person['성별']=='남자':
+          print(person['이름'],'의 여친은',person['애인'],sep=' ')
+       #print(person['이름'],'의 애인은',person['애인'],sep=' ')
+       else:
+          print(person['이름'],'의 남친은',person['애인'],sep=' ')
+    else:
+        #없는 경우
+       print(person['이름'],'는 모태 솔로 입니다.',sep=' ')
+
+<해결>
+>>> 
+방자 는 모태 솔로 입니다.
+홍길동 의 여친은 성춘향
+성춘향 의 남친은 홍길동
+이길숙 는 모태 솔로 입니다.
+박형준 는 모태 솔로 입니다.
+
+
+<주의할점>=>if not person['애인'] is False인 경우에는 person의 애인의
+                      데이터가 불러올것이 없으면 비교대상이 안되기에 keyError가
+                      발생한다. 여기서는 그래서 빈문자열로 처리함.
+===========================================
+python_class=[]
+
+python_class.append({'이름':'방자','성별':'남자','나이':20,'애인':''})
+python_class.append({'이름':'홍길동','성별':'남자','나이':21,'애인':'성춘향'})
+python_class.append({'이름':'성춘향','성별':'여자','나이':20,'애인':'홍길동'})
+python_class.append({'이름':'이길숙','성별':'여자','나이':20,'애인':''})
+python_class.append({'이름':'박형준','성별':'남자','나이':22,'애인':''})
+
+for person in python_class:
+    #애인 유무 확인
+    #if not person['애인']=='': 대신에
+     if '애인' in list(person.keys()): #애인이라는 키가 있다면
+       #남자인 경우는 '여친'으로 출력
+       #여자인 경우는 '남친'으로 출력
+       if person['성별']=='남자':
+          print(person['이름'],'의 여친은',person['애인'],sep=' ')
+       #print(person['이름'],'의 애인은',person['애인'],sep=' ')
+       else:
+          print(person['이름'],'의 남친은',person['애인'],sep=' ')
+     else:
+        #없는 경우
+       print(person['이름'],'는 모태 솔로 입니다.',sep=' ')
+
+<해결>
+방자 의 여친은 
+홍길동 의 여친은 성춘향
+성춘향 의 남친은 홍길동
+이길숙 의 남친은 
+박형준 의 여친은 
+
+=======================
+ 추가 ->'애인' in list(person.keys())
+         ['이름','나이','성별','애인']
+            ===>True
+        ['이름','나이','성별']->False
+
+alist=[1,2,3,4,6,7,8]
+print(3 in alist) ->3이 있는지 확인->true
+print(5 in alist) ->5가 있는지 확인->false
+================
+>>> alist=[1,2,3,4,6,7,8]
+>>> print(3 in alist)
+True
+>>> print(5 in alist)
+False
+>>> 
+
+===보충================
+colors={'apple':'빨강','banna':'노랑'}
+  print(colors['apple'])
+  print(colors['banana'])
+
+ for k,v in colors.items():
+    print(k,v)
+
+>>> colors={'apple':'빨강','banna':'노랑'}
+print(colors['apple'])
+print(colors['banana'])
+
+ for k,v in colors.items():
+    print(k,v)
+    
+SyntaxError: multiple statements found while compiling a single statement
+>>> colors={'apple':'빨강','banna':'노랑'}
+>>> print(colors['apple'])
+빨강
+>>> print(colors['banana'])
+Traceback (most recent call last):
+  File "<pyshell#37>", line 1, in <module>
+    print(colors['banana'])
+KeyError: 'banana'  ===>오타유발
+>>> print(colors['banna'])
+노랑
+>>> for k,v in colors.items():
+    print(k,v)
+
+    
+apple 빨강
+banna 노랑
+======================
+
+<위의 문제 추가>
+b. 애인이 있는 경우, 현재 같은 강의장에 있는지 다음과 같이 출력한다.
+   홍길동의 여친은 성춘향입니다. 그리고 같은 교실에 있습니다.
+   이몽룡의 여친은 향단이입니다.
+
+===보충======================
+>>> person={'이름':'이성주','성별':'남자'}
+>>> list(person.keys())
+['이름', '성별']
+==============================
+
+<최종 예제 처리>
+
+python_class=[]
+
+python_class.append({'이름':'방자','성별':'남자','나이':20})
+python_class.append({'이름':'홍길동','성별':'남자','나이':21,'애인':'성춘향'})
+python_class.append({'이름':'성춘향','성별':'여자','나이':20,'애인':'홍길동'})
+python_class.append({'이름':'이길숙','성별':'여자','나이':20})
+python_class.append({'이름':'박형준','성별':'남자','나이':22})
+
+for person in python_class:
+    #애인 유무 확인
+     if '애인' in list(person.keys()): #애인이라는 키가 있다면
+       if person['성별']=='여자':
+          print(person['이름'],'의 남친은',person['애인'],sep=' ')
+       else:
+          print(person['이름'],'의 여친은',person['애인'],sep=' ')
+       #같은 강의장에 있는지 확인
+          본인이름=person['이름']
+          애인이름=person['애인']
+         #강의장을 다 뒤진다.
+       for p in python_class:
+            #본인은 건너띄기
+            if 본인이름==p['이름']:
+                continue
+            if 애인이름==p['이름']:
+                print(' ')
+                break
+     else:
+        #없는 경우
+       print(person['이름'],'는 모태 솔로 입니다.',sep=' ')
+       
+#방자 는 모태 솔로 입니다.
+#홍길동 의 여친은 성춘향 
+#성춘향 의 남친은 홍길동
+#이길숙 는 모태 솔로 입니다.
+#박형준 는 모태 솔로 입니다.
+=====================
+  함수
+
+>>> def multiply(a,b):
+	return a*b
+
+>>> print(multiply(3,4))
+12
+>>> def swap(x,y):
+	return y,x
+
+>>> print(swap(1,2))  #바꿔서 출력하기
+(2, 1)
+>>> 
+
+====>함수의 기능=>코드의 재사용성
+>>> def sayHi(hour):
+	if 6 < hour < 12:
+		print('좋은 아침')
+	else:
+		print('밥먹자')
+
+		
+>>> sayHi(11)
+좋은 아침
+>>> sayHi(13)
+밥먹자
+>>> 
+
+
+  f(x)=x2 로 정의->f(1)=1, f(2)=4
+==========================
+리스트의 마지막 항목을 반환하는 함수작성하기
+ def get_last_item(some_list):
+    return some_list[-1]
+
+nums=[1,2,3,4,5]
+get_last_item(nums)
+===================
+>>> def get_last_item(some_list):
+	return some_list[-1]
+
+>>> nums=[1,2,3,4,5]
+>>> get_last_item(nums)
+5
+>>> 
+
+ 피보나치의 다음 숫자 출력하는 함수 작성하기
+
+ 0112358==>앞의 두수를 더하면 다음수가 결정이 된다.
+ 
+  def get_next_fibonacci(first,second):
+           third=first+second
+          #return first+second
+          return third
+=========================>도 가능
+print(get_next_fibonacci(2,3))
+
+>>> def get_next_fibonacci(first,second):
+	return first+second
+
+>>> print(get_next_fibonacci(2,3))
+5
+>>> 
+===================================
+ fibos=[0,1]
+ c=get_next_fibonacci(fibos[0],fibos[1])
+fibos.append(c)
+#[0,1,2]
+c=get_next_fibonacci(fibos[-2],fibos[-1])
+fibos.append(c)
+#[0,1,2,3]
+c=get_next_fibonacci(fibos[-2],fibos[-1])
+fibos.append(c)
+===================>반복문으로 변경하기
+
+콘솔에서 실행을 하면=>get_next_fibonacci()가 이미 만들어져 있어야 한다.
+
+>>> fibos=[0,1]
+>>> while len(fibos) < 100:
+    fibos.append(get_next_fibonacci(fibos[-2],fibos[-1]))
+    print(fibos)
+
+    
+[0, 1, 1]
+[0, 1, 1, 2]
+[0, 1, 1, 2, 3]
+[0, 1, 1, 2, 3, 5]
+[0, 1, 1, 2, 3, 5, 8]
+[0, 1, 1, 2, 3, 5, 8, 13]
+[0, 1, 1, 2, 3, 5, 8, 13, 21]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, ....
+
+
+>>> def multiply(a,b):
+	return a*b
+
+>>> multiply()  ===>매개변수를 주지 않으면 에러유발
+Traceback (most recent call last):
+  File "<pyshell#99>", line 1, in <module>
+    multiply()
+TypeError: multiply() missing 2 required positional arguments: 'a' and 'b'
+
+>>> multiply(3,4)
+12
+=====================
+>>> def multiply(a=3,b=4):
+	return a*b
+
+>>>print(multiply()) //안주면 기본값이 설정됨->12
+       print(multiply(1,2)) 1*2
+       print(multiply(1)) 1*4
+       print(multiply(b=2)) -->b만 입력할 경우
+       print(multiply(b=2,a=5))
+
+================================
+    def sayHi(hour,morning):
+          if 6< hour < 12:
+             print(morning)
+          else:
+             print('밥먹자')
+
+ sayHi(11)==>매개변수 때문에 에러유발이 된다.
+ sayHi(11,'추운아침')
+==================================
+==>sayHi.py로 파일로 저장한 경우 실행 시킨 경우
+==================================
+def sayHi(hour,morning='좋은 아침1'):
+          if 6< hour < 12:
+             print(morning)
+          else:
+             print('밥먹자')
+
+sayHi(11)
+sayHi(11,'추운아침')
+sayHi(12,'추운아침')
+
+
+#>>> 
+#좋은 아침1
+#추운아침
+#밥먹자
+#>>> 
+
+
+
+
