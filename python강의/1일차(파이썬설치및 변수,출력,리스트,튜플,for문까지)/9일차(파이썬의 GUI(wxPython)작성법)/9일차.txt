@@ -1,0 +1,5 @@
+9일차(파이썬의 GUI(wxPython)작성법)
+----------------------------------------
+menubar.py->save as=>menubar3.py
+
+button.py->save as menubar4
