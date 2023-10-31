@@ -1,0 +1,7 @@
+12일차(파이썬의 GUI(wxPython)작성법4)
+=>gui_calc.py파일로 저장
+
+ staticText, TextCtrl,RadioButton
+ wx.Button
+-----------------------------------
+DB연동(maria DB)<--MySQL
