@@ -1,0 +1,4 @@
+13일차(파이썬의 DB연동방법(sqlite3,mariaDB)
+
+=>그래픽 전문툴을 사용해서 개발
+wxFormBuilder_v3.5.0-beta
