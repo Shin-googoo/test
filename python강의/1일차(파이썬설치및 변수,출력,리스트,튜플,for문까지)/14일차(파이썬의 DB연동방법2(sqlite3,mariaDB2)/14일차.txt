@@ -1,0 +1,7 @@
+14일차(파이썬의 DB연동방법2(sqlite3,mariaDB2)
+
+1.콘솔상의 sqlite3을 이용한 테이블 생성및
+   insert,update,delete,select구현
+
+2.dbSangpum.py를 이용하여 데이터를 입력
+   시켜주는 프로그램 작성법
