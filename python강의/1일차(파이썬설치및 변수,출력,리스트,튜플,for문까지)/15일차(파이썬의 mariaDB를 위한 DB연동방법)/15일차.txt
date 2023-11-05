@@ -1,0 +1,316 @@
+15일차(파이썬의 mariaDB를 위한 DB연동방법)
+
+MySQL와 비슷(개인 DB, 중소 기업)->Oracle
+->MariaDB
+http://mariadb.org
+==>한글처리(utf-8설정)
+
+use UTF-8 as default 
+server's character set 체크
+-----------------------------
+->한글처리가 된다.
+
+이미 Mysql이 설치된 상태라면
+MySQL2, 3307로 변경해야 된다.
+=>충돌을 방지
+
+Enter password: ****  =>1234
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 2
+Server version: 10.0.17-MariaDB mariadb.org binary distributio
+
+Copyright (c) 2000, 2015, Oracle, MariaDB Corporation Ab and o
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current
+
+MariaDB [(none)]>  ->접속할 db목록을 볼때
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+4 rows in set (0.00 sec)
+                           =>use 접속할 db명;
+MariaDB [(none)]> use test
+Database changed
+MariaDB [test]> show tables; ->테이블 목록
+Empty set (0.00 sec)
+
+MariaDB [test]> create table sangdata( code int primary key,
+    -> sang varchar(15),su int ,dan int);
+Query OK, 0 rows affected (0.27 sec)
+
+insert into sangdata values(1,'마우스',5,5000);
+insert into sangdata values(2,'모니터',7,55000);
+
+select * from sangdata;
+---------------------------------------------
+MariaDB [test]> select * from sangdata;
++------+--------+------+-------+
+| code | sang   | su   | dan   |
++------+--------+------+-------+
+|    1 | 마우스 |    5 |  5000 |
+|    2 | 모니터 |    7 | 55000 |
++------+--------+------+-------+
+2 rows in set (0.00 sec)
+
+MariaDB [test]> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+create table mem(bun int primary key,
+                           irum varchar(12) not null,
+                           junhwa varchar(15));
+
+insert into mem values(1,'홍길순','111-2345');
+------------------------------------------------
+MariaDB [test]> create table mem(bun int primary key,
+    ->                            irum varchar(12) not null,
+    ->                            junhwa varchar(15));
+Query OK, 0 rows affected (0.31 sec)
+
+MariaDB [test]> insert into mem values(1,'홍길순','111-2345');
+Query OK, 1 row affected (0.09 sec)
+
+MariaDB [test]> select * from mem;
++-----+--------+----------+
+| bun | irum   | junhwa   |
++-----+--------+----------+
+|   1 | 홍길순 | 111-2345 |
++-----+--------+----------+
+1 row in set (0.00 sec)
+
+MariaDB [test]> commit;//메모리상
+                     ->테이블에 반영
+-----------------------------------------
+MariaDB [test]> exit
+Bye
+
+C:\Program Files (x86)\MariaDB 10.0\bin>
+-----------------------------------------------
+db설치->드라이버가 있어야 된다.
+
+http://downloads.mysql.com/archives/c-python/
+
+  select version:최신버전의 바로 밑버전
+                       1.2.2
+  select platform:platform independent를 선택
+  ->운영체제에 상관없이 python을 사용이 가능
+-----------------------------------------------
+C:\Python34\Lib\site-packages에서 
+ maria db(mysql의 드라이버에 해당하는
+  라이브러리를 불러와야 된다.)
+
+path환경변수에 C:\Python34;C:\Python34\Scripts
+ 설정이 이미 되어있다.
+
+c:\pyweb>cd c:\mysql-connector-python-1.2.2
+
+c:\mysql-connector-python-1.2.2>python setup.py install
+running install
+running build
+running build_py
+creating build
+creating build\lib
+creating build\lib\mysql
+copying python3\mysql\__init__.py -> build\lib\mysql
+creating build\lib\mysql\connector
+copying python3\mysql\connector\authentication.py -> build\lib\my
+copying python3\mysql\connector\charsets.py -> build\lib\mysql\co
+copying python3\mysql\connector\connection.py -> build\lib\mysql\
+copying python3\mysql\connector\constants.py -> build\lib\mysql\c
+copying python3\mysql\connector\conversion.py -> build\lib\mysql\
+copying python3\mysql\connector\cursor.py -> build\lib\mysql\conn
+copying python3\mysql\connector\dbapi.py -> build\lib\mysql\conne
+copying python3\mysql\connector\errorcode.py -> build\lib\mysql\c
+copying python3\mysql\connector\errors.py -> build\lib\mysql\conn
+copying python3\mysql\connector\network.py -> build\lib\mysql\con
+copying python3\mysql\connector\pooling.py -> build\lib\mysql\con
+copying python3\mysql\connector\protocol.py -> build\lib\mysql\co
+copying python3\mysql\connector\utils.py -> build\lib\mysql\conne
+copying python3\mysql\connector\version.py -> build\lib\mysql\con
+copying python3\mysql\connector\__init__.py -> build\lib\mysql\co
+creating build\lib\mysql\connector\locales
+copying python3\mysql\connector\locales\__init__.py -> build\lib\
+\locales
+creating build\lib\mysql\connector\locales\eng
+copying python3\mysql\connector\locales\eng\client_error.py -> bu
+onnector\locales\eng
+copying python3\mysql\connector\locales\eng\__init__.py -> build\
+ctor\locales\eng
+creating build\lib\mysql\connector\django
+copying python23\django\base.py -> build\lib\mysql\connector\djan
+copying python23\django\client.py -> build\lib\mysql\connector\dj
+copying python23\django\compiler.py -> build\lib\mysql\connector\
+copying python23\django\creation.py -> build\lib\mysql\connector\
+copying python23\django\introspection.py -> build\lib\mysql\conne
+copying python23\django\validation.py -> build\lib\mysql\connecto
+copying python23\django\__init__.py -> build\lib\mysql\connector\
+creating build\lib\mysql\connector\fabric
+copying python23\fabric\balancing.py -> build\lib\mysql\connector
+copying python23\fabric\caching.py -> build\lib\mysql\connector\f
+copying python23\fabric\connection.py -> build\lib\mysql\connecto
+copying python23\fabric\__init__.py -> build\lib\mysql\connector\
+running install_lib
+creating C:\Python34\Lib\site-packages\mysql
+creating C:\Python34\Lib\site-packages\mysql\connector
+copying build\lib\mysql\connector\authentication.py -> C:\Python3
+ages\mysql\connector
+copying build\lib\mysql\connector\charsets.py -> C:\Python34\Lib\
+ysql\connector
+copying build\lib\mysql\connector\connection.py -> C:\Python34\Li
+\mysql\connector
+copying build\lib\mysql\connector\constants.py -> C:\Python34\Lib
+mysql\connector
+copying build\lib\mysql\connector\conversion.py -> C:\Python34\Li
+\mysql\connector
+copying build\lib\mysql\connector\cursor.py -> C:\Python34\Lib\si
+ql\connector
+copying build\lib\mysql\connector\dbapi.py -> C:\Python34\Lib\sit
+l\connector
+creating C:\Python34\Lib\site-packages\mysql\connector\django
+copying build\lib\mysql\connector\django\base.py -> C:\Python34\L
+s\mysql\connector\django
+copying build\lib\mysql\connector\django\client.py -> C:\Python34
+ges\mysql\connector\django
+copying build\lib\mysql\connector\django\compiler.py -> C:\Python
+kages\mysql\connector\django
+copying build\lib\mysql\connector\django\creation.py -> C:\Python
+kages\mysql\connector\django
+copying build\lib\mysql\connector\django\introspection.py -> C:\P
+e-packages\mysql\connector\django
+copying build\lib\mysql\connector\django\validation.py -> C:\Pyth
+ackages\mysql\connector\django
+copying build\lib\mysql\connector\django\__init__.py -> C:\Python
+kages\mysql\connector\django
+copying build\lib\mysql\connector\errorcode.py -> C:\Python34\Lib
+mysql\connector
+copying build\lib\mysql\connector\errors.py -> C:\Python34\Lib\si
+ql\connector
+creating C:\Python34\Lib\site-packages\mysql\connector\fabric
+copying build\lib\mysql\connector\fabric\balancing.py -> C:\Pytho
+ckages\mysql\connector\fabric
+copying build\lib\mysql\connector\fabric\caching.py -> C:\Python3
+ages\mysql\connector\fabric
+copying build\lib\mysql\connector\fabric\connection.py -> C:\Pyth
+ackages\mysql\connector\fabric
+copying build\lib\mysql\connector\fabric\__init__.py -> C:\Python
+kages\mysql\connector\fabric
+creating C:\Python34\Lib\site-packages\mysql\connector\locales
+creating C:\Python34\Lib\site-packages\mysql\connector\locales\en
+copying build\lib\mysql\connector\locales\eng\client_error.py ->
+\site-packages\mysql\connector\locales\eng
+copying build\lib\mysql\connector\locales\eng\__init__.py -> C:\P
+e-packages\mysql\connector\locales\eng
+copying build\lib\mysql\connector\locales\__init__.py -> C:\Pytho
+ckages\mysql\connector\locales
+copying build\lib\mysql\connector\network.py -> C:\Python34\Lib\s
+sql\connector
+copying build\lib\mysql\connector\pooling.py -> C:\Python34\Lib\s
+sql\connector
+copying build\lib\mysql\connector\protocol.py -> C:\Python34\Lib\
+ysql\connector
+copying build\lib\mysql\connector\utils.py -> C:\Python34\Lib\sit
+l\connector
+copying build\lib\mysql\connector\version.py -> C:\Python34\Lib\s
+sql\connector
+copying build\lib\mysql\connector\__init__.py -> C:\Python34\Lib\
+ysql\connector
+copying build\lib\mysql\__init__.py -> C:\Python34\Lib\site-packa
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\auth
+o authentication.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\char
+sets.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\conn
+nnection.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\cons
+stants.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\conv
+nversion.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\curs
+.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\dbap
+python-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+ase.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+ client.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+to compiler.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+to creation.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+n.py to introspection.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+y to validation.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\djan
+to __init__.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\erro
+orcode.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\erro
+.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\fabr
+ to balancing.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\fabr
+o caching.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\fabr
+y to connection.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\fabr
+to __init__.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\loca
+error.py to client_error.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\loca
+_.py to __init__.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\loca
+ to __init__.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\netw
+rk.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\pool
+ng.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\prot
+ocol.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\util
+python-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\vers
+on.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\connector\__in
+it__.cpython-34.pyc
+byte-compiling C:\Python34\Lib\site-packages\mysql\__init__.py to
+on-34.pyc
+running install_egg_info
+Writing C:\Python34\Lib\site-packages\mysql_connector_python-1.2.
+o
+
+c:\mysql-connector-python-1.2.2>
+
+->db3maria.py
+
+MariaDB [test]> select * from sangdata;
++------+--------+------+-------+
+| code | sang   | su   | dan   |
++------+--------+------+-------+
+|    1 | 마우스 |    5 |  5000 |
+|    2 | 모니터 |    7 | 55000 |
++------+--------+------+-------+
+2 rows in set (0.00 sec)
+=>commit을 하지 않으면 메모리상에서만
+     저장이 되기 때문에 테이블에 바로 반영이
+     안되기 때문에 반드시 commit()을 줘야 된다.
+--------------------------------------------
+MariaDB [test]> select * from sangdata;
++------+--------+------+-------+
+| code | sang   | su   | dan   |
++------+--------+------+-------+
+|    1 | 마우스 |    5 |  5000 |
+|    2 | 모니터 |    7 | 55000 |
+|   10 | 상품1  |    2 |  1234 |
+|   11 | 상품2  |   33 |  4500 |
++------+--------+------+-------+
+4 rows in set (0.00 sec)
+
+MariaDB [test]>
+
+
