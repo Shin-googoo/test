@@ -1,0 +1,30 @@
+17일차(파이썬의 DB연동(crud))
+
+ex5_gui_basic->template.py
+->save as ->db_crud(프로젝트)
+---------------------------------
+MariaDB [test]> desc mem
+    -> ;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| bun    | int(11)     | NO   | PRI | NULL    |       |
+| irum   | varchar(12) | NO   |     | NULL    |       |
+| junhwa | varchar(15) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.08 sec)
+
+MariaDB [test]> insert into mem values(2,'김말자','222-4545');
+Query OK, 1 row affected (0.11 sec)
+
+MariaDB [test]> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [test]> select * from mem;
++-----+--------+----------+
+| bun | irum   | junhwa   |
++-----+--------+----------+
+|   1 | 홍길순 | 111-2345 |
+|   2 | 김말자 | 222-4545 |
++-----+--------+----------+
+2 rows in set (0.00 sec)
