@@ -1,0 +1,60 @@
+#수정할 데이터를 불러오기
+    def MemModifyPre(self):
+        #입력을 받을 대화상자->TextEntryDialog
+        #부모창이 없음(None)
+        dlg=wx.TextEntryDialog(None,'수정할 번호입력?','수정')
+        ret = dlg.ShowModal()
+        
+        #ok버튼을 클릭했다면(수정할 번호를 입력)
+        if wx.ID_OK:
+            modiNum=dlg.GetValue()
+            data=self.SelectData(modiNum)
+            #존재하지 않은번호를 입력한 경우
+            if data == None: return
+            
+            self.txtNo.SetValue(str(data[0]))
+            self.txtName.SetValue(data[1])
+            self.txtTel.SetValue(data[2])
+            #사원번호는 편집불가
+            self.txtNo.SetEditable(False)
+            #수정확인버튼은 활성화
+            self.btnConfirm.Enable(True)
+            #수정버튼을 취소로 변경
+            self.btnModify.SetLabel("취소")
+            self.btnModify.id=5
+        else:#ID_Cancel버튼을 누른경우
+            return
+        dlg.Destroy()#대화상자 메모리 해제
+            
+    #수정하기->추가와 코딩이 동일
+    def MemModify(self):
+        no=self.txtNo.GetValue()#getValue() X
+        name=self.txtName.GetValue()
+        tel=self.txtTel.GetValue()
+
+        try:
+            conn=mysql.connector.connect(**config)
+            cursor=conn.cursor() 
+            
+            #수정
+            sql="update mem set irum=%s,junhwa=%s where bun=%s"
+            cursor.execute(sql,(name,tel,no))
+            conn.commit()
+            
+            self.ViewListData()
+            self.txtNo.SetValue('')
+            self.txtName.SetValue('')
+            self.txtTel.SetValue('')
+            #추가
+            self.txtNo.SetFocus()
+            self.txtNo.SetEditable(True)#번호입력가능
+            self.btnConfirm.Enable(False)#비활성화
+            self.btnModify.SetLabel("수정")#취소->수정
+                       
+        except mysql.connector.Error as err:
+            print("MemModify함수 에러=",err)
+            #추가
+            conn.rollback()
+        finally:
+            cursor.close() #메모리해제
+            conn.close() 
