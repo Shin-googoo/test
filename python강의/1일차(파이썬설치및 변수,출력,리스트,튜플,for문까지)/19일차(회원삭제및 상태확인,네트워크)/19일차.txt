@@ -1,0 +1,78 @@
+19일차(회원삭제및 상태확인,네트워크)
+
+MariaDB [(none)]> use test
+Database changed
+MariaDB [test]> select * from mem;
++-----+-------------+----------+
+| bun | irum        | junhwa   |
++-----+-------------+----------+
+|   1 | 홍길순      | 111-2345 |
+|   2 | 임시2       | 222-4545 |
+|   3 | 임시테스트5 | 567-8888 |
+|   4 | 하하        | 123-8976 |
+|   5 | 테스트김    | 123-8765 |
++-----+-------------+----------+
+5 rows in set (0.00 sec)
+
+MariaDB [test]> select * from mem;
++-----+-------------+----------+
+| bun | irum        | junhwa   |
++-----+-------------+----------+
+|   1 | 홍길순      | 111-2345 |
+|   2 | 임시2       | 222-4545 |
+|   3 | 임시테스트5 | 567-8888 |
+|   5 | 테스트김    | 123-8765 |
++-----+-------------+----------+
+4 rows in set (0.00 sec)
+
+MariaDB [test]>
+-----------------------------------
+#삭제하기
+    def MemDel(self):
+        dlg=wx.TextEntryDialog(None,'삭제할 사원번호를 입력?','삭제')
+        ret = dlg.ShowModal()
+        
+        if wx.ID_OK:#OK버튼을 누른경우
+            no=dlg.GetValue()
+            #print('no=',no)
+        
+        try:
+            conn=mysql.connector.connect(**config)
+            cursor = conn.cursor()
+            sql="delete from mem where bun='{}'".format(no)
+            cursor.execute(sql)#pstmt.executeUpdate(sql)
+            conn.commit()
+            #화면상에도 지워진 상태를 보여주기위해서
+            self.ViewListData()
+            
+        except mysql.connector.Error as err:
+            print("MemDel 에러=",err)
+        finally:
+            cursor.close()
+            conn.close()
+        
+    
+    #수정취소->취소->수정
+    def MemModiCancel(self):
+        self.btnModify.id=2 #수정기능 부여
+        self.btnModify.SetLabel("수정")
+        #불러온 데이터를 다 초기화
+        self.txtNo.SetLabel('')
+        self.txtName.SetLabel('')
+        self.txtTel.SetLabel('')
+        #전의 사원번호 편집불가->편집가능
+        self.txtNo.SetEditable(True)
+        #수정확인버튼 사용불가하도록 설정
+        self.btnConfirm.Enable(enable=False)
+        self.txtNo.SetFocus()#커서입력
+--------------------------------------------
+s_server1.py->서버가동-->s_client1
+          이클립스에서 가동         ->도스실행
+    ServerSocket클래스(자바)   Socket(자바)
+----------------------------------------------
+server start!!!...
+client addr= ('192.168.0.69', 52901)
+from client message= 안녕 반가워
+--------------------------------------------
+ s_server1.py->save as s_server2.py
+ s_client1.py->save as s_client2.py
