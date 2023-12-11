@@ -1,0 +1,489 @@
+* {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+@property --num {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: false;
+}
+
+/* 3번째 줄 드랍메뉴 */
+ul {
+  list-style:none;
+}
+ul li {
+  display:inline-block;
+  position: relative;
+}
+ul li a {
+  display: block;
+  padding: 10px 15px;
+  color: #000;
+  text-decoration: none;
+  text-align: center;
+}
+ul li ul.sub1 li {
+  display: block;
+}
+ul li ul.sub1 {
+  width: 100%;
+  position:absolute;
+  z-index:999;
+  display: none;
+}
+ul li a:hover {
+  background: #63f3c9;
+}
+ul li:hover ul.sub1 {
+  display: block;
+  width: 200px;
+  height: 100%;
+}
+
+
+/* 전체 컨테이너 영역(전체 넓이, 양쪽여백 설정) */
+.wrap{
+  width:1160px; /* width:70%-> 양쪽여백은 15%+15%=30% */
+  margin:0 auto; /* 위 아래여백0 좌우여백은 자동으로 배분 되라는 옵션 */
+}
+.hd1 {
+  height: 42px;
+  background-color: #0d0f2b;
+}
+.hd1 img {
+  display:block;
+  margin:0 auto;
+  height:42px;
+}
+.hd2 { /*오른쪽 메뉴*/
+  display:block;
+  margin:0 auto;
+  width:1160px;
+  height:61px;
+  border-bottom: 1px solid #dadada;
+}
+.hd2 img { /* 왼쪽 로고 */
+  padding:20px 0;
+  float: left;
+  display:block;
+  margin:0 auto;
+  width:65px;
+  height:21px;
+  clear:both;
+}
+.hd2 ul li {
+  float:right;
+  display: inline-block;
+  padding:23px 0 30px;
+  line-height:16px;
+  vertical-align: center;
+}
+.hd2 ul li a {
+  font-size:16px;
+  color: black;
+  padding: 0 0 0 30px;
+}
+.hd2 ul li .color {
+  color: #7c37fd;
+  font-weight: bold;
+  clear:both;
+}
+.model { /*모델 공간*/
+  width: 100%;
+  height:750px;
+  background: linear-gradient(135deg, #8864ff, #628cef, #63f7c8);
+
+}
+.model > div {
+  position:relative;
+}
+.model .pic1 {
+  position: relative;
+  width: 426px;
+  height:240px;
+  top:-550px;
+  right: -710px;
+}
+
+.model > div img {
+  position: absolute;
+  width:100%;
+  top: -320px;
+}
+
+.price .txt1{
+  position:absolute;
+  padding: 100px 0 0;
+  width: 1160px;
+  height:100px;
+  font-size: 21px;
+  text-align: center;
+  color: #55555a;
+
+}
+.price div b {
+  display: block;
+  position:absolute;
+  padding: 150px 370px 0;
+  text-align: center;
+  font-size:38px;
+  color:#000;
+  /*border: 1px solid red;*/
+}
+.price img {
+  position:absolute;
+  padding: 300px 380px 0;
+  width: 415px;
+  height:230px;
+}
+.price figcaption {
+  position:absolute;
+  display: block;
+  padding: 550px 0 0 380px;
+}
+/* 아이패드 공간 */
+.price2 {
+  position:absolute;
+  width: 1160px;
+  height: 1000px;
+
+}
+.price2 .txt2 {
+  text-align: center;
+  padding:800px 0 60px;
+  font-size:38px;
+  font-weight: bold;
+  color:#000;
+}
+.price2 .txt3 {
+  font-weight: bold;
+  text-align: center;
+  color: #55555a;
+}
+.price2 .txt3 b { /*그라디언트 글씨*/
+  font-size: 48px;
+  background: -webkit-linear-gradient(-75deg, #6151f8, #51ece6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.price2 .txt3 p {
+  font-size: 15px;
+  color:#666;
+}
+.price2 .txt3 > div {
+  position: relative;
+  background:linear-gradient(-75deg, #6151f8, #51ece6);
+  border-radius:20px;
+  width: 1160px;
+  height:400px;
+  
+}
+.price2 .txt3 > div img {
+  display: inline;
+  width: 290px;
+  height: 300px;
+  padding: 100px 0 0 700px;
+}
+.price2 .txt3 > div p {
+  position: absolute;
+  top: 50px;
+  left: 70px;
+  font-size: 15px;
+  color:#fff;
+  clear: both;
+}
+.price2 .txt3 > div > .txt4 {
+  position: absolute;
+  top: 80px;
+  left: 70px;
+  font-size: 38px;
+  text-align: left;
+  color:#fff;
+}
+.price2 .txt3 > div .txt7{
+  position: absolute;
+  top: 200px;
+  left: 70px;
+  font-size: 15px;
+  font-weight:bold;
+  color:#fff;
+  clear: both;
+}
+.price2 .txt3 > div .txt5 {
+  position: absolute;
+  top: 20px;
+  left:0;
+  font-size: 15px;
+  color:#fff;
+}
+.price2 .txt3 > div .txt8{
+  position: absolute;
+  top: 250px;
+  left: 70px;
+  font-size: 15px;
+  font-weight:bold;
+  color:#fff;
+  clear: both;
+}
+.price2 .txt3 > div .txt6{
+  position: absolute;
+  width: 300px;
+  height:100px;
+  top: 20px;
+  left:-5px;
+  font-size: 15px;
+  color:#fff;
+}
+section {
+  position: relative;
+}
+section h3 {
+  position: absolute;
+  padding: 0 0 0 100px;
+  top: 1500px;
+  width:100%;
+  text-align: left;
+  font-size:15px;
+  background: -webkit-linear-gradient(-90deg, #6151f8, #51ece6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* 선생님 선별 소개 */
+section h1 {
+  position: absolute;
+  padding: 0 0 0 100px;
+  top: 1520px;
+  width:100%;
+  text-align: left;
+  font-size:35px;
+}
+section > .left > li{
+  display: block;
+  margin: 20px 0 0 100px;
+  padding: 27px 0 0 21px;
+  top: 1600px;
+  width: 385px;
+  height: 70px;
+  background: #f7f7ff;
+  border-radius: 10px;
+  color: #9e52ff;
+  font-size:17px;
+  
+}
+section > .left > li b {
+  padding:0 0 0 6px;
+  color: #000;
+}
+section > .left > li p {
+  float: right;
+  padding: 0 20px 0 0;
+  color: #747674;
+}
+
+section > .right > li{
+  display: block;
+  margin: 15px 0 -15px 610px;
+  top: 1250px;
+  color: #666;
+  font-size:17px;
+}
+section > .right > li strong{
+  display: block;
+  padding: 0 0 30px 0;
+  color:#5c55f7;
+  font-size:40px;
+}
+.free {
+  position: relative;
+  width: 100%;
+  height:800px;
+}
+.free > h2 {
+  position: absolute;
+  display: inline-block;
+  top:1500px;
+  width: 100%;
+  height: 50px;
+  font-size:30px;
+  text-align: center;
+  color: #333;
+
+}
+.free > h5 {
+  position: absolute;
+  margin: 0 0 0 450px;
+  top:1550px;
+  width: 200px;
+  height: 80px;
+  font-size:14px;
+  text-align: left;
+  border-bottom: 1px solid #dbdbdb;
+}
+.free > ul {
+  position: relative;
+  width: 100%;
+  height:1800px;
+}
+.free > ul > li {
+  margin: 30px 0 0 450px;
+  padding: 10px 0 0 0;
+  top:1600px;
+  width: 100%
+  font-size:14px;
+  color:#888c97;
+}
+.free > ul > li > input {
+  width: 360px;
+  height: 46px;
+  margin: 10px 0 0;
+  padding: 0 0 0 17px;
+  border-radius:10px;
+  font-size: 15px;
+  color: #c6c6c6;
+  clear: both;
+}
+.free > ul > li > select >.option2, .option {
+  width: 380px;
+  height: 46px;
+  padding: 0 0 0 17px;
+  border-radius:10px;
+  border: 2px solid #c6c6c6;
+}
+.option2{
+  width: 380px;
+  height: 46px;
+  margin: 13px 0 0;
+  padding: 0 0 0 17px;
+  border-radius:10px;
+  border: 2px solid #c6c6c6;
+}
+
+.free .chk {
+  position: absolute;
+  margin: 350px 0 0 450px;
+  width: 290px;
+  height:50px;
+  text-decoration: underline;
+}
+
+.free .chk p {
+  display: block;
+  float: right;
+  color: #5c55f7;
+}
+
+.free .btn button {
+  float: left;
+  margin: 400px 0 0 450px;
+  text-align: center;
+  width: 350px;
+  height:50px;
+  background: linear-gradient(135deg, #8864ff, #628cef, #63f7c8);
+  border: 0;
+  border-radius: 10px;
+  font-size: 25px;
+  color: #fff;
+  
+}
+footer {
+  position: relative;
+  top: 1500px;
+  width: 100%;
+  height:450px;
+  background: #dddcec;
+}
+footer ul {
+  position: relative;
+  padding:65px 160px;
+}
+/* 원 */
+footer ul li div {
+  margin: 0 auto;
+  width: 60px;
+  height: 60px;
+  background:#fff;
+  border-radius:50%;
+}
+footer ul li {
+  padding: 0 11px 0;
+}
+footer ul li img{
+  position: absolute;
+  width: 40%;
+  height: 40%;
+  top: 18px;
+  right: 24px;
+  text-align: center;
+  z-index: 100;
+}
+.font li {
+  display: inline-block;
+  margin: -100px 0 0 0;
+  padding:1px 35px 0 0;
+  width: 50px;
+  top: -130px;
+  left: 15px;
+  clear: both;
+}
+.font2 {
+  position: relative;
+  
+}
+.font2 li {
+  margin: 0 0 0 0px;
+  top: -250px;
+  left: -10px;
+  font-size:10px;
+  text-decoration: underline;
+  
+}
+.font2 > li > a {
+  color: #5c55f7;
+  clear: both;
+}
+.ft_right > h2 {
+  position:absolute;
+  top:60px;
+  left: 700px;
+}
+.ft_right > h5 {
+  position:absolute;
+  top:95px;
+  left: 702px;
+  color: #868686;
+
+}
+.ft_right > ul {
+  top:-435px;
+  left: 530px;
+
+}
+.ft_right #font3 {
+  margin: 0 50px 0 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000;
+}
+#font3 p {
+  color: #5c55f7;
+  font-size: 20px;
+}
+/* 회사 정보 */
+.footer {
+  position: relative;
+  padding:65px 0 65px 170px;
+  top: -490px;
+  height: 120px;
+  color: #555;
+  font-size: 12px;
+  border: 1px solid red;
+}
+.footer h4 {
+  font-weight: 800;
+}
+.footer a {
+  color: #5c55f7;
+}

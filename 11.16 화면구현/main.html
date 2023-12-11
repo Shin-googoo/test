@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <title>화면 구현</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <nav class="hd1">
+    <img src="img/header1.png" alt="">
+  </nav>
+  <div class="wrap"><!--본문내용 전체를 묶어주는 영역(container)-->
+    <header>
+      <nav class="hd2">
+        <a href="">
+          <img src="img/logo.png" alt="logo">
+        </a>
+        <ul>
+          <li><a href="#" >회원가입</a></li>
+          <li><a href="#">로그인</a></li>
+          <li><a href="#" class="color">수강신청</a></li>
+        </ul>
+      </nav>
+      <ul class="dropdownmenu">
+        <li><a href="#" class="weight">스마트과외</a></li>
+        <li><a href="#">입시코칭</a></li>
+        <li><a href="#">이벤트</a></li>
+        <li><a href="#">후기</a></li>
+        <li>
+          <a href="#">FAQ</a>
+          <ul class="sub1"> <!--드랍메뉴-->
+            <li><a href="#">TOP</a></li>
+            <li><a href="#">수업 방식</a></li>
+            <li><a href="#">선생님</a></li>
+            <li><a href="#">태블릿 PC</a></li>
+            <li><a href="#">결제/환불</a></li>
+            <li><a href="#">기타</a></li>
+          </ul>
+        </li>
+      </ul>
+    </header>
+    <body>
+      <div class="model">
+        <img src="img/model.png" alt="">
+        <img src="img/sddefault.png" class="pic1">
+        <div>
+          <img src="img/sky.png" alt="">
+        </div>
+      </div>
+<!-- body -->
+      <div class="price" clear="both">
+        <div class="txt1">언제 어디서나 테블릿 하나면</div>
+        <div><b>SKY 선생님과 1:1 밀착 수업!</b></div>
+        <figure>
+          <img src="img/study.png" alt="">
+          <figcaption>
+            실시간 음성, 필기를 공유하여 SKY 선생님이 바로 피드백합니다.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="price2">
+        <div class="txt2">
+          꿈만 꾸던 SKY 과외를 심지어 ‘학원비’ 수준으로!
+        </div>
+        <div class="txt3">
+          <b>월 199,000원</b>
+          <p>(베이직 과외, 주 1회 60분 수업 기준)</p>
+          <div><!-- 아이패드 공간 -->
+            <img src="img/i-pad.png" alt="">
+            <p>태블릿 걱정은 NO</p>
+            <p class="txt4">최신 iPad를<br>
+              무상 대여 해드려요!</p>
+            <span class="txt7">
+              최신 iPad와 Apple pencil 1세대 무상대여
+              <p class="txt5">12개월 수강 시 완전 증정</p>
+            </span>
+            <span class="txt8">
+              잠깐! 태블릿이 있다면?
+              <p class="txt6">본인 태블릿으로 수업하고, 수업료 할인 받아요!</p>
+            </span>
+          </div>
+        </div>
+      </div>
+      <section> 
+        <h3>| 학력, 실력, 태도까지 3단계로!</h3>
+        <h1>설탭에는 검증된 SKY 선생님만 있어요.</h1>
+        <ul class="left">
+          <li>
+            1단계.
+            <b>서류 평가</b>
+            <p>100% SKY만 선발<p>
+          </li>
+          <li>
+            2단계.
+            <b>시범 과외</b>
+          </li>
+          <li>
+            3단계.
+            <b>규정 테스트</b>
+          </li>
+        </ul>
+        <ul class="right">
+          <li>최종 합격률</li>
+          <li><strong>60%</strong></li>
+          <li>지금 활동 중인 선생님만 무려</li>
+          <li><strong>4,236명</strong></li>
+        </ul>
+      </section>
+      <!--상담란 input -->
+      <section class="free">
+        <h2>상담 후 무료체험받기<h2>
+        <h5>자녀랑 잘 맞을지 걱정이라면?<br>
+        상담받고 무료체험 진행하세요!<br>
+        (첫 수업 불만족시 수업료 환불)</h5>
+        <ul>
+          <li>
+            학부모님 성함<br>
+            <input type="text" placeholder="학부모님 성함을 입력해주세요">
+          </li>
+          <li>
+            학부모님 휴대전화번호        <br>
+            <input type="tel" placeholder="010-0000-0000">
+          </li>
+          <li>
+            희망하는 상담시간<br>
+            <p>*2~4일 이내 연락, 공휴일 제외</p><br>
+            <select name="time" class="option">
+              <option value="" checked>상담시간 선택</option>
+              <option value="">10:00 ~ 11:00</option>
+              <option value="">11:00 ~ 12:00</option>
+              <option value="">12:00 ~ 13:00</option>
+              <option value="">13:00 ~ 14:00</option>
+              <option value="">14:00 ~ 15:00</option>
+              <option value="">15:00 ~ 16:00</option>
+              <option value="">16:00 ~ 17:00</option>
+              <option value="">17:00 ~ 18:00</option>
+              <option value="">18:00 ~ 19:00</option>
+            </select>
+          </li>
+          <li>
+            학년<br>
+            <select name="age" class="option2">
+              <option value="" checked>2022년도 기준 학년</option>
+              <option value="">초4</option>
+              <option value="">초5</option>
+              <option value="">초6</option>
+              <option value="">중1</option>
+              <option value="">중2</option>
+              <option value="">중3</option>
+              <option value="">고1</option>
+              <option value="">고2</option>
+              <option value="">고3</option>
+              <option value="">N수</option>
+            </select>
+          </li>
+        </ul>
+        <div class="chk">
+          <input type="checkbox">&nbsp;
+          개인정보 수집 및 이용에 대한 동의<p>(필수)</p>
+        </div>
+        <div class="btn">
+          <button>상담 예약하기</button>
+        </div>
+      </section>
+    </body>
+<!-- footer -->    
+    <footer>
+      <section>
+        <article>
+          <ul>
+            <li>
+              <div></div>
+              <img src="img/youtube.png">
+            </li>
+            <li>
+              <div></div>
+              <img src="img/insta.png">
+            </li>
+            <li>
+              <div></div>
+              <img src="img/blog.png">
+            </li>
+          </ul>
+          <ul class="font">
+            <li>유투브</li>
+            <li>인스타</li>
+            <li>블로그</li>
+          </ul>
+          <ul class="font2">
+            <li><a href="">이용약관</a></li>
+            <li><a href="">환불규정</a></li>
+            <li><a href="">개인정보처리방침</a></li>
+            <li><a href="">사업제휴 문의(business@onuii.com)</a></li>
+          </ul>
+        </article>
+        <article class="ft_right">
+          <h2>아직 설탭이 궁금하시다면?</h2>
+          <h5>월요일 ~ 일요일 10:00 ~ 19:00</h5>
+          <ul>
+            <li id="font3">
+              신청 전 상담/문의
+              <p>1533-5625</p>
+            </li>
+            <li id="font3">
+              신청 후 상담/문의
+              <p>02-6205-0110</p>
+            </li>
+          </ul>
+        </article>
+      </section>
+      <div class="footer">
+        <h4>주식회사 오누이</h4><br>
+        대표이사 고예진 | 주소: 서울시 마포구 연희로 11, 4층 (동교동 146-8)<br>
+        사업자등록번호: 461-88-00348  통신판매업신고: 2019-서울 마포-1212호 <a href="">정보조회</a><br>
+        학원설립 운영등록번호: 제02201900077호 설탭원격학원 <a href="">정보조회</a> | 신고기관명: 서울특별시 서부교육지원청 <a href="">교습비 안내</a><br>
+        개인정보보호책임자: 고예진<br>
+        Copyright © 2022 onuii All Rights Reserved.
+      </div>
+    </footer>
+  </div>  
+</body>
+</html>

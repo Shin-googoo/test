@@ -1,0 +1,62 @@
+//package j0306;
+
+import java.net.*;//SocketŬ����
+import java.io.*;//�����
+import java.awt.*;//GUI
+import java.awt.event.*;//event
+
+//�߰�
+import javax.swing.*;//JFrame,JTextArea,JTextField
+
+class ChatGUIClient extends JFrame  implements ActionListener,Runnable
+{
+	JTextArea ta;//Ŭ���̾�Ʈ�� ��ȭ�� ���
+	JTextField tf;//�Է�
+	//�߰�
+	JScrollPane js;//��ũ�ѹ�
+    //---�߰�------
+	
+	//-------------------------------------------
+	
+	public ChatGUIClient(){
+       //��ü���� �� ��ġ
+	   ta = new JTextArea();
+	   tf = new JTextField();
+	 
+	   add(js,"Center");
+	   add(tf,"South");//�Ʒ�
+	   tf.addActionListener(this);
+	   setBounds(200,200,500,350);
+	   setVisible(true);
+	   tf.requestFocus();//Ŀ���Է�
+
+	   //����
+	   setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   //������ �����ϴ� ����
+	   try{
+		   //1.������ ��ǻ��ip�ּ�,��Ʈ��ȣ
+		  
+		  
+	   }catch(Exception e){
+		   System.out.println("���ӿ���="+e);
+	   }
+	   //Thread ��ü�� ����->run()ȣ��
+	   Thread ct=new Thread(this);
+	   ct.start();//run()
+	}
+    //run
+	public void run() {
+		//�� �̻� �Է¹��� �� ���������� ->JTextArea
+		
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	public static void main(String[] args) 
+	{
+		new ChatGUIClient();
+	}
+}
+
