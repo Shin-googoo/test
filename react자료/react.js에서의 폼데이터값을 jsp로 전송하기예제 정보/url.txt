@@ -1,0 +1,160 @@
+https://stackoverflow.com/questions/53501185/how-to-post-query-parameters-with-axios
+
+https://forteleaf.tistory.com/entry/axiospost-에-form-데이터를 -넣기
+
+
+https://yamoo9.github.io/axios/guide/form-format.html#브라우저
+
+  get의 경우
+
+axios.get('/user', {
+    params: {
+      ID: 12345
+    }
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+
+ post 방식에서는 
+npm  install url-search-params-polyfill  --save 로 설치를 하고 이유는 IE 11 을 커버 하기 위해서 입니다. 
+
+<script>
+import 'url-search-params-polyfill';
+
+var params = new URLSearchParams();
+          params.append('doc_number', this.no);
+          params.append('doc_password', this.doc_password);
+          axios.post('/W_Server/suggestion_board_delete'
+            ,params)
+            .then((Resopnse) => {
+
+            }).catch((ex)=>{
+              console.log(ex);
+
+            })
+===========================================
+ 뷰(vue.js)에서의 axios 데이터 전달 예제
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container">
+  <div id="main-app" >
+     <template v-for="(item, index) in message">
+      <quiz v-for="(cont, key) in item" v-bind:quiz-inner="cont" v-bind:quiz-key="index" ></quiz>
+    </template>    
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <script>
+    (...)
+  </script>
+</body>
+</html>
+====================================
+ // 스트링을 대문자화
+    Vue.filter('capitalize', function(value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.toUpperCase()
+    })
+    // 퀴즈 컴포넌트 선언
+    Vue.component('quiz', {
+      template: `<div class="card border-primary mb-3" style="max-width: 20rem; " >
+  <div class="card-header">{{quizKey | capitalize}}</div>
+  <div class="card-body">
+    <h4 class="card-title">{{quizInner.question}}</h4>
+    <li class="card-text" v-for="option in quizInner.options">{{option == quizInner.answer ? option + ' (answer)' : option}}</li>
+  </div>
+</div>`,
+      props: ['quizInner', 'quizKey']
+    })
+    var mainApp = new Vue({
+      el: '#main-app',
+      data: {
+        message: 'You loaded this page on ' + new Date().toLocaleString()
+      },
+      created: function() {
+        const self = this
+        
+        /** == AXIOS get으로 가져오기 == **/
+        axios.get('https://support.oneskyapp.com/hc/en-us/article_attachments/202761727/example_2.json')
+          .then(response => {
+            // handle success
+            console.log(response.data, this);
+            this.message = response.data.quiz
+          })
+        /** ========================= **/
+      }
+    })
+======================================
+Vue.js에서 filter로 선언한 부분은 {{variableName | filterName}} 
+으로 사용합니다. created 안의 부분은 컴포넌트 라이프사이클에서 
+created 되었을 때 실행합니다.
+
+https://kiwinam.com/posts/11/jsp-json-parser/
+
+=================================
+Step2 . JSP 에서 데이터 받기 (JSP)
+init.Manage 는 java 파일 패키지 명입니다.
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    page Encoding="UTF-8"%>
+
+<%@ page import="init.Manage"%>
+
+<%
+	request.setCharacterEncoding("UTF-8");
+	Manage manage = Manage.getInstance();
+	String json = request.getParameter("json");
+	String result = manage.method(json);
+
+	out.print(result);
+%>
+String으로 날린 데이터를 request 객체에서 post형식으로 받아줍니다.
+
+실제로 JSON 데이터를 처리하는 부분은 java 에서 진행할 것이기 때문에
+
+받은 데이터를 java 메소드에 매개변수로 전달만 해줍니다.
+========================================
+https://github.com/axios/axios/issues/1440
+
+=================================
+https://stackoverrun.com/ko/q/138660
+
+<%@page language="java" import="jso.JSONObject"%>
+
+<%
+JSONObject inp=request.getParameter("param1");
+%>
+
+<% for(int i=0;i<inp.size();i++)
+{%>
+       <%=inp.getString(i)%>
+<%
+}
+%>
+
+JSONObject inp = (JSONObject) JSONValue.parse(request.getParameter("param1"));
+
+**************실전 리액트 프로젝트 예제(json파일 불러오기)**********************
+https://medium.com/hivelab-dev/react-js-tutorial-exam-step3-bfec609f5652
+
+************************************************************************
+   json object을 String으로 변환시 JSON.stringify(json)
+
+  json String을 json object으로 변환시 JSON.parse(txtValue);
+************************************************************************
+
+
+
+  
